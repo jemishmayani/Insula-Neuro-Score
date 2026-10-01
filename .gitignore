@@ -1,0 +1,7 @@
+app/build/
+keystore/
+*.keystore
+*.jks
+tests/shots/
+__pycache__/
+.DS_Store

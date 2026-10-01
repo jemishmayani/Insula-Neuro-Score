@@ -1,0 +1,212 @@
+{
+ "id": "rass",
+ "name": "Richmond Agitation–Sedation Scale",
+ "abbreviation": "RASS",
+ "aliases": [
+  "sedation",
+  "agitation",
+  "richmond",
+  "icu"
+ ],
+ "category": "neurocritical",
+ "specialty": [
+  "Neurocritical Care",
+  "Critical Care"
+ ],
+ "version": {
+  "label": "Sessler et al. 2002",
+  "detail": "10 levels from +4 (combative) to −5 (unarousable)."
+ },
+ "contentVersion": "1.0.0",
+ "lastReviewed": "2026-10-01",
+ "reviewStatus": "Content drafted from primary sources; pending independent clinician review before clinical release.",
+ "purpose": "Standardised description of agitation and depth of sedation in critically ill patients.",
+ "intendedPopulation": "Adult ICU patients, sedated or not.",
+ "inputs": [
+  {
+   "id": "level",
+   "type": "choice",
+   "label": "Observed level",
+   "short": "RASS level",
+   "help": "Observe first. If not alert, call by name and ask to open eyes and look at you. Use physical stimulation only if there is no response to voice.",
+   "options": [
+    {
+     "value": "4",
+     "label": "+4 Combative",
+     "points": 4,
+     "code": "+4",
+     "detail": "Overtly combative or violent; immediate danger to staff."
+    },
+    {
+     "value": "3",
+     "label": "+3 Very agitated",
+     "points": 3,
+     "code": "+3",
+     "detail": "Pulls on or removes tubes or catheters; aggressive."
+    },
+    {
+     "value": "2",
+     "label": "+2 Agitated",
+     "points": 2,
+     "code": "+2",
+     "detail": "Frequent non-purposeful movement; fights the ventilator."
+    },
+    {
+     "value": "1",
+     "label": "+1 Restless",
+     "points": 1,
+     "code": "+1",
+     "detail": "Anxious, but movements not aggressive or vigorous."
+    },
+    {
+     "value": "0",
+     "label": "0 Alert and calm",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "-1",
+     "label": "−1 Drowsy",
+     "points": -1,
+     "code": "-1",
+     "detail": "Not fully alert; sustained (over 10 s) awakening with eye contact to voice."
+    },
+    {
+     "value": "-2",
+     "label": "−2 Light sedation",
+     "points": -2,
+     "code": "-2",
+     "detail": "Briefly (under 10 s) awakens with eye contact to voice."
+    },
+    {
+     "value": "-3",
+     "label": "−3 Moderate sedation",
+     "points": -3,
+     "code": "-3",
+     "detail": "Movement or eye opening to voice, but no eye contact."
+    },
+    {
+     "value": "-4",
+     "label": "−4 Deep sedation",
+     "points": -4,
+     "code": "-4",
+     "detail": "No response to voice; movement or eye opening to physical stimulation."
+    },
+    {
+     "value": "-5",
+     "label": "−5 Unarousable",
+     "points": -5,
+     "code": "-5",
+     "detail": "No response to voice or physical stimulation."
+    }
+   ]
+  }
+ ],
+ "values": [
+  {
+   "id": "l",
+   "expr": "level"
+  }
+ ],
+ "primary": "l",
+ "range": "+4 to −5",
+ "display": "RASS {signed(l)}",
+ "share": "RASS {signed(l)}",
+ "states": [
+  {
+   "when": "l >= 3",
+   "state": "high",
+   "label": "Severe agitation",
+   "range": "+3 to +4",
+   "summary": "Agitation with risk to patient or staff safety.",
+   "detail": "Assess for pain, delirium, hypoxia, withdrawal and other causes according to local protocol."
+  },
+  {
+   "when": "l >= 1",
+   "state": "mild",
+   "label": "Restless to agitated",
+   "range": "+1 to +2",
+   "summary": "Increased activity or agitation."
+  },
+  {
+   "when": "l == 0",
+   "state": "normal",
+   "label": "Alert and calm",
+   "range": "0",
+   "summary": "Alert and calm."
+  },
+  {
+   "when": "l >= -2",
+   "state": "info",
+   "label": "Drowsy to light sedation",
+   "range": "−1 to −2",
+   "summary": "Responds to voice with eye contact."
+  },
+  {
+   "when": "l == -3",
+   "state": "info",
+   "label": "Moderate sedation",
+   "range": "−3",
+   "summary": "Responds to voice without eye contact."
+  },
+  {
+   "state": "moderate",
+   "label": "Deep sedation or unarousable",
+   "range": "−4 to −5",
+   "summary": "No response to voice.",
+   "detail": "Whether this level is appropriate depends on the sedation target set for this patient. Delirium screening (e.g. CAM-ICU) cannot be performed at −4 or −5."
+  }
+ ],
+ "insights": [
+  {
+   "text": "Compare the observed level against the prescribed sedation target; RASS itself does not define the target."
+  },
+  {
+   "when": "l >= -3",
+   "text": "At RASS −3 or above, delirium screening (e.g. CAM-ICU) is possible."
+  }
+ ],
+ "limitations": [
+  "Validated in adult ICU populations.",
+  "Depends on response to voice: limited in deafness, language barriers, or neurological deficits affecting eye opening."
+ ],
+ "confounders": [
+  "Neuromuscular blockade",
+  "Structural brain injury",
+  "Deafness or language barrier",
+  "Ocular injury"
+ ],
+ "commonErrors": [
+  "Using physical stimulation before voice.",
+  "Confusing brief (−2) with sustained (−1) eye contact.",
+  "Scoring during a procedure or immediately after a sedative bolus without noting it."
+ ],
+ "doesNotTellYou": [
+  "Presence of delirium.",
+  "Pain level.",
+  "Underlying cause of agitation or depressed arousal."
+ ],
+ "related": [
+  "four",
+  "gcs"
+ ],
+ "sources": [
+  {
+   "citation": "Sessler CN, Gosnell MS, Grap MJ, et al. The Richmond Agitation-Sedation Scale: validity and reliability in adult intensive care unit patients. Am J Respir Crit Care Med. 2002;166(10):1338-1344.",
+   "doi": "10.1164/rccm.2107138"
+  },
+  {
+   "citation": "Ely EW, Truman B, Shintani A, et al. Monitoring sedation status over time in ICU patients: reliability and validity of the RASS. JAMA. 2003;289(22):2983-2991."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "guide": {
+  "what": "A 10-point scale describing a patient's level of agitation (+1 to +4), calm alertness (0), or sedation (−1 to −5).",
+  "whenUseful": "Titrating sedation to a target, communicating arousal state, and as the first step of CAM-ICU delirium screening.",
+  "howToCalculate": "Observe for 30 seconds. If not alert, address by name and ask the patient to open eyes and look at you; note eye contact and its duration. If no response to voice, use physical stimulation (shoulder shake, then sternal rub).",
+  "clinicalContext": "Targets are individualised; light sedation is the default target in many ICU guidelines unless a deeper level is specifically indicated."
+ }
+}

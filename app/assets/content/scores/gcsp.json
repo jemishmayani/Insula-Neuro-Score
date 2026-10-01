@@ -1,0 +1,308 @@
+{
+ "id": "gcsp",
+ "name": "GCS-Pupils Score",
+ "abbreviation": "GCS-P",
+ "aliases": [
+  "gcs pupils",
+  "pupil reactivity score",
+  "prs"
+ ],
+ "category": "consciousness",
+ "specialty": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Trauma"
+ ],
+ "version": {
+  "label": "Brennan, Murray & Teasdale 2018",
+  "detail": "GCS-P = GCS total − Pupil Reactivity Score (number of unreactive pupils). Range 1–15."
+ },
+ "contentVersion": "1.0.0",
+ "lastReviewed": "2026-10-01",
+ "reviewStatus": "Content drafted from primary sources; pending independent clinician review before clinical release.",
+ "purpose": "Single index combining GCS and pupil reactivity to extend the range over which early severity relates to outcome after TBI.",
+ "intendedPopulation": "Adults with traumatic brain injury (derived from CRASH and IMPACT data).",
+ "inputs": [
+  {
+   "id": "e",
+   "type": "choice",
+   "label": "Eye opening",
+   "short": "Eye (E)",
+   "help": "Record the best response. Apply a stimulus only if there is no response to the previous level.",
+   "options": [
+    {
+     "value": "4",
+     "label": "Spontaneous",
+     "points": 4,
+     "code": "E4",
+     "detail": "Eyes open before any stimulus."
+    },
+    {
+     "value": "3",
+     "label": "To sound",
+     "points": 3,
+     "code": "E3",
+     "detail": "Opens after spoken or shouted request."
+    },
+    {
+     "value": "2",
+     "label": "To pressure",
+     "points": 2,
+     "code": "E2",
+     "detail": "Opens after fingertip, trapezius or supraorbital pressure."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "E1",
+     "detail": "No eye opening; no interfering factor."
+    },
+    {
+     "value": "NT",
+     "label": "Not testable",
+     "points": null,
+     "code": "ENT",
+     "detail": "Closed by a local factor (e.g. swelling, dressing).",
+     "nt": true
+    }
+   ]
+  },
+  {
+   "id": "v",
+   "type": "choice",
+   "label": "Verbal response",
+   "short": "Verbal (V)",
+   "options": [
+    {
+     "value": "5",
+     "label": "Oriented",
+     "points": 5,
+     "code": "V5",
+     "detail": "Correctly gives name, place and date."
+    },
+    {
+     "value": "4",
+     "label": "Confused",
+     "points": 4,
+     "code": "V4",
+     "detail": "Not oriented but communicates coherently."
+    },
+    {
+     "value": "3",
+     "label": "Words",
+     "points": 3,
+     "code": "V3",
+     "detail": "Intelligible single words."
+    },
+    {
+     "value": "2",
+     "label": "Sounds",
+     "points": 2,
+     "code": "V2",
+     "detail": "Only moans or groans."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "V1",
+     "detail": "No audible response; no interfering factor."
+    },
+    {
+     "value": "NT",
+     "label": "Not testable",
+     "points": null,
+     "code": "VNT",
+     "detail": "A factor prevents communication (e.g. intubation, tracheostomy).",
+     "nt": true
+    }
+   ]
+  },
+  {
+   "id": "m",
+   "type": "choice",
+   "label": "Best motor response",
+   "short": "Motor (M)",
+   "help": "Record the best response from either upper limb.",
+   "options": [
+    {
+     "value": "6",
+     "label": "Obeys commands",
+     "points": 6,
+     "code": "M6",
+     "detail": "Performs a two-part request."
+    },
+    {
+     "value": "5",
+     "label": "Localising",
+     "points": 5,
+     "code": "M5",
+     "detail": "Hand brought above clavicle toward a head or neck stimulus."
+    },
+    {
+     "value": "4",
+     "label": "Normal flexion",
+     "points": 4,
+     "code": "M4",
+     "detail": "Rapid flexion at the elbow, not predominantly abnormal."
+    },
+    {
+     "value": "3",
+     "label": "Abnormal flexion",
+     "points": 3,
+     "code": "M3",
+     "detail": "Slow, stereotyped flexion of the arm at the elbow."
+    },
+    {
+     "value": "2",
+     "label": "Extension",
+     "points": 2,
+     "code": "M2",
+     "detail": "Extension at the elbow."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "M1",
+     "detail": "No movement; no interfering factor."
+    },
+    {
+     "value": "NT",
+     "label": "Not testable",
+     "points": null,
+     "code": "MNT",
+     "detail": "Paralysed or another limiting factor.",
+     "nt": true
+    }
+   ]
+  },
+  {
+   "id": "prs",
+   "type": "choice",
+   "label": "Pupil reactivity to light",
+   "short": "Pupils",
+   "help": "Only reactivity counts; pupil size does not enter the calculation.",
+   "options": [
+    {
+     "value": "0",
+     "label": "Both pupils react",
+     "points": 0,
+     "code": "PRS0"
+    },
+    {
+     "value": "1",
+     "label": "One pupil unreactive",
+     "points": 1,
+     "code": "PRS1"
+    },
+    {
+     "value": "2",
+     "label": "Both pupils unreactive",
+     "points": 2,
+     "code": "PRS2"
+    },
+    {
+     "value": "NT",
+     "label": "Not assessable",
+     "points": null,
+     "code": "PRS-NT",
+     "detail": "e.g. orbital trauma, prior eye surgery, mydriatics.",
+     "nt": true
+    }
+   ]
+  }
+ ],
+ "values": [
+  {
+   "id": "gcs",
+   "expr": "e + v + m"
+  },
+  {
+   "id": "total",
+   "expr": "e + v + m - prs"
+  }
+ ],
+ "primary": "total",
+ "range": "1–15",
+ "display": "{total}",
+ "share": "GCS-P {total} (GCS {gcs}: {e_code} {v_code} {m_code}; PRS {prs})",
+ "notTestable": {
+  "label": "GCS-P not calculable",
+  "summary": "GCS-P requires a complete GCS total and an assessable pupil reaction.",
+  "display": "{e_code} {v_code} {m_code}",
+  "share": "GCS-P not calculable (component not testable)"
+ },
+ "states": [
+  {
+   "when": "total <= 8",
+   "state": "high",
+   "label": "Severe range",
+   "range": "1–8",
+   "summary": "GCS-P in the severe range (1–8).",
+   "detail": "Lower GCS-P values were associated with higher mortality and lower probability of favourable outcome in the derivation data. Assess airway, ventilation, oxygenation, neurological status and reversible causes according to local protocol."
+  },
+  {
+   "state": "info",
+   "label": "Calculated",
+   "range": "9–15",
+   "summary": "GCS-P above the severe range.",
+   "detail": "Lower values indicate more severe injury. Interpret alongside the components, pupil findings and imaging."
+  }
+ ],
+ "insights": [
+  {
+   "when": "prs >= 1",
+   "text": "Pupil unreactivity lowers GCS-P below the GCS total, reflecting brainstem information the GCS does not capture."
+  },
+  {
+   "text": "Report the GCS components, the pupil findings and the GCS-P together, never GCS-P alone."
+  }
+ ],
+ "limitations": [
+  "Derived in TBI; not validated as a general coma measure.",
+  "Prognostic associations come from trial and registry cohorts and may not transfer to every setting.",
+  "Adds only reactivity, not pupil size or asymmetry."
+ ],
+ "confounders": [
+  "All GCS confounders (sedation, intoxication, hypoxia, hypotension)",
+  "Ocular trauma",
+  "Mydriatic or miotic drugs",
+  "Prior eye surgery or disease"
+ ],
+ "commonErrors": [
+  "Counting pupil size or anisocoria instead of reactivity.",
+  "Calculating from a GCS with a non-testable component.",
+  "Reporting GCS-P without its components."
+ ],
+ "doesNotTellYou": [
+  "An individual patient's outcome.",
+  "Which treatment is indicated.",
+  "The cause of pupil abnormality."
+ ],
+ "related": [
+  "gcs",
+  "four"
+ ],
+ "sources": [
+  {
+   "citation": "Brennan PM, Murray GD, Teasdale GM. Simplifying the use of prognostic information in traumatic brain injury. Part 1: The GCS-Pupils score: an extended index of clinical severity. J Neurosurg. 2018;128(6):1612-1620.",
+   "doi": "10.3171/2017.12.JNS172780"
+  },
+  {
+   "citation": "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. A practical scale. Lancet. 1974;2(7872):81-84.",
+   "doi": "10.1016/S0140-6736(74)91639-0"
+  }
+ ],
+ "licensing": {
+  "status": "Implemented in original wording with attribution",
+  "note": "The scale criteria are widely published. Official GCS teaching aids, charts and translations from glasgowcomascale.org are not reproduced."
+ },
+ "guide": {
+  "what": "The GCS total minus the number of unreactive pupils (0, 1 or 2), giving a 1–15 index.",
+  "whenUseful": "Early severity description after TBI, particularly at low GCS where pupil findings add prognostic information.",
+  "howToCalculate": "Assess GCS with the structured approach. Assess each pupil's reaction to light. PRS = number of unreactive pupils. GCS-P = GCS − PRS.",
+  "clinicalContext": "The authors also published probability charts combining GCS-P with age and CT findings; those charts are not reproduced in this app."
+ }
+}

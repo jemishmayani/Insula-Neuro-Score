@@ -1,0 +1,279 @@
+{
+ "id": "four",
+ "name": "Full Outline of UnResponsiveness Score",
+ "abbreviation": "FOUR",
+ "aliases": [
+  "four score",
+  "coma",
+  "unresponsiveness",
+  "wijdicks"
+ ],
+ "category": "consciousness",
+ "specialty": [
+  "Neurocritical Care",
+  "Neurology",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "Wijdicks et al. 2005 (adult)",
+  "detail": "Four components, each scored 0–4. Total 0–16."
+ },
+ "contentVersion": "1.0.0",
+ "lastReviewed": "2026-10-01",
+ "reviewStatus": "Content drafted from primary sources; pending independent clinician review before clinical release.",
+ "purpose": "Coma scale that assesses eye, motor, brainstem and respiratory function without needing a verbal response.",
+ "intendedPopulation": "Adults with impaired consciousness, including intubated patients in the ICU and emergency department.",
+ "inputs": [
+  {
+   "id": "e",
+   "type": "choice",
+   "label": "Eye response",
+   "short": "Eye (E)",
+   "options": [
+    {
+     "value": "4",
+     "label": "Eyelids open or opened, tracking or blinking to command",
+     "points": 4,
+     "code": "E4"
+    },
+    {
+     "value": "3",
+     "label": "Eyelids open, not tracking",
+     "points": 3,
+     "code": "E3"
+    },
+    {
+     "value": "2",
+     "label": "Eyelids closed, open to loud voice",
+     "points": 2,
+     "code": "E2"
+    },
+    {
+     "value": "1",
+     "label": "Eyelids closed, open to pain",
+     "points": 1,
+     "code": "E1"
+    },
+    {
+     "value": "0",
+     "label": "Eyelids remain closed with pain",
+     "points": 0,
+     "code": "E0"
+    }
+   ]
+  },
+  {
+   "id": "m",
+   "type": "choice",
+   "label": "Motor response",
+   "short": "Motor (M)",
+   "help": "Preferably tested in the upper limbs.",
+   "options": [
+    {
+     "value": "4",
+     "label": "Thumbs-up, fist or peace sign to command",
+     "points": 4,
+     "code": "M4"
+    },
+    {
+     "value": "3",
+     "label": "Localising to pain",
+     "points": 3,
+     "code": "M3"
+    },
+    {
+     "value": "2",
+     "label": "Flexion response to pain",
+     "points": 2,
+     "code": "M2"
+    },
+    {
+     "value": "1",
+     "label": "Extension response to pain",
+     "points": 1,
+     "code": "M1"
+    },
+    {
+     "value": "0",
+     "label": "No response to pain, or generalised myoclonus status",
+     "points": 0,
+     "code": "M0"
+    }
+   ]
+  },
+  {
+   "id": "b",
+   "type": "choice",
+   "label": "Brainstem reflexes",
+   "short": "Brainstem (B)",
+   "options": [
+    {
+     "value": "4",
+     "label": "Pupil and corneal reflexes present",
+     "points": 4,
+     "code": "B4"
+    },
+    {
+     "value": "3",
+     "label": "One pupil wide and fixed",
+     "points": 3,
+     "code": "B3"
+    },
+    {
+     "value": "2",
+     "label": "Pupil or corneal reflexes absent",
+     "points": 2,
+     "code": "B2"
+    },
+    {
+     "value": "1",
+     "label": "Pupil and corneal reflexes absent",
+     "points": 1,
+     "code": "B1"
+    },
+    {
+     "value": "0",
+     "label": "Absent pupil, corneal and cough reflexes",
+     "points": 0,
+     "code": "B0"
+    }
+   ]
+  },
+  {
+   "id": "r",
+   "type": "choice",
+   "label": "Respiration",
+   "short": "Respiration (R)",
+   "options": [
+    {
+     "value": "4",
+     "label": "Not intubated, regular breathing pattern",
+     "points": 4,
+     "code": "R4"
+    },
+    {
+     "value": "3",
+     "label": "Not intubated, Cheyne–Stokes breathing",
+     "points": 3,
+     "code": "R3"
+    },
+    {
+     "value": "2",
+     "label": "Not intubated, irregular breathing",
+     "points": 2,
+     "code": "R2"
+    },
+    {
+     "value": "1",
+     "label": "Breathes above ventilator rate",
+     "points": 1,
+     "code": "R1"
+    },
+    {
+     "value": "0",
+     "label": "Breathes at ventilator rate, or apnoea",
+     "points": 0,
+     "code": "R0"
+    }
+   ]
+  }
+ ],
+ "values": [
+  {
+   "id": "total",
+   "expr": "e + m + b + r"
+  }
+ ],
+ "primary": "total",
+ "range": "0–16",
+ "display": "{total}",
+ "share": "FOUR {total} ({e_code} {m_code} {b_code} {r_code})",
+ "states": [
+  {
+   "when": "total == 16",
+   "state": "normal",
+   "label": "No impairment measured",
+   "range": "16",
+   "summary": "No impairment detected across the four FOUR domains at this assessment."
+  },
+  {
+   "when": "total == 0",
+   "state": "critical",
+   "label": "No measured responses",
+   "range": "0",
+   "summary": "No eye, motor, brainstem or respiratory response above ventilator rate was recorded.",
+   "detail": "A FOUR score of 0 does not by itself establish death by neurologic criteria. That determination requires the full formal protocol, including exclusion of confounders and apnoea testing where applicable."
+  },
+  {
+   "state": "info",
+   "label": "Calculated",
+   "range": "1–15",
+   "summary": "The FOUR score has no validated severity bands. Interpret the components and the trend.",
+   "detail": "Lower totals indicate greater impairment. Each component conveys distinct information."
+  }
+ ],
+ "insights": [
+  {
+   "when": "e == 4 && m <= 1",
+   "text": "Eye tracking or blinking to command with little or no limb motor response: consider locked-in syndrome, or limb or spinal factors limiting motor response."
+  },
+  {
+   "when": "e == 3",
+   "text": "Eyes open without tracking can be seen in disorders of consciousness such as the vegetative state / unresponsive wakefulness."
+  },
+  {
+   "when": "b <= 2",
+   "text": "Loss of brainstem reflexes is a major finding. Exclude confounders (drugs, hypothermia, metabolic causes) before drawing conclusions."
+  },
+  {
+   "when": "r == 0",
+   "text": "R0 includes breathing at ventilator rate; it does not establish apnoea. Formal apnoea testing is a separate procedure."
+  }
+ ],
+ "limitations": [
+  "No universally accepted severity categories.",
+  "Fewer validation studies in children and outside ICU settings than GCS.",
+  "Respiratory component depends on ventilator settings and sedation."
+ ],
+ "confounders": [
+  "Sedatives, neuromuscular blockade",
+  "Hypothermia",
+  "Metabolic encephalopathy",
+  "Ocular trauma or prior eye disease",
+  "High cervical cord injury"
+ ],
+ "commonErrors": [
+  "Scoring respiration without considering ventilator mode and sedation.",
+  "Treating B3 as bilateral pupil loss (it is one pupil wide and fixed).",
+  "Testing motor response in the legs."
+ ],
+ "doesNotTellYou": [
+  "Whether the criteria for death by neurologic criteria are met.",
+  "The cause of coma.",
+  "The appropriate intervention."
+ ],
+ "related": [
+  "gcs",
+  "gcsp",
+  "rass"
+ ],
+ "sources": [
+  {
+   "citation": "Wijdicks EFM, Bamlet WR, Maramattom BV, Manno EM, McClelland RL. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-593.",
+   "doi": "10.1002/ana.20611"
+  },
+  {
+   "citation": "Wolf CA, Wijdicks EFM, Bamlet WR, McClelland RL. Further validation of the FOUR score coma scale by intensive care nurses. Mayo Clin Proc. 2007;82(4):435-438."
+  }
+ ],
+ "licensing": {
+  "status": "Criteria in original wording; official figure not reproduced",
+  "note": "The published FOUR score figure is © Mayo Foundation. Confirm permission with Mayo Clinic before commercial distribution of this score."
+ },
+ "guide": {
+  "what": "A 0–16 coma scale with four components (eye, motor, brainstem, respiration), each scored 0–4.",
+  "whenUseful": "Patients who are intubated, aphasic or deeply comatose, where GCS verbal assessment is not possible or brainstem findings matter.",
+  "howToCalculate": "Score each domain 0–4 using the best observed response, then sum. Record the components alongside the total.",
+  "clinicalContext": "Detects features the GCS cannot, such as locked-in syndrome (eye blinking to command) and brainstem reflex loss."
+ }
+}

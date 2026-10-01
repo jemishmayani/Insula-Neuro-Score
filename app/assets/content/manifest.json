@@ -1,0 +1,177 @@
+{
+ "contentVersion": "1.0.0",
+ "generated": "2026-10-01",
+ "categories": [
+  {
+   "id": "consciousness",
+   "name": "Consciousness"
+  },
+  {
+   "id": "stroke",
+   "name": "Stroke"
+  },
+  {
+   "id": "ich",
+   "name": "Intracerebral haemorrhage"
+  },
+  {
+   "id": "sah",
+   "name": "Subarachnoid haemorrhage"
+  },
+  {
+   "id": "tbi",
+   "name": "Traumatic brain injury"
+  },
+  {
+   "id": "spine",
+   "name": "Spine and spinal cord"
+  },
+  {
+   "id": "oncology",
+   "name": "Neuro-oncology"
+  },
+  {
+   "id": "functional",
+   "name": "Functional and disability"
+  },
+  {
+   "id": "neurocritical",
+   "name": "Neurocritical care"
+  },
+  {
+   "id": "general",
+   "name": "General neurology"
+  }
+ ],
+ "scores": [
+  {
+   "id": "gcs",
+   "name": "Glasgow Coma Scale",
+   "abbreviation": "GCS",
+   "aliases": [
+    "glasgow",
+    "coma scale",
+    "consciousness"
+   ],
+   "category": "consciousness",
+   "version": "Adult GCS, structured approach"
+  },
+  {
+   "id": "gcsp",
+   "name": "GCS-Pupils Score",
+   "abbreviation": "GCS-P",
+   "aliases": [
+    "gcs pupils",
+    "pupil reactivity score",
+    "prs"
+   ],
+   "category": "consciousness",
+   "version": "Brennan, Murray & Teasdale 2018"
+  },
+  {
+   "id": "four",
+   "name": "Full Outline of UnResponsiveness Score",
+   "abbreviation": "FOUR",
+   "aliases": [
+    "four score",
+    "coma",
+    "unresponsiveness",
+    "wijdicks"
+   ],
+   "category": "consciousness",
+   "version": "Wijdicks et al. 2005 (adult)"
+  },
+  {
+   "id": "ich",
+   "name": "ICH Score",
+   "abbreviation": "ICH Score",
+   "aliases": [
+    "intracerebral hemorrhage",
+    "intracerebral haemorrhage",
+    "hemphill",
+    "ich"
+   ],
+   "category": "ich",
+   "version": "Hemphill et al. 2001 (original)"
+  },
+  {
+   "id": "hunthess",
+   "name": "Hunt and Hess Scale",
+   "abbreviation": "Hunt & Hess",
+   "aliases": [
+    "hunt hess",
+    "h&h",
+    "sah grade",
+    "subarachnoid"
+   ],
+   "category": "sah",
+   "version": "Original 1968 classification"
+  },
+  {
+   "id": "wfns",
+   "name": "WFNS Subarachnoid Haemorrhage Grade",
+   "abbreviation": "WFNS",
+   "aliases": [
+    "world federation",
+    "sah grade",
+    "subarachnoid",
+    "o-wfns"
+   ],
+   "category": "sah",
+   "version": "Original WFNS (1988)"
+  },
+  {
+   "id": "mwfns",
+   "name": "Modified WFNS Grade",
+   "abbreviation": "m-WFNS",
+   "aliases": [
+    "modified wfns",
+    "sano",
+    "sah grade",
+    "subarachnoid"
+   ],
+   "category": "sah",
+   "version": "Modified WFNS (Sano et al. 2015)"
+  },
+  {
+   "id": "mfisher",
+   "name": "Modified Fisher Scale",
+   "abbreviation": "mFisher",
+   "aliases": [
+    "modified fisher",
+    "fisher",
+    "vasospasm",
+    "sah ct",
+    "frontera"
+   ],
+   "category": "sah",
+   "version": "Frontera et al. 2006"
+  },
+  {
+   "id": "mrs",
+   "name": "Modified Rankin Scale",
+   "abbreviation": "mRS",
+   "aliases": [
+    "rankin",
+    "disability",
+    "functional outcome",
+    "stroke outcome"
+   ],
+   "category": "functional",
+   "version": "Modified Rankin Scale (UK-TIA wording, 0–6)"
+  },
+  {
+   "id": "rass",
+   "name": "Richmond Agitation–Sedation Scale",
+   "abbreviation": "RASS",
+   "aliases": [
+    "sedation",
+    "agitation",
+    "richmond",
+    "icu"
+   ],
+   "category": "neurocritical",
+   "version": "Sessler et al. 2002"
+  }
+ ]
+}
