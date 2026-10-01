@@ -1,0 +1,135 @@
+/* =========================================================================
+   Insula Neuro Score — Design tokens
+   The ONLY file allowed to contain colour values. Screens and components
+   reference semantic tokens (var(--color-…)) exclusively.
+   ========================================================================= */
+
+:root {
+  /* ---- Brand ---- */
+  --brand-500: #00A6B2;            /* primary accent (fills, indicators) */
+  --brand-700: #00747D;            /* primary text/links on light: 5.1:1 on white */
+  --brand-300: #4FD0D9;            /* primary text/links on dark */
+  --brand-050: #E2F4F5;
+  --brand-900: #0F3236;
+  --brand-mark-bg: #7E7B9A;        /* app icon background */
+
+  /* ---- Typography ---- */
+  --font-family: "Atkinson", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text-xs: 0.78rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.4rem;
+  --weight-regular: 400;
+  --weight-bold: 700;
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+
+  /* ---- Spacing (4px base) ---- */
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+
+  /* ---- Shape ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+  --border-width: 1px;
+  --border-width-strong: 1.5px;
+
+  /* ---- Sizing ---- */
+  --touch-target: 48px;
+  --appbar-height: 56px;
+  --bottomnav-height: 64px;
+  --rail-width: 88px;
+  --content-max: 46rem;
+  --content-wide-max: 76rem;
+
+  /* ---- Motion ---- */
+  --motion-fast: 120ms;
+  --motion-ease: cubic-bezier(.2, 0, 0, 1);
+}
+
+/* ---- Light theme (default) ---- */
+:root, :root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #F5F8F9;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #FFFFFF;
+  --color-surface-sunken: #EDF2F4;
+  --color-text: #13242B;
+  --color-text-muted: #56676E;
+  --color-text-inverse: #F5F8F9;
+  --color-border: #DAE2E5;
+  --color-border-strong: #B8C6CB;
+  --color-scrim: rgba(13, 24, 28, 0.45);
+
+  --color-primary: var(--brand-500);
+  --color-on-primary: #FFFFFF;
+  --color-primary-text: var(--brand-700);
+  --color-primary-container: var(--brand-050);
+  --color-focus: var(--brand-500);
+
+  /* Semantic */
+  --color-success: #17775A;      --color-success-container: #E3F3EC;
+  --color-warning: #7A5F00;      --color-warning-container: #FBF3D6;
+  --color-moderate: #A84A0B;     --color-moderate-container: #FCEBDD;
+  --color-concern: #B42318;      --color-concern-container: #FCE7E5;
+  --color-critical: #8A1538;     --color-critical-container: #F8E1E8;
+  --color-error: #B42318;        --color-error-container: #FCE7E5;
+  --color-info: #2F5A9E;         --color-info-container: #E6EEF9;
+  --color-neutral: #5F6E74;      --color-neutral-container: #EDF1F2;
+}
+
+/* ---- Dark theme ---- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #0D181C;
+  --color-surface: #13232A;
+  --color-surface-raised: #182C34;
+  --color-surface-sunken: #0A1316;
+  --color-text: #E5EEF0;
+  --color-text-muted: #9DB0B6;
+  --color-text-inverse: #0D181C;
+  --color-border: #24363D;
+  --color-border-strong: #3A5059;
+  --color-scrim: rgba(0, 0, 0, 0.6);
+
+  --color-primary: var(--brand-500);
+  --color-on-primary: #00262A;
+  --color-primary-text: var(--brand-300);
+  --color-primary-container: var(--brand-900);
+  --color-focus: var(--brand-300);
+
+  --color-success: #55C99A;      --color-success-container: #12302A;
+  --color-warning: #E6C24A;      --color-warning-container: #33290C;
+  --color-moderate: #F39A55;     --color-moderate-container: #3A2312;
+  --color-concern: #FF7A6E;      --color-concern-container: #3D1715;
+  --color-critical: #FF8FB0;     --color-critical-container: #3A1222;
+  --color-error: #FF7A6E;        --color-error-container: #3D1715;
+  --color-info: #8DB2F2;         --color-info-container: #16264A;
+  --color-neutral: #A8B6BB;      --color-neutral-container: #1E2E34;
+}
+
+/* ---- High contrast overrides ---- */
+:root[data-contrast="high"] {
+  --color-text-muted: var(--color-text);
+  --color-border: var(--color-border-strong);
+  --border-width: 1.5px;
+  --border-width-strong: 2px;
+}
+:root[data-theme="light"][data-contrast="high"] { --color-primary-text: #005158; --color-border-strong: #6E8288; }
+:root[data-theme="dark"][data-contrast="high"]  { --color-primary-text: #8FEAF0; --color-border-strong: #7E959D; }
+
+/* ---- Result / status state mapping (consumed by StatusBadge, ResultCard) ---- */
+.tone-normal, .tone-success { --tone: var(--color-success); --tone-container: var(--color-success-container); }
+.tone-low                   { --tone: var(--color-success); --tone-container: var(--color-success-container); }
+.tone-mild, .tone-warning   { --tone: var(--color-warning); --tone-container: var(--color-warning-container); }
+.tone-moderate              { --tone: var(--color-moderate); --tone-container: var(--color-moderate-container); }
+.tone-high, .tone-concern   { --tone: var(--color-concern); --tone-container: var(--color-concern-container); }
+.tone-critical              { --tone: var(--color-critical); --tone-container: var(--color-critical-container); }
+.tone-error                 { --tone: var(--color-error); --tone-container: var(--color-error-container); }
+.tone-info                  { --tone: var(--color-info); --tone-container: var(--color-info-container); }
+.tone-incomplete, .tone-neutral { --tone: var(--color-neutral); --tone-container: var(--color-neutral-container); }
+.tone-primary               { --tone: var(--color-primary-text); --tone-container: var(--color-primary-container); }

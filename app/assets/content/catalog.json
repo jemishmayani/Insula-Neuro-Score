@@ -1,0 +1,334 @@
+{
+ "contentVersion": "0.0.0-placeholder",
+ "note": "Placeholder catalogue for the app shell. No scoring criteria are included.",
+ "categories": [
+  {
+   "id": "consciousness",
+   "name": "Consciousness",
+   "glyph": "consciousness",
+   "description": "Level of consciousness and coma"
+  },
+  {
+   "id": "stroke",
+   "name": "Stroke",
+   "glyph": "stroke",
+   "description": "Acute stroke severity and imaging"
+  },
+  {
+   "id": "ich",
+   "name": "Intracerebral haemorrhage",
+   "glyph": "ich",
+   "description": "Haemorrhage severity and outcome"
+  },
+  {
+   "id": "sah",
+   "name": "Subarachnoid haemorrhage",
+   "glyph": "sah",
+   "description": "Clinical and radiological grading"
+  },
+  {
+   "id": "tbi",
+   "name": "Traumatic brain injury",
+   "glyph": "tbi",
+   "description": "CT classification and trauma severity"
+  },
+  {
+   "id": "spine",
+   "name": "Spine and spinal cord",
+   "glyph": "spine",
+   "description": "Injury, myelopathy and stability"
+  },
+  {
+   "id": "oncology",
+   "name": "Neuro-oncology",
+   "glyph": "oncology",
+   "description": "Performance status and spinal metastases"
+  },
+  {
+   "id": "functional",
+   "name": "Functional and disability",
+   "glyph": "functional",
+   "description": "Outcome and disability scales"
+  },
+  {
+   "id": "neurocritical",
+   "name": "Neurocritical care",
+   "glyph": "icu",
+   "description": "Sedation and organ dysfunction"
+  }
+ ],
+ "scores": [
+  {
+   "id": "gcs",
+   "abbreviation": "GCS",
+   "name": "Glasgow Coma Scale",
+   "category": "consciousness",
+   "summary": "Eye, verbal and motor responsiveness",
+   "status": "placeholder"
+  },
+  {
+   "id": "gcsp",
+   "abbreviation": "GCS-P",
+   "name": "GCS-Pupils Score",
+   "category": "consciousness",
+   "summary": "GCS combined with pupil reactivity",
+   "status": "placeholder"
+  },
+  {
+   "id": "four",
+   "abbreviation": "FOUR",
+   "name": "Full Outline of UnResponsiveness",
+   "category": "consciousness",
+   "summary": "Eye, motor, brainstem and respiration",
+   "status": "placeholder"
+  },
+  {
+   "id": "gos",
+   "abbreviation": "GOS",
+   "name": "Glasgow Outcome Scale",
+   "category": "consciousness",
+   "summary": "Global outcome after brain injury",
+   "status": "placeholder"
+  },
+  {
+   "id": "gose",
+   "abbreviation": "GOSE",
+   "name": "Extended Glasgow Outcome Scale",
+   "category": "consciousness",
+   "summary": "Eight-level outcome after brain injury",
+   "status": "placeholder"
+  },
+  {
+   "id": "nihss",
+   "abbreviation": "NIHSS",
+   "name": "NIH Stroke Scale",
+   "category": "stroke",
+   "summary": "Neurological deficit in acute stroke",
+   "status": "placeholder"
+  },
+  {
+   "id": "aspects",
+   "abbreviation": "ASPECTS",
+   "name": "Alberta Stroke Program Early CT Score",
+   "category": "stroke",
+   "summary": "Early ischaemic change, MCA territory",
+   "status": "placeholder"
+  },
+  {
+   "id": "pcaspects",
+   "abbreviation": "pc-ASPECTS",
+   "name": "Posterior Circulation ASPECTS",
+   "category": "stroke",
+   "summary": "Early ischaemic change, posterior circulation",
+   "status": "placeholder"
+  },
+  {
+   "id": "ich",
+   "abbreviation": "ICH Score",
+   "name": "ICH Score",
+   "category": "ich",
+   "summary": "Severity grading at presentation",
+   "status": "placeholder"
+  },
+  {
+   "id": "func",
+   "abbreviation": "FUNC",
+   "name": "FUNC Score",
+   "category": "ich",
+   "summary": "Functional independence after ICH",
+   "status": "placeholder"
+  },
+  {
+   "id": "graeb",
+   "abbreviation": "Graeb",
+   "name": "Graeb Score",
+   "category": "ich",
+   "summary": "Intraventricular haemorrhage burden",
+   "status": "placeholder"
+  },
+  {
+   "id": "mgraeb",
+   "abbreviation": "mGraeb",
+   "name": "Modified Graeb Score",
+   "category": "ich",
+   "summary": "Intraventricular haemorrhage burden",
+   "status": "placeholder"
+  },
+  {
+   "id": "hunthess",
+   "abbreviation": "Hunt & Hess",
+   "name": "Hunt and Hess Scale",
+   "category": "sah",
+   "summary": "Clinical grade of aneurysmal SAH",
+   "status": "placeholder"
+  },
+  {
+   "id": "wfns",
+   "abbreviation": "WFNS",
+   "name": "WFNS Grade",
+   "category": "sah",
+   "summary": "GCS-based SAH grade",
+   "status": "placeholder"
+  },
+  {
+   "id": "fisher",
+   "abbreviation": "Fisher",
+   "name": "Fisher Scale",
+   "category": "sah",
+   "summary": "CT blood pattern",
+   "status": "placeholder"
+  },
+  {
+   "id": "mfisher",
+   "abbreviation": "mFisher",
+   "name": "Modified Fisher Scale",
+   "category": "sah",
+   "summary": "CT blood burden and IVH",
+   "status": "placeholder"
+  },
+  {
+   "id": "marshall",
+   "abbreviation": "Marshall",
+   "name": "Marshall CT Classification",
+   "category": "tbi",
+   "summary": "CT classification of TBI",
+   "status": "placeholder"
+  },
+  {
+   "id": "rotterdam",
+   "abbreviation": "Rotterdam",
+   "name": "Rotterdam CT Score",
+   "category": "tbi",
+   "summary": "CT score of TBI",
+   "status": "placeholder"
+  },
+  {
+   "id": "rts",
+   "abbreviation": "RTS",
+   "name": "Revised Trauma Score",
+   "category": "tbi",
+   "summary": "Physiological trauma score",
+   "status": "placeholder"
+  },
+  {
+   "id": "iss",
+   "abbreviation": "ISS",
+   "name": "Injury Severity Score",
+   "category": "tbi",
+   "summary": "Anatomical injury severity",
+   "status": "placeholder"
+  },
+  {
+   "id": "triss",
+   "abbreviation": "TRISS",
+   "name": "Trauma and Injury Severity Score",
+   "category": "tbi",
+   "summary": "Combined anatomical and physiological model",
+   "status": "placeholder"
+  },
+  {
+   "id": "ais",
+   "abbreviation": "AIS",
+   "name": "ASIA Impairment Scale (ISNCSCI)",
+   "category": "spine",
+   "summary": "Spinal cord injury classification",
+   "status": "placeholder"
+  },
+  {
+   "id": "frankel",
+   "abbreviation": "Frankel",
+   "name": "Frankel Grade",
+   "category": "spine",
+   "summary": "Spinal cord injury grade",
+   "status": "placeholder"
+  },
+  {
+   "id": "sins",
+   "abbreviation": "SINS",
+   "name": "Spinal Instability Neoplastic Score",
+   "category": "spine",
+   "summary": "Neoplastic spinal instability",
+   "status": "placeholder"
+  },
+  {
+   "id": "nurick",
+   "abbreviation": "Nurick",
+   "name": "Nurick Grade",
+   "category": "spine",
+   "summary": "Cervical myelopathy disability",
+   "status": "placeholder"
+  },
+  {
+   "id": "mjoa",
+   "abbreviation": "mJOA",
+   "name": "Modified JOA Score",
+   "category": "spine",
+   "summary": "Cervical myelopathy severity",
+   "status": "placeholder"
+  },
+  {
+   "id": "odi",
+   "abbreviation": "ODI",
+   "name": "Oswestry Disability Index",
+   "category": "spine",
+   "summary": "Low back pain disability",
+   "status": "placeholder"
+  },
+  {
+   "id": "tokuhashi",
+   "abbreviation": "Tokuhashi",
+   "name": "Revised Tokuhashi Score",
+   "category": "oncology",
+   "summary": "Spinal metastasis prognosis",
+   "status": "placeholder"
+  },
+  {
+   "id": "tomita",
+   "abbreviation": "Tomita",
+   "name": "Tomita Score",
+   "category": "oncology",
+   "summary": "Spinal metastasis prognosis",
+   "status": "placeholder"
+  },
+  {
+   "id": "kps",
+   "abbreviation": "KPS",
+   "name": "Karnofsky Performance Status",
+   "category": "oncology",
+   "summary": "Functional performance",
+   "status": "placeholder"
+  },
+  {
+   "id": "ecog",
+   "abbreviation": "ECOG",
+   "name": "ECOG Performance Status",
+   "category": "oncology",
+   "summary": "Functional performance",
+   "status": "placeholder"
+  },
+  {
+   "id": "mrs",
+   "abbreviation": "mRS",
+   "name": "Modified Rankin Scale",
+   "category": "functional",
+   "summary": "Global disability and dependence",
+   "status": "placeholder"
+  },
+  {
+   "id": "rass",
+   "abbreviation": "RASS",
+   "name": "Richmond Agitation–Sedation Scale",
+   "category": "neurocritical",
+   "summary": "Agitation and sedation level",
+   "status": "placeholder"
+  },
+  {
+   "id": "sofa",
+   "abbreviation": "SOFA",
+   "name": "Sequential Organ Failure Assessment",
+   "category": "neurocritical",
+   "summary": "Organ dysfunction",
+   "status": "placeholder"
+  }
+ ]
+}

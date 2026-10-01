@@ -1,37 +1,52 @@
-# Architecture
+# Architecture (Phase 1 shell)
 
-## Layers
+## Native shell
+`MainActivity` hosts a WebView that serves `assets/` from a private origin, `https://app.insula.local/`. Every other request is blocked, so the app cannot make network calls.
 
-1. **Native shell** (`MainActivity.java`). A WebView that serves the bundled UI from a private origin, `https://app.insula.local/`, via `shouldInterceptRequest`. Every other network request is blocked, so the app is offline by construction. A small JavaScript bridge provides copy, share, opening external links (source DOIs) and system-bar theming. Text zoom follows the system font scale.
-2. **Content override.** A file at `<filesDir>/content-override/<path>` takes precedence over `assets/content/<path>`. This allows a future signed content-update mechanism to replace individual score files without an app release.
-3. **Score engine** (`engine.js`). Generic and UI-agnostic.
-4. **UI** (`app.js`). Hash router with Home, Calculate (list and calculator), Guide (list and guide) and Settings screens. Calculators and guides render entirely from score data.
+Other native behaviour:
+- **Rotation.** Orientation changes are handled without recreating the activity, so route and state survive rotation.
+- **Text size.** Follows the system font scale.
+- **System bars.** Status and navigation bars match the app theme.
+- **Content override.** A file at `<filesDir>/content-override/<path>` replaces bundled `content/<path>`. This is reserved for future content updates.
 
-## Score schema (`content/scores/<id>.json`)
+## Design system
+| Layer | File | Rule |
+|---|---|---|
+| Tokens | `css/tokens.css` | The only file with colour values. Defines semantic colours (success, warning, moderate, high concern, critical, error, info, neutral, primary), each with a container colour, for light, dark and high-contrast themes, plus type, spacing, radius, sizing and motion scales. |
+| Styles | `css/components.css` | Tokens only. A test fails if a colour literal appears outside `tokens.css`. |
+| Components | `js/ui.js` | AppBar, IconButton, BottomNavigation (becomes a rail on tablets and landscape phones), SearchBar, StatusBadge, ScoreCard, CardList, CategoryCard, ResultCard, SectionCard, PrimaryButton, SecondaryButton, Toggle, Segmented, EmptyState, InfoBanner, WarningBanner, ErrorState, LoadingState, Section. |
 
-| Field | Purpose |
-|---|---|
-| `id`, `name`, `abbreviation`, `aliases[]` | Identity and search |
-| `category`, `specialty[]` | Grouping |
-| `version {label, detail}` | Exact published version implemented |
-| `contentVersion`, `lastReviewed`, `reviewStatus` | Content versioning |
-| `purpose`, `intendedPopulation` | Guide sections 2–3 |
-| `inputs[]` | `choice` (options with `points`, optional `code`, `detail`, `nt`) or `number` (`min`, `max`, `integer`, optional `link` to another score) |
-| `values[] {id, expr}` | Derived values, evaluated in order |
-| `primary`, `range`, `display`, `share` | Result value and templates (`{expr}` placeholders) |
-| `notTestable` | Behaviour when any `nt` option is selected (e.g. GCS: no total) |
-| `states[] {when, state, label, range, summary, detail}` | First match wins. `state` ∈ normal, low, mild, moderate, high, critical, info, incomplete |
-| `insights[] {when?, whenNotTestable?, text}` | Conditional clinical insight |
-| `limitations[]`, `confounders[]`, `commonErrors[]`, `doesNotTellYou[]` | Guide sections 9–12 |
-| `related[]` | Score ids |
-| `sources[] {citation, doi?, url?}`, `licensing {status, note}` | Evidence and reproduction status |
-| `guide {what, whenUseful, howToCalculate, clinicalContext}` | Guide prose |
+Status is always conveyed by **colour + icon shape + text label**. The Settings → Design system screen renders every component and tone for review.
 
-### Expression language
-Numbers, `'strings'`, identifiers (input ids, earlier value ids), `+ - * / %`, comparisons, `== !=`, `&& || !`, `?:`, parentheses and whitelisted functions: `min max abs round floor ceil clamp between roman signed isnull`. Parsed by a recursive-descent parser. There is no `eval` and no access to globals. Arithmetic involving a missing value yields null.
+## Navigation model
+- **Tabs.** Home, Calculate and Guide in the bottom navigation (a rail at ≥840px, or on landscape phones). Settings is in the top-right of the app bar.
+- **Routes.**
+  - Tab roots: `#/home`, `#/calculate`, `#/guide`
+  - Category lists: `#/<tab>/c/<category>`
+  - Score detail: `#/<tab>/s/<score>`
+  - Settings: `#/settings`, plus `#/settings/pick/<list>` and `#/settings/gallery`
+- **Calculate/Guide toggle.** Replaces the history entry, so Back never alternates between the two views.
+- **Back** (`window.handleBack`, called by the Android back button), in order:
+  1. Pop in-app history.
+  2. Otherwise go to the logical parent (detail → category → tab root).
+  3. From a tab root, go to the startup tab.
+  4. From the startup tab root, exit the app.
+- Switching tabs resets the in-tab stack. Scroll position is restored when going back.
 
-### Result states
-Each state renders with a distinct colour, a distinct icon shape and a text label, so meaning never depends on colour alone. Classifications, prognostic models and sedation scales can use `info` or other non-severity states where severity framing would be misleading.
+## Persistence (`js/store.js`)
+One versioned record, `ins.store.v2`, in localStorage. It holds:
+- theme and high contrast
+- startup screen
+- favourites
+- priority scores and priority groups
+- recent calculators and recent guides (10 each)
+- hidden groups and group order
+- Home section order and visibility
 
-### Validation
-`ScoreEngine.validate()` runs when each score is loaded and in tests. It checks required fields, input definitions, expression syntax and state names.
+Safeguards:
+- Every write is sanitised.
+- Corrupt data falls back to defaults.
+- Unknown ids are pruned when the catalogue changes.
+- v0.1.0 preferences (`ins.prefs`) are migrated once.
+
+No patient data is stored.

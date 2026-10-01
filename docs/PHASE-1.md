@@ -1,27 +1,62 @@
-# Phase 1 report: engine, shell and first validated score set
+# Phase 1 report: app shell and design system (v0.2.0)
 
-## What was built
-- Data-driven score engine with a safe expression language, not-testable handling, conditional insights and share text.
-- Native Android shell: private local origin, offline-only networking, share/copy, theme-aware system bars, system text scaling, content-override folder.
-- Home (search, priority/pinned scores, score-group shortcuts, recent calculators, recent guides, saved guides), Calculate, Guide (15 standard sections, "Calculate this score →"), Settings (theme, high contrast, startup screen, priority score ordering, group ordering/visibility/Home shortcuts, clear/reset).
-- Result-driven UI: 8 semantic states, each with colour, icon and label; sticky result bar on phones; two-pane calculator on tablets.
-- Ten scores: GCS, GCS-P, FOUR, ICH Score, Hunt & Hess (1968 with modifier), WFNS (1988), m-WFNS (2015), Modified Fisher (2006), mRS, RASS.
+## Built
+- **Screens.** Home, Calculate, Guide and Settings, with Settings reached from the app bar.
+- **Home.**
+  - Search across names, abbreviations, topics and categories.
+  - Priority scores, priority groups, favourites, recent calculators and recent guides.
+  - Every section has an empty state and can be reordered or hidden.
+- **Calculate and Guide.**
+  - Search, a category grid, and score lists.
+  - A shared score-detail shell with a Calculate | Guide toggle.
+  - The calculator shell has input placeholders, a ResultCard, Reset and Open guide.
+  - The guide shell has a 15-section table of contents, section cards, and "Calculate this score →".
+- **Settings.**
+  - Theme (System/Light/Dark) and high contrast.
+  - Startup screen (Home/Calculate/Guide).
+  - Home layout order and visibility.
+  - Favourites and priority scores and groups: reorder, remove, add via pickers.
+  - Score-group order and visibility.
+  - Clear recents, reset, and a design-system gallery.
+- **Design system.** 16 required components plus helpers, and a token system with semantic colours for light, dark and high contrast.
+- **Responsive layout.** Small and large phones, landscape (navigation rail), and tablets (rail, wide grids, two-pane detail).
+- **Persistence.** Versioned, sanitised, pruned when the catalogue changes, and migrated from v0.1.0.
+- **Placeholder data.** 34 real score names in 9 categories, each clearly badged "Placeholder". No scoring criteria.
 
-## Verification and licensing notes
-- GCS-P formula (GCS − PRS, range 1–15) and the WFNS/m-WFNS definitions were checked against published sources. The modified Fisher crude odds ratios are taken from Frontera 2006.
-- Undefined combinations are surfaced, not guessed: WFNS GCS 15 with deficit, and modified Fisher IVH without SAH.
-- FOUR: the official figure is © Mayo Foundation. Criteria are in original wording; confirm permission before commercial distribution.
-- GCS: official teaching aids are not reproduced.
-
-## Tests
-- `tests/engine.test.js`: 69 checks, covering content validation, known values for every score, edge cases, and exhaustive input combinations (e.g. 420 for GCS-P, 625 for FOUR).
-- `tests/ui.test.py`: 30 end-to-end checks on phone and tablet viewports covering search, calculation, NT handling, pinning, guide↔calculator round trip with preserved inputs, reset, back handling, invalid number input, dark mode, hidden groups, startup screen and high contrast, with zero JavaScript errors.
+## Tests (`tests/shell.test.py`): 95 passed, 0 failed
+- **Static.**
+  - No colour literals outside tokens.
+  - A single local fetch and no other network APIs.
+  - All 16 components present.
+  - Catalogue is placeholder-only.
+- **Navigation.**
+  - Tabs, category → detail, and the Calculate↔Guide toggle.
+  - The Back chain: detail → category → tab root → startup tab → exit.
+  - Deep-link back, app-bar back, and the unknown-route error state.
+- **State.**
+  - Favourites: toggle, persistence across reload, and shown on Home.
+  - Recents and priority toggles.
+  - Reordering of priority scores, Home sections and groups, with persistence and focus following the moved item.
+  - Hidden groups and pickers.
+- **Themes.**
+  - Light, dark, System (including reacting to a live device change), high contrast, and persistence.
+- **Startup.**
+  - Startup preference applied on launch, and Back behaviour from it.
+- **Robustness.**
+  - v0.1.0 migration and corrupt-storage fallback.
+  - Catalogue failure shows an ErrorState that recovers on Retry; a LoadingState shows during slow loads.
+- **Responsive.** At 320×568, 430×932, 844×390 landscape, 820×1180 and 1366×1024:
+  - no horizontal overflow on 8 screens;
+  - correct bottom navigation or rail;
+  - touch targets ≥ 40px;
+  - accessible names on all controls;
+  - no JS errors.
+- **Rotation.** Route and state survive; the layout switches to the rail and back.
 
 ## Known issues
-- Content has not yet had independent clinician review.
-- Not yet tested on physical devices: hardware back, share sheet and system-bar colours were verified only by code review.
-- The content-override folder exists, but no update mechanism populates it yet.
-- Paediatric GCS is not implemented.
+- Tested in Chromium at device viewports. The APK is built and signature-verified, but it has not been run on a physical device or emulator in this environment. Hardware Back, system-bar colours and the system font scale need on-device confirmation.
+- Error and high concern share the red family. They are distinguished by icon (✕ circle vs octagon) and label.
+- Reordering uses up/down buttons, which are accessible. Drag-and-drop is not implemented.
 
-## Recommended Phase 2
-Stroke and ICH expansion: NIHSS (public domain; full 15-item implementation with untestable-item rules), ASPECTS and pc-ASPECTS (region checklist input type), FUNC, Graeb and modified Graeb, original Fisher. This adds `checklist` and `multi-region` input types to the engine.
+## Recommended next phase
+Phase 2: restore the score engine from `engine-preview` behind the shell components, then implement the first verified score set.

@@ -1,479 +1,420 @@
-/* Insula Neuro Score — application shell
- * Screens: Home, Calculate (list + calculator), Guide (list + guide), Settings.
- * All content comes from content/manifest.json and content/scores/<id>.json.        */
+/* =========================================================================
+   Insula Neuro Score — App shell (Phase 1)
+   Screens: Home · Calculate · Guide · Score detail (Calculate/Guide) · Settings
+   No calculator logic, no network, no patient data.
+   ========================================================================= */
 (function () {
   "use strict";
-  var E = window.ScoreEngine;
-  var A = window.Android || null;
-  var $main = document.getElementById("main"), $bar = document.getElementById("appbar"),
-      $tabs = document.getElementById("tabbar"), $live = document.getElementById("live");
-
-  /* ---------------- icons ---------------- */
-  function svg(p, extra) { return '<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"' + (extra || "") + '>' + p + '</svg>'; }
-  var I = {
-    home: svg('<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>'),
-    calc: svg('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 12h2M14 12h2M8 16h2M14 16h2"/>'),
-    guide: svg('<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6M9 11h6"/>'),
-    gear: svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
-    search: svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>'),
-    star: svg('<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/>'),
-    chev: svg('<path d="M9 6l6 6-6 6"/>', ' class="i chev"'),
-    back: svg('<path d="M15 6l-6 6 6 6"/>'),
-    copy: svg('<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>'),
-    share: svg('<circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/>'),
-    reset: svg('<path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/>'),
-    up: svg('<path d="M6 15l6-6 6 6"/>'), down: svg('<path d="M6 9l6 6 6-6"/>'), x: svg('<path d="M6 6l12 12M18 6L6 18"/>'),
-    flag: svg('<path d="M5 21V4h11l-1.5 4L16 12H5"/>')
+  var UI = window.UI, Store = window.Store, esc = UI.esc;
+  var Android = window.Android || null;
+  var root = document.getElementById("app"), live = document.getElementById("live");
+  var CATALOG = null;
+  var TABS = [
+    { id: "home", label: "Home", icon: "home", href: "#/home" },
+    { id: "calculate", label: "Calculate", icon: "calculate", href: "#/calculate" },
+    { id: "guide", label: "Guide", icon: "guide", href: "#/guide" }
+  ];
+  var GUIDE_SECTIONS = ["What is this score?", "Purpose", "Intended population", "When it is useful", "Components", "How to calculate",
+    "Interpretation", "Clinical context", "Important limitations", "Confounders / factors affecting scoring", "Common calculation mistakes",
+    "What the score does NOT tell you", "Related scores", "Version / classification information", "Evidence / sources"];
+  var HOME_SECTION_META = {
+    priorityScores: { title: "Priority scores", empty: "Choose the scores you use most so they appear first.", manage: "priorityScores" },
+    priorityGroups: { title: "Priority groups", empty: "Choose score groups to keep as shortcuts here.", manage: "priorityGroups" },
+    favorites: { title: "Favourites", empty: "Tap the star on any score to add it to your favourites." },
+    recentCalc: { title: "Recent calculators", empty: "Calculators you open will appear here." },
+    recentGuide: { title: "Recent guides", empty: "Guides you open will appear here." }
   };
-  var SI = { /* state icons: distinct shapes, never colour alone */
-    normal: svg('<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>'),
-    low: svg('<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>'),
-    mild: svg('<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>'),
-    moderate: svg('<path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5"/><path d="M12 17.3v.2"/>'),
-    high: svg('<path d="M8.2 2.8h7.6l5.4 5.4v7.6l-5.4 5.4H8.2l-5.4-5.4V8.2z"/><path d="M12 7.5v6"/><path d="M12 16.5v.2"/>'),
-    critical: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 2.8h7.6l5.4 5.4v7.6l-5.4 5.4H8.2l-5.4-5.4V8.2z" fill="currentColor"/><path d="M12 7.5v6M12 16.5v.2" stroke="var(--surface)" stroke-width="2.4" stroke-linecap="round"/></svg>',
-    info: svg('<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.6v.2"/>'),
-    incomplete: svg('<circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/><path d="M8.5 12h.1M12 12h.1M15.5 12h.1"/>')
-  };
-  var STATE_NAME = { normal: "Normal / low concern", low: "Low concern", mild: "Mild", moderate: "Moderate", high: "High concern", critical: "Very high concern", info: "Informational", incomplete: "Incomplete" };
 
-  /* ---------------- utils ---------------- */
-  function esc(s) { return s == null ? "" : String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
-  function toast(msg) {
-    var t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
-    document.body.appendChild(t); setTimeout(function () { t.remove(); }, 2200);
+  /* ---------------- catalogue helpers ---------------- */
+  function score(id) { return CATALOG.scores.filter(function (s) { return s.id === id; })[0] || null; }
+  function category(id) { return CATALOG.categories.filter(function (c) { return c.id === id; })[0] || null; }
+  function orderedCategories(includeHidden) {
+    var st = Store.get(), order = st.groupOrder.slice();
+    CATALOG.categories.forEach(function (c) { if (order.indexOf(c.id) < 0) order.push(c.id); });
+    return order.map(category).filter(Boolean).filter(function (c) { return includeHidden || st.hiddenGroups.indexOf(c.id) < 0; });
   }
-  function uniqPush(arr, id, max) { arr = arr.filter(function (x) { return x !== id; }); arr.unshift(id); return arr.slice(0, max || 8); }
-
-  /* ---------------- preferences ---------------- */
-  var DEFAULTS = { theme: "system", highContrast: false, startup: "home", pinned: [], favGuides: [], recentCalc: [], recentGuide: [],
-                   groupOrder: [], hiddenGroups: [], homeGroups: ["consciousness", "sah"] };
-  var COMMON = ["gcs", "ich", "wfns", "mfisher", "mrs"];
-  var P = (function () { try { return Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem("ins.prefs") || "{}")); } catch (e) { return Object.assign({}, DEFAULTS); } })();
-  function save() { try { localStorage.setItem("ins.prefs", JSON.stringify(P)); } catch (e) {} }
-
-  var mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
-  function applyTheme() {
-    var dark = P.theme === "dark" || (P.theme === "system" && mq && mq.matches);
-    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
-    if (P.highContrast) document.documentElement.setAttribute("data-contrast", "high"); else document.documentElement.removeAttribute("data-contrast");
-    try { if (A) A.setSystemBars(dark); } catch (e) {}
-  }
-  if (mq && mq.addEventListener) mq.addEventListener("change", function () { if (P.theme === "system") applyTheme(); });
-
-  /* ---------------- content ---------------- */
-  var M = null, cache = {}, answers = {};
-  function loadManifest() { return fetch("content/manifest.json").then(function (r) { return r.json(); }).then(function (m) { M = m; return m; }); }
-  function loadScore(id) {
-    if (cache[id]) return Promise.resolve(cache[id]);
-    return fetch("content/scores/" + encodeURIComponent(id) + ".json").then(function (r) { if (!r.ok) throw new Error("Score not found"); return r.json(); })
-      .then(function (s) { var errs = E.validate(s); if (errs.length) throw new Error("Content error in " + id + ": " + errs.join("; ")); cache[id] = s; return s; });
-  }
-  function entry(id) { return M.scores.filter(function (s) { return s.id === id; })[0]; }
-  function cats() {
-    var order = P.groupOrder.slice();
-    M.categories.forEach(function (c) { if (order.indexOf(c.id) < 0) order.push(c.id); });
-    return order.map(function (id) { return M.categories.filter(function (c) { return c.id === id; })[0]; }).filter(Boolean)
-      .map(function (c) { return Object.assign({}, c, { scores: M.scores.filter(function (s) { return s.category === c.id; }) }); });
-  }
-  function catName(id) { var c = M.categories.filter(function (c) { return c.id === id; })[0]; return c ? c.name : id; }
+  function scoresIn(catId) { return CATALOG.scores.filter(function (s) { return s.category === catId; }); }
   function search(q) {
     q = q.trim().toLowerCase(); if (!q) return [];
-    return M.scores.map(function (s) {
-      var hay = [s.abbreviation, s.name].concat(s.aliases).map(function (x) { return x.toLowerCase(); }), rank = 9;
-      hay.forEach(function (h, i) { if (h === q) rank = Math.min(rank, 0); else if (h.indexOf(q) === 0) rank = Math.min(rank, i < 2 ? 1 : 2); else if (h.indexOf(q) >= 0) rank = Math.min(rank, 3); });
-      if (rank === 9 && catName(s.category).toLowerCase().indexOf(q) >= 0) rank = 4;
-      return { s: s, rank: rank };
-    }).filter(function (x) { return x.rank < 9; }).sort(function (a, b) { return a.rank - b.rank; }).map(function (x) { return x.s; });
+    var hidden = Store.get().hiddenGroups;
+    return CATALOG.scores.map(function (s) {
+      var a = s.abbreviation.toLowerCase(), n = s.name.toLowerCase(), r = 99;
+      if (a === q) r = 0; else if (a.indexOf(q) === 0) r = 1; else if (n.indexOf(q) === 0) r = 2;
+      else if (a.indexOf(q) >= 0 || n.indexOf(q) >= 0) r = 3; else if (s.summary.toLowerCase().indexOf(q) >= 0) r = 4;
+      else if ((category(s.category) || {}).name.toLowerCase().indexOf(q) >= 0) r = 5;
+      return { s: s, r: r + (hidden.indexOf(s.category) >= 0 ? 10 : 0) };
+    }).filter(function (x) { return x.r < 99; }).sort(function (x, y) { return x.r - y.r || x.s.abbreviation.localeCompare(y.s.abbreviation); })
+      .map(function (x) { return x.s; });
   }
+  var placeholderBadge = function () { return UI.StatusBadge({ tone: "neutral", label: "Placeholder", icon: false }); };
+  function sub(s) { return s.name === s.abbreviation ? s.summary : s.name; }
 
-  /* ---------------- shell ---------------- */
-  var navDepth = 0, route = {}, ignoreNextHash = false;
-  function go(hash) { navDepth++; location.hash = hash; }
-  window.addEventListener("hashchange", function () { render(); });
+  /* ---------------- theme ---------------- */
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function applyTheme() {
+    var st = Store.get(), dark = st.theme === "dark" || (st.theme === "system" && !!(mq && mq.matches));
+    var el = document.documentElement;
+    el.setAttribute("data-theme", dark ? "dark" : "light");
+    if (st.highContrast) el.setAttribute("data-contrast", "high"); else el.removeAttribute("data-contrast");
+    try { if (Android && Android.setSystemBars) Android.setSystemBars(dark); } catch (e) {}
+  }
+  if (mq) { var onMq = function () { if (Store.get().theme === "system") applyTheme(); }; if (mq.addEventListener) mq.addEventListener("change", onMq); else if (mq.addListener) mq.addListener(onMq); }
+
+  /* ---------------- router & back stack ---------------- */
+  var depth = 0, scrollMemory = {}, goingBack = false, route = {};
+  function parse() {
+    var h = (location.hash || "").replace(/^#\/?/, "");
+    var p = h.split("/").filter(Boolean);
+    return { tab: p[0] || "", kind: p[1] || null, id: p[2] ? decodeURIComponent(p[2]) : null, hash: "#/" + h };
+  }
+  function startHash() { return "#/" + Store.get().startup; }
+  function navigate(hash) { if (hash === location.hash) return; scrollMemory[location.hash] = window.scrollY; depth++; location.hash = hash; }
+  function replaceTo(hash) { scrollMemory[location.hash] = window.scrollY; location.replace(hash); }
+  function parentOf(r) {
+    if (r.tab === "calculate" || r.tab === "guide") {
+      if (r.kind === "s") { var s = score(r.id); return "#/" + r.tab + (s ? "/c/" + s.category : ""); }
+      if (r.kind === "c") return "#/" + r.tab;
+    }
+    if (r.tab === "settings" && r.kind) return "#/settings";
+    var top = r.tab === "settings" ? null : "#/" + r.tab;
+    if (r.tab === "settings" || top !== startHash()) return startHash();
+    return null;
+  }
+  /** Called by the native back button. Returns true if handled in-app (false = let Android close). */
   window.handleBack = function () {
-    if (navDepth > 0) { navDepth--; history.back(); return true; }
-    var start = "#/" + (P.startup === "home" ? "home" : P.startup);
-    if (location.hash !== start && route.section !== P.startup) { location.replace(start); return true; }
+    if (depth > 0) { depth--; goingBack = true; history.back(); return true; }
+    var p = parentOf(route); if (p) { goingBack = true; replaceTo(p); return true; }
     return false;
   };
+  function hasInAppBack(r) { return depth > 0 || (!!r.kind) || r.tab === "settings"; }
 
-  function tabs(active) {
-    var t = [["home", "Home", I.home], ["calc", "Calculate", I.calc], ["guide", "Guide", I.guide]];
-    $tabs.innerHTML = t.map(function (x) {
-      return '<a href="#/' + x[0] + '" data-nav ' + (active === x[0] ? 'aria-current="page"' : "") + '><span class="pill">' + x[2] + '</span>' + x[1] + '</a>';
-    }).join("");
-  }
-  function appbar(title, opts) {
-    opts = opts || {};
-    var left = opts.back ? '<button class="iconbtn" data-act="back" aria-label="Back">' + I.back + '</button>' : "";
-    var brand = opts.brand ? '<span class="brand"><img class="brand-mark" src="img/mark.png" alt="">' : "";
-    $bar.style.paddingLeft = opts.back ? ".25rem" : "1rem";
-    $bar.innerHTML = left + '<h1>' + brand + esc(title) + (opts.brand ? "</span>" : "") + '</h1>' +
-      (opts.settings !== false ? '<a class="iconbtn" href="#/settings" data-nav aria-label="Settings">' + I.gear + '</a>' : "");
-  }
+  window.addEventListener("hashchange", render);
 
-  function parseHash() {
-    var h = location.hash.replace(/^#\/?/, ""), q = {}, path = h, i = h.indexOf("?");
-    if (i >= 0) { path = h.slice(0, i); h.slice(i + 1).split("&").forEach(function (kv) { var p = kv.split("="); q[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || ""); }); }
-    var parts = path.split("/").filter(Boolean);
-    return { section: parts[0] || "", id: parts[1] || null, q: q };
+  /* ---------------- frame ---------------- */
+  function frame(o) {
+    var actions = (o.actions || []).concat(o.noSettings ? [] : [UI.IconButton({ icon: "settings", label: "Settings", href: "#/settings" })]);
+    return UI.AppBar({ title: o.title, back: o.back, brand: o.brand, actions: actions }) +
+      '<main id="main" class="content' + (o.wide ? " wide" : "") + '" tabindex="-1">' + o.body + "</main>" +
+      UI.BottomNavigation({ active: o.tab, items: TABS });
   }
+  function paint(html, opts) {
+    var prevFocusAct = null;
+    root.innerHTML = '<div class="shell">' + html + "</div>";
+    document.title = (opts && opts.title ? opts.title + " · " : "") + "Insula Neuro Score";
+    var y = goingBack && scrollMemory[location.hash] != null ? scrollMemory[location.hash] : 0;
+    window.scrollTo(0, y);
+    if (!goingBack && opts && opts.focusMain !== false) { var m = document.getElementById("main"); if (m) m.focus({ preventScroll: true }); }
+    goingBack = false;
+    return prevFocusAct;
+  }
+  function toast(msg) {
+    document.querySelectorAll(".toast").forEach(function (t) { t.remove(); });
+    var t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+    document.body.appendChild(t); setTimeout(function () { t.remove(); }, 2000);
+  }
+  function announce(msg) { live.textContent = ""; setTimeout(function () { live.textContent = msg; }, 30); }
 
   function render() {
-    route = parseHash();
     document.querySelectorAll(".toast").forEach(function (t) { t.remove(); });
-    document.body.classList.remove("has-bar");
-    var sb = document.querySelector(".sticky-result"); if (sb) sb.remove();
-    var s = route.section;
-    if (!s) { location.replace("#/" + (P.startup || "home")); return; }
-    if (s === "home") return homeView();
-    if (s === "calc" && route.id) return scoreView("calc", route.id);
-    if (s === "guide" && route.id) return scoreView("guide", route.id);
-    if (s === "calc" || s === "guide") return listView(s);
-    if (s === "settings") return settingsView();
-    location.replace("#/home");
+    route = parse();
+    if (!CATALOG) return;
+    var r = route;
+    if (!r.tab) { location.replace(startHash()); return; }
+    if (r.tab === "home" && !r.kind) return homeScreen();
+    if ((r.tab === "calculate" || r.tab === "guide") && !r.kind) return rootListScreen(r.tab);
+    if ((r.tab === "calculate" || r.tab === "guide") && r.kind === "c") return categoryScreen(r.tab, r.id);
+    if ((r.tab === "calculate" || r.tab === "guide") && r.kind === "s") return detailScreen(r.tab, r.id);
+    if (r.tab === "settings" && !r.kind) return settingsScreen();
+    if (r.tab === "settings" && r.kind === "pick") return pickerScreen(r.id);
+    if (r.tab === "settings" && r.kind === "gallery") return galleryScreen();
+    notFound("This page does not exist.");
   }
-  function show(html) { $main.innerHTML = html; window.scrollTo(0, 0); }
+  function notFound(msg) {
+    paint(frame({ title: "Not found", tab: route.tab, back: true,
+      body: UI.ErrorState({ title: "Page not found", message: msg, action: UI.PrimaryButton({ label: "Go to Home", href: "#/home", icon: "home" }) }) }));
+  }
 
-  /* ---------------- rows ---------------- */
-  function scoreRow(s, mode, opts) {
+  /* ---------------- shared pieces ---------------- */
+  function scoreCard(s, tab, opts) {
     opts = opts || {};
-    var href = "#/" + (mode === "guide" ? "guide" : "calc") + "/" + s.id;
-    var star = opts.star ? '<button class="iconbtn star" data-act="pin" data-id="' + s.id + '" aria-pressed="' + (P.pinned.indexOf(s.id) >= 0) + '" aria-label="' + (P.pinned.indexOf(s.id) >= 0 ? "Remove " + esc(s.abbreviation) + " from Home" : "Pin " + esc(s.abbreviation) + " to Home") + '">' + I.star + '</button>' : "";
-    var both = opts.both ? '<span class="mini-links"><a href="#/calc/' + s.id + '" data-nav>Calculate</a><a href="#/guide/' + s.id + '" data-nav>Guide</a></span>' : "";
-    var main = '<span class="row-main"><span class="row-title">' + esc(s.abbreviation) + (opts.kind ? '<span class="row-kind">' + opts.kind + '</span>' : "") + '</span><span class="row-sub">' + esc(s.name === s.abbreviation ? catName(s.category) : s.name) + (opts.cat && s.name !== s.abbreviation ? " · " + esc(catName(s.category)) : "") + '</span></span>';
-    if (opts.both) return '<li class="row">' + main + both + '</li>';
-    return '<li class="row"><a class="go" href="' + href + '" data-nav>' + main + I.chev + '</a>' + star + '</li>';
+    var st = Store.get();
+    return UI.ScoreCard({ score: s, href: "#/" + tab + "/s/" + s.id, sub: opts.withCategory ? sub(s) + " · " + category(s.category).name : sub(s),
+      badge: placeholderBadge(), favorite: opts.noStar ? null : st.favorites.indexOf(s.id) >= 0 });
   }
-  function list(items) { return items.length ? '<ul class="list">' + items.join("") + '</ul>' : ""; }
+  function searchBlock(id, placeholder) {
+    return UI.SearchBar({ id: id, placeholder: placeholder, label: placeholder }) + '<div id="search-results" aria-live="polite"></div>';
+  }
+  function renderSearch(q) {
+    var res = document.getElementById("search-results"), body = document.getElementById("page-body"), clear = document.querySelector(".searchbar .clear");
+    if (clear) clear.hidden = !q;
+    if (!res) return;
+    if (!q.trim()) { res.innerHTML = ""; if (body) body.hidden = false; return; }
+    var tab = route.tab === "guide" ? "guide" : "calculate", hits = search(q);
+    if (body) body.hidden = true;
+    res.innerHTML = UI.Section({ id: "results", title: hits.length + " result" + (hits.length === 1 ? "" : "s"),
+      body: hits.length ? UI.CardList(hits.map(function (s) { return scoreCard(s, tab, { withCategory: true }); }), "Search results")
+        : UI.EmptyState({ icon: "search", title: "No matching scores", message: "Try an abbreviation such as GCS or WFNS, or a topic such as sedation or spine." }) });
+    announce(hits.length + " results");
+  }
 
   /* ---------------- HOME ---------------- */
-  function homeView() {
-    tabs("home"); appbar("Insula Neuro Score", { brand: true });
-    var q = route.q.q || "";
-    var html = '<div class="narrow"><div class="search" role="search">' + I.search +
-      '<label class="vh" for="q">Search scores</label><input id="q" type="search" placeholder="Search scores, e.g. GCS, Fisher, sedation" autocomplete="off" value="' + esc(q) + '"></div>' +
-      '<div id="results"></div><div id="homebody">' + homeBody() + '</div></div>';
-    show(html);
-    if (q) runSearch(q);
+  function homeScreen() {
+    var st = Store.get(), sections = st.homeSections.filter(function (h) { return h.visible; });
+    var body = searchBlock("search", "Search scores and guides") + '<div id="page-body">' +
+      sections.map(function (h) { return homeSection(h.id, st); }).join("") +
+      (sections.length ? "" : UI.EmptyState({ title: "All Home sections are hidden", message: "Choose which sections to show in Settings.", action: UI.SecondaryButton({ label: "Customise Home", href: "#/settings", icon: "settings" }) })) +
+      '<div class="section">' + UI.InfoBanner({ title: "App shell preview", message: "Scores shown are placeholders. Calculators and guides will be added after each score's criteria, version and licensing are verified." }) + "</div></div>";
+    paint(frame({ title: "Insula Neuro Score", brand: true, tab: "home", body: body }), { title: "Home" });
   }
-  function homeBody() {
-    var h = "";
-    var pinned = P.pinned.map(entry).filter(Boolean);
-    h += '<div class="sec-row"><h2 class="sec">' + (pinned.length ? "Priority scores" : "Common scores") + '</h2>' + (pinned.length ? '<a href="#/settings" data-nav>Reorder</a>' : "") + '</div>';
-    if (!pinned.length) h += '<p class="hint">Pin scores with the star to keep them here, in your own order.</p>';
-    h += list((pinned.length ? pinned : COMMON.map(entry).filter(Boolean)).map(function (s) { return scoreRow(s, "calc", { both: true }); }));
-
-    var groups = cats().filter(function (c) { return P.homeGroups.indexOf(c.id) >= 0 && P.hiddenGroups.indexOf(c.id) < 0 && c.scores.length; });
-    if (groups.length) {
-      h += '<h2 class="sec">Score groups</h2><div class="chips">' + groups.map(function (c) {
-        return '<a class="chip" href="#/calc?group=' + c.id + '" data-nav>' + esc(c.name) + ' <span class="n">' + c.scores.length + '</span></a>'; }).join("") + '</div>';
+  function homeSection(id, st) {
+    var meta = HOME_SECTION_META[id], body;
+    var manage = meta.manage ? '<a class="section-action" href="#/settings/pick/' + meta.manage + '" data-nav>Edit</a>' : "";
+    if (id === "priorityGroups") {
+      var groups = st.priorityGroups.map(category).filter(Boolean);
+      body = groups.length ? '<div class="chip-row">' + groups.map(function (c) {
+        return '<a class="chip" href="#/calculate/c/' + c.id + '" data-nav>' + UI.icon(c.glyph) + esc(c.name) + ' <span class="n">' + scoresIn(c.id).length + "</span></a>"; }).join("") + "</div>"
+        : UI.EmptyState({ compact: true, icon: "pin", title: "No priority groups", message: meta.empty });
+    } else {
+      var tab = id === "recentGuide" ? "guide" : "calculate";
+      var list = st[id].map(score).filter(Boolean);
+      body = list.length ? UI.CardList(list.map(function (s) { return scoreCard(s, tab); }), meta.title)
+        : UI.EmptyState({ compact: true, icon: id === "favorites" ? "star" : id.indexOf("recent") === 0 ? "clock" : "pin", title: "Nothing here yet", message: meta.empty });
+      if (id === "recentCalc" || id === "recentGuide") manage = list.length ? '<button class="section-action" type="button" data-act="clear-recent" data-key="' + id + '">Clear</button>' : "";
+      if (id === "favorites") manage = list.length ? '<a class="section-action" href="#/settings/pick/favorites" data-nav>Edit</a>' : "";
     }
-    var rc = P.recentCalc.map(entry).filter(Boolean).slice(0, 5);
-    if (rc.length) h += '<h2 class="sec">Recent calculators</h2>' + list(rc.map(function (s) { return scoreRow(s, "calc"); }));
-    var rg = P.recentGuide.map(entry).filter(Boolean).slice(0, 5);
-    if (rg.length) h += '<h2 class="sec">Recently viewed guides</h2>' + list(rg.map(function (s) { return scoreRow(s, "guide"); }));
-    var fg = P.favGuides.map(entry).filter(Boolean);
-    if (fg.length) h += '<h2 class="sec">Saved guides</h2>' + list(fg.map(function (s) { return scoreRow(s, "guide"); }));
-    h += '<p class="disclaim">A clinical calculation and reference tool. It does not diagnose or recommend treatment. Interpret every result in clinical context and according to local protocol.</p>';
-    return h;
-  }
-  function runSearch(q) {
-    var r = document.getElementById("results"), body = document.getElementById("homebody") || document.getElementById("listbody");
-    if (!r) return;
-    if (!q.trim()) { r.innerHTML = ""; if (body) body.hidden = false; return; }
-    var hits = search(q);
-    if (body) body.hidden = true;
-    r.innerHTML = '<h2 class="sec">' + hits.length + ' result' + (hits.length === 1 ? "" : "s") + '</h2>' +
-      (hits.length ? list(hits.map(function (s) { return scoreRow(s, route.section === "guide" ? "guide" : "calc", { both: route.section === "home", cat: true }); }))
-                   : '<p class="empty">No score matches “' + esc(q) + '”. Try an abbreviation (GCS, WFNS) or a topic (sedation, vasospasm).</p>');
-    $live.textContent = hits.length + " results";
+    return UI.Section({ id: "home-" + id, title: meta.title, action: manage, body: body });
   }
 
-  /* ---------------- LISTS (Calculate / Guide) ---------------- */
-  function listView(mode) {
-    tabs(mode); appbar(mode === "calc" ? "Calculate" : "Guide");
-    var only = route.q.group;
-    var groups = cats().filter(function (c) { return c.scores.length && (only ? c.id === only : P.hiddenGroups.indexOf(c.id) < 0); });
-    var h = '<div class="narrow"><div class="search" role="search">' + I.search + '<label class="vh" for="q">Search scores</label><input id="q" type="search" placeholder="Search ' + (mode === "calc" ? "calculators" : "guides") + '" autocomplete="off"></div><div id="results"></div><div id="listbody">';
-    if (only) h += '<p class="hint" style="margin-top:1rem">Showing one group. <a href="#/' + mode + '" data-nav>Show all groups</a></p>';
-    groups.forEach(function (c) { h += '<h2 class="sec">' + esc(c.name) + '</h2>' + list(c.scores.map(function (s) { return scoreRow(s, mode, { star: mode === "calc" }); })); });
-    var hiddenN = P.hiddenGroups.filter(function (id) { return cats().some(function (c) { return c.id === id && c.scores.length; }); }).length;
-    if (!only && hiddenN) h += '<p class="hint" style="margin-top:1rem">' + hiddenN + ' hidden group' + (hiddenN > 1 ? "s" : "") + '. <a href="#/settings" data-nav>Manage groups</a></p>';
-    var planned = cats().filter(function (c) { return !c.scores.length; }).map(function (c) { return c.name; });
-    if (!only && planned.length) h += '<p class="disclaim">Scores for ' + esc(planned.join(", ")) + ' are being verified for later releases. Scores are added only after their criteria, version and licensing are confirmed.</p>';
-    show(h + '</div></div>');
+  /* ---------------- CALCULATE / GUIDE lists ---------------- */
+  function rootListScreen(tab) {
+    var cats = orderedCategories(false), hiddenN = Store.get().hiddenGroups.length;
+    var body = searchBlock("search", tab === "calculate" ? "Search calculators" : "Search guides") + '<div id="page-body">' +
+      UI.Section({ id: "cats", title: "Categories", body: cats.length ? '<div class="category-grid">' + cats.map(function (c) {
+        return UI.CategoryCard({ category: c, href: "#/" + tab + "/c/" + c.id, count: scoresIn(c.id).length }); }).join("") + "</div>"
+        : UI.EmptyState({ title: "All groups are hidden", message: "Show groups again in Settings.", action: UI.SecondaryButton({ label: "Manage groups", href: "#/settings", icon: "settings" }) }) }) +
+      (hiddenN ? '<p class="lede" style="margin-top:var(--space-4)">' + hiddenN + " hidden group" + (hiddenN > 1 ? "s" : "") + '. <a href="#/settings" data-nav>Manage groups</a></p>' : "") + "</div>";
+    paint(frame({ title: tab === "calculate" ? "Calculate" : "Guide", tab: tab, body: body, wide: true }), { title: tab === "calculate" ? "Calculate" : "Guide" });
+  }
+  function categoryScreen(tab, catId) {
+    var c = category(catId);
+    if (!c) return notFound("This score group does not exist.");
+    var list = scoresIn(c.id);
+    var body = '<p class="lede">' + esc(c.description) + "</p>" + UI.Section({ id: "scores", title: list.length + " score" + (list.length === 1 ? "" : "s"),
+      body: list.length ? UI.CardList(list.map(function (s) { return scoreCard(s, tab); }), c.name) : UI.EmptyState({ title: "No scores in this group yet" }) });
+    paint(frame({ title: c.name, tab: tab, back: true, body: body }), { title: c.name });
   }
 
-  /* ---------------- SCORE (Calculator / Guide) ---------------- */
-  function scoreView(mode, id) {
-    tabs(mode);
-    var e = M && entry(id);
-    appbar(e ? e.abbreviation : "", { back: true });
-    $main.innerHTML = "";
-    loadScore(id).then(function (s) {
-      if (route.id !== id || route.section !== mode) return;
-      if (mode === "calc") { P.recentCalc = uniqPush(P.recentCalc, id); save(); calcView(s); }
-      else { P.recentGuide = uniqPush(P.recentGuide, id); save(); guideView(s); }
-    }).catch(function (err) {
-      show('<div class="errorbox" role="alert"><b>This score could not be loaded.</b><p>' + esc(err.message) + '</p></div>');
-    });
+  /* ---------------- SCORE DETAIL (shared shell, Calculate | Guide) ---------------- */
+  function detailScreen(tab, id) {
+    var s = score(id);
+    if (!s) return notFound("This score is not in the catalogue.");
+    Store.pushRecent(tab === "calculate" ? "recentCalc" : "recentGuide", id);
+    var st = Store.get(), fav = st.favorites.indexOf(id) >= 0, prio = st.priorityScores.indexOf(id) >= 0, c = category(s.category);
+    var head = '<div class="detail-head"><p class="abbr">' + esc(s.abbreviation) + '</p><p class="name">' + esc(s.name) + '</p><div class="badges">' + placeholderBadge() +
+      '<a href="#/' + tab + "/c/" + c.id + '" data-nav>' + esc(c.name) + "</a></div></div>";
+    var toggle = '<nav class="segmented" aria-label="Score view" style="margin-top:var(--space-4)">' +
+      '<a href="#/calculate/s/' + id + '" data-replace' + (tab === "calculate" ? ' aria-current="page"' : "") + ">" + UI.icon("calculate") + "Calculate</a>" +
+      '<a href="#/guide/s/' + id + '" data-replace' + (tab === "guide" ? ' aria-current="page"' : "") + ">" + UI.icon("guide") + "Guide</a></nav>";
+    var prioBtn = UI.SecondaryButton({ label: prio ? "On Home (priority)" : "Add to Home priority", icon: "pin", act: "toggle-priority", data: { id: id } });
+    var body = head + toggle + (tab === "calculate" ? calcShell(s) : guideShell(s)) + '<div class="section btn-row">' + prioBtn + "</div>";
+    var favBtn = UI.IconButton({ icon: "star", label: fav ? "Remove from favourites" : "Add to favourites", act: "toggle-favorite", pressed: fav, data: { id: id } });
+    paint(frame({ title: s.abbreviation, tab: tab, back: true, body: body, actions: [favBtn], wide: tab === "calculate" }), { title: s.abbreviation + (tab === "guide" ? " guide" : "") });
   }
-  function head(s) {
-    return '<div class="score-head"><p class="abbr">' + esc(s.abbreviation) + '</p><p class="full">' + esc(s.name) + '</p>' +
-      '<div class="meta"><span class="badge">' + esc(s.version.label) + '</span><span>' + esc(catName(s.category)) + '</span><span>Range ' + esc(s.range || "") + '</span></div></div>';
+  function calcShell(s) {
+    var rows = ""; for (var i = 1; i <= 3; i++) rows += '<div class="row"><span class="dot" aria-hidden="true"></span>Component ' + i + " (pending verification)</div>";
+    return '<div class="section">' + UI.WarningBanner({ title: "Calculator not available yet", message: "This is a placeholder in the app shell. Scoring criteria are added only after the published version, sources and licensing are verified." }) + "</div>" +
+      '<div class="detail-grid two"><div>' + UI.Section({ id: "inputs", title: "Inputs", body: '<div class="input-shell" aria-label="Input placeholders">' + rows + "</div>" }) + "</div>" +
+      '<div class="aside">' + UI.Section({ id: "result", title: "Result", body: UI.ResultCard({ tone: "incomplete", label: "Not available", value: "–", meta: s.abbreviation + " · placeholder", summary: "No calculation in this build." }) +
+        '<div class="btn-row" style="margin-top:var(--space-3)">' + UI.SecondaryButton({ label: "Reset", icon: "reset", disabled: true }) +
+        UI.SecondaryButton({ label: "Open guide", icon: "guide", href: "#/guide/s/" + s.id, replace: true }) + "</div>" }) + "</div></div>";
   }
-
-  /* ----- calculator ----- */
-  function calcView(s) {
-    var a = answers[s.id] || (answers[s.id] = {});
-    var pinned = P.pinned.indexOf(s.id) >= 0;
-    var h = '<div class="calc-grid"><div class="inputs-col">' + head(s) +
-      '<div class="actions">' +
-        '<a class="btn" href="#/guide/' + s.id + '" data-nav>' + I.guide + 'Open guide</a>' +
-        '<button class="btn star" data-act="pin" data-id="' + s.id + '" aria-pressed="' + pinned + '">' + I.star + '<span>' + (pinned ? "Pinned" : "Pin to Home") + '</span></button>' +
-        '<button class="btn" data-act="reset">' + I.reset + 'Reset</button></div>' +
-      '<p class="hint" style="margin-top:.75rem">' + esc(s.purpose) + '</p>' +
-      '<form id="calcform" onsubmit="return false">' + s.inputs.map(function (inp) { return inputHTML(inp, a[inp.id]); }).join("") + '</form></div>' +
-      '<div class="result-col"><section class="result" id="result" aria-labelledby="result-h"><h2 class="vh" id="result-h">Result</h2><div id="resultbody"></div></section></div></div>';
-    show(h);
-    var bar = document.createElement("button");
-    bar.className = "sticky-result"; bar.setAttribute("data-act", "toresult"); bar.setAttribute("aria-label", "Jump to full result");
-    document.body.appendChild(bar); document.body.classList.add("has-bar");
-    updateResult(s);
+  function guideShell(s) {
+    var toc = '<nav class="toc" aria-label="Guide sections">' + GUIDE_SECTIONS.map(function (t, i) { return '<a href="#" data-jump="g' + (i + 1) + '">' + (i + 1) + ". " + esc(t.split(" / ")[0]) + "</a>"; }).join("") + "</nav>";
+    var cards = GUIDE_SECTIONS.map(function (t, i) {
+      return UI.SectionCard({ id: "g" + (i + 1), number: i + 1, title: t, body: '<p class="lede" style="margin:0">Content pending verification.</p><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div>' });
+    }).join("");
+    return '<div class="section">' + UI.PrimaryButton({ label: "Calculate this score →", icon: "calculate", href: "#/calculate/s/" + s.id, replace: true, block: true }) + "</div>" +
+      '<div class="section">' + UI.InfoBanner({ title: "Guide content pending", message: "Every guide follows the same 15-section structure shown below." }) + "</div>" +
+      UI.Section({ id: "contents", title: "Contents", body: toc }) + '<div class="section">' + cards + "</div>" +
+      '<div class="section">' + UI.PrimaryButton({ label: "Calculate this score →", icon: "calculate", href: "#/calculate/s/" + s.id, replace: true, block: true }) + "</div>";
   }
-  function inputHTML(inp, val) {
-    var help = inp.help ? '<p class="f-help">' + esc(inp.help) + '</p>' : "";
-    if (inp.type === "choice") {
-      return '<fieldset><legend>' + esc(inp.label) + '</legend>' + help + '<div class="opts" role="radiogroup">' +
-        inp.options.map(function (o, i) {
-          var checked = val != null && String(val) === String(o.value);
-          var tag = o.nt ? "NT" : (o.code != null ? o.code : o.points);
-          return '<label class="opt' + (checked ? " checked" : "") + (o.nt ? " is-nt" : "") + '"><input type="radio" name="' + esc(inp.id) + '" value="' + esc(o.value) + '"' + (checked ? " checked" : "") + '><span class="radio"></span>' +
-            '<span class="opt-body"><span class="opt-label">' + esc(o.label) + '</span>' + (o.detail ? '<br><span class="opt-detail">' + esc(o.detail) + '</span>' : "") + '</span>' +
-            '<span class="opt-pts" aria-label="' + (o.nt ? "not testable" : "scores " + esc(tag)) + '">' + esc(tag) + '</span></label>';
-        }).join("") + '</div></fieldset>';
-    }
-    if (inp.type === "number") {
-      return '<fieldset><legend><label for="n-' + esc(inp.id) + '">' + esc(inp.label) + '</label></legend>' + help +
-        '<div class="num"><button type="button" data-act="step" data-id="' + esc(inp.id) + '" data-d="-1" aria-label="Decrease ' + esc(inp.short || inp.label) + '">−</button>' +
-        '<input id="n-' + esc(inp.id) + '" name="' + esc(inp.id) + '" type="number" inputmode="numeric" min="' + inp.min + '" max="' + inp.max + '" step="1" value="' + (val == null ? "" : esc(val)) + '" aria-describedby="r-' + esc(inp.id) + '">' +
-        '<button type="button" data-act="step" data-id="' + esc(inp.id) + '" data-d="1" aria-label="Increase ' + esc(inp.short || inp.label) + '">+</button>' +
-        '<span class="range" id="r-' + esc(inp.id) + '">' + inp.min + '–' + inp.max + (inp.unit ? " " + esc(inp.unit) : "") + '</span></div>' +
-        '<p class="f-error" id="e-' + esc(inp.id) + '" role="alert"></p>' +
-        (inp.link ? '<a class="f-link" href="#/calc/' + esc(inp.link) + '" data-nav>Calculate ' + esc(entry(inp.link) ? entry(inp.link).abbreviation : inp.link) + ' first</a>' : "") + '</fieldset>';
-    }
-    return "";
-  }
-  var lastResult = null;
-  function updateResult(s) {
-    var a = answers[s.id] || {};
-    var r = E.calculate(s, a); lastResult = { s: s, r: r };
-    var st = r.state.state;
-    var isText = /[A-Za-z]/.test(r.display) && r.display.length > 6;
-    var h = '<div class="state st-' + st + '"><div class="state-top">' + SI[st] + '<span>' + esc(STATE_NAME[st]) + '</span></div>' +
-      '<div class="state-value' + (isText ? " small" : "") + '">' + esc(r.display) + '</div>' +
-      '<div class="state-range">' + esc(s.abbreviation) + (s.range ? ", range " + esc(s.range) : "") + '</div>' +
-      (showLabel(r) ? '<p class="state-label">' + esc(r.state.label) + '</p>' : "") +
-      '<p class="state-summary">' + esc(r.state.summary || "") + '</p>' +
-      (r.state.detail ? '<p class="state-detail">' + esc(r.state.detail) + '</p>' : "") + '</div>';
-
-    // breakdown
-    h += '<div class="rblock"><h3>Components</h3><table class="bd"><tbody>' + r.breakdown.map(function (b) {
-      return '<tr><th scope="row">' + esc(b.short) + '</th>' + (b.missing ? '<td class="miss">Not entered</td><td class="p">–</td>' :
-        '<td>' + esc(b.choice) + '</td><td class="p">' + esc(b.nt ? "NT" : (b.code != null ? b.code : b.points)) + '</td>') + '</tr>';
-    }).join("") + '<tr class="tot"><th scope="row">Result</th><td>' + esc(r.state.label || "") + '</td><td class="p">' + esc(r.display) + '</td></tr></tbody></table></div>';
-
-    if (r.insights.length) h += '<div class="rblock"><h3>Clinical insight</h3><ul class="notes">' + r.insights.map(function (i) { return '<li>' + esc(i.text) + '</li>'; }).join("") + '</ul></div>';
-    if (st !== "incomplete" || r.nt.length) h += '<div class="rblock"><h3>Key limitations</h3><ul class="notes warn">' + s.limitations.slice(0, 3).map(function (l) { return '<li>' + esc(l) + '</li>'; }).join("") + '</ul></div>';
-    var canShare = st !== "incomplete" || r.share;
-    h += '<div class="actions"><button class="btn" data-act="copy"' + (canShare ? "" : " disabled") + '>' + I.copy + 'Copy result</button><button class="btn" data-act="share"' + (canShare ? "" : " disabled") + '>' + I.share + 'Share</button></div>' +
-      '<a class="btn block" href="#/guide/' + s.id + '" data-nav>' + I.guide + 'Open guide: interpretation, limitations, sources</a>' +
-      '<p class="disclaim">' + esc(s.version.label) + ' · content ' + esc(s.contentVersion) + '. Supports, and does not replace, clinical judgement.</p>';
-    document.getElementById("resultbody").innerHTML = h;
-
-    var bar = document.querySelector(".sticky-result");
-    if (bar) {
-      bar.className = "sticky-result st-" + st;
-      bar.innerHTML = SI[st] + '<span class="sv">' + esc(r.display) + '</span><span class="sl">' + esc(st === "incomplete" ? (r.missing.length ? r.missing.length + " to complete" : r.state.label) : (String(r.display).indexOf(r.state.label) >= 0 || String(r.state.label).indexOf(r.display) >= 0 ? STATE_NAME[st] : r.state.label)) + '</span>' + I.down;
-    }
-    $live.textContent = st === "incomplete" ? "" : s.abbreviation + " " + r.display + ", " + (r.state.label || "");
-  }
-  function showLabel(r) {
-    var l = (r.state.label || "").toLowerCase(), d = String(r.display).toLowerCase(), sm = (r.state.summary || "").toLowerCase();
-    if (!l || l === "incomplete" || l === "calculated") return false;
-    if (d.indexOf(l) >= 0 || l.indexOf(d) >= 0) return false;
-    return sm.split(" ")[0] !== l.split(" ")[0];
-  }
-  function shareText() {
-    if (!lastResult) return "";
-    var s = lastResult.s, r = lastResult.r;
-    var line = r.share || (s.abbreviation + " " + r.display);
-    var comps = r.breakdown.filter(function (b) { return !b.missing; }).map(function (b) { return b.short + ": " + b.choice + " (" + (b.nt ? "NT" : (b.code != null ? b.code : b.points)) + ")"; }).join("; ");
-    return line + "\n" + comps + "\n" + s.version.label + ". Calculated with Insula Neuro Score; interpret in clinical context.";
-  }
-
-  /* ----- guide ----- */
-  function guideView(s) {
-    var g = s.guide || {}, saved = P.favGuides.indexOf(s.id) >= 0;
-    var secs = [
-      ["what", "What is this score?", '<p>' + esc(g.what) + '</p>'],
-      ["purpose", "Purpose", '<p>' + esc(s.purpose) + '</p>'],
-      ["population", "Intended population", '<p>' + esc(s.intendedPopulation) + '</p>'],
-      ["when", "When it is useful", '<p>' + esc(g.whenUseful) + '</p>'],
-      ["components", "Components", s.inputs.map(function (inp) {
-        var body = inp.type === "choice" ? '<table class="bd"><tbody>' + inp.options.map(function (o) {
-          return '<tr><td>' + esc(o.label) + (o.detail ? '<br><span class="opt-detail">' + esc(o.detail) + '</span>' : "") + '</td><td class="p">' + esc(o.nt ? "NT" : (o.code != null ? o.code : o.points)) + '</td></tr>'; }).join("") + '</tbody></table>'
-          : '<p>Whole number from ' + inp.min + ' to ' + inp.max + (inp.unit ? " " + esc(inp.unit) : "") + '.</p>';
-        return '<div class="comp"><h4>' + esc(inp.label) + '</h4>' + (inp.help ? '<p class="f-help">' + esc(inp.help) + '</p>' : "") + body + '</div>';
-      }).join("")],
-      ["how", "How to calculate", '<p>' + esc(g.howToCalculate) + '</p>'],
-      ["interp", "Interpretation", '<table class="bd"><tbody>' + s.states.map(function (st) {
-        return '<tr class="st-' + st.state + '"><th scope="row" style="color:var(--sc)">' + SI[st.state] + ' ' + esc(st.range || "") + '</th><td><b>' + esc(st.label) + '.</b> ' + esc(st.summary) + '</td></tr>'; }).join("") + '</tbody></table>'
-        + (s.notTestable ? '<p class="hint" style="margin-top:.5rem"><b>' + esc(s.notTestable.label) + ':</b> ' + esc(s.notTestable.summary) + '</p>' : "")],
-      ["context", "Clinical context", '<p>' + esc(g.clinicalContext) + '</p>' + (s.insights.length ? '<ul class="notes">' + s.insights.map(function (i) { return '<li>' + esc(i.text) + '</li>'; }).join("") + '</ul>' : "")],
-      ["limits", "Important limitations", bullets(s.limitations)],
-      ["confounders", "Confounders and factors affecting scoring", bullets(s.confounders)],
-      ["errors", "Common calculation mistakes", bullets(s.commonErrors)],
-      ["not", "What the score does not tell you", bullets(s.doesNotTellYou)],
-      ["related", "Related scores", '<div class="related">' + s.related.map(function (rid) { var e = entry(rid); return e ? '<a class="chip" href="#/guide/' + rid + '" data-nav>' + esc(e.abbreviation) + '</a>' : ""; }).join("") + '</div>'],
-      ["version", "Version and classification", '<dl class="vinfo"><dt>Version</dt><dd>' + esc(s.version.label) + '</dd><dt>Details</dt><dd>' + esc(s.version.detail) + '</dd>' +
-        '<dt>Content</dt><dd>v' + esc(s.contentVersion) + '</dd><dt>Last reviewed</dt><dd>' + esc(s.lastReviewed) + '</dd><dt>Review status</dt><dd>' + esc(s.reviewStatus) + '</dd>' +
-        '<dt>Licensing</dt><dd>' + esc(s.licensing.status) + '. ' + esc(s.licensing.note) + '</dd></dl>'],
-      ["sources", "Evidence and sources", '<ol class="src">' + s.sources.map(function (src) {
-        var link = src.doi ? "https://doi.org/" + src.doi : src.url;
-        return '<li>' + esc(src.citation) + (link ? ' <a href="' + esc(link) + '" data-ext>' + esc(src.doi ? "doi:" + src.doi : "Website") + '</a>' : "") + '</li>'; }).join("") + '</ol>']
-    ];
-    var h = '<div class="narrow">' + head(s) +
-      '<div class="guide-cta"><a class="btn primary block" href="#/calc/' + s.id + '" data-nav>' + I.calc + 'Calculate this score →</a></div>' +
-      '<div class="actions" style="margin-top:.5rem"><button class="btn star" data-act="saveguide" data-id="' + s.id + '" aria-pressed="' + saved + '">' + I.star + '<span>' + (saved ? "Saved to Home" : "Save guide") + '</span></button></div>' +
-      '<p class="review-flag">' + I.flag + '<span>' + esc(s.reviewStatus) + '</span></p>' +
-      '<nav class="toc" aria-label="Guide sections">' + secs.map(function (x) { return '<a href="#" data-jump="g-' + x[0] + '">' + esc(x[1].replace(" and factors affecting scoring", "").replace("What the score does not tell you", "Does not tell you")) + '</a>'; }).join("") + '</nav>' +
-      secs.map(function (x) { return '<section class="gsec" id="g-' + x[0] + '"><h3>' + esc(x[1]) + '</h3>' + x[2] + '</section>'; }).join("") +
-      '<div class="guide-cta" style="margin-top:2rem"><a class="btn primary block" href="#/calc/' + s.id + '" data-nav>' + I.calc + 'Calculate this score →</a></div></div>';
-    show(h);
-  }
-  function bullets(arr) { return arr && arr.length ? '<ul class="notes warn">' + arr.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : '<p class="hint">None listed.</p>'; }
 
   /* ---------------- SETTINGS ---------------- */
-  function settingsView() {
-    tabs(""); appbar("Settings", { back: true, settings: false });
-    var seg = function (key, opts) { return '<div class="seg" role="group">' + opts.map(function (o) { return '<button data-act="pref" data-k="' + key + '" data-v="' + o[0] + '" aria-pressed="' + (P[key] === o[0]) + '">' + o[1] + '</button>'; }).join("") + '</div>'; };
-    var pinned = P.pinned.map(entry).filter(Boolean);
-    var groups = cats().filter(function (c) { return c.scores.length; });
-    var h = '<div class="narrow">' +
-      '<h2 class="sec">Appearance</h2>' + seg("theme", [["system", "System"], ["light", "Light"], ["dark", "Dark"]]) +
-      '<ul class="list" style="margin-top:.75rem"><li class="set-row"><span class="row-main"><span class="row-title">High contrast</span><span class="row-sub">Stronger borders and text</span></span>' +
-      '<label class="switch"><input type="checkbox" data-act="contrast" aria-label="High contrast"' + (P.highContrast ? " checked" : "") + '><span></span></label></li></ul>' +
-      '<p class="hint">Text size follows your device font size setting.</p>' +
-      '<h2 class="sec">Startup screen</h2>' + seg("startup", [["home", "Home"], ["calc", "Calculate"], ["guide", "Guide"]]) +
-      '<h2 class="sec">Priority scores on Home</h2>' +
-      (pinned.length ? '<ul class="list">' + pinned.map(function (s, i) {
-        return '<li class="set-row"><span class="row-main"><span class="row-title">' + esc(s.abbreviation) + '</span><span class="row-sub">' + esc(s.name) + '</span></span>' +
-          '<span class="reorder"><button data-act="mv" data-list="pinned" data-i="' + i + '" data-d="-1" aria-label="Move ' + esc(s.abbreviation) + ' up"' + (i === 0 ? " disabled" : "") + '>' + I.up + '</button>' +
-          '<button data-act="mv" data-list="pinned" data-i="' + i + '" data-d="1" aria-label="Move ' + esc(s.abbreviation) + ' down"' + (i === pinned.length - 1 ? " disabled" : "") + '>' + I.down + '</button>' +
-          '<button data-act="pin" data-id="' + s.id + '" aria-label="Remove ' + esc(s.abbreviation) + ' from Home">' + I.x + '</button></span></li>'; }).join("") + '</ul>'
-        : '<p class="empty">No pinned scores yet. Use the star on any calculator to pin it.</p>') +
-      '<h2 class="sec">Score groups</h2><p class="hint">Order applies to the Calculate and Guide lists. “On Home” shows the group as a shortcut; “Hidden” removes it from the lists.</p>' +
-      '<ul class="list">' + groups.map(function (c, i) {
-        return '<li><div class="set-row"><span class="row-main"><span class="row-title">' + esc(c.name) + '</span><span class="row-sub">' + c.scores.length + ' score' + (c.scores.length > 1 ? "s" : "") + '</span></span>' +
-          '<span class="reorder"><button data-act="mvg" data-id="' + c.id + '" data-d="-1" aria-label="Move ' + esc(c.name) + ' up"' + (i === 0 ? " disabled" : "") + '>' + I.up + '</button>' +
-          '<button data-act="mvg" data-id="' + c.id + '" data-d="1" aria-label="Move ' + esc(c.name) + ' down"' + (i === groups.length - 1 ? " disabled" : "") + '>' + I.down + '</button></span></div>' +
-          '<div class="grp-toggles"><label><input type="checkbox" data-act="ghome" data-id="' + c.id + '"' + (P.homeGroups.indexOf(c.id) >= 0 ? " checked" : "") + '> On Home</label>' +
-          '<label><input type="checkbox" data-act="ghide" data-id="' + c.id + '"' + (P.hiddenGroups.indexOf(c.id) >= 0 ? " checked" : "") + '> Hidden</label></div></li>'; }).join("") + '</ul>' +
-      '<h2 class="sec">Data</h2><button class="btn block" data-act="clearrecent">Clear recent items</button>' +
-      '<div style="height:.5rem"></div><button class="btn block" data-act="resetprefs">Reset all preferences</button>' +
-      '<h2 class="sec">About</h2><p>Insula Neuro Score · Insula Neurosciences<br>App 0.1.0 (Phase 1) · Content v' + esc(M.contentVersion) + ' · ' + M.scores.length + ' scores</p>' +
-      '<p class="hint">A clinical calculation tool and reference guide. It does not diagnose, and it does not make treatment decisions. Scores are implemented from their published sources in original wording; official worksheets are not reproduced. Content is pending independent clinician review.</p>' +
-      '<p class="hint">All calculations, search, guides and settings work offline. Preferences are stored only on this device.</p></div>';
-    show(h);
+  function reorderRow(o) {
+    var b = '<div class="reorder-row' + (o.hidden ? " is-hidden" : "") + (o.moved ? " is-moved" : "") + '"><span class="text"><span class="label">' + esc(o.label) + "</span>" + (o.desc ? '<span class="desc">' + esc(o.desc) + "</span>" : "") + "</span>" +
+      UI.IconButton({ icon: "up", label: "Move " + o.label + " up", act: "move", disabled: o.index === 0, data: { key: o.key, index: o.index, delta: -1 } }) +
+      UI.IconButton({ icon: "down", label: "Move " + o.label + " down", act: "move", disabled: o.index === o.count - 1, data: { key: o.key, index: o.index, delta: 1 } });
+    if (o.remove) b += UI.IconButton({ icon: "close", label: "Remove " + o.label, act: "remove", data: { key: o.key, id: o.id } });
+    if (o.visibility != null) b += '<span class="toggle"><input type="checkbox" role="switch" aria-label="Show ' + esc(o.label) + '" data-act="' + o.visibilityAct + '" data-id="' + esc(o.id) + '"' + (o.visibility ? " checked" : "") + '><span class="track"></span></span>';
+    return "<li>" + b + "</div></li>";
   }
-  function moveIn(arr, i, d) { var j = i + d; if (j < 0 || j >= arr.length) return arr; var c = arr.slice(); var t = c[i]; c[i] = c[j]; c[j] = t; return c; }
+  var lastMoved = null;
+  function managedList(key, items, labelOf, descOf, addLabel, emptyMsg) {
+    var list = items.length ? '<ul class="settings-list">' + items.map(function (x, i) {
+      return reorderRow({ key: key, id: x.id, index: i, count: items.length, label: labelOf(x), desc: descOf(x), remove: true, moved: lastMoved && lastMoved.key === key && lastMoved.index === i });
+    }).join("") + "</ul>" : UI.EmptyState({ compact: true, icon: "inbox", title: "None selected", message: emptyMsg });
+    return list + '<div style="margin-top:var(--space-3)">' + UI.SecondaryButton({ label: addLabel, icon: "plus", href: "#/settings/pick/" + key, block: true }) + "</div>";
+  }
+  function settingsScreen() {
+    var st = Store.get();
+    var appearance = UI.Segmented({ label: "Appearance", act: "set-pref", key: "theme", value: st.theme, options: [{ value: "system", label: "System" }, { value: "light", label: "Light" }, { value: "dark", label: "Dark" }] }) +
+      '<ul class="settings-list" style="margin-top:var(--space-3)"><li>' + UI.Toggle({ id: "hc", label: "High contrast", description: "Stronger borders and text", checked: st.highContrast, act: "toggle-contrast" }) + "</li></ul>" +
+      '<p class="lede" style="margin-top:var(--space-2)">Text size follows your device font size setting.</p>';
+    var startup = UI.Segmented({ label: "Startup screen", act: "set-pref", key: "startup", value: st.startup, options: [{ value: "home", label: "Home" }, { value: "calculate", label: "Calculate" }, { value: "guide", label: "Guide" }] });
+    var homeLayout = '<ul class="settings-list">' + st.homeSections.map(function (h, i) {
+      return reorderRow({ key: "homeSections", id: h.id, index: i, count: st.homeSections.length, label: HOME_SECTION_META[h.id].title, hidden: !h.visible,
+        visibility: h.visible, visibilityAct: "toggle-section", moved: lastMoved && lastMoved.key === "homeSections" && lastMoved.index === i });
+    }).join("") + "</ul>";
+    var sc = function (x) { return x.abbreviation; }, sd = function (x) { return sub(x); };
+    var favs = managedList("favorites", st.favorites.map(score).filter(Boolean), sc, sd, "Add favourite scores", "Star a score or add favourites here.");
+    var prio = managedList("priorityScores", st.priorityScores.map(score).filter(Boolean), sc, sd, "Choose priority scores", "Priority scores appear first on Home.");
+    var groups = managedList("priorityGroups", st.priorityGroups.map(category).filter(Boolean), function (c) { return c.name; }, function (c) { return scoresIn(c.id).length + " scores"; }, "Choose priority groups", "Priority groups appear as shortcuts on Home.");
+    var allCats = orderedCategories(true);
+    var groupVis = '<ul class="settings-list">' + allCats.map(function (c, i) {
+      return reorderRow({ key: "groupOrder", id: c.id, index: i, count: allCats.length, label: c.name, desc: scoresIn(c.id).length + " scores", hidden: st.hiddenGroups.indexOf(c.id) >= 0,
+        visibility: st.hiddenGroups.indexOf(c.id) < 0, visibilityAct: "toggle-group-visible", moved: lastMoved && lastMoved.key === "groupOrder" && lastMoved.index === i });
+    }).join("") + "</ul>";
+    lastMoved = null;
+    var body =
+      UI.Section({ id: "s-appearance", title: "Appearance", body: appearance }) +
+      UI.Section({ id: "s-startup", title: "Startup screen", body: startup }) +
+      UI.Section({ id: "s-home", title: "Home layout", body: '<p class="lede">Order and show or hide the sections on Home.</p>' + homeLayout }) +
+      UI.Section({ id: "s-favorites", title: "Favourite scores", body: favs }) +
+      UI.Section({ id: "s-priority", title: "Priority scores", body: prio }) +
+      UI.Section({ id: "s-pgroups", title: "Priority groups", body: groups }) +
+      UI.Section({ id: "s-groups", title: "Score groups in Calculate and Guide", body: '<p class="lede">Order the groups and choose which are visible.</p>' + groupVis }) +
+      UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' + UI.SecondaryButton({ label: "Clear recent items", icon: "clock", act: "clear-recent", data: { key: "all" } }) +
+        UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
+        (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.2.0 (Phase 1: app shell)</p>' +
+        '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
+        UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
+    paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });
+  }
+  function pickerScreen(key) {
+    var st = Store.get(), titles = { favorites: "Favourite scores", priorityScores: "Priority scores", priorityGroups: "Priority groups" };
+    if (!titles[key]) return notFound("Unknown list.");
+    var body;
+    if (key === "priorityGroups") {
+      body = '<ul class="settings-list">' + orderedCategories(true).map(function (c) {
+        return "<li>" + UI.Toggle({ id: "p-" + c.id, label: c.name, description: scoresIn(c.id).length + " scores", checked: st.priorityGroups.indexOf(c.id) >= 0, act: "pick", data: { key: key, id: c.id } }) + "</li>"; }).join("") + "</ul>";
+    } else {
+      body = orderedCategories(true).map(function (c) {
+        return UI.Section({ id: "pk-" + c.id, title: c.name, body: '<ul class="settings-list">' + scoresIn(c.id).map(function (s) {
+          return "<li>" + UI.Toggle({ id: "p-" + s.id, label: s.abbreviation, description: sub(s), checked: st[key].indexOf(s.id) >= 0, act: "pick", data: { key: key, id: s.id } }) + "</li>"; }).join("") + "</ul>" });
+      }).join("");
+    }
+    paint(frame({ title: titles[key], tab: "", back: true, noSettings: true, body: '<p class="lede">Selected items appear on Home. Reorder them in Settings.</p>' + body }), { title: titles[key], focusMain: false });
+  }
+  function galleryScreen() {
+    var tones = ["normal", "low", "mild", "moderate", "high", "critical", "info", "incomplete"];
+    var g = function (t, h) { return '<div class="gallery-item"><h3>' + esc(t) + "</h3>" + h + "</div>"; };
+    var demo = CATALOG.scores[0];
+    var body = '<p class="lede">Every screen is built from these components. Colours come only from semantic tokens.</p>' +
+      g("Semantic colours", '<div class="gallery-swatches">' + ["success", "warning", "concern", "error", "info", "neutral", "primary"].map(function (t) {
+        return '<div class="swatch tone-' + t + '"><i></i><span>' + esc(t === "concern" ? "high concern" : t) + "</span></div>"; }).join("") + "</div>") +
+      g("StatusBadge", '<div class="chip-row">' + tones.map(function (t) { return UI.StatusBadge({ tone: t }); }).join("") + "</div>") +
+      g("ResultCard", '<div class="detail-grid">' + [["normal", "15", "No impairment measured"], ["moderate", "10", "Moderate range"], ["high", "7", "High concern example"], ["critical", "3", "Very high concern example"], ["info", "Grade II", "Classification result"], ["incomplete", "–", "Complete all inputs"]].map(function (x) {
+        return UI.ResultCard({ tone: x[0], value: x[1], meta: "Example only", summary: x[2] }); }).join("") + "</div>") +
+      g("SearchBar", UI.SearchBar({ id: "demo-search", placeholder: "Search scores" })) +
+      g("ScoreCard", UI.CardList([UI.ScoreCard({ score: demo, href: "#/settings/gallery", badge: placeholderBadge(), favorite: true }), UI.ScoreCard({ score: CATALOG.scores[5], href: "#/settings/gallery", badge: placeholderBadge(), favorite: false })])) +
+      g("CategoryCard", '<div class="category-grid">' + CATALOG.categories.slice(0, 2).map(function (c) { return UI.CategoryCard({ category: c, href: "#/settings/gallery", count: scoresIn(c.id).length }); }).join("") + "</div>") +
+      g("SectionCard", UI.SectionCard({ number: 1, title: "What is this score?", body: "<p>Section content.</p>" })) +
+      g("Buttons", '<div class="btn-row">' + UI.PrimaryButton({ label: "Primary action", icon: "calculate" }) + UI.SecondaryButton({ label: "Secondary action", icon: "guide" }) + UI.SecondaryButton({ label: "Disabled", disabled: true }) + "</div>") +
+      g("Toggle and segmented control", '<ul class="settings-list"><li>' + UI.Toggle({ id: "demo-t", label: "Toggle", description: "Switch with label", checked: true }) + "</li></ul><div style=\"margin-top:var(--space-3)\">" + UI.Segmented({ label: "Demo", act: "noop", value: "a", options: [{ value: "a", label: "Option A" }, { value: "b", label: "Option B" }] }) + "</div>") +
+      g("InfoBanner", UI.InfoBanner({ title: "Information", message: "Neutral contextual information." })) +
+      g("WarningBanner", UI.WarningBanner({ title: "Warning", message: "Something needs attention before relying on this." })) +
+      g("EmptyState", UI.EmptyState({ title: "Nothing here yet", message: "Explains what to do next.", action: UI.SecondaryButton({ label: "Take action", icon: "plus" }) })) +
+      g("ErrorState", UI.ErrorState({ title: "Something went wrong", message: "Explains what happened and how to fix it.", action: UI.PrimaryButton({ label: "Try again", icon: "reset" }) })) +
+      g("LoadingState", UI.LoadingState({ message: "Loading scores…", rows: 2 }));
+    paint(frame({ title: "Design system", tab: "", back: true, noSettings: true, body: body, wide: true }), { title: "Design system", focusMain: false });
+  }
 
   /* ---------------- events ---------------- */
   document.addEventListener("click", function (ev) {
     var a = ev.target.closest("a");
-    if (a && a.hasAttribute("data-ext")) { ev.preventDefault(); try { if (A) A.openUrl(a.href); else window.open(a.href, "_blank"); } catch (e) {} return; }
-    if (a && a.hasAttribute("data-jump")) { ev.preventDefault(); var t = document.getElementById(a.getAttribute("data-jump")); if (t) { t.scrollIntoView(); t.querySelector("h3").setAttribute("tabindex", "-1"); t.querySelector("h3").focus({ preventScroll: true }); } return; }
-    if (a && a.hasAttribute("data-nav")) { ev.preventDefault(); var href = a.getAttribute("href"); if (href !== location.hash) go(href); return; }
-    var b = ev.target.closest("[data-act]"); if (!b || b.tagName === "INPUT") return;
-    var act = b.getAttribute("data-act"), id = b.getAttribute("data-id");
-    if (act === "back") { if (!window.handleBack()) location.hash = "#/home"; return; }
-    if (act === "pin") {
-      var on = P.pinned.indexOf(id) >= 0;
-      P.pinned = on ? P.pinned.filter(function (x) { return x !== id; }) : P.pinned.concat([id]); save();
-      toast(on ? "Removed from Home" : "Pinned to Home");
-      if (route.section === "settings") return settingsView();
-      document.querySelectorAll('[data-act="pin"][data-id="' + id + '"]').forEach(function (el) {
-        el.setAttribute("aria-pressed", String(!on));
-        var sp = el.querySelector("span"); if (sp) sp.textContent = !on ? "Pinned" : "Pin to Home";
-      });
+    if (a && a.hasAttribute("data-jump")) {
+      ev.preventDefault(); var t = document.getElementById(a.getAttribute("data-jump"));
+      if (t) { t.scrollIntoView({ block: "start" }); var h = t.querySelector("h3"); h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
       return;
     }
-    if (act === "saveguide") {
-      var on2 = P.favGuides.indexOf(id) >= 0;
-      P.favGuides = on2 ? P.favGuides.filter(function (x) { return x !== id; }) : P.favGuides.concat([id]); save();
-      b.setAttribute("aria-pressed", String(!on2)); b.querySelector("span").textContent = on2 ? "Save guide" : "Saved to Home";
-      toast(on2 ? "Guide removed from Home" : "Guide saved to Home"); return;
+    if (a && a.hasAttribute("data-replace")) { ev.preventDefault(); replaceTo(a.getAttribute("href")); return; }
+    if (a && a.hasAttribute("data-nav")) {
+      ev.preventDefault();
+      var href = a.getAttribute("href");
+      if (a.hasAttribute("data-tab")) { depth = 0; if (href !== location.hash) replaceTo(href); else window.scrollTo(0, 0); return; }
+      navigate(href); return;
     }
-    if (act === "reset" && lastResult) {
-      answers[lastResult.s.id] = {}; calcView(lastResult.s); toast("Inputs cleared"); return;
+    var b = ev.target.closest("button[data-act]"); if (!b || b.disabled) return;
+    var act = b.getAttribute("data-act"), d = b.dataset;
+    switch (act) {
+      case "back": if (!window.handleBack()) replaceTo(startHash()); break;
+      case "clear-search": var inp = document.getElementById(d.for); inp.value = ""; renderSearch(""); inp.focus(); break;
+      case "toggle-favorite": {
+        var on = Store.get().favorites.indexOf(d.id) < 0; Store.toggleIn("favorites", d.id);
+        document.querySelectorAll('[data-act="toggle-favorite"][data-id="' + d.id + '"]').forEach(function (el) {
+          var s = score(d.id); el.setAttribute("aria-pressed", String(on));
+          el.setAttribute("aria-label", (on ? "Remove " : "Add ") + (el.closest(".appbar") ? "" : s.abbreviation + " ") + (on ? "from favourites" : "to favourites"));
+        });
+        toast(on ? "Added to favourites" : "Removed from favourites"); break;
+      }
+      case "toggle-priority": {
+        var on2 = Store.get().priorityScores.indexOf(d.id) < 0; Store.toggleIn("priorityScores", d.id);
+        b.querySelector("span").textContent = on2 ? "On Home (priority)" : "Add to Home priority";
+        toast(on2 ? "Added to Home priority" : "Removed from Home priority"); break;
+      }
+      case "set-pref": Store.update(function (s) { s[d.key] = d.value; return s; }); applyTheme(); refocusAfterRender(function () { settingsScreen(); }, '[data-act="set-pref"][data-key="' + d.key + '"][data-value="' + d.value + '"]'); announce("Saved"); break;
+      case "move": {
+        var key = d.key, i = Number(d.index), delta = Number(d.delta), sel;
+        if (key === "groupOrder") Store.update(function (s) { var order = orderedCategories(true).map(function (c) { return c.id; }); var j = i + delta; var t = order[i]; order[i] = order[j]; order[j] = t; s.groupOrder = order; return s; });
+        else Store.move(key, i, delta);
+        lastMoved = { key: key, index: i + delta };
+        sel = '[data-act="move"][data-key="' + key + '"][data-index="' + (i + delta) + '"][data-delta="' + delta + '"]';
+        refocusAfterRender(settingsScreen, sel, '[data-act="move"][data-key="' + key + '"][data-index="' + (i + delta) + '"][data-delta="' + (-delta) + '"]');
+        announce("Moved to position " + (i + delta + 1)); break;
+      }
+      case "remove": Store.update(function (s) { s[d.key] = s[d.key].filter(function (x) { return x !== d.id; }); return s; }); refocusAfterRender(settingsScreen, "#s-" + (d.key === "favorites" ? "favorites" : d.key === "priorityScores" ? "priority" : "pgroups") + "-h"); toast("Removed"); break;
+      case "clear-recent":
+        Store.update(function (s) { if (d.key === "all" || d.key === "recentCalc") s.recentCalc = []; if (d.key === "all" || d.key === "recentGuide") s.recentGuide = []; return s; });
+        toast("Recent items cleared"); if (route.tab === "home") homeScreen(); break;
+      case "reset-all":
+        if (window.confirm("Reset appearance, startup screen, favourites, priority items, groups and Home layout to defaults?")) { Store.reset(); applyTheme(); settingsScreen(); toast("Settings reset"); }
+        break;
     }
-    if (act === "step" && lastResult) {
-      var s = lastResult.s, inp = s.inputs.filter(function (x) { return x.id === id; })[0], el = document.getElementById("n-" + id);
-      var cur = el.value === "" ? (b.getAttribute("data-d") === "1" ? inp.min - 1 : inp.max + 1) : Number(el.value);
-      var nv = Math.max(inp.min, Math.min(inp.max, Math.round(cur) + Number(b.getAttribute("data-d"))));
-      el.value = nv; answers[s.id][id] = String(nv); document.getElementById("e-" + id).textContent = ""; updateResult(s); return;
-    }
-    if (act === "toresult") { var r = document.getElementById("result"); if (r) r.scrollIntoView(); return; }
-    if (act === "copy") { var txt = shareText(); try { if (A) A.copy(txt); else navigator.clipboard.writeText(txt); toast("Result copied"); } catch (e) { toast("Copy failed"); } return; }
-    if (act === "share") { var tx = shareText(); try { if (A) A.share(tx); else if (navigator.share) navigator.share({ text: tx }); else { navigator.clipboard.writeText(tx); toast("Result copied"); } } catch (e) {} return; }
-    if (act === "pref") { P[b.getAttribute("data-k")] = b.getAttribute("data-v"); save(); applyTheme(); settingsView(); return; }
-    if (act === "mv") { var k = b.getAttribute("data-list"); P[k] = moveIn(P[k], Number(b.getAttribute("data-i")), Number(b.getAttribute("data-d"))); save(); settingsView(); focusAfter(b); return; }
-    if (act === "mvg") {
-      var order = cats().map(function (c) { return c.id; }), i = order.indexOf(id), d = Number(b.getAttribute("data-d"));
-      var withScores = cats().filter(function (c) { return c.scores.length; }).map(function (c) { return c.id; });
-      var j = withScores.indexOf(id) + d; if (j < 0 || j >= withScores.length) return;
-      var target = withScores[j], ti = order.indexOf(target); order[i] = target; order[ti] = id;
-      P.groupOrder = order; save(); settingsView(); focusAfter(b); return;
-    }
-    if (act === "clearrecent") { P.recentCalc = []; P.recentGuide = []; save(); toast("Recent items cleared"); return; }
-    if (act === "resetprefs") { if (confirm("Reset theme, startup screen, pinned scores, saved guides and group settings?")) { P = Object.assign({}, DEFAULTS); save(); applyTheme(); settingsView(); toast("Preferences reset"); } return; }
   });
-  function focusAfter(btn) {
-    var sel = '[data-act="' + btn.getAttribute("data-act") + '"][data-d="' + btn.getAttribute("data-d") + '"]' + (btn.getAttribute("data-id") ? '[data-id="' + btn.getAttribute("data-id") + '"]' : "");
-    var el = document.querySelector(sel); if (el && !el.disabled) el.focus();
+  function refocusAfterRender(fn, selector, fallback) {
+    var y = window.scrollY; fn(); window.scrollTo(0, y);
+    var el = document.querySelector(selector); if (!el || el.disabled) el = fallback ? document.querySelector(fallback) : null;
+    if (el) { if (el.tagName === "H2") el.setAttribute("tabindex", "-1"); el.focus({ preventScroll: true }); }
   }
   document.addEventListener("change", function (ev) {
-    var t = ev.target;
-    if (t.type === "radio" && lastResult && route.section === "calc") {
-      answers[lastResult.s.id][t.name] = t.value;
-      t.closest(".opts").querySelectorAll(".opt").forEach(function (o) { o.classList.toggle("checked", o.querySelector("input").checked); });
-      updateResult(lastResult.s); return;
-    }
-    if (t.getAttribute("data-act") === "contrast") { P.highContrast = t.checked; save(); applyTheme(); return; }
-    if (t.getAttribute("data-act") === "ghome") { var id = t.getAttribute("data-id"); P.homeGroups = t.checked ? P.homeGroups.concat([id]) : P.homeGroups.filter(function (x) { return x !== id; }); save(); return; }
-    if (t.getAttribute("data-act") === "ghide") { var id2 = t.getAttribute("data-id"); P.hiddenGroups = t.checked ? P.hiddenGroups.concat([id2]) : P.hiddenGroups.filter(function (x) { return x !== id2; }); save(); return; }
+    var t = ev.target, act = t.getAttribute("data-act"); if (!act) return;
+    if (act === "toggle-contrast") { Store.update(function (s) { s.highContrast = t.checked; return s; }); applyTheme(); }
+    else if (act === "toggle-section") { Store.update(function (s) { s.homeSections.forEach(function (h) { if (h.id === t.dataset.id) h.visible = t.checked; }); return s; }); t.closest(".reorder-row").classList.toggle("is-hidden", !t.checked); }
+    else if (act === "toggle-group-visible") { Store.update(function (s) { var id = t.dataset.id; s.hiddenGroups = s.hiddenGroups.filter(function (x) { return x !== id; }); if (!t.checked) s.hiddenGroups.push(id); return s; }); t.closest(".reorder-row").classList.toggle("is-hidden", !t.checked); }
+    else if (act === "pick") { Store.toggleIn(t.dataset.key, t.dataset.id); }
+    announce("Saved");
   });
-  document.addEventListener("input", function (ev) {
-    var t = ev.target;
-    if (t.id === "q") { runSearch(t.value); return; }
-    if (t.type === "number" && lastResult && route.section === "calc") {
-      var s = lastResult.s, inp = s.inputs.filter(function (x) { return x.id === t.name; })[0];
-      answers[s.id][t.name] = t.value;
-      var v = t.value === "" ? null : Number(t.value), err = document.getElementById("e-" + t.name);
-      err.textContent = v == null ? "" : (isNaN(v) || v % 1 !== 0 || v < inp.min || v > inp.max) ? "Enter a whole number from " + inp.min + " to " + inp.max + "." : "";
-      updateResult(s);
-    }
-  });
+  document.addEventListener("input", function (ev) { if (ev.target.id === "search") renderSearch(ev.target.value); });
+  window.addEventListener("ins-config", function () { /* system font scale or orientation changed natively; layout is fluid */ });
 
   /* ---------------- boot ---------------- */
   applyTheme();
-  loadManifest().then(function () {
-    if (!location.hash || location.hash === "#" || location.hash === "#/") location.replace("#/" + (P.startup || "home"));
-    render();
-  }).catch(function (e) {
-    $main.innerHTML = '<div class="errorbox" role="alert"><b>Content could not be loaded.</b><p>' + esc(e.message) + '</p></div>';
-  });
+  root.innerHTML = '<div class="shell">' + UI.AppBar({ title: "Insula Neuro Score", brand: true }) + '<main class="content">' + UI.LoadingState({ message: "Loading scores…", rows: 4 }) + "</main></div>";
+  function boot() {
+    fetch("content/catalog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (c) {
+        if (!c || !Array.isArray(c.scores) || !Array.isArray(c.categories)) throw new Error("Catalogue format is invalid");
+        CATALOG = c;
+        Store.prune(c.scores.map(function (s) { return s.id; }), c.categories.map(function (x) { return x.id; }));
+        if (!location.hash || location.hash === "#" || location.hash === "#/") location.replace(startHash());
+        render();
+      })
+      .catch(function (e) {
+        root.innerHTML = '<div class="shell">' + UI.AppBar({ title: "Insula Neuro Score", brand: true }) + '<main class="content">' +
+          UI.ErrorState({ title: "Scores could not be loaded", message: "The bundled score catalogue could not be read (" + e.message + "). Reinstalling the app usually fixes this.", action: UI.PrimaryButton({ label: "Try again", icon: "reset", act: "retry" }) }) + "</main></div>";
+      });
+  }
+  document.addEventListener("click", function (ev) { var b = ev.target.closest('[data-act="retry"]'); if (b) { root.innerHTML = '<div class="shell"><main class="content">' + UI.LoadingState({ message: "Loading scores…" }) + "</main></div>"; boot(); } });
+  boot();
 })();
