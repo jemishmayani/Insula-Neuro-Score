@@ -1,0 +1,346 @@
+{
+ "contentVersion": "2.0.0",
+ "lastReviewed": "2026-10-01",
+ "reviewStatus": "Drafted from primary sources; pending independent clinician review before clinical release.",
+ "scoringRules": [],
+ "consistencyRules": [],
+ "aliases": [
+  "spinal instability",
+  "metastasis",
+  "neoplastic",
+  "sosg"
+ ],
+ "id": "sins",
+ "name": "Spinal Instability Neoplastic Score",
+ "abbreviation": "SINS",
+ "category": "spine",
+ "subcategory": "Spinal oncology",
+ "specialties": [
+  "Neurosurgery",
+  "Spine Surgery",
+  "Radiation Oncology",
+  "Radiology"
+ ],
+ "version": {
+  "label": "SOSG SINS (Fisher et al. 2010)",
+  "detail": "Six components, total 0–18. Categories 0–6 stable, 7–12 potentially unstable, 13–18 unstable."
+ },
+ "purpose": "Assessment of tumour-related spinal instability to support referral and multidisciplinary discussion.",
+ "intendedPopulation": "Adults with primary or metastatic neoplastic involvement of the spine (assessed per affected level).",
+ "components": [
+  {
+   "id": "spinal_location",
+   "label": "Location",
+   "inputs": [
+    "location"
+   ]
+  },
+  {
+   "id": "mechanical_pain",
+   "label": "Pain",
+   "inputs": [
+    "pain"
+   ]
+  },
+  {
+   "id": "bone_quality",
+   "label": "Bone lesion",
+   "inputs": [
+    "lesion"
+   ]
+  },
+  {
+   "id": "radiographic_alignment",
+   "label": "Radiographic alignment",
+   "inputs": [
+    "alignment"
+   ]
+  },
+  {
+   "id": "body_collapse",
+   "label": "Vertebral body collapse",
+   "inputs": [
+    "collapse"
+   ]
+  },
+  {
+   "id": "posterior_involvement",
+   "label": "Posterolateral involvement",
+   "inputs": [
+    "posterolateral"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "location",
+   "type": "single",
+   "label": "Location",
+   "short": "Location",
+   "options": [
+    {
+     "value": "3",
+     "label": "Junctional",
+     "points": 3,
+     "detail": "Occiput–C2, C7–T2, T11–L1, L5–S1"
+    },
+    {
+     "value": "2",
+     "label": "Mobile spine",
+     "points": 2,
+     "detail": "C3–C6, L2–L4"
+    },
+    {
+     "value": "1",
+     "label": "Semi-rigid",
+     "points": 1,
+     "detail": "T3–T10"
+    },
+    {
+     "value": "0",
+     "label": "Rigid",
+     "points": 0,
+     "detail": "S2–S5"
+    }
+   ]
+  },
+  {
+   "id": "pain",
+   "type": "single",
+   "label": "Pain",
+   "short": "Pain",
+   "help": "Mechanical pain: relief with recumbency and/or pain with movement or loading of the spine.",
+   "options": [
+    {
+     "value": "3",
+     "label": "Mechanical pain",
+     "points": 3
+    },
+    {
+     "value": "1",
+     "label": "Occasional pain, not mechanical",
+     "points": 1
+    },
+    {
+     "value": "0",
+     "label": "Pain-free lesion",
+     "points": 0
+    }
+   ]
+  },
+  {
+   "id": "lesion",
+   "type": "single",
+   "label": "Bone lesion",
+   "short": "Bone lesion",
+   "options": [
+    {
+     "value": "2",
+     "label": "Lytic",
+     "points": 2
+    },
+    {
+     "value": "1",
+     "label": "Mixed (lytic/blastic)",
+     "points": 1
+    },
+    {
+     "value": "0",
+     "label": "Blastic",
+     "points": 0
+    }
+   ]
+  },
+  {
+   "id": "alignment",
+   "type": "single",
+   "label": "Radiographic spinal alignment",
+   "short": "Alignment",
+   "options": [
+    {
+     "value": "4",
+     "label": "Subluxation or translation present",
+     "points": 4
+    },
+    {
+     "value": "2",
+     "label": "De novo deformity (kyphosis or scoliosis)",
+     "points": 2
+    },
+    {
+     "value": "0",
+     "label": "Normal alignment",
+     "points": 0
+    }
+   ]
+  },
+  {
+   "id": "collapse",
+   "type": "single",
+   "label": "Vertebral body collapse",
+   "short": "Collapse",
+   "options": [
+    {
+     "value": "3",
+     "label": "More than 50% collapse",
+     "points": 3
+    },
+    {
+     "value": "2",
+     "label": "Less than 50% collapse",
+     "points": 2
+    },
+    {
+     "value": "1",
+     "label": "No collapse, more than 50% of body involved",
+     "points": 1
+    },
+    {
+     "value": "0",
+     "label": "None of the above",
+     "points": 0
+    }
+   ]
+  },
+  {
+   "id": "posterolateral",
+   "type": "single",
+   "label": "Posterolateral involvement",
+   "short": "Posterolateral",
+   "help": "Facet, pedicle or costovertebral joint fracture, or replacement with tumour.",
+   "options": [
+    {
+     "value": "3",
+     "label": "Bilateral",
+     "points": 3
+    },
+    {
+     "value": "1",
+     "label": "Unilateral",
+     "points": 1
+    },
+    {
+     "value": "0",
+     "label": "None",
+     "points": 0
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 18
+  },
+  "display": "{total}",
+  "share": "SINS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 6",
+   "state": "stable"
+  },
+  {
+   "when": "total <= 12",
+   "state": "potential"
+  },
+  {
+   "state": "unstable"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "stable",
+   "tone": "low",
+   "label": "Stable",
+   "range": "0–6",
+   "summary": "Category: stable (0–6)."
+  },
+  {
+   "id": "potential",
+   "tone": "moderate",
+   "label": "Potentially unstable",
+   "range": "7–12",
+   "summary": "Category: indeterminate (possibly impending) instability (7–12).",
+   "detail": "In the original SINS publication, scores of 7–18 were considered to warrant surgical consultation. Integrate with neurological status, histology, prognosis and patient goals."
+  },
+  {
+   "id": "unstable",
+   "tone": "high",
+   "label": "Unstable",
+   "range": "13–18",
+   "summary": "Category: instability (13–18).",
+   "detail": "In the original SINS publication, scores of 7–18 were considered to warrant surgical consultation. Integrate with neurological status, histology, prognosis and patient goals."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "SINS assesses mechanical stability only; neurological compression, histology and prognosis are assessed separately."
+  },
+  {
+   "when": "total >= 7 && total <= 12",
+   "text": "Intermediate scores have the most inter-observer variation; component-level review helps multidisciplinary discussion."
+  },
+  {
+   "when": "pain == 3",
+   "text": "Mechanical pain is a major contributor and reflects clinical, not only radiological, assessment."
+  }
+ ],
+ "limitations": [
+  "Designed for neoplastic disease, not trauma or infection.",
+  "Agreement is lower in the potentially unstable range.",
+  "Assessed per level; multi-level disease needs level-by-level scoring.",
+  "Does not include neurological status."
+ ],
+ "confounders": [
+  "Prior surgery or instrumentation",
+  "Osteoporotic fracture at the same level",
+  "Imaging modality and quality",
+  "Pain from causes other than the lesion"
+ ],
+ "commonErrors": [
+  "Labelling non-mechanical pain as mechanical.",
+  "Using the wrong junctional boundaries (e.g. C7–T2, T11–L1).",
+  "Scoring alignment from supine imaging alone without noting it."
+ ],
+ "whatItDoesNotTellYou": [
+  "Whether neural compression is present.",
+  "Tumour radiosensitivity or prognosis.",
+  "Which treatment is appropriate."
+ ],
+ "relatedScores": [
+  {
+   "id": "tokuhashi",
+   "relation": "Prognosis in spinal metastasis"
+  },
+  {
+   "id": "tomita",
+   "relation": "Prognosis in spinal metastasis"
+  },
+  {
+   "id": "kps",
+   "relation": "Performance status"
+  }
+ ],
+ "guideSections": {
+  "what": "A six-component score (location, pain, bone lesion, alignment, collapse, posterolateral involvement) for tumour-related spinal instability; totals range 0–18.",
+  "whenUseful": "Communicating instability between oncology, radiation oncology, radiology and spine surgery; screening for referral.",
+  "howToCalculate": "Score the affected level on each component using clinical history and CT/MRI, then sum.",
+  "clinicalContext": "One input to multidisciplinary decisions, alongside neurology, oncology, mechanical instability and systemic disease frameworks."
+ },
+ "sources": [
+  {
+   "citation": "Fisher CG, DiPaola CP, Ryken TC, et al. A novel classification system for spinal instability in neoplastic disease: an evidence-based approach and expert consensus from the Spine Oncology Study Group. Spine. 2010;35(22):E1221-E1229.",
+   "doi": "10.1097/BRS.0b013e3181e16ae2"
+  },
+  {
+   "citation": "Fourney DR, Frangou EM, Ryken TC, et al. Spinal instability neoplastic score: an analysis of reliability and validity from the Spine Oncology Study Group. J Clin Oncol. 2011;29(22):3072-3077.",
+   "doi": "10.1200/JCO.2010.34.3897"
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified for the scoring criteria."
+ }
+}

@@ -1,6 +1,6 @@
 {
- "contentVersion": "0.0.0-placeholder",
- "note": "Placeholder catalogue for the app shell. No scoring criteria are included.",
+ "contentVersion": "2.0.0",
+ "note": "Catalogue. Scores with status 'implemented' have a content file in content/scores/; placeholders contain no scoring criteria.",
  "categories": [
   {
    "id": "consciousness",
@@ -64,7 +64,7 @@
    "name": "Glasgow Coma Scale",
    "category": "consciousness",
    "summary": "Eye, verbal and motor responsiveness",
-   "status": "placeholder"
+   "status": "implemented"
   },
   {
    "id": "gcsp",
@@ -104,7 +104,7 @@
    "name": "NIH Stroke Scale",
    "category": "stroke",
    "summary": "Neurological deficit in acute stroke",
-   "status": "placeholder"
+   "status": "implemented"
   },
   {
    "id": "aspects",
@@ -248,7 +248,7 @@
    "name": "Spinal Instability Neoplastic Score",
    "category": "spine",
    "summary": "Neoplastic spinal instability",
-   "status": "placeholder"
+   "status": "implemented"
   },
   {
    "id": "nurick",
@@ -312,7 +312,7 @@
    "name": "Modified Rankin Scale",
    "category": "functional",
    "summary": "Global disability and dependence",
-   "status": "placeholder"
+   "status": "implemented"
   },
   {
    "id": "rass",

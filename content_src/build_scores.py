@@ -1,0 +1,309 @@
+"""Insula Neuro Score — Phase 2 score content.
+Writes app/assets/content/scores/<id>.json for each score.
+All descriptors are paraphrased in original wording from the cited sources.
+Run: python3 content_src/build_scores.py"""
+import json, os
+
+REVIEWED = "2026-10-01"
+REVIEW = "Drafted from primary sources; pending independent clinician review before clinical release."
+CV = "2.0.0"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(HERE, "..", "app", "assets", "content")
+
+def o(value, label, points, code=None, detail=None):
+    d = {"value": str(value), "label": label, "points": points}
+    if code is not None: d["code"] = code
+    if detail: d["detail"] = detail
+    return d
+
+def base(**kw):
+    d = {"contentVersion": CV, "lastReviewed": REVIEWED, "reviewStatus": REVIEW, "scoringRules": [], "consistencyRules": [], "aliases": []}
+    d.update(kw); return d
+
+scores = []
+
+# =====================================================================  GCS
+scores.append(base(
+  id="gcs", name="Glasgow Coma Scale", abbreviation="GCS", aliases=["glasgow", "coma", "consciousness"],
+  category="consciousness", subcategory="Coma scales", specialties=["Neurology", "Neurosurgery", "Neurocritical Care", "Trauma"],
+  version={"label": "Adult GCS, structured approach", "detail": "Teasdale & Jennett 1974 with the 2014 structured-assessment terminology ('to pressure', 'not testable'). The paediatric GCS is a separate instrument."},
+  purpose="Standardised description of level of consciousness from eye, verbal and motor responses.",
+  intendedPopulation="Adults and older children with impaired consciousness; severity bands derive from traumatic brain injury.",
+  components=[{"id": "eye", "label": "Eye opening", "inputs": ["e"]}, {"id": "verbal", "label": "Verbal response", "inputs": ["v"]}, {"id": "motor", "label": "Motor response", "inputs": ["m"]}],
+  inputDefinitions=[
+    {"id": "e", "type": "single", "label": "Eye opening", "short": "Eye (E)", "help": "Record the best response. Use a stimulus only if there is no response at the previous level.",
+     "notTestable": {"label": "Not testable", "code": "ENT", "description": "Closed by a local factor such as swelling or a dressing."},
+     "options": [o(4, "Spontaneous", 4, "E4", "Open before any stimulus."), o(3, "To sound", 3, "E3", "After spoken or shouted request."),
+                 o(2, "To pressure", 2, "E2", "After fingertip, trapezius or supraorbital pressure."), o(1, "None", 1, "E1", "No opening; no interfering factor.")]},
+    {"id": "v", "type": "single", "label": "Verbal response", "short": "Verbal (V)",
+     "notTestable": {"label": "Not testable", "code": "VNT", "description": "A factor prevents communication, such as intubation."},
+     "options": [o(5, "Oriented", 5, "V5", "Correctly gives name, place and date."), o(4, "Confused", 4, "V4", "Not oriented but communicates coherently."),
+                 o(3, "Words", 3, "V3", "Intelligible single words."), o(2, "Sounds", 2, "V2", "Moans or groans only."), o(1, "None", 1, "V1", "No audible response; no interfering factor.")]},
+    {"id": "m", "type": "single", "label": "Best motor response", "short": "Motor (M)", "help": "Best response from either upper limb.",
+     "notTestable": {"label": "Not testable", "code": "MNT", "description": "Paralysed or another limiting factor."},
+     "options": [o(6, "Obeys commands", 6, "M6", "Performs a two-part request."), o(5, "Localising", 5, "M5", "Brings hand above clavicle toward the stimulus."),
+                 o(4, "Normal flexion", 4, "M4", "Rapid flexion at the elbow, not predominantly abnormal."), o(3, "Abnormal flexion", 3, "M3", "Slow, stereotyped flexion."),
+                 o(2, "Extension", 2, "M2", "Extension at the elbow."), o(1, "None", 1, "M1", "No movement; no interfering factor.")]}],
+  calculationMethod={"type": "sum", "notTestablePolicy": "block", "range": {"min": 3, "max": 15}, "display": "{total}", "share": "GCS {total} ({e_code} {v_code} {m_code})"},
+  notTestable={"label": "Total not reported", "summary": "A component is not testable, so a total is not reported. Communicate the components instead.",
+               "detail": "Substituting a value or summing only the testable components misrepresents the patient.",
+               "display": "{e_code} {v_code} {m_code}", "share": "GCS {e_code} {v_code} {m_code} (total not reported: component not testable)"},
+  interpretationRules=[{"when": "total == 15", "state": "none"}, {"when": "total >= 13", "state": "mild"}, {"when": "total >= 9", "state": "moderate"}, {"state": "severe"}],
+  resultStates=[
+    {"id": "none", "tone": "normal", "label": "No impairment measured", "range": "15", "summary": "No impairment of consciousness measured by GCS at this assessment.",
+     "detail": "A GCS of 15 does not exclude intracranial pathology, focal deficits or later deterioration."},
+    {"id": "mild", "tone": "low", "label": "Mild range", "range": "13–14", "summary": "Within the mild range of the TBI severity classification (13–15).", "detail": "Reassess serially; small changes can matter."},
+    {"id": "moderate", "tone": "moderate", "label": "Moderate impairment", "range": "9–12", "summary": "Moderate impairment of consciousness (TBI classification 9–12).",
+     "detail": "Assess cause, trajectory and associated findings according to the clinical situation and local protocol."},
+    {"id": "severe", "tone": "high", "label": "Severe impairment", "range": "3–8", "summary": "Severe impairment of consciousness (TBI classification 3–8).",
+     "detail": "Assess airway, ventilation, oxygenation, neurological status and other reversible causes according to the clinical situation and local protocol."}],
+  clinicalInsights=[
+    {"text": "Report the components with the total, e.g. E2 V3 M5 = 10. They carry more information than the sum."},
+    {"when": "m <= 3", "text": "The motor score is the component most strongly associated with outcome; abnormal flexion, extension or no response warrants close attention to trajectory."},
+    {"when": "total <= 8 && m >= 5", "text": "Low total with a relatively preserved motor response. Patients with the same total can differ substantially."},
+    {"on": "notTestable", "when": "v_nt", "text": "With verbal response not testable (e.g. intubated), the FOUR score assesses brainstem reflexes and respiration without a verbal component."}],
+  limitations=["Severity bands derive from traumatic brain injury.", "Verbal response cannot be assessed in intubated or aphasic patients.",
+               "Does not assess brainstem reflexes, pupils or lateralising signs.", "Inter-rater variability is higher in the intermediate range.",
+               {"when": "nt_count > 0", "text": "{nt_count} component(s) not testable: a total cannot be reported."}],
+  confounders=["Sedative or paralytic drugs", "Intoxication", "Hypoxia, hypotension or hypoglycaemia", "Post-ictal state", "Hypothermia", "Language barrier, deafness or aphasia", "Spinal cord or limb injury", "Facial or orbital swelling"],
+  commonErrors=["Reporting a total when a component is not testable, or scoring 1 instead of NT.", "Recording the worst instead of the best motor response.",
+                "Testing motor response in the legs (spinal reflexes mislead).", "Applying pressure before checking the response to sound.", "Scoring 'localising' when the hand does not cross the clavicle."],
+  whatItDoesNotTellYou=["The cause of impaired consciousness.", "Whether a focal or brainstem lesion is present.", "The need for any specific intervention.", "Prognosis on its own."],
+  relatedScores=[{"id": "gcsp", "relation": "Adds pupil reactivity"}, {"id": "four", "relation": "Coma scale without a verbal component"}, {"id": "wfns", "relation": "Uses GCS for SAH grading"}],
+  guideSections={"what": "A three-component scale (eye, verbal, motor) describing responsiveness; totals range 3–15.",
+    "whenUseful": "Initial and serial neurological assessment, handover, trauma triage, and as an input to WFNS, ICH Score and GCS-P.",
+    "howToCalculate": "Check for factors that interfere with each response. Observe, then stimulate: sound before physical pressure. Record the best response per component. Report components and, only when all are testable, the total.",
+    "clinicalContext": "Trends matter more than a single value. Communicate the components."},
+  sources=[{"citation": "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. A practical scale. Lancet. 1974;2(7872):81-84.", "doi": "10.1016/S0140-6736(74)91639-0"},
+           {"citation": "Teasdale G, Maas A, Lecky F, et al. The Glasgow Coma Scale at 40 years: standing the test of time. Lancet Neurol. 2014;13(8):844-854.", "doi": "10.1016/S1474-4422(14)70120-6"}],
+  licensing={"status": "Criteria in original wording with attribution", "note": "Official GCS aids, charts and translations (glasgowcomascale.org) are not reproduced."}))
+
+# =====================================================================  NIHSS
+UN_LIMB = {"label": "Untestable (UN)", "code": "UN", "requireReason": True, "reasons": ["Amputation", "Joint fusion"],
+           "description": "Only for amputation or joint fusion; record the reason."}
+def motor(id_, label, short, seconds, joint):
+    return {"id": id_, "type": "single", "label": label, "short": short,
+            "help": f"Score drift over {seconds} seconds. Untestable only for amputation or joint fusion at the {joint}.",
+            "notTestable": UN_LIMB,
+            "options": [o(0, "No drift", 0, detail=f"Holds position for the full {seconds} seconds."), o(1, "Drift", 1, detail="Drifts down before the end but does not hit the bed or support."),
+                        o(2, "Some effort against gravity", 2, detail="Cannot reach or hold position; drifts to bed."), o(3, "No effort against gravity", 3, detail="Limb falls."),
+                        o(4, "No movement", 4)]}
+scores.append(base(
+  id="nihss", name="NIH Stroke Scale", abbreviation="NIHSS", aliases=["stroke scale", "national institutes of health", "nih"],
+  category="stroke", subcategory="Clinical severity", specialties=["Stroke", "Neurology", "Emergency Medicine"],
+  version={"label": "NINDS NIH Stroke Scale (15 items)", "detail": "Item definitions per the NINDS scale (updated 2024). The optional distal motor item is not part of the total and is not included."},
+  purpose="Standardised quantification of neurological deficit in acute stroke.",
+  intendedPopulation="Adults with suspected or confirmed acute stroke, assessed by trained examiners.",
+  components=[
+    {"id": "consciousness", "label": "Level of consciousness", "inputs": ["item_1a", "item_1b", "item_1c"]},
+    {"id": "eye_movement", "label": "Gaze", "inputs": ["item_2"]},
+    {"id": "visual_fields", "label": "Visual fields", "inputs": ["item_3"]},
+    {"id": "face", "label": "Facial palsy", "inputs": ["item_4"]},
+    {"id": "arms", "label": "Motor arm", "inputs": ["item_5a", "item_5b"]},
+    {"id": "legs", "label": "Motor leg", "inputs": ["item_6a", "item_6b"]},
+    {"id": "coordination", "label": "Limb ataxia", "inputs": ["item_7"]},
+    {"id": "sensation", "label": "Sensory", "inputs": ["item_8"]},
+    {"id": "speech_language", "label": "Language", "inputs": ["item_9"]},
+    {"id": "articulation", "label": "Dysarthria", "inputs": ["item_10"]},
+    {"id": "attention", "label": "Extinction and inattention", "inputs": ["item_11"]}],
+  inputDefinitions=[
+    {"id": "item_1a", "type": "single", "label": "1a. Level of consciousness", "short": "1a LOC", "help": "A response must be chosen even if evaluation is limited (e.g. intubation, language barrier). 3 only if no movement other than reflexive posturing to noxious stimulation.",
+     "options": [o(0, "Alert, keenly responsive", 0), o(1, "Not alert; arousable by minor stimulation", 1), o(2, "Not alert; needs repeated or strong stimulation", 2), o(3, "Reflex responses only, or totally unresponsive", 3)]},
+    {"id": "item_1b", "type": "single", "label": "1b. LOC questions (month, age)", "short": "1b Questions", "help": "Only the initial answer is graded; no partial credit for being close.",
+     "options": [o(0, "Answers both correctly", 0), o(1, "Answers one correctly", 1), o(2, "Answers neither correctly", 2)]},
+    {"id": "item_1c", "type": "single", "label": "1c. LOC commands (eyes, grip)", "short": "1c Commands", "help": "Credit if an unequivocal attempt is made but not completed due to weakness. Only the first attempt is scored.",
+     "options": [o(0, "Performs both tasks correctly", 0), o(1, "Performs one task correctly", 1), o(2, "Performs neither task correctly", 2)]},
+    {"id": "item_2", "type": "single", "label": "2. Best gaze", "short": "2 Gaze", "help": "Horizontal eye movements only.",
+     "options": [o(0, "Normal", 0), o(1, "Partial gaze palsy", 1), o(2, "Forced deviation or total gaze paresis", 2, detail="Not overcome by the oculocephalic manoeuvre.")]},
+    {"id": "item_3", "type": "single", "label": "3. Visual fields", "short": "3 Visual",
+     "options": [o(0, "No visual loss", 0), o(1, "Partial hemianopia", 1), o(2, "Complete hemianopia", 2), o(3, "Bilateral hemianopia", 3, detail="Blind from any cause, including cortical blindness.")]},
+    {"id": "item_4", "type": "single", "label": "4. Facial palsy", "short": "4 Face",
+     "options": [o(0, "Normal, symmetrical movement", 0), o(1, "Minor paralysis", 1, detail="Flattened nasolabial fold, asymmetry on smiling."),
+                 o(2, "Partial paralysis", 2, detail="Total or near-total paralysis of the lower face."), o(3, "Complete paralysis of one or both sides", 3, detail="Absent upper and lower facial movement.")]},
+    motor("item_5a", "5a. Motor arm, left", "5a Left arm", 10, "shoulder"),
+    motor("item_5b", "5b. Motor arm, right", "5b Right arm", 10, "shoulder"),
+    motor("item_6a", "6a. Motor leg, left", "6a Left leg", 5, "hip"),
+    motor("item_6b", "6b. Motor leg, right", "6b Right leg", 5, "hip"),
+    {"id": "item_7", "type": "single", "label": "7. Limb ataxia", "short": "7 Ataxia", "help": "Finger-nose-finger and heel-shin tests, both sides. Scored only if out of proportion to weakness.",
+     "notTestable": UN_LIMB,
+     "options": [o(0, "Absent", 0), o(1, "Present in one limb", 1), o(2, "Present in two limbs", 2)]},
+    {"id": "item_8", "type": "single", "label": "8. Sensory", "short": "8 Sensory", "help": "Patients in coma (1a = 3) are scored 2.",
+     "options": [o(0, "Normal; no sensory loss", 0), o(1, "Mild-to-moderate sensory loss", 1), o(2, "Severe to total sensory loss", 2)]},
+    {"id": "item_9", "type": "single", "label": "9. Best language", "short": "9 Language", "help": "Patients in coma (1a = 3) are scored 3.",
+     "options": [o(0, "No aphasia; normal", 0), o(1, "Mild-to-moderate aphasia", 1), o(2, "Severe aphasia", 2), o(3, "Mute, global aphasia", 3)]},
+    {"id": "item_10", "type": "single", "label": "10. Dysarthria", "short": "10 Dysarthria",
+     "notTestable": {"label": "Untestable (UN)", "code": "UN", "requireReason": True, "reasons": ["Intubated", "Other physical barrier to speech"], "description": "Only for intubation or another physical barrier to producing speech; record the reason."},
+     "options": [o(0, "Normal", 0), o(1, "Mild-to-moderate dysarthria", 1), o(2, "Severe dysarthria", 2, detail="Unintelligible or worse, or mute/anarthric.")]},
+    {"id": "item_11", "type": "single", "label": "11. Extinction and inattention", "short": "11 Extinction",
+     "options": [o(0, "No abnormality", 0), o(1, "Inattention or extinction in one modality", 1, detail="Visual, tactile, auditory, spatial or personal."),
+                 o(2, "Profound hemi-inattention or extinction in more than one modality", 2)]}],
+  calculationMethod={"type": "sum", "notTestablePolicy": "exclude", "range": {"min": 0, "max": 42}, "display": "{total}", "share": "NIHSS {total}"},
+  consistencyRules=[
+    {"when": "item_1a == 3 && item_8 != 2", "severity": "warning", "inputs": ["item_8"], "message": "Item 1a is 3 (coma). NINDS instructions score item 8 (sensory) as 2 in coma."},
+    {"when": "item_1a == 3 && item_9 != 3", "severity": "warning", "inputs": ["item_9"], "message": "Item 1a is 3 (coma). NINDS instructions score item 9 (language) as 3 in coma."}],
+  interpretationRules=[{"when": "total == 0 && nt_count == 0", "state": "zero"}, {"state": "scored"}],
+  resultStates=[
+    {"id": "zero", "tone": "normal", "label": "No deficit measured", "range": "0", "summary": "No deficit measured on the NIHSS items at this assessment.",
+     "detail": "A score of 0 does not exclude stroke. Deficits outside the scale (e.g. gait ataxia, vertigo, isolated distal weakness) are not captured."},
+    {"id": "scored", "tone": "informational", "label": "NIHSS {total}", "range": "0–42", "summary": "Higher scores indicate greater measured neurological deficit.",
+     "detail": "The NINDS scale defines no official severity categories, and bands used in studies differ. Interpret the item profile and the trend alongside imaging and the clinical picture."}],
+  clinicalInsights=[
+    {"text": "Report the total with the item breakdown. Serial scores by the same method are more informative than a single value."},
+    {"when": "item_9 >= 1 || item_10 >= 1", "text": "Language and articulation items contribute to the total. For a similar lesion size, left-hemisphere strokes tend to score higher than right-hemisphere strokes."},
+    {"when": "item_11 >= 1", "text": "Extinction or inattention is present; neglect may affect the reliability of other items."},
+    {"when": "total <= 4", "text": "Low scores can still accompany disabling deficits; posterior circulation deficits in particular may be under-represented."}],
+  limitations=["Weighted toward anterior circulation and language; posterior circulation strokes may score low.", "Requires trained, certified examiners for reliability.",
+               "Item scoring follows strict instrument rules (e.g. first attempt only) that differ from routine examination.",
+               {"when": "nt_count > 0", "text": "{nt_count} item(s) untestable and contributing no points: the total may underestimate the deficit."}],
+  confounders=["Sedation or intubation", "Pre-existing deficits", "Aphasia affecting comprehension of commands", "Visual or hearing impairment", "Amputation or joint fusion", "Seizure or post-ictal state", "Hypoglycaemia or other stroke mimics"],
+  commonErrors=["Coaching the patient or scoring the best rather than the first attempt (items 1b, 1c).", "Scoring ataxia that is explained by weakness.",
+                "Marking items untestable for reasons other than those the instrument allows.", "Scoring a pre-existing deficit as new without documenting it."],
+  whatItDoesNotTellYou=["Whether the deficit is due to stroke or a mimic.", "Vessel occlusion or infarct size.", "Eligibility for any specific treatment.", "Functional outcome on its own."],
+  relatedScores=[{"id": "mrs", "relation": "Functional outcome after stroke"}, {"id": "aspects", "relation": "Early ischaemic change on CT"}, {"id": "gcs", "relation": "Level of consciousness"}],
+  guideSections={"what": "A 15-item examination quantifying neurological deficit after stroke; totals range 0–42.",
+    "whenUseful": "Initial assessment of suspected stroke, serial monitoring, communication between teams, and trial outcomes.",
+    "howToCalculate": "Administer items in order. Record what the patient does, not what you think they can do. Score each item immediately; do not go back. Use UN only where the instrument allows it and record the reason.",
+    "clinicalContext": "Treatment decisions use the NIHSS alongside imaging, timing and patient factors under local protocol."},
+  sources=[{"citation": "National Institute of Neurological Disorders and Stroke. NIH Stroke Scale (updated Feb 2024).", "url": "https://www.ninds.nih.gov/health-information/stroke/assess-and-treat/nih-stroke-scale"},
+           {"citation": "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.", "doi": "10.1161/01.STR.20.7.864"}],
+  licensing={"status": "Public domain (NINDS); original wording", "note": "The NIHSS is in the public domain. Official training and certification materials are not reproduced."}))
+
+# =====================================================================  mRS
+scores.append(base(
+  id="mrs", name="Modified Rankin Scale", abbreviation="mRS", aliases=["rankin", "disability", "functional outcome"],
+  category="functional", subcategory="Global disability", specialties=["Stroke", "Neurology", "Neurosurgery", "Rehabilitation"],
+  version={"label": "Modified Rankin Scale 0–6", "detail": "Rankin 1957, modified by van Swieten et al. 1988; grade 6 (death) as used in trials."},
+  purpose="Global measure of disability and dependence in daily activities.",
+  intendedPopulation="Adults after stroke and other neurological disorders.",
+  components=[{"id": "function", "label": "Functional level", "inputs": ["grade"]}],
+  inputDefinitions=[{"id": "grade", "type": "single", "label": "Functional level", "short": "mRS grade", "help": "Choose the single level that best describes the patient's current overall function.",
+    "options": [o(0, "No symptoms", 0, "0"), o(1, "No significant disability", 1, "1", "Able to carry out all usual duties and activities despite some symptoms."),
+                o(2, "Slight disability", 2, "2", "Unable to do all previous activities, but looks after own affairs without help."),
+                o(3, "Moderate disability", 3, "3", "Needs some help, but walks without assistance."),
+                o(4, "Moderately severe disability", 4, "4", "Unable to walk or attend to bodily needs without assistance."),
+                o(5, "Severe disability", 5, "5", "Bedridden, incontinent, needs constant nursing care."), o(6, "Dead", 6, "6")]}],
+  calculationMethod={"type": "select", "input": "grade", "range": {"min": 0, "max": 6}, "display": "mRS {total}", "share": "mRS {total}"},
+  interpretationRules=[{"when": "total == %d" % i, "state": "g%d" % i} for i in range(7)],
+  resultStates=[
+    {"id": "g0", "tone": "normal", "label": "No symptoms", "range": "0", "summary": "No symptoms."},
+    {"id": "g1", "tone": "low", "label": "No significant disability", "range": "1", "summary": "Symptoms present; all usual activities possible."},
+    {"id": "g2", "tone": "mild", "label": "Slight disability", "range": "2", "summary": "Independent in own affairs with some activity restriction."},
+    {"id": "g3", "tone": "moderate", "label": "Moderate disability", "range": "3", "summary": "Needs some help; walks without assistance."},
+    {"id": "g4", "tone": "high", "label": "Moderately severe disability", "range": "4", "summary": "Dependent for walking and bodily needs."},
+    {"id": "g5", "tone": "critical", "label": "Severe disability", "range": "5", "summary": "Requires constant care."},
+    {"id": "g6", "tone": "informational", "label": "Dead", "range": "6", "summary": "Death."}],
+  clinicalInsights=[{"text": "'Favourable outcome' cut-offs differ between studies (0–1, 0–2, or ordinal shift). State the definition when comparing."},
+                    {"when": "total >= 1 && total <= 3", "text": "Boundaries between grades 1–3 have the most inter-rater variability; structured interviews improve reliability."}],
+  limitations=["Moderate inter-rater reliability without a structured assessment.", "Weighted toward mobility; cognition and mood may be under-represented.", "Pre-morbid disability affects interpretation."],
+  confounders=["Pre-morbid disability", "Non-neurological comorbidity", "Proxy versus patient report"],
+  commonErrors=["Not recording the pre-stroke mRS.", "Grading from mobility alone.", "Assigning 0 when minor symptoms persist (should be 1)."],
+  whatItDoesNotTellYou=["The specific deficit causing disability.", "Quality of life.", "Rehabilitation potential."],
+  relatedScores=[{"id": "nihss", "relation": "Acute deficit severity"}, {"id": "gose", "relation": "Outcome after brain injury"}],
+  guideSections={"what": "A 7-level ordinal scale from 0 (no symptoms) to 6 (dead) describing global disability.",
+    "whenUseful": "Stroke outcome assessment, documenting pre-morbid function, and follow-up.",
+    "howToCalculate": "Select the one level that best describes current function across all activities. Use a structured interview where possible.",
+    "clinicalContext": "Pre-stroke mRS is used in many protocols and should be documented with its source."},
+  sources=[{"citation": "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.", "doi": "10.1161/01.STR.19.5.604"},
+           {"citation": "Rankin J. Cerebral vascular accidents in patients over the age of 60. II. Prognosis. Scott Med J. 1957;2(5):200-215."}],
+  licensing={"status": "Widely published grade definitions, original wording", "note": "Structured mRS interview instruments (e.g. mRS-9Q, RFA) have their own terms and are not reproduced."}))
+
+# =====================================================================  SINS
+scores.append(base(
+  id="sins", name="Spinal Instability Neoplastic Score", abbreviation="SINS", aliases=["spinal instability", "metastasis", "neoplastic", "sosg"],
+  category="spine", subcategory="Spinal oncology", specialties=["Neurosurgery", "Spine Surgery", "Radiation Oncology", "Radiology"],
+  version={"label": "SOSG SINS (Fisher et al. 2010)", "detail": "Six components, total 0–18. Categories 0–6 stable, 7–12 potentially unstable, 13–18 unstable."},
+  purpose="Assessment of tumour-related spinal instability to support referral and multidisciplinary discussion.",
+  intendedPopulation="Adults with primary or metastatic neoplastic involvement of the spine (assessed per affected level).",
+  components=[
+    {"id": "spinal_location", "label": "Location", "inputs": ["location"]},
+    {"id": "mechanical_pain", "label": "Pain", "inputs": ["pain"]},
+    {"id": "bone_quality", "label": "Bone lesion", "inputs": ["lesion"]},
+    {"id": "radiographic_alignment", "label": "Radiographic alignment", "inputs": ["alignment"]},
+    {"id": "body_collapse", "label": "Vertebral body collapse", "inputs": ["collapse"]},
+    {"id": "posterior_involvement", "label": "Posterolateral involvement", "inputs": ["posterolateral"]}],
+  inputDefinitions=[
+    {"id": "location", "type": "single", "label": "Location", "short": "Location",
+     "options": [o(3, "Junctional", 3, detail="Occiput–C2, C7–T2, T11–L1, L5–S1"), o(2, "Mobile spine", 2, detail="C3–C6, L2–L4"), o(1, "Semi-rigid", 1, detail="T3–T10"), o(0, "Rigid", 0, detail="S2–S5")]},
+    {"id": "pain", "type": "single", "label": "Pain", "short": "Pain", "help": "Mechanical pain: relief with recumbency and/or pain with movement or loading of the spine.",
+     "options": [o(3, "Mechanical pain", 3), o(1, "Occasional pain, not mechanical", 1), o(0, "Pain-free lesion", 0)]},
+    {"id": "lesion", "type": "single", "label": "Bone lesion", "short": "Bone lesion",
+     "options": [o(2, "Lytic", 2), o(1, "Mixed (lytic/blastic)", 1), o(0, "Blastic", 0)]},
+    {"id": "alignment", "type": "single", "label": "Radiographic spinal alignment", "short": "Alignment",
+     "options": [o(4, "Subluxation or translation present", 4), o(2, "De novo deformity (kyphosis or scoliosis)", 2), o(0, "Normal alignment", 0)]},
+    {"id": "collapse", "type": "single", "label": "Vertebral body collapse", "short": "Collapse",
+     "options": [o(3, "More than 50% collapse", 3), o(2, "Less than 50% collapse", 2), o(1, "No collapse, more than 50% of body involved", 1), o(0, "None of the above", 0)]},
+    {"id": "posterolateral", "type": "single", "label": "Posterolateral involvement", "short": "Posterolateral",
+     "help": "Facet, pedicle or costovertebral joint fracture, or replacement with tumour.",
+     "options": [o(3, "Bilateral", 3), o(1, "Unilateral", 1), o(0, "None", 0)]}],
+  calculationMethod={"type": "sum", "range": {"min": 0, "max": 18}, "display": "{total}", "share": "SINS {total}"},
+  interpretationRules=[{"when": "total <= 6", "state": "stable"}, {"when": "total <= 12", "state": "potential"}, {"state": "unstable"}],
+  resultStates=[
+    {"id": "stable", "tone": "low", "label": "Stable", "range": "0–6", "summary": "Category: stable (0–6)."},
+    {"id": "potential", "tone": "moderate", "label": "Potentially unstable", "range": "7–12", "summary": "Category: indeterminate (possibly impending) instability (7–12).",
+     "detail": "In the original SINS publication, scores of 7–18 were considered to warrant surgical consultation. Integrate with neurological status, histology, prognosis and patient goals."},
+    {"id": "unstable", "tone": "high", "label": "Unstable", "range": "13–18", "summary": "Category: instability (13–18).",
+     "detail": "In the original SINS publication, scores of 7–18 were considered to warrant surgical consultation. Integrate with neurological status, histology, prognosis and patient goals."}],
+  clinicalInsights=[
+    {"text": "SINS assesses mechanical stability only; neurological compression, histology and prognosis are assessed separately."},
+    {"when": "total >= 7 && total <= 12", "text": "Intermediate scores have the most inter-observer variation; component-level review helps multidisciplinary discussion."},
+    {"when": "pain == 3", "text": "Mechanical pain is a major contributor and reflects clinical, not only radiological, assessment."}],
+  limitations=["Designed for neoplastic disease, not trauma or infection.", "Agreement is lower in the potentially unstable range.",
+               "Assessed per level; multi-level disease needs level-by-level scoring.", "Does not include neurological status."],
+  confounders=["Prior surgery or instrumentation", "Osteoporotic fracture at the same level", "Imaging modality and quality", "Pain from causes other than the lesion"],
+  commonErrors=["Labelling non-mechanical pain as mechanical.", "Using the wrong junctional boundaries (e.g. C7–T2, T11–L1).", "Scoring alignment from supine imaging alone without noting it."],
+  whatItDoesNotTellYou=["Whether neural compression is present.", "Tumour radiosensitivity or prognosis.", "Which treatment is appropriate."],
+  relatedScores=[{"id": "tokuhashi", "relation": "Prognosis in spinal metastasis"}, {"id": "tomita", "relation": "Prognosis in spinal metastasis"}, {"id": "kps", "relation": "Performance status"}],
+  guideSections={"what": "A six-component score (location, pain, bone lesion, alignment, collapse, posterolateral involvement) for tumour-related spinal instability; totals range 0–18.",
+    "whenUseful": "Communicating instability between oncology, radiation oncology, radiology and spine surgery; screening for referral.",
+    "howToCalculate": "Score the affected level on each component using clinical history and CT/MRI, then sum.",
+    "clinicalContext": "One input to multidisciplinary decisions, alongside neurology, oncology, mechanical instability and systemic disease frameworks."},
+  sources=[{"citation": "Fisher CG, DiPaola CP, Ryken TC, et al. A novel classification system for spinal instability in neoplastic disease: an evidence-based approach and expert consensus from the Spine Oncology Study Group. Spine. 2010;35(22):E1221-E1229.", "doi": "10.1097/BRS.0b013e3181e16ae2"},
+           {"citation": "Fourney DR, Frangou EM, Ryken TC, et al. Spinal instability neoplastic score: an analysis of reliability and validity from the Spine Oncology Study Group. J Clin Oncol. 2011;29(22):3072-3077.", "doi": "10.1200/JCO.2010.34.3897"}],
+  licensing={"status": "Published classification, original wording", "note": "No reproduction restrictions identified for the scoring criteria."}))
+
+# ====================================================  Input-types demo (non-clinical, design system only)
+demo = base(
+  id="demo-inputs", name="Input types demonstration", abbreviation="Demo", category="demo", subcategory="Design system", specialties=["None"],
+  version={"label": "Non-clinical demo", "detail": "Exercises every engine input type. Not a clinical score."},
+  purpose="Demonstrates every input control and result state. Not for clinical use.", intendedPopulation="Not applicable.",
+  components=[{"id": "choices", "label": "Choice inputs", "inputs": ["single", "dropdown", "yes_no", "multi"]},
+              {"id": "numbers", "label": "Numeric inputs", "inputs": ["integer", "decimal", "number", "temperature"]}],
+  inputDefinitions=[
+    {"id": "single", "type": "single", "label": "Single choice", "short": "Single", "notTestable": {"label": "Not testable", "code": "NT"},
+     "options": [o("a", "Option A", 0), o("b", "Option B", 1), o("c", "Option C", 2)]},
+    {"id": "dropdown", "type": "dropdown", "label": "Dropdown", "short": "Dropdown", "options": [o("x", "First", 0), o("y", "Second", 1), o("z", "Third", 2)]},
+    {"id": "yes_no", "type": "yesno", "label": "Yes / No", "short": "Yes/No", "points": {"yes": 1, "no": 0}},
+    {"id": "multi", "type": "multi", "label": "Multiple choice", "short": "Multiple", "help": "Select all that apply.", "maxPoints": 3,
+     "options": [o("p", "Finding P", 1), o("q", "Finding Q", 1), o("r", "Finding R", 1), {"value": "none", "label": "None of these", "points": 0, "exclusive": True}]},
+    {"id": "integer", "type": "integer", "label": "Integer", "short": "Integer", "min": 0, "max": 10, "pointBands": [{"max": 3, "points": 0}, {"min": 4, "max": 7, "points": 1}, {"min": 8, "points": 2}]},
+    {"id": "decimal", "type": "decimal", "label": "Decimal (1 dp)", "short": "Decimal", "min": 0, "max": 5, "decimals": 1, "pointBands": [{"max": 2.4, "points": 0}, {"min": 2.5, "points": 1}]},
+    {"id": "number", "type": "number", "label": "Number", "short": "Number", "unit": "units", "min": 0, "max": 100, "required": False, "pointBands": [{"max": 49.999, "points": 0}, {"min": 50, "points": 1}]},
+    {"id": "temperature", "type": "measurement", "label": "Clinical measurement", "short": "Temperature", "min": 30, "max": 43,
+     "units": [{"id": "C", "label": "°C", "factor": 1}, {"id": "F", "label": "°F", "factor": 0.5555555556, "offset": -17.7777777778}],
+     "pointBands": [{"max": 37.9, "points": 0}, {"min": 38, "points": 1}]}],
+  calculationMethod={"type": "sum", "notTestablePolicy": "block", "range": {"min": 0, "max": 13}, "display": "{total}", "share": "Demo {total}"},
+  interpretationRules=[{"when": "total == 0", "state": "s0"}, {"when": "total <= 2", "state": "s1"}, {"when": "total <= 4", "state": "s2"}, {"when": "total <= 6", "state": "s3"},
+                       {"when": "total <= 8", "state": "s4"}, {"when": "total <= 10", "state": "s5"}, {"state": "s6"}],
+  resultStates=[{"id": "s0", "tone": "normal", "label": "Normal tone", "summary": "Demo state."}, {"id": "s1", "tone": "low", "label": "Low tone", "summary": "Demo state."},
+                {"id": "s2", "tone": "mild", "label": "Mild tone", "summary": "Demo state."}, {"id": "s3", "tone": "moderate", "label": "Moderate tone", "summary": "Demo state."},
+                {"id": "s4", "tone": "high", "label": "High tone", "summary": "Demo state."}, {"id": "s5", "tone": "critical", "label": "Critical tone", "summary": "Demo state."},
+                {"id": "s6", "tone": "informational", "label": "Informational tone", "summary": "Demo state."}],
+  notTestable={"label": "Not interpretable", "summary": "Demo of the not-interpretable state.", "display": "–"},
+  clinicalInsights=[{"text": "Demonstration only."}], limitations=["Not a clinical score."], confounders=[], commonErrors=[], whatItDoesNotTellYou=[],
+  relatedScores=[], guideSections={"what": "Demo."}, sources=[{"citation": "Not applicable (design-system demonstration)."}])
+
+if __name__ == "__main__":
+    import subprocess
+    os.makedirs(os.path.join(OUT, "scores"), exist_ok=True); os.makedirs(os.path.join(OUT, "dev"), exist_ok=True)
+    for s in scores:
+        json.dump(s, open(os.path.join(OUT, "scores", s["id"] + ".json"), "w"), ensure_ascii=False, indent=1)
+    json.dump(demo, open(os.path.join(OUT, "dev", "demo-inputs.json"), "w"), ensure_ascii=False, indent=1)
+    # mark implemented scores in the catalogue
+    cat_path = os.path.join(OUT, "catalog.json"); cat = json.load(open(cat_path))
+    ids = {s["id"] for s in scores}
+    for c in cat["scores"]:
+        c["status"] = "implemented" if c["id"] in ids else "placeholder"
+    cat["contentVersion"] = CV
+    cat["note"] = "Catalogue. Scores with status 'implemented' have a content file in content/scores/; placeholders contain no scoring criteria."
+    json.dump(cat, open(cat_path, "w"), ensure_ascii=False, indent=1)
+    print("wrote", ", ".join(sorted(ids)), "+ demo")

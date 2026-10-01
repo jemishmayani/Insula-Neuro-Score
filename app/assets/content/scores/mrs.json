@@ -1,0 +1,245 @@
+{
+ "contentVersion": "2.0.0",
+ "lastReviewed": "2026-10-01",
+ "reviewStatus": "Drafted from primary sources; pending independent clinician review before clinical release.",
+ "scoringRules": [],
+ "consistencyRules": [],
+ "aliases": [
+  "rankin",
+  "disability",
+  "functional outcome"
+ ],
+ "id": "mrs",
+ "name": "Modified Rankin Scale",
+ "abbreviation": "mRS",
+ "category": "functional",
+ "subcategory": "Global disability",
+ "specialties": [
+  "Stroke",
+  "Neurology",
+  "Neurosurgery",
+  "Rehabilitation"
+ ],
+ "version": {
+  "label": "Modified Rankin Scale 0–6",
+  "detail": "Rankin 1957, modified by van Swieten et al. 1988; grade 6 (death) as used in trials."
+ },
+ "purpose": "Global measure of disability and dependence in daily activities.",
+ "intendedPopulation": "Adults after stroke and other neurological disorders.",
+ "components": [
+  {
+   "id": "function",
+   "label": "Functional level",
+   "inputs": [
+    "grade"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Functional level",
+   "short": "mRS grade",
+   "help": "Choose the single level that best describes the patient's current overall function.",
+   "options": [
+    {
+     "value": "0",
+     "label": "No symptoms",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "No significant disability",
+     "points": 1,
+     "code": "1",
+     "detail": "Able to carry out all usual duties and activities despite some symptoms."
+    },
+    {
+     "value": "2",
+     "label": "Slight disability",
+     "points": 2,
+     "code": "2",
+     "detail": "Unable to do all previous activities, but looks after own affairs without help."
+    },
+    {
+     "value": "3",
+     "label": "Moderate disability",
+     "points": 3,
+     "code": "3",
+     "detail": "Needs some help, but walks without assistance."
+    },
+    {
+     "value": "4",
+     "label": "Moderately severe disability",
+     "points": 4,
+     "code": "4",
+     "detail": "Unable to walk or attend to bodily needs without assistance."
+    },
+    {
+     "value": "5",
+     "label": "Severe disability",
+     "points": 5,
+     "code": "5",
+     "detail": "Bedridden, incontinent, needs constant nursing care."
+    },
+    {
+     "value": "6",
+     "label": "Dead",
+     "points": 6,
+     "code": "6"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 0,
+   "max": 6
+  },
+  "display": "mRS {total}",
+  "share": "mRS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "g0"
+  },
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  },
+  {
+   "when": "total == 6",
+   "state": "g6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g0",
+   "tone": "normal",
+   "label": "No symptoms",
+   "range": "0",
+   "summary": "No symptoms."
+  },
+  {
+   "id": "g1",
+   "tone": "low",
+   "label": "No significant disability",
+   "range": "1",
+   "summary": "Symptoms present; all usual activities possible."
+  },
+  {
+   "id": "g2",
+   "tone": "mild",
+   "label": "Slight disability",
+   "range": "2",
+   "summary": "Independent in own affairs with some activity restriction."
+  },
+  {
+   "id": "g3",
+   "tone": "moderate",
+   "label": "Moderate disability",
+   "range": "3",
+   "summary": "Needs some help; walks without assistance."
+  },
+  {
+   "id": "g4",
+   "tone": "high",
+   "label": "Moderately severe disability",
+   "range": "4",
+   "summary": "Dependent for walking and bodily needs."
+  },
+  {
+   "id": "g5",
+   "tone": "critical",
+   "label": "Severe disability",
+   "range": "5",
+   "summary": "Requires constant care."
+  },
+  {
+   "id": "g6",
+   "tone": "informational",
+   "label": "Dead",
+   "range": "6",
+   "summary": "Death."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "'Favourable outcome' cut-offs differ between studies (0–1, 0–2, or ordinal shift). State the definition when comparing."
+  },
+  {
+   "when": "total >= 1 && total <= 3",
+   "text": "Boundaries between grades 1–3 have the most inter-rater variability; structured interviews improve reliability."
+  }
+ ],
+ "limitations": [
+  "Moderate inter-rater reliability without a structured assessment.",
+  "Weighted toward mobility; cognition and mood may be under-represented.",
+  "Pre-morbid disability affects interpretation."
+ ],
+ "confounders": [
+  "Pre-morbid disability",
+  "Non-neurological comorbidity",
+  "Proxy versus patient report"
+ ],
+ "commonErrors": [
+  "Not recording the pre-stroke mRS.",
+  "Grading from mobility alone.",
+  "Assigning 0 when minor symptoms persist (should be 1)."
+ ],
+ "whatItDoesNotTellYou": [
+  "The specific deficit causing disability.",
+  "Quality of life.",
+  "Rehabilitation potential."
+ ],
+ "relatedScores": [
+  {
+   "id": "nihss",
+   "relation": "Acute deficit severity"
+  },
+  {
+   "id": "gose",
+   "relation": "Outcome after brain injury"
+  }
+ ],
+ "guideSections": {
+  "what": "A 7-level ordinal scale from 0 (no symptoms) to 6 (dead) describing global disability.",
+  "whenUseful": "Stroke outcome assessment, documenting pre-morbid function, and follow-up.",
+  "howToCalculate": "Select the one level that best describes current function across all activities. Use a structured interview where possible.",
+  "clinicalContext": "Pre-stroke mRS is used in many protocols and should be documented with its source."
+ },
+ "sources": [
+  {
+   "citation": "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.",
+   "doi": "10.1161/01.STR.19.5.604"
+  },
+  {
+   "citation": "Rankin J. Cerebral vascular accidents in patients over the age of 60. II. Prognosis. Scott Med J. 1957;2(5):200-215."
+  }
+ ],
+ "licensing": {
+  "status": "Widely published grade definitions, original wording",
+  "note": "Structured mRS interview instruments (e.g. mRS-9Q, RFA) have their own terms and are not reproduced."
+ }
+}

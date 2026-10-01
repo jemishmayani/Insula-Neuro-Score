@@ -1,0 +1,330 @@
+{
+ "scoreId": "nihss",
+ "cases": [
+  {
+   "name": "minimum (0)",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 0,
+    "state": "zero",
+    "tone": "normal"
+   }
+  },
+  {
+   "name": "maximum (42)",
+   "answers": {
+    "item_1a": "3",
+    "item_1b": "2",
+    "item_1c": "2",
+    "item_2": "2",
+    "item_3": "3",
+    "item_4": "3",
+    "item_5a": "4",
+    "item_5b": "4",
+    "item_6a": "4",
+    "item_6b": "4",
+    "item_7": "2",
+    "item_8": "2",
+    "item_9": "3",
+    "item_10": "2",
+    "item_11": "2"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 42,
+    "state": "scored",
+    "tone": "informational",
+    "label": "NIHSS 42",
+    "warnings": 0
+   }
+  },
+  {
+   "name": "intermediate left MCA pattern (14)",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "1",
+    "item_1c": "0",
+    "item_2": "1",
+    "item_3": "1",
+    "item_4": "2",
+    "item_5a": "0",
+    "item_5b": "3",
+    "item_6a": "0",
+    "item_6b": "2",
+    "item_7": "0",
+    "item_8": "1",
+    "item_9": "2",
+    "item_10": "1",
+    "item_11": "0"
+   },
+   "expect": {
+    "total": 14,
+    "state": "scored",
+    "label": "NIHSS 14",
+    "insightsContains": "left-hemisphere"
+   }
+  },
+  {
+   "name": "boundary 1",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "1",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "total": 1,
+    "state": "scored"
+   }
+  },
+  {
+   "name": "UN arm with reason: excluded and flagged",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": {
+     "nt": true,
+     "reason": "Amputation"
+    },
+    "item_5b": "2",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 2,
+    "notTestable": 1,
+    "warnings": 1,
+    "limitationsContains": "untestable"
+   }
+  },
+  {
+   "name": "UN only, total 0 is not 'no deficit'",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": {
+     "nt": true,
+     "reason": "Joint fusion"
+    },
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "total": 0,
+    "state": "scored",
+    "warnings": 1
+   }
+  },
+  {
+   "name": "UN without reason is invalid",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": {
+     "nt": true
+    },
+    "item_11": "0"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1
+   }
+  },
+  {
+   "name": "UN with disallowed reason is invalid",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": {
+     "nt": true,
+     "reason": "Patient refused"
+    },
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1
+   }
+  },
+  {
+   "name": "UN on item that does not allow it",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": {
+     "nt": true,
+     "reason": "x"
+    },
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1
+   }
+  },
+  {
+   "name": "coma consistency warnings",
+   "answers": {
+    "item_1a": "3",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "status": "complete",
+    "warnings": 2,
+    "warningContains": "item 8"
+   }
+  },
+  {
+   "name": "coma consistent: no warnings",
+   "answers": {
+    "item_1a": "3",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "2",
+    "item_9": "3",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "warnings": 0,
+    "total": 8
+   }
+  },
+  {
+   "name": "missing items",
+   "answers": {
+    "item_1a": "0"
+   },
+   "expect": {
+    "status": "incomplete",
+    "missing": 14
+   }
+  },
+  {
+   "name": "invalid value",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "4",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1
+   }
+  }
+ ]
+}

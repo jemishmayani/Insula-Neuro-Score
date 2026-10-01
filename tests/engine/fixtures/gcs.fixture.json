@@ -1,0 +1,160 @@
+{
+ "scoreId": "gcs",
+ "cases": [
+  {
+   "name": "minimum (3)",
+   "answers": {
+    "e": "1",
+    "v": "1",
+    "m": "1"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 3,
+    "display": "3",
+    "state": "severe",
+    "tone": "high"
+   }
+  },
+  {
+   "name": "maximum (15)",
+   "answers": {
+    "e": "4",
+    "v": "5",
+    "m": "6"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 15,
+    "state": "none",
+    "tone": "normal"
+   }
+  },
+  {
+   "name": "boundary 14 \u2192 mild",
+   "answers": {
+    "e": "3",
+    "v": "5",
+    "m": "6"
+   },
+   "expect": {
+    "total": 14,
+    "state": "mild",
+    "tone": "low"
+   }
+  },
+  {
+   "name": "boundary 13 \u2192 mild",
+   "answers": {
+    "e": "3",
+    "v": "4",
+    "m": "6"
+   },
+   "expect": {
+    "total": 13,
+    "state": "mild"
+   }
+  },
+  {
+   "name": "boundary 12 \u2192 moderate",
+   "answers": {
+    "e": "3",
+    "v": "4",
+    "m": "5"
+   },
+   "expect": {
+    "total": 12,
+    "state": "moderate"
+   }
+  },
+  {
+   "name": "boundary 9 \u2192 moderate",
+   "answers": {
+    "e": "2",
+    "v": "3",
+    "m": "4"
+   },
+   "expect": {
+    "total": 9,
+    "state": "moderate"
+   }
+  },
+  {
+   "name": "boundary 8 \u2192 severe",
+   "answers": {
+    "e": "2",
+    "v": "2",
+    "m": "4"
+   },
+   "expect": {
+    "total": 8,
+    "state": "severe",
+    "tone": "high"
+   }
+  },
+  {
+   "name": "intermediate 10 with share text",
+   "answers": {
+    "e": "2",
+    "v": "3",
+    "m": "5"
+   },
+   "expect": {
+    "total": 10,
+    "shareText": "GCS 10 (E2 V3 M5) \u2014 Moderate impairment"
+   }
+  },
+  {
+   "name": "not testable verbal blocks total",
+   "answers": {
+    "e": "2",
+    "v": {
+     "nt": true
+    },
+    "m": "5"
+   },
+   "expect": {
+    "status": "not-interpretable",
+    "total": null,
+    "display": "E2 VNT M5",
+    "tone": "not-interpretable",
+    "notTestable": 1,
+    "insightsContains": "FOUR score"
+   }
+  },
+  {
+   "name": "missing motor",
+   "answers": {
+    "e": "2",
+    "v": "3"
+   },
+   "expect": {
+    "status": "incomplete",
+    "missing": 1,
+    "tone": "incomplete",
+    "total": null
+   }
+  },
+  {
+   "name": "invalid option",
+   "answers": {
+    "e": "7",
+    "v": "3",
+    "m": "5"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1,
+    "total": null
+   }
+  },
+  {
+   "name": "empty",
+   "answers": {},
+   "expect": {
+    "status": "incomplete",
+    "missing": 3
+   }
+  }
+ ]
+}

@@ -42,6 +42,8 @@
     error: '<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>',
     inbox: '<path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 2h6l1-2h5"/>',
     reset: '<path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/>',
+    copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+    share: '<circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/>',
     /* category glyphs */
     consciousness: '<circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>',
     stroke: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
@@ -65,6 +67,8 @@
     critical: '<path d="M8.2 2.8h7.6l5.4 5.4v7.6l-5.4 5.4H8.2l-5.4-5.4V8.2z" fill="currentColor"/><path d="M12 7.5v6M12 16.5v.2" stroke="var(--color-surface)" stroke-width="2.4"/>',
     error: P.error,
     info: P.info,
+    informational: P.info,
+    "not-interpretable": '<circle cx="12" cy="12" r="9"/><path d="M5.6 18.4L18.4 5.6"/>',
     incomplete: '<circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/><path d="M8.5 12h.1M12 12h.1M15.5 12h.1"/>',
     neutral: '<circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/>',
     primary: P.info
@@ -73,7 +77,7 @@
   function stateIcon(tone) { return svg(STATE_ICON[tone] || STATE_ICON.info); }
 
   var TONE_LABEL = { normal: "Normal / low concern", low: "Low concern", mild: "Mild", moderate: "Moderate", high: "High concern",
-    critical: "Very high concern", info: "Informational", incomplete: "Incomplete", success: "Success", warning: "Warning",
+    critical: "Very high concern", info: "Informational", informational: "Informational", "not-interpretable": "Not interpretable", incomplete: "Incomplete", success: "Success", warning: "Warning",
     concern: "High concern", error: "Error", neutral: "Neutral", primary: "Primary" };
 
   /* ---------------- Components ---------------- */

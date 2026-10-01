@@ -1,0 +1,353 @@
+{
+ "contentVersion": "2.0.0",
+ "lastReviewed": "2026-10-01",
+ "reviewStatus": "Drafted from primary sources; pending independent clinician review before clinical release.",
+ "scoringRules": [],
+ "consistencyRules": [],
+ "aliases": [
+  "glasgow",
+  "coma",
+  "consciousness"
+ ],
+ "id": "gcs",
+ "name": "Glasgow Coma Scale",
+ "abbreviation": "GCS",
+ "category": "consciousness",
+ "subcategory": "Coma scales",
+ "specialties": [
+  "Neurology",
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Trauma"
+ ],
+ "version": {
+  "label": "Adult GCS, structured approach",
+  "detail": "Teasdale & Jennett 1974 with the 2014 structured-assessment terminology ('to pressure', 'not testable'). The paediatric GCS is a separate instrument."
+ },
+ "purpose": "Standardised description of level of consciousness from eye, verbal and motor responses.",
+ "intendedPopulation": "Adults and older children with impaired consciousness; severity bands derive from traumatic brain injury.",
+ "components": [
+  {
+   "id": "eye",
+   "label": "Eye opening",
+   "inputs": [
+    "e"
+   ]
+  },
+  {
+   "id": "verbal",
+   "label": "Verbal response",
+   "inputs": [
+    "v"
+   ]
+  },
+  {
+   "id": "motor",
+   "label": "Motor response",
+   "inputs": [
+    "m"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "e",
+   "type": "single",
+   "label": "Eye opening",
+   "short": "Eye (E)",
+   "help": "Record the best response. Use a stimulus only if there is no response at the previous level.",
+   "notTestable": {
+    "label": "Not testable",
+    "code": "ENT",
+    "description": "Closed by a local factor such as swelling or a dressing."
+   },
+   "options": [
+    {
+     "value": "4",
+     "label": "Spontaneous",
+     "points": 4,
+     "code": "E4",
+     "detail": "Open before any stimulus."
+    },
+    {
+     "value": "3",
+     "label": "To sound",
+     "points": 3,
+     "code": "E3",
+     "detail": "After spoken or shouted request."
+    },
+    {
+     "value": "2",
+     "label": "To pressure",
+     "points": 2,
+     "code": "E2",
+     "detail": "After fingertip, trapezius or supraorbital pressure."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "E1",
+     "detail": "No opening; no interfering factor."
+    }
+   ]
+  },
+  {
+   "id": "v",
+   "type": "single",
+   "label": "Verbal response",
+   "short": "Verbal (V)",
+   "notTestable": {
+    "label": "Not testable",
+    "code": "VNT",
+    "description": "A factor prevents communication, such as intubation."
+   },
+   "options": [
+    {
+     "value": "5",
+     "label": "Oriented",
+     "points": 5,
+     "code": "V5",
+     "detail": "Correctly gives name, place and date."
+    },
+    {
+     "value": "4",
+     "label": "Confused",
+     "points": 4,
+     "code": "V4",
+     "detail": "Not oriented but communicates coherently."
+    },
+    {
+     "value": "3",
+     "label": "Words",
+     "points": 3,
+     "code": "V3",
+     "detail": "Intelligible single words."
+    },
+    {
+     "value": "2",
+     "label": "Sounds",
+     "points": 2,
+     "code": "V2",
+     "detail": "Moans or groans only."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "V1",
+     "detail": "No audible response; no interfering factor."
+    }
+   ]
+  },
+  {
+   "id": "m",
+   "type": "single",
+   "label": "Best motor response",
+   "short": "Motor (M)",
+   "help": "Best response from either upper limb.",
+   "notTestable": {
+    "label": "Not testable",
+    "code": "MNT",
+    "description": "Paralysed or another limiting factor."
+   },
+   "options": [
+    {
+     "value": "6",
+     "label": "Obeys commands",
+     "points": 6,
+     "code": "M6",
+     "detail": "Performs a two-part request."
+    },
+    {
+     "value": "5",
+     "label": "Localising",
+     "points": 5,
+     "code": "M5",
+     "detail": "Brings hand above clavicle toward the stimulus."
+    },
+    {
+     "value": "4",
+     "label": "Normal flexion",
+     "points": 4,
+     "code": "M4",
+     "detail": "Rapid flexion at the elbow, not predominantly abnormal."
+    },
+    {
+     "value": "3",
+     "label": "Abnormal flexion",
+     "points": 3,
+     "code": "M3",
+     "detail": "Slow, stereotyped flexion."
+    },
+    {
+     "value": "2",
+     "label": "Extension",
+     "points": 2,
+     "code": "M2",
+     "detail": "Extension at the elbow."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "M1",
+     "detail": "No movement; no interfering factor."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "notTestablePolicy": "block",
+  "range": {
+   "min": 3,
+   "max": 15
+  },
+  "display": "{total}",
+  "share": "GCS {total} ({e_code} {v_code} {m_code})"
+ },
+ "notTestable": {
+  "label": "Total not reported",
+  "summary": "A component is not testable, so a total is not reported. Communicate the components instead.",
+  "detail": "Substituting a value or summing only the testable components misrepresents the patient.",
+  "display": "{e_code} {v_code} {m_code}",
+  "share": "GCS {e_code} {v_code} {m_code} (total not reported: component not testable)"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 15",
+   "state": "none"
+  },
+  {
+   "when": "total >= 13",
+   "state": "mild"
+  },
+  {
+   "when": "total >= 9",
+   "state": "moderate"
+  },
+  {
+   "state": "severe"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "none",
+   "tone": "normal",
+   "label": "No impairment measured",
+   "range": "15",
+   "summary": "No impairment of consciousness measured by GCS at this assessment.",
+   "detail": "A GCS of 15 does not exclude intracranial pathology, focal deficits or later deterioration."
+  },
+  {
+   "id": "mild",
+   "tone": "low",
+   "label": "Mild range",
+   "range": "13–14",
+   "summary": "Within the mild range of the TBI severity classification (13–15).",
+   "detail": "Reassess serially; small changes can matter."
+  },
+  {
+   "id": "moderate",
+   "tone": "moderate",
+   "label": "Moderate impairment",
+   "range": "9–12",
+   "summary": "Moderate impairment of consciousness (TBI classification 9–12).",
+   "detail": "Assess cause, trajectory and associated findings according to the clinical situation and local protocol."
+  },
+  {
+   "id": "severe",
+   "tone": "high",
+   "label": "Severe impairment",
+   "range": "3–8",
+   "summary": "Severe impairment of consciousness (TBI classification 3–8).",
+   "detail": "Assess airway, ventilation, oxygenation, neurological status and other reversible causes according to the clinical situation and local protocol."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Report the components with the total, e.g. E2 V3 M5 = 10. They carry more information than the sum."
+  },
+  {
+   "when": "m <= 3",
+   "text": "The motor score is the component most strongly associated with outcome; abnormal flexion, extension or no response warrants close attention to trajectory."
+  },
+  {
+   "when": "total <= 8 && m >= 5",
+   "text": "Low total with a relatively preserved motor response. Patients with the same total can differ substantially."
+  },
+  {
+   "on": "notTestable",
+   "when": "v_nt",
+   "text": "With verbal response not testable (e.g. intubated), the FOUR score assesses brainstem reflexes and respiration without a verbal component."
+  }
+ ],
+ "limitations": [
+  "Severity bands derive from traumatic brain injury.",
+  "Verbal response cannot be assessed in intubated or aphasic patients.",
+  "Does not assess brainstem reflexes, pupils or lateralising signs.",
+  "Inter-rater variability is higher in the intermediate range.",
+  {
+   "when": "nt_count > 0",
+   "text": "{nt_count} component(s) not testable: a total cannot be reported."
+  }
+ ],
+ "confounders": [
+  "Sedative or paralytic drugs",
+  "Intoxication",
+  "Hypoxia, hypotension or hypoglycaemia",
+  "Post-ictal state",
+  "Hypothermia",
+  "Language barrier, deafness or aphasia",
+  "Spinal cord or limb injury",
+  "Facial or orbital swelling"
+ ],
+ "commonErrors": [
+  "Reporting a total when a component is not testable, or scoring 1 instead of NT.",
+  "Recording the worst instead of the best motor response.",
+  "Testing motor response in the legs (spinal reflexes mislead).",
+  "Applying pressure before checking the response to sound.",
+  "Scoring 'localising' when the hand does not cross the clavicle."
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause of impaired consciousness.",
+  "Whether a focal or brainstem lesion is present.",
+  "The need for any specific intervention.",
+  "Prognosis on its own."
+ ],
+ "relatedScores": [
+  {
+   "id": "gcsp",
+   "relation": "Adds pupil reactivity"
+  },
+  {
+   "id": "four",
+   "relation": "Coma scale without a verbal component"
+  },
+  {
+   "id": "wfns",
+   "relation": "Uses GCS for SAH grading"
+  }
+ ],
+ "guideSections": {
+  "what": "A three-component scale (eye, verbal, motor) describing responsiveness; totals range 3–15.",
+  "whenUseful": "Initial and serial neurological assessment, handover, trauma triage, and as an input to WFNS, ICH Score and GCS-P.",
+  "howToCalculate": "Check for factors that interfere with each response. Observe, then stimulate: sound before physical pressure. Record the best response per component. Report components and, only when all are testable, the total.",
+  "clinicalContext": "Trends matter more than a single value. Communicate the components."
+ },
+ "sources": [
+  {
+   "citation": "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. A practical scale. Lancet. 1974;2(7872):81-84.",
+   "doi": "10.1016/S0140-6736(74)91639-0"
+  },
+  {
+   "citation": "Teasdale G, Maas A, Lecky F, et al. The Glasgow Coma Scale at 40 years: standing the test of time. Lancet Neurol. 2014;13(8):844-854.",
+   "doi": "10.1016/S1474-4422(14)70120-6"
+  }
+ ],
+ "licensing": {
+  "status": "Criteria in original wording with attribution",
+  "note": "Official GCS aids, charts and translations (glasgowcomascale.org) are not reproduced."
+ }
+}

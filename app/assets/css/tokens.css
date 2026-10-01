@@ -131,5 +131,5 @@
 .tone-critical              { --tone: var(--color-critical); --tone-container: var(--color-critical-container); }
 .tone-error                 { --tone: var(--color-error); --tone-container: var(--color-error-container); }
 .tone-info                  { --tone: var(--color-info); --tone-container: var(--color-info-container); }
-.tone-incomplete, .tone-neutral { --tone: var(--color-neutral); --tone-container: var(--color-neutral-container); }
+.tone-incomplete, .tone-neutral, .tone-not-interpretable { --tone: var(--color-neutral); --tone-container: var(--color-neutral-container); }
 .tone-primary               { --tone: var(--color-primary-text); --tone-container: var(--color-primary-container); }

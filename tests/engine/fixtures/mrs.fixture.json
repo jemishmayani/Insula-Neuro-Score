@@ -1,0 +1,125 @@
+{
+ "scoreId": "mrs",
+ "cases": [
+  {
+   "name": "grade 0",
+   "answers": {
+    "grade": "0"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 0,
+    "display": "mRS 0",
+    "state": "g0"
+   }
+  },
+  {
+   "name": "grade 1",
+   "answers": {
+    "grade": "1"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 1,
+    "display": "mRS 1",
+    "state": "g1"
+   }
+  },
+  {
+   "name": "grade 2",
+   "answers": {
+    "grade": "2"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 2,
+    "display": "mRS 2",
+    "state": "g2"
+   }
+  },
+  {
+   "name": "grade 3",
+   "answers": {
+    "grade": "3"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 3,
+    "display": "mRS 3",
+    "state": "g3"
+   }
+  },
+  {
+   "name": "grade 4",
+   "answers": {
+    "grade": "4"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 4,
+    "display": "mRS 4",
+    "state": "g4"
+   }
+  },
+  {
+   "name": "grade 5",
+   "answers": {
+    "grade": "5"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 5,
+    "display": "mRS 5",
+    "state": "g5"
+   }
+  },
+  {
+   "name": "grade 6",
+   "answers": {
+    "grade": "6"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 6,
+    "display": "mRS 6",
+    "state": "g6"
+   }
+  },
+  {
+   "name": "minimum is normal tone",
+   "answers": {
+    "grade": "0"
+   },
+   "expect": {
+    "tone": "normal"
+   }
+  },
+  {
+   "name": "maximum (dead) is informational",
+   "answers": {
+    "grade": "6"
+   },
+   "expect": {
+    "tone": "informational"
+   }
+  },
+  {
+   "name": "invalid grade 7",
+   "answers": {
+    "grade": "7"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1
+   }
+  },
+  {
+   "name": "missing",
+   "answers": {},
+   "expect": {
+    "status": "incomplete",
+    "missing": 1
+   }
+  }
+ ]
+}

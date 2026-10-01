@@ -1,0 +1,338 @@
+{
+ "contentVersion": "2.0.0",
+ "lastReviewed": "2026-10-01",
+ "reviewStatus": "Drafted from primary sources; pending independent clinician review before clinical release.",
+ "scoringRules": [],
+ "consistencyRules": [],
+ "aliases": [],
+ "id": "demo-inputs",
+ "name": "Input types demonstration",
+ "abbreviation": "Demo",
+ "category": "demo",
+ "subcategory": "Design system",
+ "specialties": [
+  "None"
+ ],
+ "version": {
+  "label": "Non-clinical demo",
+  "detail": "Exercises every engine input type. Not a clinical score."
+ },
+ "purpose": "Demonstrates every input control and result state. Not for clinical use.",
+ "intendedPopulation": "Not applicable.",
+ "components": [
+  {
+   "id": "choices",
+   "label": "Choice inputs",
+   "inputs": [
+    "single",
+    "dropdown",
+    "yes_no",
+    "multi"
+   ]
+  },
+  {
+   "id": "numbers",
+   "label": "Numeric inputs",
+   "inputs": [
+    "integer",
+    "decimal",
+    "number",
+    "temperature"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "single",
+   "type": "single",
+   "label": "Single choice",
+   "short": "Single",
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT"
+   },
+   "options": [
+    {
+     "value": "a",
+     "label": "Option A",
+     "points": 0
+    },
+    {
+     "value": "b",
+     "label": "Option B",
+     "points": 1
+    },
+    {
+     "value": "c",
+     "label": "Option C",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "dropdown",
+   "type": "dropdown",
+   "label": "Dropdown",
+   "short": "Dropdown",
+   "options": [
+    {
+     "value": "x",
+     "label": "First",
+     "points": 0
+    },
+    {
+     "value": "y",
+     "label": "Second",
+     "points": 1
+    },
+    {
+     "value": "z",
+     "label": "Third",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "yes_no",
+   "type": "yesno",
+   "label": "Yes / No",
+   "short": "Yes/No",
+   "points": {
+    "yes": 1,
+    "no": 0
+   }
+  },
+  {
+   "id": "multi",
+   "type": "multi",
+   "label": "Multiple choice",
+   "short": "Multiple",
+   "help": "Select all that apply.",
+   "maxPoints": 3,
+   "options": [
+    {
+     "value": "p",
+     "label": "Finding P",
+     "points": 1
+    },
+    {
+     "value": "q",
+     "label": "Finding Q",
+     "points": 1
+    },
+    {
+     "value": "r",
+     "label": "Finding R",
+     "points": 1
+    },
+    {
+     "value": "none",
+     "label": "None of these",
+     "points": 0,
+     "exclusive": true
+    }
+   ]
+  },
+  {
+   "id": "integer",
+   "type": "integer",
+   "label": "Integer",
+   "short": "Integer",
+   "min": 0,
+   "max": 10,
+   "pointBands": [
+    {
+     "max": 3,
+     "points": 0
+    },
+    {
+     "min": 4,
+     "max": 7,
+     "points": 1
+    },
+    {
+     "min": 8,
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "decimal",
+   "type": "decimal",
+   "label": "Decimal (1 dp)",
+   "short": "Decimal",
+   "min": 0,
+   "max": 5,
+   "decimals": 1,
+   "pointBands": [
+    {
+     "max": 2.4,
+     "points": 0
+    },
+    {
+     "min": 2.5,
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "number",
+   "type": "number",
+   "label": "Number",
+   "short": "Number",
+   "unit": "units",
+   "min": 0,
+   "max": 100,
+   "required": false,
+   "pointBands": [
+    {
+     "max": 49.999,
+     "points": 0
+    },
+    {
+     "min": 50,
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "temperature",
+   "type": "measurement",
+   "label": "Clinical measurement",
+   "short": "Temperature",
+   "min": 30,
+   "max": 43,
+   "units": [
+    {
+     "id": "C",
+     "label": "°C",
+     "factor": 1
+    },
+    {
+     "id": "F",
+     "label": "°F",
+     "factor": 0.5555555556,
+     "offset": -17.7777777778
+    }
+   ],
+   "pointBands": [
+    {
+     "max": 37.9,
+     "points": 0
+    },
+    {
+     "min": 38,
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "notTestablePolicy": "block",
+  "range": {
+   "min": 0,
+   "max": 13
+  },
+  "display": "{total}",
+  "share": "Demo {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "s0"
+  },
+  {
+   "when": "total <= 2",
+   "state": "s1"
+  },
+  {
+   "when": "total <= 4",
+   "state": "s2"
+  },
+  {
+   "when": "total <= 6",
+   "state": "s3"
+  },
+  {
+   "when": "total <= 8",
+   "state": "s4"
+  },
+  {
+   "when": "total <= 10",
+   "state": "s5"
+  },
+  {
+   "state": "s6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s0",
+   "tone": "normal",
+   "label": "Normal tone",
+   "summary": "Demo state."
+  },
+  {
+   "id": "s1",
+   "tone": "low",
+   "label": "Low tone",
+   "summary": "Demo state."
+  },
+  {
+   "id": "s2",
+   "tone": "mild",
+   "label": "Mild tone",
+   "summary": "Demo state."
+  },
+  {
+   "id": "s3",
+   "tone": "moderate",
+   "label": "Moderate tone",
+   "summary": "Demo state."
+  },
+  {
+   "id": "s4",
+   "tone": "high",
+   "label": "High tone",
+   "summary": "Demo state."
+  },
+  {
+   "id": "s5",
+   "tone": "critical",
+   "label": "Critical tone",
+   "summary": "Demo state."
+  },
+  {
+   "id": "s6",
+   "tone": "informational",
+   "label": "Informational tone",
+   "summary": "Demo state."
+  }
+ ],
+ "notTestable": {
+  "label": "Not interpretable",
+  "summary": "Demo of the not-interpretable state.",
+  "display": "–"
+ },
+ "clinicalInsights": [
+  {
+   "text": "Demonstration only."
+  }
+ ],
+ "limitations": [
+  "Not a clinical score."
+ ],
+ "confounders": [],
+ "commonErrors": [],
+ "whatItDoesNotTellYou": [],
+ "relatedScores": [],
+ "guideSections": {
+  "what": "Demo."
+ },
+ "sources": [
+  {
+   "citation": "Not applicable (design-system demonstration)."
+  }
+ ]
+}

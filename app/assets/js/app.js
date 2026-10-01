@@ -8,7 +8,24 @@
   var UI = window.UI, Store = window.Store, esc = UI.esc;
   var Android = window.Android || null;
   var root = document.getElementById("app"), live = document.getElementById("live");
-  var CATALOG = null;
+  var CATALOG = null, SCORE_CACHE = {}, SESSION_ANSWERS = {};   // answers live only in memory (no patient data persisted)
+  function loadJSON(path) {
+    return fetch(path, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+  }
+  function loadScore(id) {
+    if (SCORE_CACHE[id]) return Promise.resolve(SCORE_CACHE[id]);
+    return loadJSON("content/scores/" + encodeURIComponent(id) + ".json").then(function (sc) {
+      var errs = window.InsulaEngine.engine.validateScore(sc);
+      if (errs.length) throw new Error("Score content failed validation: " + errs.slice(0, 3).join("; "));
+      SCORE_CACHE[id] = sc; return sc;
+    });
+  }
+  function scoreLinks(tabDefault) {
+    return function (id, tab) {
+      var s = score(id); if (!s) return null;
+      return { href: "#/" + (tab || tabDefault) + "/s/" + id, label: s.abbreviation };
+    };
+  }
   var TABS = [
     { id: "home", label: "Home", icon: "home", href: "#/home" },
     { id: "calculate", label: "Calculate", icon: "calculate", href: "#/calculate" },
@@ -47,6 +64,7 @@
       .map(function (x) { return x.s; });
   }
   var placeholderBadge = function () { return UI.StatusBadge({ tone: "neutral", label: "Placeholder", icon: false }); };
+  function badgeFor(s) { return s.status === "implemented" ? UI.StatusBadge({ tone: "primary", label: "Calculator", icon: false }) : placeholderBadge(); }
   function sub(s) { return s.name === s.abbreviation ? s.summary : s.name; }
 
   /* ---------------- theme ---------------- */
@@ -61,7 +79,7 @@
   if (mq) { var onMq = function () { if (Store.get().theme === "system") applyTheme(); }; if (mq.addEventListener) mq.addEventListener("change", onMq); else if (mq.addListener) mq.addListener(onMq); }
 
   /* ---------------- router & back stack ---------------- */
-  var depth = 0, scrollMemory = {}, goingBack = false, route = {};
+  var depth = 0, scrollMemory = {}, goingBack = false, goingBackY = 0, route = {};
   function parse() {
     var h = (location.hash || "").replace(/^#\/?/, "");
     var p = h.split("/").filter(Boolean);
@@ -101,7 +119,9 @@
     var prevFocusAct = null;
     root.innerHTML = '<div class="shell">' + html + "</div>";
     document.title = (opts && opts.title ? opts.title + " · " : "") + "Insula Neuro Score";
+    document.body.classList.remove("has-result-bar");
     var y = goingBack && scrollMemory[location.hash] != null ? scrollMemory[location.hash] : 0;
+    goingBackY = goingBack ? y : 0;
     window.scrollTo(0, y);
     if (!goingBack && opts && opts.focusMain !== false) { var m = document.getElementById("main"); if (m) m.focus({ preventScroll: true }); }
     goingBack = false;
@@ -139,7 +159,7 @@
     opts = opts || {};
     var st = Store.get();
     return UI.ScoreCard({ score: s, href: "#/" + tab + "/s/" + s.id, sub: opts.withCategory ? sub(s) + " · " + category(s.category).name : sub(s),
-      badge: placeholderBadge(), favorite: opts.noStar ? null : st.favorites.indexOf(s.id) >= 0 });
+      badge: badgeFor(s), favorite: opts.noStar ? null : st.favorites.indexOf(s.id) >= 0 });
   }
   function searchBlock(id, placeholder) {
     return UI.SearchBar({ id: id, placeholder: placeholder, label: placeholder }) + '<div id="search-results" aria-live="polite"></div>';
@@ -210,15 +230,36 @@
     if (!s) return notFound("This score is not in the catalogue.");
     Store.pushRecent(tab === "calculate" ? "recentCalc" : "recentGuide", id);
     var st = Store.get(), fav = st.favorites.indexOf(id) >= 0, prio = st.priorityScores.indexOf(id) >= 0, c = category(s.category);
-    var head = '<div class="detail-head"><p class="abbr">' + esc(s.abbreviation) + '</p><p class="name">' + esc(s.name) + '</p><div class="badges">' + placeholderBadge() +
-      '<a href="#/' + tab + "/c/" + c.id + '" data-nav>' + esc(c.name) + "</a></div></div>";
+    var implemented = s.status === "implemented";
+    var badge = implemented ? UI.StatusBadge({ tone: "warning", label: "Pending clinical review", icon: false }) : placeholderBadge();
+    var head = '<div class="detail-head"><p class="abbr">' + esc(s.abbreviation) + '</p><p class="name">' + esc(s.name) + '</p><div class="badges">' + badge +
+      '<a href="#/' + tab + "/c/" + c.id + '" data-nav>' + esc(c.name) + "</a>" + '<span id="version-label"></span></div></div>';
     var toggle = '<nav class="segmented" aria-label="Score view" style="margin-top:var(--space-4)">' +
       '<a href="#/calculate/s/' + id + '" data-replace' + (tab === "calculate" ? ' aria-current="page"' : "") + ">" + UI.icon("calculate") + "Calculate</a>" +
       '<a href="#/guide/s/' + id + '" data-replace' + (tab === "guide" ? ' aria-current="page"' : "") + ">" + UI.icon("guide") + "Guide</a></nav>";
     var prioBtn = UI.SecondaryButton({ label: prio ? "On Home (priority)" : "Add to Home priority", icon: "pin", act: "toggle-priority", data: { id: id } });
-    var body = head + toggle + (tab === "calculate" ? calcShell(s) : guideShell(s)) + '<div class="section btn-row">' + prioBtn + "</div>";
+    var inner = implemented ? '<div id="score-host">' + UI.LoadingState({ message: "Loading " + s.abbreviation + "…", rows: 3 }) + "</div>" : (tab === "calculate" ? calcShell(s) : guideShell(s));
+    var body = head + toggle + inner + '<div class="section btn-row">' + prioBtn + "</div>";
     var favBtn = UI.IconButton({ icon: "star", label: fav ? "Remove from favourites" : "Add to favourites", act: "toggle-favorite", pressed: fav, data: { id: id } });
     paint(frame({ title: s.abbreviation, tab: tab, back: true, body: body, actions: [favBtn], wide: tab === "calculate" }), { title: s.abbreviation + (tab === "guide" ? " guide" : "") });
+    if (!implemented) return;
+    var routeAtLoad = location.hash, restoreY = goingBackY;
+    loadScore(id).then(function (sc) {
+      if (location.hash !== routeAtLoad) return;
+      var host = document.getElementById("score-host"); if (!host) return;
+      document.getElementById("version-label").textContent = sc.version.label;
+      if (tab === "calculate") {
+        var answers = SESSION_ANSWERS[id] || (SESSION_ANSWERS[id] = window.InsulaEngine.engine.initialAnswers(sc));
+        window.Calculator.mount(host, sc, answers, { links: scoreLinks("calculate"), toast: toast });
+        document.body.classList.add("has-result-bar");
+      } else {
+        host.innerHTML = window.Calculator.guideHTML(sc, scoreLinks("guide"), "#/calculate/s/" + id);
+      }
+      if (restoreY) window.scrollTo(0, restoreY);
+    }).catch(function (e) {
+      var host = document.getElementById("score-host");
+      if (host) host.innerHTML = UI.ErrorState({ title: s.abbreviation + " could not be loaded", message: e.message, action: UI.SecondaryButton({ label: "Back to " + c.name, href: "#/" + tab + "/c/" + c.id, icon: "back" }) });
+    });
   }
   function calcShell(s) {
     var rows = ""; for (var i = 1; i <= 3; i++) rows += '<div class="row"><span class="dot" aria-hidden="true"></span>Component ' + i + " (pending verification)</div>";
@@ -286,7 +327,7 @@
       UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' + UI.SecondaryButton({ label: "Clear recent items", icon: "clock", act: "clear-recent", data: { key: "all" } }) +
         UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
         (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
-      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.2.0 (Phase 1: app shell)</p>' +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.3.0 (Phase 2: score engine)</p>' +
         '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
         UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
     paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });
@@ -326,8 +367,13 @@
       g("WarningBanner", UI.WarningBanner({ title: "Warning", message: "Something needs attention before relying on this." })) +
       g("EmptyState", UI.EmptyState({ title: "Nothing here yet", message: "Explains what to do next.", action: UI.SecondaryButton({ label: "Take action", icon: "plus" }) })) +
       g("ErrorState", UI.ErrorState({ title: "Something went wrong", message: "Explains what happened and how to fix it.", action: UI.PrimaryButton({ label: "Try again", icon: "reset" }) })) +
-      g("LoadingState", UI.LoadingState({ message: "Loading scores…", rows: 2 }));
+      g("LoadingState", UI.LoadingState({ message: "Loading scores…", rows: 2 })) +
+      g("Input controls (live engine, non-clinical demo)", UI.InfoBanner({ title: "Not a clinical score", message: "Exercises single choice, dropdown, yes/no, multiple choice, integer, decimal, number, clinical measurement and not-testable inputs." }) + '<div id="demo-host" style="margin-top:var(--space-3)"></div>');
     paint(frame({ title: "Design system", tab: "", back: true, noSettings: true, body: body, wide: true }), { title: "Design system", focusMain: false });
+    loadJSON("content/dev/demo-inputs.json").then(function (sc) {
+      var host = document.getElementById("demo-host"); if (!host) return;
+      window.Calculator.mount(host, sc, SESSION_ANSWERS.__demo || (SESSION_ANSWERS.__demo = {}), { links: function () { return null; }, toast: toast }); document.body.classList.add("has-result-bar");
+    });
   }
 
   /* ---------------- events ---------------- */
@@ -402,7 +448,7 @@
   applyTheme();
   root.innerHTML = '<div class="shell">' + UI.AppBar({ title: "Insula Neuro Score", brand: true }) + '<main class="content">' + UI.LoadingState({ message: "Loading scores…", rows: 4 }) + "</main></div>";
   function boot() {
-    fetch("content/catalog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    loadJSON("content/catalog.json")
       .then(function (c) {
         if (!c || !Array.isArray(c.scores) || !Array.isArray(c.categories)) throw new Error("Catalogue format is invalid");
         CATALOG = c;

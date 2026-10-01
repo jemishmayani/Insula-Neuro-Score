@@ -19,13 +19,19 @@ def static_checks():
             if hexre.search(line): offenders.append(f"{os.path.basename(f)}:{i}")
     check("no colour values outside tokens.css", not offenders, ", ".join(offenders))
     js = open(ROOT + "/js/app.js").read() + open(ROOT + "/js/ui.js").read()
-    check("no network APIs besides local catalogue fetch", js.count("fetch(") == 1 and "XMLHttpRequest" not in js and "WebSocket" not in js)
+    check("no network APIs besides the local JSON loader", js.count("fetch(") == 1 and "XMLHttpRequest" not in js and "WebSocket" not in js)
     comps = ["AppBar","BottomNavigation","SearchBar","ScoreCard","CategoryCard","ResultCard","StatusBadge","SectionCard","PrimaryButton","SecondaryButton","Toggle","EmptyState","InfoBanner","WarningBanner","ErrorState","LoadingState"]
     ui = open(ROOT + "/js/ui.js").read()
     missing = [c for c in comps if ("function " + c + "(") not in ui]
     check("all 16 design-system components exist", not missing, ", ".join(missing))
     cat = json.load(open(ROOT + "/content/catalog.json"))
-    check("catalogue is placeholder-only (no scoring rules)", all(s.get("status") == "placeholder" and "inputs" not in s for s in cat["scores"]))
+    check("catalogue entries carry no scoring rules", all("inputs" not in s and "inputDefinitions" not in s for s in cat["scores"]))
+    impl = {s["id"] for s in cat["scores"] if s["status"] == "implemented"}
+    check("implemented scores have content files", impl == {os.path.basename(f)[:-5] for f in glob.glob(ROOT + "/content/scores/*.json")}, str(impl))
+    ui_src = {f: open(ROOT + "/js/" + f).read() for f in ["app.js", "ui.js", "calculator.js"]}
+    leaks = [f for f, src in ui_src.items() if re.search(r"['\"](gcs|nihss|mrs|sins)['\"]", src, re.I)]
+    check("UI layer references no specific score", not leaks, ", ".join(leaks))
+    check("UI layer never evaluates scoring expressions", all("evaluate(" not in src and "scoringRules" not in src and "interpretationRules" not in src for src in ui_src.values()))
 
 async def no_overflow(pg):
     return await pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1")
@@ -215,14 +221,14 @@ async def main():
             await sp.screenshot(path=f"{SHOTS}/11_loading.png")
 
             # ---- responsive sweep ----
-            screens = ["#/home", "#/calculate", "#/calculate/c/consciousness", "#/calculate/s/gcs", "#/guide/s/gcs", "#/settings", "#/settings/pick/favorites", "#/settings/gallery"]
+            screens = ["#/home", "#/calculate", "#/calculate/c/consciousness", "#/calculate/s/gcs", "#/calculate/s/nihss", "#/calculate/s/sins", "#/guide/s/gcs", "#/guide/s/nihss", "#/calculate/s/wfns", "#/settings", "#/settings/pick/favorites", "#/settings/gallery"]
             sizes = [("small phone 320x568", 320, 568), ("large phone 430x932", 430, 932), ("phone landscape 844x390", 844, 390),
                      ("tablet portrait 820x1180", 820, 1180), ("tablet landscape 1366x1024", 1366, 1024)]
             for label, w, h in sizes:
                 rp = await newpage(w, h, storage={})
                 over = []
                 for sc in screens:
-                    await rp.goto(U + sc); await rp.wait_for_selector(".bottomnav")
+                    await rp.goto(U + sc); await rp.wait_for_selector(".bottomnav"); await rp.wait_for_timeout(150)
                     if not await no_overflow(rp): over.append(sc)
                 check(f"{label}: no horizontal overflow", not over, ", ".join(over))
                 rail = await rp.evaluate("getComputedStyle(document.querySelector('.bottomnav')).flexDirection") == "column"
@@ -230,8 +236,8 @@ async def main():
                 check(f"{label}: {'navigation rail' if expect_rail else 'bottom navigation'}", rail == expect_rail)
                 # touch targets on detail + settings
                 small = []
-                for sc in ["#/calculate/s/gcs", "#/settings"]:
-                    await rp.goto(U + sc); await rp.wait_for_selector(".bottomnav")
+                for sc in ["#/calculate/s/gcs", "#/calculate/s/nihss", "#/settings"]:
+                    await rp.goto(U + sc); await rp.wait_for_selector(".bottomnav"); await rp.wait_for_timeout(150)
                     small += await rp.evaluate("""[...document.querySelectorAll('button, a.btn, .icon-button, .bottomnav a, .segmented > *, .score-card a.open, .category-card, .chip')]
                       .filter(e => e.offsetParent).map(e => [e.getBoundingClientRect(), e]).filter(([r]) => r.height < 40 || r.width < 40).map(([r, e]) => (e.getAttribute('aria-label')||e.textContent.trim()).slice(0,30) + ' ' + Math.round(r.width) + 'x' + Math.round(r.height))""")
                 check(f"{label}: touch targets ≥ 40px", not small, "; ".join(small[:4]))

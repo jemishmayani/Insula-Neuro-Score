@@ -1,0 +1,160 @@
+{
+ "scoreId": "sins",
+ "cases": [
+  {
+   "name": "minimum (0)",
+   "answers": {
+    "location": "0",
+    "pain": "0",
+    "lesion": "0",
+    "alignment": "0",
+    "collapse": "0",
+    "posterolateral": "0"
+   },
+   "expect": {
+    "status": "complete",
+    "total": 0,
+    "state": "stable",
+    "tone": "low"
+   }
+  },
+  {
+   "name": "maximum (18)",
+   "answers": {
+    "location": "3",
+    "pain": "3",
+    "lesion": "2",
+    "alignment": "4",
+    "collapse": "3",
+    "posterolateral": "3"
+   },
+   "expect": {
+    "total": 18,
+    "state": "unstable",
+    "tone": "high"
+   }
+  },
+  {
+   "name": "boundary 6 \u2192 stable",
+   "answers": {
+    "location": "3",
+    "pain": "3",
+    "lesion": "0",
+    "alignment": "0",
+    "collapse": "0",
+    "posterolateral": "0"
+   },
+   "expect": {
+    "total": 6,
+    "state": "stable"
+   }
+  },
+  {
+   "name": "boundary 7 \u2192 potentially unstable",
+   "answers": {
+    "location": "3",
+    "pain": "3",
+    "lesion": "0",
+    "alignment": "0",
+    "collapse": "1",
+    "posterolateral": "0"
+   },
+   "expect": {
+    "total": 7,
+    "state": "potential",
+    "tone": "moderate"
+   }
+  },
+  {
+   "name": "boundary 12 \u2192 potentially unstable",
+   "answers": {
+    "location": "3",
+    "pain": "3",
+    "lesion": "2",
+    "alignment": "4",
+    "collapse": "0",
+    "posterolateral": "0"
+   },
+   "expect": {
+    "total": 12,
+    "state": "potential"
+   }
+  },
+  {
+   "name": "boundary 13 \u2192 unstable",
+   "answers": {
+    "location": "3",
+    "pain": "3",
+    "lesion": "2",
+    "alignment": "4",
+    "collapse": "1",
+    "posterolateral": "0"
+   },
+   "expect": {
+    "total": 13,
+    "state": "unstable"
+   }
+  },
+  {
+   "name": "intermediate published example (lytic, mobile, kyphosis)",
+   "answers": {
+    "location": "2",
+    "pain": "3",
+    "lesion": "2",
+    "alignment": "2",
+    "collapse": "3",
+    "posterolateral": "3"
+   },
+   "expect": {
+    "total": 15,
+    "state": "unstable"
+   }
+  },
+  {
+   "name": "invalid alignment value 3",
+   "answers": {
+    "location": "3",
+    "pain": "3",
+    "lesion": "2",
+    "alignment": "3",
+    "collapse": "0",
+    "posterolateral": "0"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1
+   }
+  },
+  {
+   "name": "missing collapse",
+   "answers": {
+    "location": "3",
+    "pain": "0",
+    "lesion": "0",
+    "alignment": "0",
+    "posterolateral": "0"
+   },
+   "expect": {
+    "status": "incomplete",
+    "missing": 1
+   }
+  },
+  {
+   "name": "not testable not allowed",
+   "answers": {
+    "location": "0",
+    "pain": {
+     "nt": true
+    },
+    "lesion": "0",
+    "alignment": "0",
+    "collapse": "0",
+    "posterolateral": "0"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1
+   }
+  }
+ ]
+}
