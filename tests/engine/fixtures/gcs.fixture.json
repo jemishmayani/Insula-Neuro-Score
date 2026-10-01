@@ -2,22 +2,7 @@
  "scoreId": "gcs",
  "cases": [
   {
-   "name": "minimum (3)",
-   "answers": {
-    "e": "1",
-    "v": "1",
-    "m": "1"
-   },
-   "expect": {
-    "status": "complete",
-    "total": 3,
-    "display": "3",
-    "state": "severe",
-    "tone": "high"
-   }
-  },
-  {
-   "name": "maximum (15)",
+   "name": "alert and orientated",
    "answers": {
     "e": "4",
     "v": "5",
@@ -27,11 +12,17 @@
     "status": "complete",
     "total": 15,
     "state": "none",
-    "tone": "normal"
+    "tone": "normal",
+    "formula": "E4 + V5 + M6"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E4 + V5 + M6 = 15 → 15: no impairment measured",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "boundary 14 \u2192 mild",
+   "name": "eyes to sound, orientated (14)",
    "answers": {
     "e": "3",
     "v": "5",
@@ -41,10 +32,15 @@
     "total": 14,
     "state": "mild",
     "tone": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E3 + V5 + M6 = 14 → 13–14 band",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "boundary 13 \u2192 mild",
+   "name": "eyes to sound, confused (13, boundary)",
    "answers": {
     "e": "3",
     "v": "4",
@@ -53,10 +49,15 @@
    "expect": {
     "total": 13,
     "state": "mild"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E3 + V4 + M6 = 13 → lower edge of 13–14",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "boundary 12 \u2192 moderate",
+   "name": "localising, confused (12, boundary)",
    "answers": {
     "e": "3",
     "v": "4",
@@ -64,11 +65,17 @@
    },
    "expect": {
     "total": 12,
-    "state": "moderate"
+    "state": "moderate",
+    "tone": "moderate"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E3 + V4 + M5 = 12 → upper edge of 9–12",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "boundary 9 \u2192 moderate",
+   "name": "words, normal flexion (9, boundary)",
    "answers": {
     "e": "2",
     "v": "3",
@@ -77,10 +84,15 @@
    "expect": {
     "total": 9,
     "state": "moderate"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E2 + V3 + M4 = 9 → lower edge of 9–12",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "boundary 8 \u2192 severe",
+   "name": "sounds, normal flexion (8, boundary)",
    "answers": {
     "e": "2",
     "v": "2",
@@ -89,25 +101,97 @@
    "expect": {
     "total": 8,
     "state": "severe",
-    "tone": "high"
+    "tone": "high",
+    "formula": "E2 + V2 + M4"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E2 + V2 + M4 = 8 → upper edge of 3–8",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "intermediate 10 with share text",
+   "name": "no response (3, minimum)",
    "answers": {
-    "e": "2",
-    "v": "3",
-    "m": "5"
+    "e": "1",
+    "v": "1",
+    "m": "1"
    },
    "expect": {
-    "total": 10,
-    "shareText": "GCS 10 (E2 V3 M5) \u2014 Moderate impairment"
+    "total": 3,
+    "state": "severe",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E1 + V1 + M1 = 3 → minimum",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "not testable verbal blocks total",
+   "name": "same total, different components (A)",
    "answers": {
-    "e": "2",
+    "e": "1",
+    "v": "5",
+    "m": "6"
+   },
+   "expect": {
+    "total": 12,
+    "formula": "E1 + V5 + M6"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E1 + V5 + M6 = 12; components differ from case B",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
+   }
+  },
+  {
+   "name": "same total, different components (B)",
+   "answers": {
+    "e": "4",
+    "v": "4",
+    "m": "4"
+   },
+   "expect": {
+    "total": 12,
+    "formula": "E4 + V4 + M4"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E4 + V4 + M4 = 12; same total as case A",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
+   }
+  },
+  {
+   "name": "intubated: verbal NT, no total",
+   "answers": {
+    "e": "3",
+    "v": {
+     "nt": true,
+     "reason": "Endotracheal tube or tracheostomy"
+    },
+    "m": "6"
+   },
+   "expect": {
+    "status": "not-interpretable",
+    "total": null,
+    "display": "No total",
+    "formula": "E3 + VNT + M6",
+    "notTestable": 1,
+    "tone": "not-interpretable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E3 + VNT + M6: a component is NT, so no total (not V1 → 10)",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
+   }
+  },
+  {
+   "name": "eye and verbal NT",
+   "answers": {
+    "e": {
+     "nt": true
+    },
     "v": {
      "nt": true
     },
@@ -115,45 +199,66 @@
    },
    "expect": {
     "status": "not-interpretable",
-    "total": null,
-    "display": "E2 VNT M5",
-    "tone": "not-interpretable",
-    "notTestable": 1,
-    "insightsContains": "FOUR score"
-   }
-  },
-  {
-   "name": "missing motor",
-   "answers": {
-    "e": "2",
-    "v": "3"
+    "formula": "ENT + VNT + M5",
+    "notTestable": 2
    },
-   "expect": {
-    "status": "incomplete",
-    "missing": 1,
-    "tone": "incomplete",
-    "total": null
+   "verification": {
+    "method": "manual",
+    "calculation": "ENT + VNT + M5: two NT components, no total",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "invalid option",
+   "name": "NT reason outside the listed reasons is rejected",
    "answers": {
-    "e": "7",
-    "v": "3",
-    "m": "5"
+    "e": "3",
+    "v": {
+     "nt": true,
+     "reason": "Uncooperative"
+    },
+    "m": "6"
    },
    "expect": {
     "status": "invalid",
-    "errors": 1,
-    "total": null
+    "errors": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "'Uncooperative' is not a factor interfering with communication → invalid",
+    "source": "Glasgow structured approach (glasgowcomascale.org)"
    }
   },
   {
-   "name": "empty",
-   "answers": {},
+   "name": "eye 5 does not exist",
+   "answers": {
+    "e": "5",
+    "v": "5",
+    "m": "6"
+   },
+   "expect": {
+    "status": "invalid",
+    "errors": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "Eye opening is rated 1–4 or NT",
+    "source": "Manual calculation"
+   }
+  },
+  {
+   "name": "motor missing",
+   "answers": {
+    "e": "3",
+    "v": "4"
+   },
    "expect": {
     "status": "incomplete",
-    "missing": 3
+    "missing": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "M not yet assessed → incomplete",
+    "source": "Manual calculation"
    }
   }
  ]

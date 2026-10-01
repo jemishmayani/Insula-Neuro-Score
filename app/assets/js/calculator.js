@@ -82,8 +82,11 @@
   }
   function resultHTML(score, r, links) {
     var tone = r.state.tone;
-    var h = UI.ResultCard({ tone: tone, label: stateLabel(r), value: r.display, meta: score.abbreviation + " · range " + r.range.min + "–" + r.range.max,
-      summary: r.state.summary, detail: r.state.detail });
+    var pres = r.presentation || {};
+    var meter = r.bands ? UI.ScaleMeter({ min: r.range.min, max: r.range.max, value: r.status === "complete" ? r.total : null, bands: r.bands, label: score.abbreviation }) : "";
+    var h = UI.ResultCard({ tone: tone, label: stateLabel(r), value: r.display, typeLabel: pres.typeLabel,
+      formula: r.formula, formulaJoin: r.formula && r.status === "complete" ? "=" : null,
+      meta: score.abbreviation + " · range " + r.range.min + "–" + r.range.max, summary: r.state.summary, detail: r.state.detail, meter: meter });
     if (r.warnings.length) h += '<div class="result-block">' + r.warnings.map(function (w) { return UI.WarningBanner({ title: "Check", message: w.message }); }).join("") + "</div>";
     h += '<div class="result-block"><h3 class="result-h">Breakdown</h3><table class="breakdown"><tbody>' + r.breakdown.map(function (c) {
       var rows = c.items.map(function (it) {
@@ -124,6 +127,7 @@
       return score.components.length > 1 && c.inputs.length > 1 ? '<section class="input-group"><h3 class="input-group-h">' + esc(c.label) + "</h3>" + inner + "</section>" : inner;
     }).join("");
     el.innerHTML = '<div class="detail-grid two calc"><form class="calc-inputs" novalidate onsubmit="return false" aria-label="' + esc(score.abbreviation) + ' inputs">' +
+      (score.calculatorNotice ? '<div class="calc-notice">' + (score.calculatorNotice.tone === "warning" ? UI.WarningBanner : UI.InfoBanner)({ title: score.calculatorNotice.title, message: score.calculatorNotice.message }) + "</div>" : "") +
       '<div class="calc-progress" aria-live="polite"></div>' + grouped + '</form><div class="aside"><section id="result" aria-label="Result" tabindex="-1"></section></div></div>' +
       '<button type="button" class="result-bar" data-act="calc-jump" aria-label="Jump to result"></button>';
 
@@ -146,7 +150,9 @@
       el.querySelector(".calc-progress").innerHTML = '<span class="bar"><i style="width:' + Math.round(done / total * 100) + '%"></i></span>' + done + " of " + total + " answered";
       var bar = el.querySelector(".result-bar");
       bar.className = "result-bar tone-" + r.state.tone;
-      bar.innerHTML = UI.stateIcon(r.state.tone) + '<span class="rb-value">' + esc(r.display) + '</span><span class="rb-label">' + esc(r.status === "incomplete" ? done + " of " + total + " answered" : stateLabel(r)) + "</span>" + UI.icon("down");
+      var compact = r.formula ? r.formula.replace(/ \+ /g, " ") : null;
+      var barValue = compact ? (r.status === "complete" ? compact + " = " + r.display : compact) : r.display;
+      bar.innerHTML = UI.stateIcon(r.state.tone) + '<span class="rb-value' + (compact ? " has-formula" : "") + '">' + esc(barValue) + '</span><span class="rb-label">' + esc(r.status === "incomplete" ? done + " of " + total + " answered" : stateLabel(r)) + "</span>" + UI.icon("down");
       if (opts.onResult) opts.onResult(r);
     }
     function setAnswer(id, v) { if (v === undefined) delete answers[id]; else answers[id] = v; }
@@ -220,25 +226,28 @@
     }).join("");
     var interp = '<table class="breakdown"><tbody>' + score.resultStates.map(function (s) {
       return '<tr class="tone-' + esc(s.tone) + '"><th scope="row" class="tone-cell">' + UI.stateIcon(s.tone) + " " + esc(s.range || "") + "</th><td><b>" + esc(s.label.replace(/\{[^}]+\}/g, "")) + ".</b> " + esc(s.summary) + "</td></tr>"; }).join("") + "</tbody></table>";
+    var notice = score.calculatorNotice ? (score.calculatorNotice.tone === "warning" ? UI.WarningBanner : UI.InfoBanner)({ title: score.calculatorNotice.title, message: score.calculatorNotice.message }) : "";
+    var pres = score.resultPresentation;
     var secs = [
-      ["What is this score?", "<p>" + esc(g.what) + "</p>"],
+      ["What is it?", "<p>" + esc(g.what) + "</p>" + (notice ? '<div style="margin-top:var(--space-3)">' + notice + "</div>" : "")],
       ["Purpose", "<p>" + esc(score.purpose) + "</p>"],
       ["Intended population", "<p>" + esc(score.intendedPopulation) + "</p>"],
-      ["When it is useful", "<p>" + esc(g.whenUseful) + "</p>"],
-      ["Components", comps],
-      ["How to calculate", "<p>" + esc(g.howToCalculate) + "</p><p>" + esc(METHOD_TEXT[cm.type]) + " Range " + cm.range.min + "–" + cm.range.max + ".</p>" +
+      ["When to use", "<p>" + esc(g.whenToUse) + "</p>"],
+      ["How to perform / calculate", "<p>" + esc(g.howToPerform) + "</p><p>" + esc(METHOD_TEXT[cm.type]) + " Range " + cm.range.min + "–" + cm.range.max + ".</p>" +
+        (cm.formula ? "<p>Components are reported individually before the total.</p>" : "") +
         (score.inputDefinitions.some(function (d) { return d.notTestable; }) ? "<p>" + esc(NT_TEXT[cm.notTestablePolicy || "block"]) + "</p>" : "")],
-      ["Interpretation", interp],
+      ["Scoring components", comps],
+      ["Interpretation", (pres ? '<p class="lede" style="margin:0 0 var(--space-2)">Result type: ' + esc(pres.typeLabel) + "</p>" : "") + interp],
       ["Clinical context", "<p>" + esc(g.clinicalContext) + "</p>" + list(score.clinicalInsights.map(function (i) { return /\{/.test(i.text) ? null : i.text; }).filter(Boolean))],
-      ["Important limitations", list(score.limitations)],
-      ["Confounders / factors affecting scoring", list(score.confounders)],
-      ["Common calculation mistakes", list(score.commonErrors)],
-      ["What the score does NOT tell you", list(score.whatItDoesNotTellYou)],
+      ["Limitations", list(score.limitations)],
+      ["Confounders", list(score.confounders)],
+      ["Common mistakes", list(score.commonErrors)],
+      ["What the score does not tell you", list(score.whatItDoesNotTellYou)],
       ["Related scores", '<div class="chip-row">' + score.relatedScores.map(function (x) { var l = links(x.id, "guide"); return l ? '<a class="chip" href="' + l.href + '" data-nav>' + esc(l.label) + ' <span class="n">' + esc(x.relation) + "</span></a>" : ""; }).join("") + "</div>"],
-      ["Version / classification information", '<dl class="vinfo"><dt>Version</dt><dd>' + esc(score.version.label) + "</dd><dt>Details</dt><dd>" + esc(score.version.detail) + "</dd><dt>Category</dt><dd>" + esc(score.subcategory) +
+      ["Version", '<dl class="vinfo"><dt>Version</dt><dd>' + esc(score.version.label) + "</dd><dt>Details</dt><dd>" + esc(score.version.detail) + "</dd><dt>Category</dt><dd>" + esc(score.subcategory) +
         "</dd><dt>Specialties</dt><dd>" + esc(score.specialties.join(", ")) + "</dd><dt>Content</dt><dd>v" + esc(score.contentVersion) + "</dd><dt>Last reviewed</dt><dd>" + esc(score.lastReviewed) +
         "</dd><dt>Review status</dt><dd>" + esc(score.reviewStatus) + "</dd>" + (score.licensing ? "<dt>Licensing</dt><dd>" + esc(score.licensing.status) + ". " + esc(score.licensing.note) + "</dd>" : "") + "</dl>"],
-      ["Evidence / sources", '<ol class="sources">' + score.sources.map(function (s) {
+      ["Sources", '<ol class="sources">' + score.sources.map(function (s) {
         var href = s.doi ? "https://doi.org/" + s.doi : s.url; return "<li>" + esc(s.citation) + (href ? ' <a href="' + esc(href) + '" data-ext>' + esc(s.doi ? "doi:" + s.doi : "Source") + "</a>" : "") + "</li>"; }).join("") + "</ol>"]
     ];
     var toc = '<nav class="toc" aria-label="Guide sections">' + secs.map(function (s, i) { return '<a href="#" data-jump="g' + (i + 1) + '">' + (i + 1) + ". " + esc(s[0].split(" / ")[0]) + "</a>"; }).join("") + "</nav>";

@@ -8,25 +8,37 @@
   "spinal instability",
   "metastasis",
   "neoplastic",
-  "sosg"
+  "sosg",
+  "spine tumour"
  ],
  "id": "sins",
  "name": "Spinal Instability Neoplastic Score",
  "abbreviation": "SINS",
  "category": "spine",
- "subcategory": "Spinal oncology",
+ "subcategory": "Neoplastic spinal instability",
  "specialties": [
   "Neurosurgery",
   "Spine Surgery",
   "Radiation Oncology",
-  "Radiology"
+  "Radiology",
+  "Oncology"
  ],
  "version": {
   "label": "SOSG SINS (Fisher et al. 2010)",
-  "detail": "Six components, total 0–18. Categories 0–6 stable, 7–12 potentially unstable, 13–18 unstable."
+  "detail": "Six components, total 0–18. Categories: stable 0–6, indeterminate (possibly impending) instability 7–12, unstable 13–18."
  },
- "purpose": "Assessment of tumour-related spinal instability to support referral and multidisciplinary discussion.",
- "intendedPopulation": "Adults with primary or metastatic neoplastic involvement of the spine (assessed per affected level).",
+ "purpose": "Classification of tumour-related spinal instability, to standardise communication and support referral for specialist assessment.",
+ "intendedPopulation": "Adults with primary or metastatic neoplastic involvement of the spine, scored per affected level using clinical history and CT/MRI.",
+ "resultPresentation": {
+  "type": "stability-category",
+  "typeLabel": "Stability category",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Assessment tool, not a surgical decision",
+  "message": "SINS classifies mechanical stability only. Treatment decisions also depend on neurological status, tumour histology, systemic disease, prognosis and patient choice, in multidisciplinary discussion."
+ },
  "components": [
   {
    "id": "spinal_location",
@@ -51,7 +63,7 @@
   },
   {
    "id": "radiographic_alignment",
-   "label": "Radiographic alignment",
+   "label": "Radiographic spinal alignment",
    "inputs": [
     "alignment"
    ]
@@ -113,12 +125,12 @@
    "options": [
     {
      "value": "3",
-     "label": "Mechanical pain",
+     "label": "Yes (mechanical pain)",
      "points": 3
     },
     {
      "value": "1",
-     "label": "Occasional pain, not mechanical",
+     "label": "No (occasional pain but not mechanical)",
      "points": 1
     },
     {
@@ -192,7 +204,7 @@
     },
     {
      "value": "1",
-     "label": "No collapse, more than 50% of body involved",
+     "label": "No collapse with more than 50% of the body involved",
      "points": 1
     },
     {
@@ -205,7 +217,7 @@
   {
    "id": "posterolateral",
    "type": "single",
-   "label": "Posterolateral involvement",
+   "label": "Posterolateral involvement of spinal elements",
    "short": "Posterolateral",
    "help": "Facet, pedicle or costovertebral joint fracture, or replacement with tumour.",
    "options": [
@@ -221,7 +233,7 @@
     },
     {
      "value": "0",
-     "label": "None",
+     "label": "None of the above",
      "points": 0
     }
    ]
@@ -253,60 +265,68 @@
   {
    "id": "stable",
    "tone": "low",
+   "min": 0,
+   "max": 6,
    "label": "Stable",
    "range": "0–6",
-   "summary": "Category: stable (0–6)."
+   "summary": "Stability category: stable (0–6)."
   },
   {
    "id": "potential",
    "tone": "moderate",
+   "min": 7,
+   "max": 12,
    "label": "Potentially unstable",
    "range": "7–12",
-   "summary": "Category: indeterminate (possibly impending) instability (7–12).",
-   "detail": "In the original SINS publication, scores of 7–18 were considered to warrant surgical consultation. Integrate with neurological status, histology, prognosis and patient goals."
+   "summary": "Stability category: indeterminate, possibly impending instability (7–12).",
+   "detail": "The SINS authors considered scores of 7–18 to warrant surgical consultation. This is a referral threshold for specialist assessment, not a decision to operate."
   },
   {
    "id": "unstable",
    "tone": "high",
+   "min": 13,
+   "max": 18,
    "label": "Unstable",
    "range": "13–18",
-   "summary": "Category: instability (13–18).",
-   "detail": "In the original SINS publication, scores of 7–18 were considered to warrant surgical consultation. Integrate with neurological status, histology, prognosis and patient goals."
+   "summary": "Stability category: unstable (13–18).",
+   "detail": "The SINS authors considered scores of 7–18 to warrant surgical consultation. Management depends on neurology, histology, systemic disease, prognosis and patient goals."
   }
  ],
  "clinicalInsights": [
   {
-   "text": "SINS assesses mechanical stability only; neurological compression, histology and prognosis are assessed separately."
+   "text": "SINS addresses mechanical stability only. Neurological compression, tumour histology and prognosis are assessed separately."
   },
   {
    "when": "total >= 7 && total <= 12",
-   "text": "Intermediate scores have the most inter-observer variation; component-level review helps multidisciplinary discussion."
+   "text": "Intermediate scores show the most inter-observer variation. Reviewing the components helps multidisciplinary discussion."
   },
   {
    "when": "pain == 3",
-   "text": "Mechanical pain is a major contributor and reflects clinical, not only radiological, assessment."
+   "text": "Mechanical pain is a clinical finding; confirm it from the history, not imaging alone."
   }
  ],
  "limitations": [
-  "Designed for neoplastic disease, not trauma or infection.",
-  "Agreement is lower in the potentially unstable range.",
-  "Assessed per level; multi-level disease needs level-by-level scoring.",
-  "Does not include neurological status."
+  "Designed for neoplastic disease, not trauma, infection or degenerative disease.",
+  "Agreement between raters is lowest in the 7–12 range.",
+  "Scored per level; multi-level disease needs level-by-level assessment.",
+  "Does not include neurological status, histology or prognosis.",
+  "Not a standalone surgical decision tool."
  ],
  "confounders": [
   "Prior surgery or instrumentation",
   "Osteoporotic fracture at the same level",
-  "Imaging modality and quality",
+  "Imaging modality, quality and patient position",
   "Pain from causes other than the lesion"
  ],
  "commonErrors": [
   "Labelling non-mechanical pain as mechanical.",
-  "Using the wrong junctional boundaries (e.g. C7–T2, T11–L1).",
-  "Scoring alignment from supine imaging alone without noting it."
+  "Using the wrong junctional boundaries (occiput–C2, C7–T2, T11–L1, L5–S1).",
+  "Treating a score of 7 or more as an indication for surgery rather than for consultation.",
+  "Combining several levels into one score."
  ],
  "whatItDoesNotTellYou": [
-  "Whether neural compression is present.",
-  "Tumour radiosensitivity or prognosis.",
+  "Whether neural compression or deficit is present.",
+  "Tumour radiosensitivity, systemic disease or prognosis.",
   "Which treatment is appropriate."
  ],
  "relatedScores": [
@@ -324,10 +344,10 @@
   }
  ],
  "guideSections": {
-  "what": "A six-component score (location, pain, bone lesion, alignment, collapse, posterolateral involvement) for tumour-related spinal instability; totals range 0–18.",
-  "whenUseful": "Communicating instability between oncology, radiation oncology, radiology and spine surgery; screening for referral.",
-  "howToCalculate": "Score the affected level on each component using clinical history and CT/MRI, then sum.",
-  "clinicalContext": "One input to multidisciplinary decisions, alongside neurology, oncology, mechanical instability and systemic disease frameworks."
+  "what": "A six-component classification of tumour-related spinal instability: location, pain, bone lesion, alignment, vertebral body collapse and posterolateral involvement. Totals range 0–18 in three stability categories.",
+  "whenToUse": "Communicating instability between oncology, radiation oncology, radiology and spine surgery, and identifying patients for surgical consultation.",
+  "howToPerform": "For the affected level, take the history (mechanical pain) and review CT/MRI for the five imaging components. Score each component and sum. Score each involved level separately.",
+  "clinicalContext": "SINS is one input to multidisciplinary decisions, alongside neurological status, oncological factors, systemic disease, prognosis and patient preference."
  },
  "sources": [
   {
@@ -340,7 +360,7 @@
   }
  ],
  "licensing": {
-  "status": "Published classification, original wording",
-  "note": "No reproduction restrictions identified for the scoring criteria."
+  "status": "Published classification",
+  "note": "Criteria in original wording with attribution. No reproduction restrictions identified."
  }
 }

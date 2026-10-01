@@ -4,9 +4,9 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: Phase 2, score engine (v0.3.0)
+## Status: Phase 3, first four scores (v0.4.0)
 
-The data-driven score engine is complete. Four scores are implemented: **GCS, NIHSS, mRS and SINS**. All other catalogue entries are placeholders. See [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md) and [docs/PHASE-2.md](docs/PHASE-2.md).
+The data-driven score engine is complete. Four scores are implemented: **GCS, NIHSS, mRS and SINS**. All other catalogue entries are placeholders. Each was verified against its authoritative source. See [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
 
 ## Repository layout
 
@@ -32,7 +32,7 @@ tests/engine/             engine unit tests + per-score fixtures (node --test)
 tests/calculator.test.py  calculator UI tests (Playwright)
 tests/shell.test.py       shell regression tests (Playwright)
 content_src/              score content source
-brand/                    app icon sources (SVG)
+brand/                    app icon sources (SVG). Current logo: Insula_Neuro_Score_Full_Better.svg
 docs/                     architecture and phase reports
 ```
 

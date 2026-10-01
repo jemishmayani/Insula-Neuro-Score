@@ -28,7 +28,10 @@ The UI layer (`app.js`, `ui.js`, `calculator.js`) contains no scoring rules. Aut
 | `limitations[]` | string or `{when, text}` | Conditional limitations are shown first |
 | `confounders[]`, `commonErrors[]`, `whatItDoesNotTellYou[]` | string | |
 | `relatedScores[] {id, relation}` | | |
-| `guideSections {what, whenUseful, howToCalculate, clinicalContext}` | | Prose. The other guide sections are generated from the model. |
+| `guideSections {what, whenToUse, howToPerform, clinicalContext}` | | Prose. The other guide sections are generated from the model. |
+| `resultPresentation {type, typeLabel, meter}` | | Semantic result type: severity, deficit, functional-status, stability-category, classification or informational. `meter` draws the score's own bands from state `min`/`max`. |
+| `calculationMethod.formula` | template | Shown before the total (e.g. GCS `E + V + M`) |
+| `calculatorNotice {tone, title, message}` | | Persistent framing note on the calculator and in guide section 1 |
 | `sources[] {citation, doi?, url?}`, `licensing {status, note}` | | At least one source is required |
 
 ### Input types (`inputDefinitions[].type`)

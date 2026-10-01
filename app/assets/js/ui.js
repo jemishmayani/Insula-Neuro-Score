@@ -136,11 +136,28 @@
       '</span><span class="count">' + o.count + " score" + (o.count === 1 ? "" : "s") + (c.description ? " · " + esc(c.description) : "") + "</span></span>" + icon("chevron", "chev") + "</a>";
   }
 
-  /** ResultCard({tone, value, meta, summary, detail, label}) */
+  /** ScaleMeter({min, max, value, bands:[{min,max,tone,label}], label}) — position on a score's own scale */
+  function ScaleMeter(o) {
+    var span = o.max - o.min + 1, active = null;
+    var segs = o.bands.map(function (b) {
+      var on = o.value != null && o.value >= b.min && o.value <= b.max; if (on) active = b;
+      var w = (b.max - b.min + 1) / span * 100;
+      return '<span class="meter-seg tone-' + esc(b.tone) + (on ? " is-on" : "") + '" style="width:' + w.toFixed(3) + '%"><i></i><span class="meter-lbl">' + (b.min === b.max ? b.min : b.min + "–" + b.max) + "</span></span>";
+    }).join("");
+    var pos = o.value == null ? null : ((o.value - o.min + 0.5) / span * 100);
+    var desc = o.value == null ? o.label + ": not yet calculated" : o.label + " " + o.value + " on a scale of " + o.min + " to " + o.max + (active ? ", band " + active.label : "");
+    return '<div class="meter" role="img" aria-label="' + esc(desc) + '"><div class="meter-track">' + segs + "</div>" +
+      (pos == null ? "" : '<span class="meter-marker" style="left:' + pos.toFixed(3) + '%" aria-hidden="true"></span>') + "</div>";
+  }
+
+  /** ResultCard({tone, value, meta, summary, detail, label, typeLabel, formula, meter}) */
   function ResultCard(o) {
     var isText = /[A-Za-z]/.test(String(o.value)) && String(o.value).length > 5;
-    return '<section class="result-card tone-' + esc(o.tone) + '" aria-live="polite" aria-label="Result"><div class="state">' + stateIcon(o.tone) + "<span>" + esc(o.label || TONE_LABEL[o.tone]) + "</span></div>" +
-      '<div class="value' + (isText ? " text" : "") + '">' + esc(o.value) + "</div>" + (o.meta ? '<div class="meta">' + esc(o.meta) + "</div>" : "") +
+    return '<section class="result-card tone-' + esc(o.tone) + '" aria-live="polite" aria-label="Result">' +
+      (o.typeLabel ? '<div class="result-type">' + esc(o.typeLabel) + "</div>" : "") +
+      '<div class="state">' + stateIcon(o.tone) + "<span>" + esc(o.label || TONE_LABEL[o.tone]) + "</span></div>" +
+      (o.formula ? '<div class="formula">' + esc(o.formula) + (o.formulaJoin ? ' <span class="eq">' + esc(o.formulaJoin) + "</span>" : "") + "</div>" : "") +
+      '<div class="value' + (isText ? " text" : "") + '">' + esc(o.value) + "</div>" + (o.meta ? '<div class="meta">' + esc(o.meta) + "</div>" : "") + (o.meter || "") +
       (o.summary ? '<p class="summary">' + esc(o.summary) + "</p>" : "") + (o.detail ? '<p class="detail">' + esc(o.detail) + "</p>" : "") + "</section>";
   }
 
@@ -212,7 +229,7 @@
 
   global.UI = { esc: esc, icon: icon, stateIcon: stateIcon, TONE_LABEL: TONE_LABEL,
     AppBar: AppBar, IconButton: IconButton, BottomNavigation: BottomNavigation, SearchBar: SearchBar, StatusBadge: StatusBadge,
-    ScoreCard: ScoreCard, CardList: CardList, CategoryCard: CategoryCard, ResultCard: ResultCard, SectionCard: SectionCard,
+    ScoreCard: ScoreCard, CardList: CardList, ScaleMeter: ScaleMeter, CategoryCard: CategoryCard, ResultCard: ResultCard, SectionCard: SectionCard,
     PrimaryButton: PrimaryButton, SecondaryButton: SecondaryButton, Toggle: Toggle, Segmented: Segmented,
     EmptyState: EmptyState, InfoBanner: InfoBanner, WarningBanner: WarningBanner, ErrorState: ErrorState, LoadingState: LoadingState, Section: Section };
 })(window);

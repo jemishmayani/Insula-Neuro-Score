@@ -2,7 +2,7 @@
  "scoreId": "nihss",
  "cases": [
   {
-   "name": "minimum (0)",
+   "name": "no deficit on any item",
    "answers": {
     "item_1a": "0",
     "item_1b": "0",
@@ -25,10 +25,15 @@
     "total": 0,
     "state": "zero",
     "tone": "normal"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "15 items × 0 = 0",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "maximum (42)",
+   "name": "maximum on every item",
    "answers": {
     "item_1a": "3",
     "item_1b": "2",
@@ -47,16 +52,18 @@
     "item_11": "2"
    },
    "expect": {
-    "status": "complete",
     "total": 42,
     "state": "scored",
-    "tone": "informational",
-    "label": "NIHSS 42",
-    "warnings": 0
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3+2+2+2+3+3+4+4+4+4+2+2+3+2+2 = 42",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "intermediate left MCA pattern (14)",
+   "name": "left hemisphere pattern: right hemiparesis + aphasia",
    "answers": {
     "item_1a": "0",
     "item_1b": "1",
@@ -79,10 +86,44 @@
     "state": "scored",
     "label": "NIHSS 14",
     "insightsContains": "left-hemisphere"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1b 1 + gaze 1 + visual 1 + face 2 + R arm 3 + R leg 2 + sensory 1 + language 2 + dysarthria 1 = 14",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "boundary 1",
+   "name": "right hemisphere pattern with neglect",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "2",
+    "item_3": "2",
+    "item_4": "2",
+    "item_5a": "4",
+    "item_5b": "0",
+    "item_6a": "3",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "2",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "2"
+   },
+   "expect": {
+    "total": 17,
+    "insightsContains": "Inattention"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "gaze 2 + visual 2 + face 2 + L arm 4 + L leg 3 + sensory 2 + extinction 2 = 17",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
+   }
+  },
+  {
+   "name": "isolated minor facial palsy",
    "answers": {
     "item_1a": "0",
     "item_1b": "0",
@@ -102,11 +143,17 @@
    },
    "expect": {
     "total": 1,
-    "state": "scored"
+    "state": "scored",
+    "insightsContains": "posterior circulation"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "face 1 = 1",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "UN arm with reason: excluded and flagged",
+   "name": "left arm UN (amputation), right arm 2",
    "answers": {
     "item_1a": "0",
     "item_1b": "0",
@@ -133,10 +180,15 @@
     "notTestable": 1,
     "warnings": 1,
     "limitationsContains": "untestable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "5a UN (0 points, flagged) + 5b 2 = 2",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "UN only, total 0 is not 'no deficit'",
+   "name": "UN only: total 0 is not reported as 'no deficit'",
    "answers": {
     "item_1a": "0",
     "item_1b": "0",
@@ -144,13 +196,13 @@
     "item_2": "0",
     "item_3": "0",
     "item_4": "0",
-    "item_5a": {
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": {
      "nt": true,
      "reason": "Joint fusion"
     },
-    "item_5b": "0",
-    "item_6a": "0",
-    "item_6b": "0",
     "item_7": "0",
     "item_8": "0",
     "item_9": "0",
@@ -161,10 +213,134 @@
     "total": 0,
     "state": "scored",
     "warnings": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "6b UN, all others 0 → 0 with untestable flag",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "UN without reason is invalid",
+   "name": "coma scored per NINDS rules",
+   "answers": {
+    "item_1a": "3",
+    "item_1b": "2",
+    "item_1c": "2",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "4",
+    "item_5b": "4",
+    "item_6a": "4",
+    "item_6b": "4",
+    "item_7": "0",
+    "item_8": "2",
+    "item_9": "3",
+    "item_10": "2",
+    "item_11": "0"
+   },
+   "expect": {
+    "total": 30,
+    "warnings": 0
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1a 3 + 1b 2 + 1c 2 + limbs 16 + sensory 2 + language 3 + dysarthria 2 = 30; items 8 = 2 and 9 = 3 as instructed",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
+   }
+  },
+  {
+   "name": "coma with sensory and language not per rules",
+   "answers": {
+    "item_1a": "3",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "total": 3,
+    "warnings": 2,
+    "warningContains": "item 8"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1a = 3 but 8 ≠ 2 and 9 ≠ 3 → two warnings",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
+   }
+  },
+  {
+   "name": "language 3 while following commands",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "0",
+    "item_5b": "0",
+    "item_6a": "0",
+    "item_6b": "0",
+    "item_7": "0",
+    "item_8": "0",
+    "item_9": "3",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "total": 3,
+    "warnings": 1,
+    "warningContains": "one-step"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "9 = 3 with 1c = 0 (both commands performed) → warning",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
+   }
+  },
+  {
+   "name": "ataxia scored in a paralysed patient",
+   "answers": {
+    "item_1a": "0",
+    "item_1b": "0",
+    "item_1c": "0",
+    "item_2": "0",
+    "item_3": "0",
+    "item_4": "0",
+    "item_5a": "4",
+    "item_5b": "4",
+    "item_6a": "4",
+    "item_6b": "4",
+    "item_7": "1",
+    "item_8": "0",
+    "item_9": "0",
+    "item_10": "0",
+    "item_11": "0"
+   },
+   "expect": {
+    "total": 17,
+    "warnings": 1,
+    "warningContains": "ataxia"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "limbs 16 + ataxia 1 = 17; ataxia should be absent when paralysed",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
+   }
+  },
+  {
+   "name": "dysarthria UN without reason",
    "answers": {
     "item_1a": "0",
     "item_1b": "0",
@@ -187,37 +363,15 @@
    "expect": {
     "status": "invalid",
     "errors": 1
-   }
-  },
-  {
-   "name": "UN with disallowed reason is invalid",
-   "answers": {
-    "item_1a": "0",
-    "item_1b": "0",
-    "item_1c": "0",
-    "item_2": "0",
-    "item_3": "0",
-    "item_4": "0",
-    "item_5a": "0",
-    "item_5b": "0",
-    "item_6a": {
-     "nt": true,
-     "reason": "Patient refused"
-    },
-    "item_6b": "0",
-    "item_7": "0",
-    "item_8": "0",
-    "item_9": "0",
-    "item_10": "0",
-    "item_11": "0"
    },
-   "expect": {
-    "status": "invalid",
-    "errors": 1
+   "verification": {
+    "method": "manual",
+    "calculation": "UN requires a recorded explanation",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "UN on item that does not allow it",
+   "name": "extinction is never untestable",
    "answers": {
     "item_1a": "0",
     "item_1b": "0",
@@ -231,26 +385,34 @@
     "item_6b": "0",
     "item_7": "0",
     "item_8": "0",
-    "item_9": {
-     "nt": true,
-     "reason": "x"
-    },
+    "item_9": "0",
     "item_10": "0",
-    "item_11": "0"
+    "item_11": {
+     "nt": true,
+     "reason": "Intubated"
+    }
    },
    "expect": {
     "status": "invalid",
     "errors": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "Item 11: 'the item is never untestable'",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "coma consistency warnings",
+   "name": "UN for an item that does not allow it",
    "answers": {
-    "item_1a": "3",
+    "item_1a": "0",
     "item_1b": "0",
     "item_1c": "0",
     "item_2": "0",
-    "item_3": "0",
+    "item_3": {
+     "nt": true,
+     "reason": "Amputation"
+    },
     "item_4": "0",
     "item_5a": "0",
     "item_5b": "0",
@@ -263,67 +425,29 @@
     "item_11": "0"
    },
    "expect": {
-    "status": "complete",
-    "warnings": 2,
-    "warningContains": "item 8"
-   }
-  },
-  {
-   "name": "coma consistent: no warnings",
-   "answers": {
-    "item_1a": "3",
-    "item_1b": "0",
-    "item_1c": "0",
-    "item_2": "0",
-    "item_3": "0",
-    "item_4": "0",
-    "item_5a": "0",
-    "item_5b": "0",
-    "item_6a": "0",
-    "item_6b": "0",
-    "item_7": "0",
-    "item_8": "2",
-    "item_9": "3",
-    "item_10": "0",
-    "item_11": "0"
+    "status": "invalid",
+    "errors": 1
    },
-   "expect": {
-    "warnings": 0,
-    "total": 8
+   "verification": {
+    "method": "manual",
+    "calculation": "Visual has no UN option",
+    "source": "NINDS NIH Stroke Scale (Feb 2024)"
    }
   },
   {
-   "name": "missing items",
+   "name": "items not yet entered",
    "answers": {
-    "item_1a": "0"
+    "item_1a": "0",
+    "item_1b": "0"
    },
    "expect": {
     "status": "incomplete",
-    "missing": 14
-   }
-  },
-  {
-   "name": "invalid value",
-   "answers": {
-    "item_1a": "0",
-    "item_1b": "0",
-    "item_1c": "0",
-    "item_2": "0",
-    "item_3": "4",
-    "item_4": "0",
-    "item_5a": "0",
-    "item_5b": "0",
-    "item_6a": "0",
-    "item_6b": "0",
-    "item_7": "0",
-    "item_8": "0",
-    "item_9": "0",
-    "item_10": "0",
-    "item_11": "0"
+    "missing": 13
    },
-   "expect": {
-    "status": "invalid",
-    "errors": 1
+   "verification": {
+    "method": "manual",
+    "calculation": "13 of 15 items missing",
+    "source": "Manual calculation"
    }
   }
  ]

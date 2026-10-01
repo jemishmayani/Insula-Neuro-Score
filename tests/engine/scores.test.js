@@ -3,6 +3,10 @@ const fs = require("fs"), path = require("path");
 const { Engine, load, scoreIds, ROOT } = require("./helpers");
 const FIX = path.join(__dirname, "fixtures");
 
+test("every fixture case is a documented manual verification", () => {
+  for (const f of fs.readdirSync(FIX)) for (const c of JSON.parse(fs.readFileSync(path.join(FIX, f))).cases)
+    assert.ok(c.verification && c.verification.method === "manual" && c.verification.calculation, f + ": " + c.name);
+});
 test("every implemented score validates and has a fixture file", () => {
   for (const id of scoreIds()) {
     assert.deepEqual(Engine.validateScore(load(id)), [], id);
@@ -16,7 +20,8 @@ test("every implemented score validates and has a fixture file", () => {
 for (const file of fs.readdirSync(FIX)) {
   const fx = JSON.parse(fs.readFileSync(path.join(FIX, file))), score = load(fx.scoreId);
   for (const c of fx.cases) {
-    test(`${fx.scoreId}: ${c.name}`, () => {
+    const v = c.verification ? ` [${c.verification.calculation}]` : "";
+    test(`${fx.scoreId}: ${c.name}${v}`, () => {
       const r = Engine.calculate(score, c.answers), e = c.expect;
       if ("status" in e) assert.equal(r.status, e.status);
       if ("total" in e) assert.equal(r.total, e.total);
@@ -26,6 +31,7 @@ for (const file of fs.readdirSync(FIX)) {
       if ("label" in e) assert.equal(r.state.label, e.label);
       for (const k of ["errors", "warnings", "missing", "notTestable"]) if (k in e) assert.equal(r[k].length, e[k], k + ": " + JSON.stringify(r[k]));
       if (e.shareText) assert.equal(r.shareText, e.shareText);
+      if (e.formula) assert.equal(r.formula, e.formula);
       if (e.insightsContains) assert.ok(r.insights.some((t) => t.includes(e.insightsContains)), JSON.stringify(r.insights));
       if (e.warningContains) assert.ok(r.warnings.some((w) => w.message.includes(e.warningContains)));
       if (e.limitationsContains) assert.ok(r.limitations.some((l) => l.contextual && l.text.includes(e.limitationsContains)));
@@ -45,6 +51,7 @@ test("GCS: all 120 complete combinations sum correctly and map to the right band
     const r = Engine.calculate(s, a), t = +a.e + +a.v + +a.m; n++;
     assert.equal(r.total, t);
     assert.equal(r.state.id, t === 15 ? "none" : t >= 13 ? "mild" : t >= 9 ? "moderate" : "severe");
+    assert.equal(r.formula, `E${a.e} + V${a.v} + M${a.m}`);
   }
   assert.equal(n, 120);
 });

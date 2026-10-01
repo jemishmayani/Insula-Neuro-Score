@@ -10,7 +10,7 @@
    "inputs": [
     "item_8"
    ],
-   "message": "Item 1a is 3 (coma). NINDS instructions score item 8 (sensory) as 2 in coma."
+   "message": "Item 1a = 3 (coma): NINDS instructions automatically score item 8 (sensory) as 2."
   },
   {
    "when": "item_1a == 3 && item_9 != 3",
@@ -18,7 +18,24 @@
    "inputs": [
     "item_9"
    ],
-   "message": "Item 1a is 3 (coma). NINDS instructions score item 9 (language) as 3 in coma."
+   "message": "Item 1a = 3 (coma): NINDS instructions automatically score item 9 (language) as 3."
+  },
+  {
+   "when": "item_9 == 3 && item_1c <= 1",
+   "severity": "warning",
+   "inputs": [
+    "item_9",
+    "item_1c"
+   ],
+   "message": "Item 9 = 3 is used only if the patient is mute and follows no one-step commands, but item 1c records at least one command performed."
+  },
+  {
+   "when": "item_5a == 4 && item_5b == 4 && item_6a == 4 && item_6b == 4 && item_7 >= 1",
+   "severity": "warning",
+   "inputs": [
+    "item_7"
+   ],
+   "message": "No movement in all four limbs: NINDS instructions score ataxia as absent in a paralysed patient."
   }
  ],
  "aliases": [
@@ -30,18 +47,28 @@
  "name": "NIH Stroke Scale",
  "abbreviation": "NIHSS",
  "category": "stroke",
- "subcategory": "Clinical severity",
+ "subcategory": "Stroke deficit quantification",
  "specialties": [
   "Stroke",
   "Neurology",
   "Emergency Medicine"
  ],
  "version": {
-  "label": "NINDS NIH Stroke Scale (15 items)",
-  "detail": "Item definitions per the NINDS scale (updated 2024). The optional distal motor item is not part of the total and is not included."
+  "label": "NINDS NIH Stroke Scale (2024 update), 15 items",
+  "detail": "Items 1a–11 as defined by NINDS (updated February 2024). Total 0–42. The language stimulus pictures, naming sheet and reading lists are not reproduced. Optional add-on items (e.g. distal motor function) are not part of the scale total and are not included."
  },
- "purpose": "Standardised quantification of neurological deficit in acute stroke.",
- "intendedPopulation": "Adults with suspected or confirmed acute stroke, assessed by trained examiners.",
+ "purpose": "Standardised quantification of selected neurological deficits after stroke, for assessment, monitoring and communication.",
+ "intendedPopulation": "Adults with suspected or confirmed acute stroke, examined by a clinician trained in the NIHSS.",
+ "resultPresentation": {
+  "type": "deficit",
+  "typeLabel": "Measured stroke deficit",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Not a complete neurological examination",
+  "message": "NIHSS scores 15 selected items. Disabling deficits such as gait or truncal ataxia, vertigo, dysphagia, isolated hand weakness and cognitive impairment are not captured. A low score, including 0, does not exclude stroke."
+ },
  "components": [
   {
    "id": "consciousness",
@@ -54,14 +81,14 @@
   },
   {
    "id": "eye_movement",
-   "label": "Gaze",
+   "label": "Best gaze",
    "inputs": [
     "item_2"
    ]
   },
   {
    "id": "visual_fields",
-   "label": "Visual fields",
+   "label": "Visual",
    "inputs": [
     "item_3"
    ]
@@ -105,7 +132,7 @@
   },
   {
    "id": "speech_language",
-   "label": "Language",
+   "label": "Best language",
    "inputs": [
     "item_9"
    ]
@@ -131,50 +158,53 @@
    "type": "single",
    "label": "1a. Level of consciousness",
    "short": "1a LOC",
-   "help": "A response must be chosen even if evaluation is limited (e.g. intubation, language barrier). 3 only if no movement other than reflexive posturing to noxious stimulation.",
+   "help": "A response must be chosen even if evaluation is limited (e.g. endotracheal tube, language barrier). Score 3 only if no movement other than reflexive posturing to noxious stimulation.",
    "options": [
     {
      "value": "0",
-     "label": "Alert, keenly responsive",
+     "label": "Alert; keenly responsive",
      "points": 0
     },
     {
      "value": "1",
      "label": "Not alert; arousable by minor stimulation",
-     "points": 1
+     "points": 1,
+     "detail": "To obey, answer or respond."
     },
     {
      "value": "2",
-     "label": "Not alert; needs repeated or strong stimulation",
-     "points": 2
+     "label": "Not alert; requires repeated stimulation",
+     "points": 2,
+     "detail": "Or obtunded, requiring strong or painful stimulation to make movements (not stereotyped)."
     },
     {
      "value": "3",
      "label": "Reflex responses only, or totally unresponsive",
-     "points": 3
+     "points": 3,
+     "detail": "Reflex motor or autonomic effects only, or flaccid and areflexic."
     }
    ]
   },
   {
    "id": "item_1b",
    "type": "single",
-   "label": "1b. LOC questions (month, age)",
+   "label": "1b. LOC questions",
    "short": "1b Questions",
-   "help": "Only the initial answer is graded; no partial credit for being close.",
+   "help": "Ask the month and the patient's age; grade only the initial answer, with no partial credit. Aphasic or stuporous patients who do not comprehend score 2. Patients unable to speak for reasons other than aphasia (e.g. intubation) score 1.",
    "options": [
     {
      "value": "0",
-     "label": "Answers both correctly",
+     "label": "Answers both questions correctly",
      "points": 0
     },
     {
      "value": "1",
-     "label": "Answers one correctly",
+     "label": "Answers one question correctly",
      "points": 1
     },
     {
      "value": "2",
-     "label": "Answers neither correctly",
+     "label": "Answers neither question correctly",
      "points": 2
     }
    ]
@@ -182,9 +212,9 @@
   {
    "id": "item_1c",
    "type": "single",
-   "label": "1c. LOC commands (eyes, grip)",
+   "label": "1c. LOC commands",
    "short": "1c Commands",
-   "help": "Credit if an unequivocal attempt is made but not completed due to weakness. Only the first attempt is scored.",
+   "help": "Open and close the eyes; grip and release the non-paretic hand. Credit an unequivocal attempt limited by weakness. Pantomime if no response. Only the first attempt is scored.",
    "options": [
     {
      "value": "0",
@@ -208,7 +238,7 @@
    "type": "single",
    "label": "2. Best gaze",
    "short": "2 Gaze",
-   "help": "Horizontal eye movements only.",
+   "help": "Horizontal eye movements only; voluntary or oculocephalic, no caloric testing. Conjugate deviation overcome by voluntary or reflexive activity, or an isolated CN III, IV or VI paresis, scores 1.",
    "options": [
     {
      "value": "0",
@@ -218,7 +248,8 @@
     {
      "value": "1",
      "label": "Partial gaze palsy",
-     "points": 1
+     "points": 1,
+     "detail": "Gaze abnormal in one or both eyes; no forced deviation or total gaze paresis."
     },
     {
      "value": "2",
@@ -231,8 +262,9 @@
   {
    "id": "item_3",
    "type": "single",
-   "label": "3. Visual fields",
+   "label": "3. Visual",
    "short": "3 Visual",
+   "help": "Confrontation testing of upper and lower quadrants. Score 1 only for clear-cut asymmetry, including quadrantanopia. Blind from any cause scores 3.",
    "options": [
     {
      "value": "0",
@@ -253,7 +285,7 @@
      "value": "3",
      "label": "Bilateral hemianopia",
      "points": 3,
-     "detail": "Blind from any cause, including cortical blindness."
+     "detail": "Blind, including cortical blindness."
     }
    ]
   },
@@ -265,7 +297,7 @@
    "options": [
     {
      "value": "0",
-     "label": "Normal, symmetrical movement",
+     "label": "Normal symmetrical movements",
      "points": 0
     },
     {
@@ -284,7 +316,7 @@
      "value": "3",
      "label": "Complete paralysis of one or both sides",
      "points": 3,
-     "detail": "Absent upper and lower facial movement."
+     "detail": "No facial movement in upper and lower face."
     }
    ]
   },
@@ -293,7 +325,7 @@
    "type": "single",
    "label": "5a. Motor arm, left",
    "short": "5a Left arm",
-   "help": "Score drift over 10 seconds. Untestable only for amputation or joint fusion at the shoulder.",
+   "help": "Position the arm at 90° (sitting) or 45° (supine). Drift is scored if it falls before 10 seconds. Begin with the non-paretic limb. UN only for amputation or joint fusion at the shoulder.",
    "notTestable": {
     "label": "Untestable (UN)",
     "code": "UN",
@@ -315,13 +347,13 @@
      "value": "1",
      "label": "Drift",
      "points": 1,
-     "detail": "Drifts down before the end but does not hit the bed or support."
+     "detail": "Drifts down before 10 seconds; does not hit the bed or other support."
     },
     {
      "value": "2",
      "label": "Some effort against gravity",
      "points": 2,
-     "detail": "Cannot reach or hold position; drifts to bed."
+     "detail": "Cannot get to or maintain position; falls to bed, but some effort against gravity."
     },
     {
      "value": "3",
@@ -341,7 +373,7 @@
    "type": "single",
    "label": "5b. Motor arm, right",
    "short": "5b Right arm",
-   "help": "Score drift over 10 seconds. Untestable only for amputation or joint fusion at the shoulder.",
+   "help": "Position the arm at 90° (sitting) or 45° (supine). Drift is scored if it falls before 10 seconds. Begin with the non-paretic limb. UN only for amputation or joint fusion at the shoulder.",
    "notTestable": {
     "label": "Untestable (UN)",
     "code": "UN",
@@ -363,13 +395,13 @@
      "value": "1",
      "label": "Drift",
      "points": 1,
-     "detail": "Drifts down before the end but does not hit the bed or support."
+     "detail": "Drifts down before 10 seconds; does not hit the bed or other support."
     },
     {
      "value": "2",
      "label": "Some effort against gravity",
      "points": 2,
-     "detail": "Cannot reach or hold position; drifts to bed."
+     "detail": "Cannot get to or maintain position; falls to bed, but some effort against gravity."
     },
     {
      "value": "3",
@@ -389,7 +421,7 @@
    "type": "single",
    "label": "6a. Motor leg, left",
    "short": "6a Left leg",
-   "help": "Score drift over 5 seconds. Untestable only for amputation or joint fusion at the hip.",
+   "help": "Position the leg at 30° (always supine). Drift is scored if it falls before 5 seconds. Begin with the non-paretic limb. UN only for amputation or joint fusion at the hip.",
    "notTestable": {
     "label": "Untestable (UN)",
     "code": "UN",
@@ -411,13 +443,13 @@
      "value": "1",
      "label": "Drift",
      "points": 1,
-     "detail": "Drifts down before the end but does not hit the bed or support."
+     "detail": "Drifts down before 5 seconds; does not hit the bed or other support."
     },
     {
      "value": "2",
      "label": "Some effort against gravity",
      "points": 2,
-     "detail": "Cannot reach or hold position; drifts to bed."
+     "detail": "Cannot get to or maintain position; falls to bed, but some effort against gravity."
     },
     {
      "value": "3",
@@ -437,7 +469,7 @@
    "type": "single",
    "label": "6b. Motor leg, right",
    "short": "6b Right leg",
-   "help": "Score drift over 5 seconds. Untestable only for amputation or joint fusion at the hip.",
+   "help": "Position the leg at 30° (always supine). Drift is scored if it falls before 5 seconds. Begin with the non-paretic limb. UN only for amputation or joint fusion at the hip.",
    "notTestable": {
     "label": "Untestable (UN)",
     "code": "UN",
@@ -459,13 +491,13 @@
      "value": "1",
      "label": "Drift",
      "points": 1,
-     "detail": "Drifts down before the end but does not hit the bed or support."
+     "detail": "Drifts down before 5 seconds; does not hit the bed or other support."
     },
     {
      "value": "2",
      "label": "Some effort against gravity",
      "points": 2,
-     "detail": "Cannot reach or hold position; drifts to bed."
+     "detail": "Cannot get to or maintain position; falls to bed, but some effort against gravity."
     },
     {
      "value": "3",
@@ -485,7 +517,7 @@
    "type": "single",
    "label": "7. Limb ataxia",
    "short": "7 Ataxia",
-   "help": "Finger-nose-finger and heel-shin tests, both sides. Scored only if out of proportion to weakness.",
+   "help": "Finger-nose-finger and heel-shin on both sides, eyes open. Scored only if out of proportion to weakness. Ataxia is absent in a patient who cannot understand or is paralysed.",
    "notTestable": {
     "label": "Untestable (UN)",
     "code": "UN",
@@ -519,7 +551,7 @@
    "type": "single",
    "label": "8. Sensory",
    "short": "8 Sensory",
-   "help": "Patients in coma (1a = 3) are scored 2.",
+   "help": "Pinprick, or withdrawal in the obtunded or aphasic patient. Only stroke-related loss counts. Bilateral loss from brainstem stroke scores 2; unresponsive and quadriplegic scores 2; coma (1a = 3) scores 2.",
    "options": [
     {
      "value": "0",
@@ -529,12 +561,14 @@
     {
      "value": "1",
      "label": "Mild-to-moderate sensory loss",
-     "points": 1
+     "points": 1,
+     "detail": "Pinprick less sharp or dull, or loss of superficial pain but aware of being touched."
     },
     {
      "value": "2",
-     "label": "Severe to total sensory loss",
-     "points": 2
+     "label": "Severe or total sensory loss",
+     "points": 2,
+     "detail": "Not aware of being touched in face, arm and leg."
     }
    ]
   },
@@ -543,7 +577,7 @@
    "type": "single",
    "label": "9. Best language",
    "short": "9 Language",
-   "help": "Patients in coma (1a = 3) are scored 3.",
+   "help": "Uses the NINDS picture, naming and reading materials (not reproduced here). Coma (1a = 3) scores 3. Score 3 only if the patient is mute and follows no one-step commands.",
    "options": [
     {
      "value": "0",
@@ -553,17 +587,20 @@
     {
      "value": "1",
      "label": "Mild-to-moderate aphasia",
-     "points": 1
+     "points": 1,
+     "detail": "Some loss of fluency or comprehension; examiner can still identify the material from the response."
     },
     {
      "value": "2",
      "label": "Severe aphasia",
-     "points": 2
+     "points": 2,
+     "detail": "Fragmentary expression; examiner cannot identify the material from the response."
     },
     {
      "value": "3",
      "label": "Mute, global aphasia",
-     "points": 3
+     "points": 3,
+     "detail": "No usable speech or auditory comprehension."
     }
    ]
   },
@@ -572,6 +609,7 @@
    "type": "single",
    "label": "10. Dysarthria",
    "short": "10 Dysarthria",
+   "help": "Obtain an adequate speech sample (NINDS word list, not reproduced). UN only if intubated or another physical barrier to producing speech.",
    "notTestable": {
     "label": "Untestable (UN)",
     "code": "UN",
@@ -580,7 +618,7 @@
      "Intubated",
      "Other physical barrier to speech"
     ],
-    "description": "Only for intubation or another physical barrier to producing speech; record the reason."
+    "description": "Only if intubated or another physical barrier to speech; record the reason."
    },
    "options": [
     {
@@ -591,13 +629,14 @@
     {
      "value": "1",
      "label": "Mild-to-moderate dysarthria",
-     "points": 1
+     "points": 1,
+     "detail": "Slurs at least some words; at worst understood with some difficulty."
     },
     {
      "value": "2",
      "label": "Severe dysarthria",
      "points": 2,
-     "detail": "Unintelligible or worse, or mute/anarthric."
+     "detail": "Unintelligible out of proportion to any dysphasia, or mute/anarthric."
     }
    ]
   },
@@ -606,6 +645,7 @@
    "type": "single",
    "label": "11. Extinction and inattention",
    "short": "11 Extinction",
+   "help": "Never untestable. Severe visual loss with normal cutaneous stimuli scores normal; an aphasic patient who attends to both sides scores normal.",
    "options": [
     {
      "value": "0",
@@ -620,8 +660,9 @@
     },
     {
      "value": "2",
-     "label": "Profound hemi-inattention or extinction in more than one modality",
-     "points": 2
+     "label": "Profound hemi-inattention or extinction to more than one modality",
+     "points": 2,
+     "detail": "Does not recognise own hand, or orients to only one side of space."
     }
    ]
   }
@@ -649,41 +690,43 @@
   {
    "id": "zero",
    "tone": "normal",
-   "label": "No deficit measured",
+   "label": "No deficit on NIHSS items",
    "range": "0",
-   "summary": "No deficit measured on the NIHSS items at this assessment.",
-   "detail": "A score of 0 does not exclude stroke. Deficits outside the scale (e.g. gait ataxia, vertigo, isolated distal weakness) are not captured."
+   "summary": "No deficit measured on the 15 NIHSS items at this assessment.",
+   "detail": "A score of 0 does not exclude stroke; deficits outside the scale are not captured."
   },
   {
    "id": "scored",
    "tone": "informational",
    "label": "NIHSS {total}",
-   "range": "0–42",
-   "summary": "Higher scores indicate greater measured neurological deficit.",
-   "detail": "The NINDS scale defines no official severity categories, and bands used in studies differ. Interpret the item profile and the trend alongside imaging and the clinical picture."
+   "range": "1–42",
+   "summary": "Higher scores indicate more measured neurological deficit.",
+   "detail": "NINDS defines no severity categories, and bands used in studies differ. Interpret the item profile and trend with imaging and the full examination."
   }
  ],
  "clinicalInsights": [
   {
-   "text": "Report the total with the item breakdown. Serial scores by the same method are more informative than a single value."
+   "text": "Report the total with the item breakdown. Serial scores by trained examiners are more informative than a single value."
   },
   {
-   "when": "item_9 >= 1 || item_10 >= 1",
-   "text": "Language and articulation items contribute to the total. For a similar lesion size, left-hemisphere strokes tend to score higher than right-hemisphere strokes."
+   "when": "item_9 >= 1 || item_1b >= 1 || item_1c >= 1",
+   "text": "Language-dependent items contribute to this total. For similar lesion volume, left-hemisphere strokes tend to score higher than right-hemisphere strokes."
   },
   {
    "when": "item_11 >= 1",
-   "text": "Extinction or inattention is present; neglect may affect the reliability of other items."
+   "text": "Inattention or extinction is present. Neglect may be under-weighted relative to its functional impact."
   },
   {
    "when": "total <= 4",
-   "text": "Low scores can still accompany disabling deficits; posterior circulation deficits in particular may be under-represented."
+   "text": "Low scores can accompany disabling deficits, particularly in posterior circulation stroke (e.g. gait ataxia, vertigo, dysphagia)."
   }
  ],
  "limitations": [
-  "Weighted toward anterior circulation and language; posterior circulation strokes may score low.",
-  "Requires trained, certified examiners for reliability.",
-  "Item scoring follows strict instrument rules (e.g. first attempt only) that differ from routine examination.",
+  "Not a complete neurological examination: gait and truncal ataxia, vertigo, nystagmus, dysphagia, isolated distal hand weakness and cognition are not scored.",
+  "Under-represents posterior circulation stroke; a score of 0 does not exclude stroke.",
+  "Language-weighted: right-hemisphere strokes may score lower than left-hemisphere strokes of similar size.",
+  "The total does not show which deficits are disabling for this patient.",
+  "Reliability depends on trained, certified examiners following item rules.",
   {
    "when": "nt_count > 0",
    "text": "{nt_count} item(s) untestable and contributing no points: the total may underestimate the deficit."
@@ -691,29 +734,31 @@
  ],
  "confounders": [
   "Sedation or intubation",
-  "Pre-existing deficits",
+  "Pre-existing neurological deficits",
   "Aphasia affecting comprehension of commands",
   "Visual or hearing impairment",
   "Amputation or joint fusion",
   "Seizure or post-ictal state",
-  "Hypoglycaemia or other stroke mimics"
+  "Hypoglycaemia and other stroke mimics"
  ],
  "commonErrors": [
-  "Coaching the patient or scoring the best rather than the first attempt (items 1b, 1c).",
-  "Scoring ataxia that is explained by weakness.",
-  "Marking items untestable for reasons other than those the instrument allows.",
+  "Coaching the patient, or scoring a later rather than the first attempt (1b, 1c).",
+  "Going back to change earlier item scores.",
+  "Scoring ataxia that is explained by weakness or paralysis.",
+  "Using UN for reasons the instrument does not allow (only amputation or joint fusion for limbs; intubation or physical barrier for dysarthria).",
   "Scoring a pre-existing deficit as new without documenting it."
  ],
  "whatItDoesNotTellYou": [
-  "Whether the deficit is due to stroke or a mimic.",
-  "Vessel occlusion or infarct size.",
+  "Whether the deficit is caused by stroke or a mimic.",
+  "Stroke mechanism, vessel occlusion or infarct size.",
   "Eligibility for any specific treatment.",
-  "Functional outcome on its own."
+  "The full neurological picture, including posterior circulation signs and cognition.",
+  "Functional outcome (see mRS)."
  ],
  "relatedScores": [
   {
    "id": "mrs",
-   "relation": "Functional outcome after stroke"
+   "relation": "Functional outcome"
   },
   {
    "id": "aspects",
@@ -725,23 +770,30 @@
   }
  ],
  "guideSections": {
-  "what": "A 15-item examination quantifying neurological deficit after stroke; totals range 0–42.",
-  "whenUseful": "Initial assessment of suspected stroke, serial monitoring, communication between teams, and trial outcomes.",
-  "howToCalculate": "Administer items in order. Record what the patient does, not what you think they can do. Score each item immediately; do not go back. Use UN only where the instrument allows it and record the reason.",
-  "clinicalContext": "Treatment decisions use the NIHSS alongside imaging, timing and patient factors under local protocol."
+  "what": "A 15-item examination that quantifies selected neurological deficits after stroke. Totals range 0–42.",
+  "whenToUse": "Initial assessment of suspected stroke, serial monitoring for change, communication between teams, and research outcomes.",
+  "howToPerform": "Administer the items in the listed order and record each score immediately. Do not go back and change scores. Score what the patient does, not what you think they can do. Do not coach unless an item allows it. Use UN only where the instrument allows it, and record the reason.",
+  "clinicalContext": "The NIHSS supports, but does not replace, the full neurological examination and imaging. Treatment decisions combine it with timing, imaging, patient factors and local protocol."
  },
  "sources": [
   {
-   "citation": "National Institute of Neurological Disorders and Stroke. NIH Stroke Scale (updated Feb 2024).",
-   "url": "https://www.ninds.nih.gov/health-information/stroke/assess-and-treat/nih-stroke-scale"
+   "citation": "National Institute of Neurological Disorders and Stroke. NIH Stroke Scale (updated February 2024).",
+   "url": "https://www.ninds.nih.gov/sites/default/files/documents/NIH-Stroke-Scale_updatedFeb2024_508.pdf"
   },
   {
    "citation": "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.",
    "doi": "10.1161/01.STR.20.7.864"
+  },
+  {
+   "citation": "Martin-Schild S, Albright KC, Tanksley J, et al. Zero on the NIHSS does not equal the absence of stroke. Ann Emerg Med. 2011;57(1):42-45.",
+   "doi": "10.1016/j.annemergmed.2010.06.564"
+  },
+  {
+   "citation": "Woo D, et al. Does the National Institutes of Health Stroke Scale favor left hemisphere strokes? NINDS t-PA Stroke Study Group. Stroke. 1999."
   }
  ],
  "licensing": {
-  "status": "Public domain (NINDS); original wording",
-  "note": "The NIHSS is in the public domain. Official training and certification materials are not reproduced."
+  "status": "Public domain (NINDS)",
+  "note": "The NIHSS is public domain. The picture, naming and reading stimulus pages (marked © Apex Innovations in the NINDS document) and official training/certification materials are not reproduced."
  }
 }

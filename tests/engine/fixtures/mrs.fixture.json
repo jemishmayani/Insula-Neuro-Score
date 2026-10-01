@@ -10,7 +10,13 @@
     "status": "complete",
     "total": 0,
     "display": "mRS 0",
-    "state": "g0"
+    "state": "g0",
+    "tone": "normal"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "grade 0 selected → mRS 0",
+    "source": "van Swieten et al. 1988"
    }
   },
   {
@@ -22,7 +28,13 @@
     "status": "complete",
     "total": 1,
     "display": "mRS 1",
-    "state": "g1"
+    "state": "g1",
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "grade 1 selected → mRS 1",
+    "source": "van Swieten et al. 1988"
    }
   },
   {
@@ -34,7 +46,13 @@
     "status": "complete",
     "total": 2,
     "display": "mRS 2",
-    "state": "g2"
+    "state": "g2",
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "grade 2 selected → mRS 2",
+    "source": "van Swieten et al. 1988"
    }
   },
   {
@@ -46,7 +64,13 @@
     "status": "complete",
     "total": 3,
     "display": "mRS 3",
-    "state": "g3"
+    "state": "g3",
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "grade 3 selected → mRS 3",
+    "source": "van Swieten et al. 1988"
    }
   },
   {
@@ -58,7 +82,13 @@
     "status": "complete",
     "total": 4,
     "display": "mRS 4",
-    "state": "g4"
+    "state": "g4",
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "grade 4 selected → mRS 4",
+    "source": "van Swieten et al. 1988"
    }
   },
   {
@@ -70,7 +100,13 @@
     "status": "complete",
     "total": 5,
     "display": "mRS 5",
-    "state": "g5"
+    "state": "g5",
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "grade 5 selected → mRS 5",
+    "source": "van Swieten et al. 1988"
    }
   },
   {
@@ -82,43 +118,41 @@
     "status": "complete",
     "total": 6,
     "display": "mRS 6",
-    "state": "g6"
-   }
-  },
-  {
-   "name": "minimum is normal tone",
-   "answers": {
-    "grade": "0"
-   },
-   "expect": {
-    "tone": "normal"
-   }
-  },
-  {
-   "name": "maximum (dead) is informational",
-   "answers": {
-    "grade": "6"
-   },
-   "expect": {
+    "state": "g6",
     "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "grade 6 selected → mRS 6",
+    "source": "van Swieten et al. 1988"
    }
   },
   {
-   "name": "invalid grade 7",
+   "name": "grade 7 does not exist",
    "answers": {
     "grade": "7"
    },
    "expect": {
     "status": "invalid",
     "errors": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "mRS is 0–6",
+    "source": "Manual calculation"
    }
   },
   {
-   "name": "missing",
+   "name": "not yet graded",
    "answers": {},
    "expect": {
     "status": "incomplete",
     "missing": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no grade selected",
+    "source": "Manual calculation"
    }
   }
  ]

@@ -18,6 +18,7 @@
 
   var TONES = ["normal", "low", "mild", "moderate", "high", "critical", "informational", "incomplete", "not-interpretable"];
   var METHODS = ["sum", "expression", "select"];
+  var PRESENTATIONS = ["severity", "deficit", "functional-status", "stability-category", "classification", "informational"];
   var NT_POLICIES = ["block", "exclude"];
   var REQUIRED = ["id", "name", "abbreviation", "category", "subcategory", "specialties", "version", "purpose", "intendedPopulation",
     "components", "inputDefinitions", "scoringRules", "calculationMethod", "interpretationRules", "resultStates", "clinicalInsights",
@@ -97,6 +98,17 @@
     s.clinicalInsights.forEach(function (r, i) { if (r.when) checkExpr(r.when, "clinicalInsights[" + i + "]"); if (!r.text) e.push("clinicalInsights[" + i + "] needs text"); });
     s.limitations.forEach(function (r, i) { if (typeof r === "object" && r.when) checkExpr(r.when, "limitations[" + i + "]"); });
     s.relatedScores.forEach(function (r) { if (!r.id) e.push("related score needs id"); });
+    if (cm.formula) (cm.formula.match(/\{([^{}]+)\}/g) || []).forEach(function (m) { checkExpr(m.slice(1, -1), "calculationMethod.formula"); });
+    var rp = s.resultPresentation;
+    if (rp) {
+      if (PRESENTATIONS.indexOf(rp.type) < 0) e.push("resultPresentation.type must be one of " + PRESENTATIONS.join(", "));
+      if (!rp.typeLabel) e.push("resultPresentation.typeLabel is required");
+      if (rp.meter) s.resultStates.forEach(function (st) {
+        if (st.min == null || st.max == null) e.push("meter requires numeric min/max on state " + st.id);
+        else if (st.min > st.max || st.min < cm.range.min || st.max > cm.range.max) e.push("state " + st.id + " min/max outside range");
+      });
+    }
+    if (s.calculatorNotice && !(s.calculatorNotice.title && s.calculatorNotice.message)) e.push("calculatorNotice needs title and message");
     return e;
   }
 
@@ -111,8 +123,10 @@
       total: null, display: "–", range: cm.range, values: {},
       state: null, interpretation: null, breakdown: [],
       errors: [], warnings: [], missing: [], notTestable: [],
-      insights: [], limitations: [], related: [], shareText: ""
+      insights: [], limitations: [], related: [], shareText: "",
+      formula: null, presentation: score.resultPresentation || null, bands: null
     };
+    if (score.resultPresentation && score.resultPresentation.meter) R.bands = score.resultStates.map(function (st) { return { id: st.id, min: st.min, max: st.max, tone: st.tone, label: st.label }; });
 
     /* 1. Validate inputs */
     var norm = {}, vars = {};
@@ -158,6 +172,7 @@
       var nt = score.notTestable || {};
       R.status = "not-interpretable";
       R.display = nt.display ? X.template(nt.display, vars) : "–";
+      if (cm.formula) R.formula = X.template(cm.formula, vars);
       R.insights = R.insights.concat(pickInsights(score, vars, "notTestable"));
       R.limitations = pickLimitations(score, vars, true);
       R.shareText = nt.share ? X.template(nt.share, vars) : score.abbreviation + " not reported (item not testable)";
@@ -194,6 +209,7 @@
     if (!st) st = { id: "calculated", tone: "informational", label: "Calculated", summary: "" };
 
     R.display = X.template(cm.display || "{total}", vars);
+    if (cm.formula) R.formula = X.template(cm.formula, vars);
     if (R.notTestable.length && excludeNT) R.warnings.push({ message: R.notTestable.length + " item" + (R.notTestable.length === 1 ? " was" : "s were") + " untestable and contributed no points. The total may underestimate the deficit.", inputs: R.notTestable.slice() });
 
     /* 7–8. Contextual insight and limitations */
@@ -206,7 +222,7 @@
 
   function finish(score, R, vars, st) {
     /* 6. Interpretation */
-    var filled = { id: st.id, tone: st.tone, label: X.template(st.label, vars), range: st.range || null,
+    var filled = { id: st.id, tone: st.tone, label: X.template(st.label, vars), range: st.range || null, min: st.min == null ? null : st.min, max: st.max == null ? null : st.max,
       summary: st.summary ? X.template(st.summary, vars) : "", detail: st.detail ? X.template(st.detail, vars) : null };
     R.state = filled;
     R.interpretation = { summary: filled.summary, detail: filled.detail };
@@ -237,5 +253,5 @@
     var a = {}; score.inputDefinitions.forEach(function (d) { if (d.default !== undefined) a[d.id] = d.default; }); return a;
   }
 
-  return { calculate: calculate, validateScore: validateScore, initialAnswers: initialAnswers, TONES: TONES, METHODS: METHODS, INPUT_TYPES: Inputs.TYPES };
+  return { calculate: calculate, validateScore: validateScore, initialAnswers: initialAnswers, TONES: TONES, METHODS: METHODS, PRESENTATIONS: PRESENTATIONS, INPUT_TYPES: Inputs.TYPES };
 });

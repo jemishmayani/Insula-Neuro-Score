@@ -2,7 +2,49 @@
  "scoreId": "sins",
  "cases": [
   {
-   "name": "minimum (0)",
+   "name": "published example: junctional, non-mechanical pain, lytic",
+   "answers": {
+    "location": "3",
+    "pain": "1",
+    "lesion": "2",
+    "alignment": "0",
+    "collapse": "2",
+    "posterolateral": "1"
+   },
+   "expect": {
+    "total": 9,
+    "state": "potential",
+    "tone": "moderate"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "junctional 3 + not mechanical 1 + lytic 2 + alignment 0 + <50% collapse 2 + unilateral 1 = 9",
+    "source": "AJR 2014 reliability study, published worked example"
+   }
+  },
+  {
+   "name": "published example: mobile, mechanical, kyphosis, >50% collapse",
+   "answers": {
+    "location": "2",
+    "pain": "3",
+    "lesion": "2",
+    "alignment": "2",
+    "collapse": "3",
+    "posterolateral": "3"
+   },
+   "expect": {
+    "total": 15,
+    "state": "unstable",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "mobile 2 + mechanical 3 + lytic 2 + kyphosis 2 + >50% 3 + bilateral 3 = 15",
+    "source": "AJR 2014 reliability study, published worked example"
+   }
+  },
+  {
+   "name": "minimum",
    "answers": {
     "location": "0",
     "pain": "0",
@@ -12,14 +54,18 @@
     "posterolateral": "0"
    },
    "expect": {
-    "status": "complete",
     "total": 0,
     "state": "stable",
     "tone": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "all components 0 = 0",
+    "source": "Fisher et al. 2010 (SOSG)"
    }
   },
   {
-   "name": "maximum (18)",
+   "name": "maximum",
    "answers": {
     "location": "3",
     "pain": "3",
@@ -30,12 +76,16 @@
    },
    "expect": {
     "total": 18,
-    "state": "unstable",
-    "tone": "high"
+    "state": "unstable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3+3+2+4+3+3 = 18",
+    "source": "Fisher et al. 2010 (SOSG)"
    }
   },
   {
-   "name": "boundary 6 \u2192 stable",
+   "name": "boundary 6 (stable)",
    "answers": {
     "location": "3",
     "pain": "3",
@@ -47,10 +97,15 @@
    "expect": {
     "total": 6,
     "state": "stable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "junctional 3 + mechanical 3 = 6 → 0–6",
+    "source": "Fisher et al. 2010 (SOSG)"
    }
   },
   {
-   "name": "boundary 7 \u2192 potentially unstable",
+   "name": "boundary 7 (potentially unstable)",
    "answers": {
     "location": "3",
     "pain": "3",
@@ -61,12 +116,16 @@
    },
    "expect": {
     "total": 7,
-    "state": "potential",
-    "tone": "moderate"
+    "state": "potential"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3 + 3 + >50% body involved 1 = 7 → 7–12",
+    "source": "Fisher et al. 2010 (SOSG)"
    }
   },
   {
-   "name": "boundary 12 \u2192 potentially unstable",
+   "name": "boundary 12 (potentially unstable)",
    "answers": {
     "location": "3",
     "pain": "3",
@@ -78,10 +137,15 @@
    "expect": {
     "total": 12,
     "state": "potential"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3+3+2+4 = 12 → 7–12",
+    "source": "Fisher et al. 2010 (SOSG)"
    }
   },
   {
-   "name": "boundary 13 \u2192 unstable",
+   "name": "boundary 13 (unstable)",
    "answers": {
     "location": "3",
     "pain": "3",
@@ -93,25 +157,35 @@
    "expect": {
     "total": 13,
     "state": "unstable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3+3+2+4+1 = 13 → 13–18",
+    "source": "Fisher et al. 2010 (SOSG)"
    }
   },
   {
-   "name": "intermediate published example (lytic, mobile, kyphosis)",
+   "name": "thoracic blastic, pain-free",
    "answers": {
-    "location": "2",
-    "pain": "3",
-    "lesion": "2",
-    "alignment": "2",
-    "collapse": "3",
-    "posterolateral": "3"
+    "location": "1",
+    "pain": "0",
+    "lesion": "0",
+    "alignment": "0",
+    "collapse": "0",
+    "posterolateral": "0"
    },
    "expect": {
-    "total": 15,
-    "state": "unstable"
+    "total": 1,
+    "state": "stable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "semi-rigid 1 = 1",
+    "source": "Fisher et al. 2010 (SOSG)"
    }
   },
   {
-   "name": "invalid alignment value 3",
+   "name": "alignment 3 does not exist",
    "answers": {
     "location": "3",
     "pain": "3",
@@ -123,10 +197,15 @@
    "expect": {
     "status": "invalid",
     "errors": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "alignment is 0, 2 or 4",
+    "source": "Manual calculation"
    }
   },
   {
-   "name": "missing collapse",
+   "name": "collapse not yet assessed",
    "answers": {
     "location": "3",
     "pain": "0",
@@ -137,10 +216,15 @@
    "expect": {
     "status": "incomplete",
     "missing": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1 component missing",
+    "source": "Manual calculation"
    }
   },
   {
-   "name": "not testable not allowed",
+   "name": "non-testable is not part of SINS",
    "answers": {
     "location": "0",
     "pain": {
@@ -154,6 +238,11 @@
    "expect": {
     "status": "invalid",
     "errors": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "SINS has no NT option",
+    "source": "Manual calculation"
    }
   }
  ]

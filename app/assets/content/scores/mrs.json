@@ -7,13 +7,14 @@
  "aliases": [
   "rankin",
   "disability",
-  "functional outcome"
+  "functional outcome",
+  "dependence"
  ],
  "id": "mrs",
  "name": "Modified Rankin Scale",
  "abbreviation": "mRS",
  "category": "functional",
- "subcategory": "Global disability",
+ "subcategory": "Global disability and dependence",
  "specialties": [
   "Stroke",
   "Neurology",
@@ -21,11 +22,21 @@
   "Rehabilitation"
  ],
  "version": {
-  "label": "Modified Rankin Scale 0–6",
-  "detail": "Rankin 1957, modified by van Swieten et al. 1988; grade 6 (death) as used in trials."
+  "label": "Modified Rankin Scale 0–6 (van Swieten et al. 1988)",
+  "detail": "Standard UK-TIA wording with grade 6 (dead), as used in stroke trials. Variant wordings (e.g. adding 'neurological' to each grade) are not combined. Structured interview instruments are not reproduced."
  },
- "purpose": "Global measure of disability and dependence in daily activities.",
- "intendedPopulation": "Adults after stroke and other neurological disorders.",
+ "purpose": "A global measure of disability and dependence in daily activities. It describes functional status, not the severity of a neurological deficit.",
+ "intendedPopulation": "Adults after stroke and other neurological conditions, typically at baseline (pre-morbid), discharge and follow-up.",
+ "resultPresentation": {
+  "type": "functional-status",
+  "typeLabel": "Functional status",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Functional outcome scale",
+  "message": "mRS grades disability and dependence in daily life. It is not a neurological severity score, and it reflects function from all causes, not only the neurological condition."
+ },
  "components": [
   {
    "id": "function",
@@ -40,49 +51,49 @@
    "id": "grade",
    "type": "single",
    "label": "Functional level",
-   "short": "mRS grade",
-   "help": "Choose the single level that best describes the patient's current overall function.",
+   "short": "mRS",
+   "help": "Choose the single grade that best describes the person's current function across all activities. A structured interview improves reliability.",
    "options": [
     {
      "value": "0",
-     "label": "No symptoms",
+     "label": "No symptoms at all",
      "points": 0,
      "code": "0"
     },
     {
      "value": "1",
-     "label": "No significant disability",
+     "label": "No significant disability despite symptoms",
      "points": 1,
      "code": "1",
-     "detail": "Able to carry out all usual duties and activities despite some symptoms."
+     "detail": "Able to carry out all usual duties and activities."
     },
     {
      "value": "2",
      "label": "Slight disability",
      "points": 2,
      "code": "2",
-     "detail": "Unable to do all previous activities, but looks after own affairs without help."
+     "detail": "Unable to carry out all previous activities, but able to look after own affairs without assistance."
     },
     {
      "value": "3",
      "label": "Moderate disability",
      "points": 3,
      "code": "3",
-     "detail": "Needs some help, but walks without assistance."
+     "detail": "Requiring some help, but able to walk without assistance."
     },
     {
      "value": "4",
      "label": "Moderately severe disability",
      "points": 4,
      "code": "4",
-     "detail": "Unable to walk or attend to bodily needs without assistance."
+     "detail": "Unable to walk without assistance and unable to attend to own bodily needs without assistance."
     },
     {
      "value": "5",
      "label": "Severe disability",
      "points": 5,
      "code": "5",
-     "detail": "Bedridden, incontinent, needs constant nursing care."
+     "detail": "Bedridden, incontinent and requiring constant nursing care and attention."
     },
     {
      "value": "6",
@@ -137,86 +148,106 @@
   {
    "id": "g0",
    "tone": "normal",
+   "min": 0,
+   "max": 0,
    "label": "No symptoms",
    "range": "0",
-   "summary": "No symptoms."
+   "summary": "Functional status: no symptoms at all."
   },
   {
    "id": "g1",
-   "tone": "low",
+   "tone": "informational",
+   "min": 1,
+   "max": 1,
    "label": "No significant disability",
    "range": "1",
-   "summary": "Symptoms present; all usual activities possible."
+   "summary": "Functional status: symptoms present; able to carry out all usual duties and activities."
   },
   {
    "id": "g2",
-   "tone": "mild",
+   "tone": "informational",
+   "min": 2,
+   "max": 2,
    "label": "Slight disability",
    "range": "2",
-   "summary": "Independent in own affairs with some activity restriction."
+   "summary": "Functional status: independent in own affairs, but unable to carry out all previous activities."
   },
   {
    "id": "g3",
-   "tone": "moderate",
+   "tone": "informational",
+   "min": 3,
+   "max": 3,
    "label": "Moderate disability",
    "range": "3",
-   "summary": "Needs some help; walks without assistance."
+   "summary": "Functional status: requires some help; walks without assistance."
   },
   {
    "id": "g4",
-   "tone": "high",
+   "tone": "informational",
+   "min": 4,
+   "max": 4,
    "label": "Moderately severe disability",
    "range": "4",
-   "summary": "Dependent for walking and bodily needs."
+   "summary": "Functional status: cannot walk or attend to bodily needs without assistance."
   },
   {
    "id": "g5",
-   "tone": "critical",
+   "tone": "informational",
+   "min": 5,
+   "max": 5,
    "label": "Severe disability",
    "range": "5",
-   "summary": "Requires constant care."
+   "summary": "Functional status: bedridden, incontinent, requires constant nursing care."
   },
   {
    "id": "g6",
    "tone": "informational",
+   "min": 6,
+   "max": 6,
    "label": "Dead",
    "range": "6",
-   "summary": "Death."
+   "summary": "Outcome: dead."
   }
  ],
  "clinicalInsights": [
   {
-   "text": "'Favourable outcome' cut-offs differ between studies (0–1, 0–2, or ordinal shift). State the definition when comparing."
+   "text": "Record the timepoint and source (pre-morbid, discharge, follow-up; patient, carer, or records). Pre-morbid mRS changes how later grades are read."
+  },
+  {
+   "text": "'Favourable outcome' cut-offs differ between studies (0–1, 0–2, or full ordinal shift). State the definition when comparing results."
   },
   {
    "when": "total >= 1 && total <= 3",
-   "text": "Boundaries between grades 1–3 have the most inter-rater variability; structured interviews improve reliability."
+   "text": "Grades 1–3 have the most inter-rater disagreement; structured interviews improve reliability."
   }
  ],
  "limitations": [
+  "Measures global disability, not neurological severity or a specific deficit.",
   "Moderate inter-rater reliability without a structured assessment.",
-  "Weighted toward mobility; cognition and mood may be under-represented.",
-  "Pre-morbid disability affects interpretation."
+  "Weighted toward mobility and self-care; cognition, mood and communication may be under-represented.",
+  "Reflects disability from all causes, including non-neurological comorbidity."
  ],
  "confounders": [
   "Pre-morbid disability",
   "Non-neurological comorbidity",
-  "Proxy versus patient report"
+  "Proxy versus patient report",
+  "Timing of assessment"
  ],
  "commonErrors": [
-  "Not recording the pre-stroke mRS.",
+  "Treating mRS as a measure of neurological severity.",
+  "Not recording the pre-morbid mRS.",
   "Grading from mobility alone.",
-  "Assigning 0 when minor symptoms persist (should be 1)."
+  "Assigning 0 when minor symptoms persist (grade 1)."
  ],
  "whatItDoesNotTellYou": [
-  "The specific deficit causing disability.",
-  "Quality of life.",
-  "Rehabilitation potential."
+  "The neurological deficit or its severity (see NIHSS).",
+  "Which impairment causes the disability.",
+  "Quality of life or rehabilitation potential."
  ],
  "relatedScores": [
   {
    "id": "nihss",
-   "relation": "Acute deficit severity"
+   "relation": "Neurological deficit"
   },
   {
    "id": "gose",
@@ -224,10 +255,10 @@
   }
  ],
  "guideSections": {
-  "what": "A 7-level ordinal scale from 0 (no symptoms) to 6 (dead) describing global disability.",
-  "whenUseful": "Stroke outcome assessment, documenting pre-morbid function, and follow-up.",
-  "howToCalculate": "Select the one level that best describes current function across all activities. Use a structured interview where possible.",
-  "clinicalContext": "Pre-stroke mRS is used in many protocols and should be documented with its source."
+  "what": "A 7-grade ordinal scale from 0 (no symptoms) to 6 (dead) describing global disability and dependence.",
+  "whenToUse": "Documenting pre-morbid function, discharge status and follow-up outcomes after stroke and other neurological conditions; trial outcomes.",
+  "howToPerform": "Establish the person's usual activities and current level of help needed. Choose the single grade that best fits overall function. Record the timepoint and information source. Structured interviews improve consistency.",
+  "clinicalContext": "A functional outcome measure, used alongside measures of neurological deficit (e.g. NIHSS) rather than in place of them."
  },
  "sources": [
   {
@@ -239,7 +270,7 @@
   }
  ],
  "licensing": {
-  "status": "Widely published grade definitions, original wording",
-  "note": "Structured mRS interview instruments (e.g. mRS-9Q, RFA) have their own terms and are not reproduced."
+  "status": "Widely published grade definitions",
+  "note": "Structured mRS interview instruments (e.g. mRS-9Q, Rankin Focused Assessment) have their own terms and are not reproduced."
  }
 }
