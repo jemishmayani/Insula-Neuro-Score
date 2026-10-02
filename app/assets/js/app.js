@@ -12,12 +12,18 @@
   function loadJSON(path) {
     return fetch(path, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
   }
+  var SCORE_CACHE_MAX = 12, SCORE_CACHE_ORDER = [];
+  function cacheScore(id, sc) {
+    SCORE_CACHE[id] = sc; SCORE_CACHE_ORDER = [id].concat(SCORE_CACHE_ORDER.filter(function (x) { return x !== id; }));
+    while (SCORE_CACHE_ORDER.length > SCORE_CACHE_MAX) delete SCORE_CACHE[SCORE_CACHE_ORDER.pop()];
+  }
+  window.__insDebug = { cacheSize: function () { return Object.keys(SCORE_CACHE).length; } };
   function loadScore(id) {
-    if (SCORE_CACHE[id]) return Promise.resolve(SCORE_CACHE[id]);
+    if (SCORE_CACHE[id]) { cacheScore(id, SCORE_CACHE[id]); return Promise.resolve(SCORE_CACHE[id]); }
     return loadJSON("content/scores/" + encodeURIComponent(id) + ".json").then(function (sc) {
       var errs = window.InsulaEngine.engine.validateScore(sc);
       if (errs.length) throw new Error("Score content failed validation: " + errs.slice(0, 3).join("; "));
-      SCORE_CACHE[id] = sc; return sc;
+      cacheScore(id, sc); return sc;
     });
   }
   function scoreLinks(tabDefault) {
@@ -35,33 +41,57 @@
     "Interpretation", "Clinical context", "Important limitations", "Confounders / factors affecting scoring", "Common calculation mistakes",
     "What the score does NOT tell you", "Related scores", "Version / classification information", "Evidence / sources"];
   var HOME_SECTION_META = {
-    priorityScores: { title: "Priority scores", empty: "Choose the scores you use most so they appear first.", manage: "priorityScores" },
-    priorityGroups: { title: "Priority groups", empty: "Choose score groups to keep as shortcuts here.", manage: "priorityGroups" },
-    favorites: { title: "Favourites", empty: "Tap the star on any score to add it to your favourites." },
-    recentCalc: { title: "Recent calculators", empty: "Calculators you open will appear here." },
-    recentGuide: { title: "Recent guides", empty: "Guides you open will appear here." }
+    favorites: { title: "Favorite scores", kind: "score", emptyTitle: "No favorite scores yet.", empty: "Add a score to Favorites for one-tap access.", icon: "star",
+                 action: { label: "Browse calculators", href: "#/calculate", icon: "calculate" }, editable: true, picker: "favorites" },
+    favoriteGuides: { title: "Favorite guides", kind: "guide", emptyTitle: "No favorite guides yet.", empty: "Save a guide to Favorites to reopen it in one tap.", icon: "guide",
+                 action: { label: "Browse guides", href: "#/guide", icon: "guide" }, editable: true, picker: "favoriteGuides" },
+    recentCalc: { title: "Recently used calculators", kind: "score", emptyTitle: "No recent calculations.", empty: "Scores you calculate appear here. Only the score and time are kept on this device, never your inputs.", icon: "clock", recent: true },
+    recentGuide: { title: "Recently viewed guides", kind: "guide", emptyTitle: "No recently viewed guides.", empty: "Guides you open appear here.", icon: "clock", recent: true },
+    priorityScores: { title: "Priority scores", kind: "score", emptyTitle: "No priority scores yet.", empty: "Promote the scores you use most so they appear on Home in your order.", icon: "pin",
+                 action: { label: "Choose priority scores", href: "#/settings/pick/priorityScores", icon: "plus" }, editable: true, picker: "priorityScores" },
+    priorityGroups: { title: "Priority groups", kind: "group", emptyTitle: "No priority groups yet.", empty: "Promote score groups to Home for quick access.", icon: "pin",
+                 action: { label: "Choose priority groups", href: "#/settings/pick/priorityGroups", icon: "plus" }, editable: true, picker: "priorityGroups" }
   };
+  var homeEdit = {};   // section id → edit mode on/off (session only)
 
   /* ---------------- catalogue helpers ---------------- */
-  function score(id) { return CATALOG.scores.filter(function (s) { return s.id === id; })[0] || null; }
-  function category(id) { return CATALOG.categories.filter(function (c) { return c.id === id; })[0] || null; }
+  var IDX = null;   // built once per catalogue load; Home and search never touch score documents
+  function buildIndex(cat) {
+    var byId = {}, catById = {}, byCat = {}, search = [];
+    cat.categories.forEach(function (c) { catById[c.id] = c; byCat[c.id] = []; });
+    cat.scores.forEach(function (s) {
+      byId[s.id] = s; (byCat[s.category] = byCat[s.category] || []).push(s);
+      search.push({ s: s, a: s.abbreviation.toLowerCase(), n: s.name.toLowerCase(), m: (s.summary || "").toLowerCase(), al: (s.aliases || []).join(" ").toLowerCase(),
+                    c: ((catById[s.category] || {}).name || "").toLowerCase() });
+    });
+    return { byId: byId, catById: catById, byCat: byCat, search: search };
+  }
+  function score(id) { return IDX.byId[id] || null; }
+  function category(id) { return IDX.catById[id] || null; }
   function orderedCategories(includeHidden) {
     var st = Store.get(), order = st.groupOrder.slice();
     CATALOG.categories.forEach(function (c) { if (order.indexOf(c.id) < 0) order.push(c.id); });
     return order.map(category).filter(Boolean).filter(function (c) { return includeHidden || st.hiddenGroups.indexOf(c.id) < 0; });
   }
-  function scoresIn(catId) { return CATALOG.scores.filter(function (s) { return s.category === catId; }); }
-  function search(q) {
+  function scoresIn(catId) { return IDX.byCat[catId] || []; }
+  function search(q, limit) {
     q = q.trim().toLowerCase(); if (!q) return [];
-    var hidden = Store.get().hiddenGroups;
-    return CATALOG.scores.map(function (s) {
-      var a = s.abbreviation.toLowerCase(), n = s.name.toLowerCase(), r = 99;
-      if (a === q) r = 0; else if (a.indexOf(q) === 0) r = 1; else if (n.indexOf(q) === 0) r = 2;
-      else if (a.indexOf(q) >= 0 || n.indexOf(q) >= 0) r = 3; else if (s.summary.toLowerCase().indexOf(q) >= 0) r = 4;
-      else if ((category(s.category) || {}).name.toLowerCase().indexOf(q) >= 0) r = 5;
-      return { s: s, r: r + (hidden.indexOf(s.category) >= 0 ? 10 : 0) };
-    }).filter(function (x) { return x.r < 99; }).sort(function (x, y) { return x.r - y.r || x.s.abbreviation.localeCompare(y.s.abbreviation); })
-      .map(function (x) { return x.s; });
+    var hidden = {}; Store.get().hiddenGroups.forEach(function (h) { hidden[h] = 1; });
+    var out = [];
+    for (var i = 0; i < IDX.search.length; i++) {
+      var e = IDX.search[i], r = 99;
+      if (e.a === q) r = 0; else if (e.a.indexOf(q) === 0) r = 1; else if (e.n.indexOf(q) === 0) r = 2;
+      else if (e.a.indexOf(q) >= 0 || e.n.indexOf(q) >= 0) r = 3; else if (e.al.indexOf(q) >= 0) r = 4; else if (e.m.indexOf(q) >= 0) r = 5; else if (e.c.indexOf(q) >= 0) r = 6;
+      if (r < 99) out.push({ s: e.s, r: r + (hidden[e.s.category] ? 10 : 0) });
+    }
+    out.sort(function (x, y) { return x.r - y.r || (x.s.abbreviation < y.s.abbreviation ? -1 : 1); });
+    return out.slice(0, limit || 50).map(function (x) { return x.s; });
+  }
+  function relTime(at) {
+    if (!at) return "";
+    var d = (Date.now() - at) / 1000;
+    if (d < 60) return "just now"; if (d < 3600) return Math.floor(d / 60) + " min ago"; if (d < 86400) return Math.floor(d / 3600) + " h ago";
+    if (d < 172800) return "yesterday"; return new Date(at).toLocaleDateString(undefined, { day: "numeric", month: "short" });
   }
   var placeholderBadge = function () { return UI.StatusBadge({ tone: "neutral", label: "Placeholder", icon: false }); };
   function badgeFor(s) { return s.status === "implemented" ? UI.StatusBadge({ tone: "primary", label: "Calculator", icon: false }) : placeholderBadge(); }
@@ -127,10 +157,15 @@
     goingBack = false;
     return prevFocusAct;
   }
-  function toast(msg) {
+  function toast(msg, action) {
     document.querySelectorAll(".toast").forEach(function (t) { t.remove(); });
-    var t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
-    document.body.appendChild(t); setTimeout(function () { t.remove(); }, 2000);
+    var t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status");
+    var span = document.createElement("span"); span.textContent = msg; t.appendChild(span);
+    if (action) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "toast-action"; b.textContent = action.label;
+      b.addEventListener("click", function () { t.remove(); action.run(); }); t.appendChild(b);
+    }
+    document.body.appendChild(t); setTimeout(function () { t.remove(); }, action ? 6000 : 2200);
   }
   function announce(msg) { live.textContent = ""; setTimeout(function () { live.textContent = msg; }, 30); }
 
@@ -155,11 +190,30 @@
   }
 
   /* ---------------- shared pieces ---------------- */
+  function favKey(tab) { return tab === "guide" ? "favoriteGuides" : "favorites"; }
   function scoreCard(s, tab, opts) {
     opts = opts || {};
-    var st = Store.get();
+    var st = Store.get(), key = favKey(tab);
     return UI.ScoreCard({ score: s, href: "#/" + tab + "/s/" + s.id, sub: opts.withCategory ? sub(s) + " · " + category(s.category).name : sub(s),
-      badge: badgeFor(s), favorite: opts.noStar ? null : st.favorites.indexOf(s.id) >= 0 });
+      badge: badgeFor(s), favorite: opts.noStar ? null : st[key].indexOf(s.id) >= 0, favKey: key });
+  }
+  /** Home row: primary tap opens one view; a second button opens the other, so both are one tap away. */
+  function homeRow(s, kind, o) {
+    o = o || {};
+    var primaryTab = kind === "guide" ? "guide" : "calculate", altTab = primaryTab === "guide" ? "calculate" : "guide";
+    var meta = o.time ? '<span class="row-meta">' + esc(o.time) + "</span>" : "";
+    var main = '<a class="open" href="#/' + primaryTab + "/s/" + s.id + '" data-nav><span class="row-icon" aria-hidden="true">' + UI.icon(primaryTab === "guide" ? "guide" : "calculate") + '</span><span class="text"><span class="title">' + esc(s.abbreviation) +
+      (s.status !== "implemented" ? " " + placeholderBadge() : "") + '</span><span class="sub">' + esc(sub(s)) + "</span>" + meta + "</span></a>";
+    var tail;
+    if (o.edit) {
+      tail = UI.IconButton({ icon: "up", label: "Move " + s.abbreviation + " up", act: "home-move", disabled: o.index === 0, data: { key: o.key, index: o.index, delta: -1 } }) +
+        UI.IconButton({ icon: "down", label: "Move " + s.abbreviation + " down", act: "home-move", disabled: o.index === o.count - 1, data: { key: o.key, index: o.index, delta: 1 } }) +
+        UI.IconButton({ icon: "close", label: "Remove " + s.abbreviation + " from " + o.sectionTitle, act: "home-remove", data: { key: o.key, id: s.id } });
+    } else {
+      tail = '<a class="alt-view" href="#/' + altTab + "/s/" + s.id + '" data-nav aria-label="Open ' + esc(s.abbreviation) + (altTab === "guide" ? " guide" : " calculator") + '">' + UI.icon(altTab === "guide" ? "guide" : "calculate") +
+        '<span aria-hidden="true">' + (altTab === "guide" ? "Guide" : "Calculate") + "</span></a>";
+    }
+    return '<li class="score-card home-row' + (o.edit ? " is-editing" : "") + '" data-id="' + esc(s.id) + '">' + main + tail + "</li>";
   }
   function searchBlock(id, placeholder) {
     return UI.SearchBar({ id: id, placeholder: placeholder, label: placeholder }) + '<div id="search-results" aria-live="polite"></div>';
@@ -171,38 +225,56 @@
     if (!q.trim()) { res.innerHTML = ""; if (body) body.hidden = false; return; }
     var tab = route.tab === "guide" ? "guide" : "calculate", hits = search(q);
     if (body) body.hidden = true;
+    var rows = route.tab === "home" ? hits.map(function (s) { return homeRow(s, "score"); }) : hits.map(function (s) { return scoreCard(s, tab, { withCategory: true }); });
     res.innerHTML = UI.Section({ id: "results", title: hits.length + " result" + (hits.length === 1 ? "" : "s"),
-      body: hits.length ? UI.CardList(hits.map(function (s) { return scoreCard(s, tab, { withCategory: true }); }), "Search results")
+      body: hits.length ? UI.CardList(rows, "Search results")
         : UI.EmptyState({ icon: "search", title: "No matching scores", message: "Try an abbreviation such as GCS or WFNS, or a topic such as sedation or spine." }) });
     announce(hits.length + " results");
   }
 
   /* ---------------- HOME ---------------- */
+  /* Order: Search, then the user's section order (default: favorite scores, favorite guides,
+     recent calculators, recent guides, priority scores, priority groups). Uses the catalogue only. */
   function homeScreen() {
     var st = Store.get(), sections = st.homeSections.filter(function (h) { return h.visible; });
     var body = searchBlock("search", "Search scores and guides") + '<div id="page-body">' +
       sections.map(function (h) { return homeSection(h.id, st); }).join("") +
       (sections.length ? "" : UI.EmptyState({ title: "All Home sections are hidden", message: "Choose which sections to show in Settings.", action: UI.SecondaryButton({ label: "Customise Home", href: "#/settings", icon: "settings" }) })) +
-      '<div class="section">' + UI.InfoBanner({ title: "App shell preview", message: "Scores shown are placeholders. Calculators and guides will be added after each score's criteria, version and licensing are verified." }) + "</div></div>";
+      '<div class="section home-foot"><a class="section-action" href="#/settings" data-nav>' + UI.icon("settings") + " Customise Home</a></div></div>";
     paint(frame({ title: "Insula Neuro Score", brand: true, tab: "home", body: body }), { title: "Home" });
   }
   function homeSection(id, st) {
-    var meta = HOME_SECTION_META[id], body;
-    var manage = meta.manage ? '<a class="section-action" href="#/settings/pick/' + meta.manage + '" data-nav>Edit</a>' : "";
+    var meta = HOME_SECTION_META[id], editing = !!homeEdit[id], body, action = "";
+    var empty = function () {
+      return UI.EmptyState({ compact: true, icon: meta.icon, title: meta.emptyTitle, message: meta.empty,
+        action: meta.action ? UI.SecondaryButton({ label: meta.action.label, href: meta.action.href, icon: meta.action.icon }) : "" });
+    };
     if (id === "priorityGroups") {
-      var groups = st.priorityGroups.map(category).filter(Boolean);
-      body = groups.length ? '<div class="chip-row">' + groups.map(function (c) {
-        return '<a class="chip" href="#/calculate/c/' + c.id + '" data-nav>' + UI.icon(c.glyph) + esc(c.name) + ' <span class="n">' + scoresIn(c.id).length + "</span></a>"; }).join("") + "</div>"
-        : UI.EmptyState({ compact: true, icon: "pin", title: "No priority groups", message: meta.empty });
+      var hidden = st.hiddenGroups;
+      var groups = st.priorityGroups.map(category).filter(function (c) { return c && hidden.indexOf(c.id) < 0; });
+      if (!groups.length) body = empty();
+      else if (editing) body = '<ul class="card-list">' + groups.map(function (c, i) {
+          return '<li class="score-card home-row is-editing"><span class="open"><span class="row-icon" aria-hidden="true">' + UI.icon(c.glyph) + '</span><span class="text"><span class="title">' + esc(c.name) + '</span><span class="sub">' + scoresIn(c.id).length + " scores</span></span></span>" +
+            UI.IconButton({ icon: "up", label: "Move " + c.name + " up", act: "home-move", disabled: i === 0, data: { key: "priorityGroups", index: st.priorityGroups.indexOf(c.id), delta: -1, to: groups[i - 1] ? st.priorityGroups.indexOf(groups[i - 1].id) : "" } }) +
+            UI.IconButton({ icon: "down", label: "Move " + c.name + " down", act: "home-move", disabled: i === groups.length - 1, data: { key: "priorityGroups", index: st.priorityGroups.indexOf(c.id), delta: 1, to: groups[i + 1] ? st.priorityGroups.indexOf(groups[i + 1].id) : "" } }) +
+            UI.IconButton({ icon: "close", label: "Remove " + c.name + " from priority groups", act: "home-remove", data: { key: "priorityGroups", id: c.id } }) + "</li>"; }).join("") + "</ul>";
+      else body = '<div class="chip-row">' + groups.map(function (c) {
+          return '<a class="chip" href="#/calculate/c/' + c.id + '" data-nav>' + UI.icon(c.glyph) + esc(c.name) + ' <span class="n">' + scoresIn(c.id).length + "</span></a>"; }).join("") + "</div>";
+      if (groups.length) action = editBtn(id, editing);
     } else {
-      var tab = id === "recentGuide" ? "guide" : "calculate";
-      var list = st[id].map(score).filter(Boolean);
-      body = list.length ? UI.CardList(list.map(function (s) { return scoreCard(s, tab); }), meta.title)
-        : UI.EmptyState({ compact: true, icon: id === "favorites" ? "star" : id.indexOf("recent") === 0 ? "clock" : "pin", title: "Nothing here yet", message: meta.empty });
-      if (id === "recentCalc" || id === "recentGuide") manage = list.length ? '<button class="section-action" type="button" data-act="clear-recent" data-key="' + id + '">Clear</button>' : "";
-      if (id === "favorites") manage = list.length ? '<a class="section-action" href="#/settings/pick/favorites" data-nav>Edit</a>' : "";
+      var entries = meta.recent ? st[id].filter(function (r) { return score(r.id); }) : st[id].filter(function (x) { return score(x); }).map(function (x) { return { id: x }; });
+      if (!entries.length) body = empty();
+      else body = UI.CardList(entries.map(function (e, i) {
+          var verb = id === "recentCalc" ? "Calculated " : "Opened ";
+          return homeRow(score(e.id), meta.kind, { edit: editing && meta.editable, key: id, index: st[id].map(function (x) { return typeof x === "string" ? x : x.id; }).indexOf(e.id), count: entries.length,
+            sectionTitle: meta.title.toLowerCase(), time: meta.recent && e.at ? verb + relTime(e.at) : "" });
+        }), meta.title);
+      if (entries.length) action = meta.recent ? '<button class="section-action" type="button" data-act="clear-recent" data-key="' + id + '">Clear</button>' : editBtn(id, editing);
     }
-    return UI.Section({ id: "home-" + id, title: meta.title, action: manage, body: body });
+    return UI.Section({ id: "home-" + id, title: meta.title, action: action, body: body });
+  }
+  function editBtn(id, editing) {
+    return '<button class="section-action" type="button" data-act="home-edit" data-key="' + id + '" aria-pressed="' + editing + '">' + (editing ? "Done" : "Edit") + "</button>";
   }
 
   /* ---------------- CALCULATE / GUIDE lists ---------------- */
@@ -218,8 +290,12 @@
   function categoryScreen(tab, catId) {
     var c = category(catId);
     if (!c) return notFound("This score group does not exist.");
-    var list = scoresIn(c.id);
-    var body = '<p class="lede">' + esc(c.description) + "</p>" + UI.Section({ id: "scores", title: list.length + " score" + (list.length === 1 ? "" : "s"),
+    var list = scoresIn(c.id), st = Store.get(), onHome = st.priorityGroups.indexOf(c.id) >= 0, isHidden = st.hiddenGroups.indexOf(c.id) >= 0;
+    var controls = '<div class="btn-row" style="margin-bottom:var(--space-2)">' +
+      UI.SecondaryButton({ label: onHome ? "On Home (priority)" : "Add group to Home", icon: "pin", act: "promote-group", data: { id: c.id } }) +
+      UI.SecondaryButton({ label: isHidden ? "Show group in lists" : "Hide group from lists", icon: isHidden ? "eye" : "close", act: "hide-group", data: { id: c.id } }) + "</div>" +
+      (isHidden ? UI.InfoBanner({ title: "This group is hidden", message: "It does not appear in the Calculate and Guide lists or on Home. Its scores remain searchable." }) : "");
+    var body = '<p class="lede">' + esc(c.description) + "</p>" + controls + UI.Section({ id: "scores", title: list.length + " score" + (list.length === 1 ? "" : "s"),
       body: list.length ? UI.CardList(list.map(function (s) { return scoreCard(s, tab); }), c.name) : UI.EmptyState({ title: "No scores in this group yet" }) });
     paint(frame({ title: c.name, tab: tab, back: true, body: body }), { title: c.name });
   }
@@ -228,8 +304,9 @@
   function detailScreen(tab, id) {
     var s = score(id);
     if (!s) return notFound("This score is not in the catalogue.");
-    Store.pushRecent(tab === "calculate" ? "recentCalc" : "recentGuide", id);
-    var st = Store.get(), fav = st.favorites.indexOf(id) >= 0, prio = st.priorityScores.indexOf(id) >= 0, c = category(s.category);
+    if (tab === "guide") Store.pushRecent("recentGuide", id);   // calculators are recorded when a result is completed
+    var fk = favKey(tab);
+    var st = Store.get(), fav = st[fk].indexOf(id) >= 0, prio = st.priorityScores.indexOf(id) >= 0, c = category(s.category);
     var implemented = s.status === "implemented";
     var badge = implemented ? UI.StatusBadge({ tone: "warning", label: "Pending clinical review", icon: false }) : placeholderBadge();
     var head = '<div class="detail-head"><p class="abbr">' + esc(s.abbreviation) + '</p><p class="name">' + esc(s.name) + '</p><div class="badges">' + badge +
@@ -240,7 +317,8 @@
     var prioBtn = UI.SecondaryButton({ label: prio ? "On Home (priority)" : "Add to Home priority", icon: "pin", act: "toggle-priority", data: { id: id } });
     var inner = implemented ? '<div id="score-host">' + UI.LoadingState({ message: "Loading " + s.abbreviation + "…", rows: 3 }) + "</div>" : (tab === "calculate" ? calcShell(s) : guideShell(s));
     var body = head + toggle + inner + '<div class="section btn-row">' + prioBtn + "</div>";
-    var favBtn = UI.IconButton({ icon: "star", label: fav ? "Remove from favourites" : "Add to favourites", act: "toggle-favorite", pressed: fav, data: { id: id } });
+    var favNoun = tab === "guide" ? "favorite guides" : "favorite scores";
+    var favBtn = UI.IconButton({ icon: "star", label: (fav ? "Remove from " : "Add to ") + favNoun, act: "toggle-favorite", pressed: fav, data: { id: id, key: fk } });
     paint(frame({ title: s.abbreviation, tab: tab, back: true, body: body, actions: [favBtn], wide: tab === "calculate" }), { title: s.abbreviation + (tab === "guide" ? " guide" : "") });
     if (!implemented) return;
     var routeAtLoad = location.hash, restoreY = goingBackY;
@@ -250,7 +328,12 @@
       document.getElementById("version-label").textContent = sc.version.label;
       if (tab === "calculate") {
         var answers = SESSION_ANSWERS[id] || (SESSION_ANSWERS[id] = window.InsulaEngine.engine.initialAnswers(sc));
-        window.Calculator.mount(host, sc, answers, { links: scoreLinks("calculate"), toast: toast });
+        var recorded = false;
+        window.Calculator.mount(host, sc, answers, { links: scoreLinks("calculate"), toast: toast, onResult: function (r) {
+          // Record use only for a completed calculation (score id + time only; inputs are never stored).
+          if ((r.status === "complete" || r.status === "not-interpretable") && !recorded) { recorded = true; Store.pushRecent("recentCalc", id); }
+          if (r.status === "incomplete") recorded = false;
+        } });
         document.body.classList.add("has-result-bar");
       } else {
         host.innerHTML = window.Calculator.guideHTML(sc, scoreLinks("guide"), "#/calculate/s/" + id);
@@ -307,7 +390,8 @@
         visibility: h.visible, visibilityAct: "toggle-section", moved: lastMoved && lastMoved.key === "homeSections" && lastMoved.index === i });
     }).join("") + "</ul>";
     var sc = function (x) { return x.abbreviation; }, sd = function (x) { return sub(x); };
-    var favs = managedList("favorites", st.favorites.map(score).filter(Boolean), sc, sd, "Add favourite scores", "Star a score or add favourites here.");
+    var favs = managedList("favorites", st.favorites.map(score).filter(Boolean), sc, sd, "Add favorite scores", "No favorite scores yet. Add a score to Favorites for one-tap access.");
+    var favGuides = managedList("favoriteGuides", st.favoriteGuides.map(score).filter(Boolean), sc, sd, "Add favorite guides", "No favorite guides yet. Save a guide to Favorites to reopen it in one tap.");
     var prio = managedList("priorityScores", st.priorityScores.map(score).filter(Boolean), sc, sd, "Choose priority scores", "Priority scores appear first on Home.");
     var groups = managedList("priorityGroups", st.priorityGroups.map(category).filter(Boolean), function (c) { return c.name; }, function (c) { return scoresIn(c.id).length + " scores"; }, "Choose priority groups", "Priority groups appear as shortcuts on Home.");
     var allCats = orderedCategories(true);
@@ -320,20 +404,28 @@
       UI.Section({ id: "s-appearance", title: "Appearance", body: appearance }) +
       UI.Section({ id: "s-startup", title: "Startup screen", body: startup }) +
       UI.Section({ id: "s-home", title: "Home layout", body: '<p class="lede">Order and show or hide the sections on Home.</p>' + homeLayout }) +
-      UI.Section({ id: "s-favorites", title: "Favourite scores", body: favs }) +
+      UI.Section({ id: "s-favorites", title: "Favorite scores", body: favs }) +
+      UI.Section({ id: "s-favguides", title: "Favorite guides", body: favGuides }) +
       UI.Section({ id: "s-priority", title: "Priority scores", body: prio }) +
       UI.Section({ id: "s-pgroups", title: "Priority groups", body: groups }) +
-      UI.Section({ id: "s-groups", title: "Score groups in Calculate and Guide", body: '<p class="lede">Order the groups and choose which are visible.</p>' + groupVis }) +
-      UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' + UI.SecondaryButton({ label: "Clear recent items", icon: "clock", act: "clear-recent", data: { key: "all" } }) +
+      UI.Section({ id: "s-groups", title: "Score groups in Calculate and Guide", body: '<p class="lede">Order the groups and choose which are visible. Hidden groups are also left out of Home.</p>' + groupVis }) +
+      UI.Section({ id: "s-history", title: "History", body: '<p class="lede">Kept only on this device: the score and the time. Calculator inputs are never stored.</p>' +
+        '<ul class="settings-list">' +
+        '<li class="reorder-row"><span class="text"><span class="label">Recently used calculators</span><span class="desc">' + st.recentCalc.length + " item" + (st.recentCalc.length === 1 ? "" : "s") + "</span></span>" +
+          UI.SecondaryButton({ label: "Clear", act: "clear-recent", data: { key: "recentCalc" }, disabled: !st.recentCalc.length }) + "</li>" +
+        '<li class="reorder-row"><span class="text"><span class="label">Recently viewed guides</span><span class="desc">' + st.recentGuide.length + " item" + (st.recentGuide.length === 1 ? "" : "s") + "</span></span>" +
+          UI.SecondaryButton({ label: "Clear", act: "clear-recent", data: { key: "recentGuide" }, disabled: !st.recentGuide.length }) + "</li></ul>" +
+        '<div style="margin-top:var(--space-3)">' + UI.SecondaryButton({ label: "Clear all history", icon: "clock", act: "clear-recent", data: { key: "all" }, block: true, disabled: !st.recentCalc.length && !st.recentGuide.length }) + "</div>" }) +
+      UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' +
         UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
         (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
-      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.5.0 (Phase 4: clinical insight engine)</p>' +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.6.0 (Phase 5: personalized Home)</p>' +
         '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
         UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
     paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });
   }
   function pickerScreen(key) {
-    var st = Store.get(), titles = { favorites: "Favourite scores", priorityScores: "Priority scores", priorityGroups: "Priority groups" };
+    var st = Store.get(), titles = { favorites: "Favorite scores", favoriteGuides: "Favorite guides", priorityScores: "Priority scores", priorityGroups: "Priority groups" };
     if (!titles[key]) return notFound("Unknown list.");
     var body;
     if (key === "priorityGroups") {
@@ -397,12 +489,13 @@
       case "back": if (!window.handleBack()) replaceTo(startHash()); break;
       case "clear-search": var inp = document.getElementById(d.for); inp.value = ""; renderSearch(""); inp.focus(); break;
       case "toggle-favorite": {
-        var on = Store.get().favorites.indexOf(d.id) < 0; Store.toggleIn("favorites", d.id);
-        document.querySelectorAll('[data-act="toggle-favorite"][data-id="' + d.id + '"]').forEach(function (el) {
-          var s = score(d.id); el.setAttribute("aria-pressed", String(on));
-          el.setAttribute("aria-label", (on ? "Remove " : "Add ") + (el.closest(".appbar") ? "" : s.abbreviation + " ") + (on ? "from favourites" : "to favourites"));
+        var key = d.key || "favorites", on = Store.get()[key].indexOf(d.id) < 0, noun = key === "favoriteGuides" ? "favorite guides" : "favorite scores";
+        Store.toggleIn(key, d.id);
+        document.querySelectorAll('[data-act="toggle-favorite"][data-id="' + d.id + '"][data-key="' + key + '"]').forEach(function (el) {
+          var sc = score(d.id); el.setAttribute("aria-pressed", String(on));
+          el.setAttribute("aria-label", (on ? "Remove " : "Add ") + (el.closest(".appbar") ? "" : sc.abbreviation + " ") + (on ? "from " : "to ") + noun);
         });
-        toast(on ? "Added to favourites" : "Removed from favourites"); break;
+        toast(on ? "Added to " + noun : "Removed from " + noun); break;
       }
       case "toggle-priority": {
         var on2 = Store.get().priorityScores.indexOf(d.id) < 0; Store.toggleIn("priorityScores", d.id);
@@ -419,10 +512,40 @@
         refocusAfterRender(settingsScreen, sel, '[data-act="move"][data-key="' + key + '"][data-index="' + (i + delta) + '"][data-delta="' + (-delta) + '"]');
         announce("Moved to position " + (i + delta + 1)); break;
       }
-      case "remove": Store.update(function (s) { s[d.key] = s[d.key].filter(function (x) { return x !== d.id; }); return s; }); refocusAfterRender(settingsScreen, "#s-" + (d.key === "favorites" ? "favorites" : d.key === "priorityScores" ? "priority" : "pgroups") + "-h"); toast("Removed"); break;
-      case "clear-recent":
-        Store.update(function (s) { if (d.key === "all" || d.key === "recentCalc") s.recentCalc = []; if (d.key === "all" || d.key === "recentGuide") s.recentGuide = []; return s; });
-        toast("Recent items cleared"); if (route.tab === "home") homeScreen(); break;
+      case "remove": Store.removeFrom(d.key, d.id); refocusAfterRender(settingsScreen, "#s-" + ({ favorites: "favorites", favoriteGuides: "favguides", priorityScores: "priority" }[d.key] || "pgroups") + "-h"); toast("Removed"); break;
+      case "clear-recent": {
+        var keys = d.key === "all" ? ["recentCalc", "recentGuide"] : [d.key], snap = Store.snapshot(keys);
+        Store.update(function (x) { keys.forEach(function (k) { x[k] = []; }); return x; });
+        var redraw = function () { if (route.tab === "home") homeScreen(); else if (route.tab === "settings" && !route.kind) refocusAfterRender(settingsScreen, "#s-history-h"); };
+        redraw();
+        toast(d.key === "all" ? "History cleared" : d.key === "recentCalc" ? "Recent calculators cleared" : "Recent guides cleared", { label: "Undo", run: function () { Store.restore(snap); redraw(); announce("History restored"); } });
+        break;
+      }
+      case "home-edit": homeEdit[d.key] = !homeEdit[d.key]; refocusAfterRender(homeScreen, '[data-act="home-edit"][data-key="' + d.key + '"]'); announce(homeEdit[d.key] ? "Editing " + HOME_SECTION_META[d.key].title : "Done"); break;
+      case "home-move": {
+        var i0 = Number(d.index), j0 = d.to !== undefined && d.to !== "" ? Number(d.to) : i0 + Number(d.delta);
+        Store.update(function (x) { var arr = x[d.key]; if (j0 < 0 || j0 >= arr.length) return x; var t = arr[i0]; arr[i0] = arr[j0]; arr[j0] = t; return x; });
+        var movedId = Store.get()[d.key][j0]; movedId = typeof movedId === "string" ? movedId : movedId && movedId.id;
+        refocusAfterRender(homeScreen, '[data-act="home-move"][data-key="' + d.key + '"][data-index="' + j0 + '"][data-delta="' + d.delta + '"]', '[data-act="home-move"][data-key="' + d.key + '"][data-index="' + j0 + '"]');
+        announce("Moved to position " + (j0 + 1)); break;
+      }
+      case "home-remove": {
+        var snap2 = Store.snapshot([d.key]), label = d.key === "priorityGroups" ? category(d.id).name : score(d.id).abbreviation;
+        Store.removeFrom(d.key, d.id);
+        if (!Store.get()[d.key].length) homeEdit[d.key] = false;
+        refocusAfterRender(homeScreen, "#home-" + d.key + "-h");
+        toast(label + " removed", { label: "Undo", run: function () { Store.restore(snap2); homeScreen(); } }); break;
+      }
+      case "promote-group": {
+        var onG = Store.get().priorityGroups.indexOf(d.id) < 0; Store.toggleIn("priorityGroups", d.id);
+        b.querySelector("span").textContent = onG ? "On Home (priority)" : "Add group to Home";
+        toast(onG ? category(d.id).name + " added to Home" : category(d.id).name + " removed from Home"); break;
+      }
+      case "hide-group": {
+        var hiding = Store.get().hiddenGroups.indexOf(d.id) < 0, cname = category(d.id).name;
+        Store.toggleIn("hiddenGroups", d.id); categoryScreen(route.tab, d.id);
+        toast(hiding ? cname + " hidden from lists" : cname + " shown in lists", hiding ? { label: "Undo", run: function () { Store.toggleIn("hiddenGroups", d.id); categoryScreen(route.tab, d.id); } } : null); break;
+      }
       case "reset-all":
         if (window.confirm("Reset appearance, startup screen, favourites, priority items, groups and Home layout to defaults?")) { Store.reset(); applyTheme(); settingsScreen(); toast("Settings reset"); }
         break;
@@ -451,7 +574,7 @@
     loadJSON("content/catalog.json")
       .then(function (c) {
         if (!c || !Array.isArray(c.scores) || !Array.isArray(c.categories)) throw new Error("Catalogue format is invalid");
-        CATALOG = c;
+        CATALOG = c; IDX = buildIndex(c);
         Store.prune(c.scores.map(function (s) { return s.id; }), c.categories.map(function (x) { return x.id; }));
         if (!location.hash || location.hash === "#" || location.hash === "#/") location.replace(startHash());
         render();

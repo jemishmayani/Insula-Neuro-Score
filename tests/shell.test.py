@@ -60,9 +60,10 @@ async def main():
             pg = await newpage(412, 915, storage={})
             check("startup default = Home", await hashof(pg) == "#/home")
             await pg.screenshot(path=f"{SHOTS}/01_home_light.png")
-            for sid in ["priorityScores", "priorityGroups", "favorites", "recentCalc", "recentGuide"]:
+            for sid in ["favorites", "favoriteGuides", "recentCalc", "recentGuide", "priorityScores", "priorityGroups"]:
                 check(f"home section present: {sid}", await pg.locator(f"#home-{sid}").count() == 1)
-            check("home placeholders realistic (GCS, NIHSS in priority)", await pg.locator("#home-priorityScores >> text=NIHSS").count() == 1)
+            order = await pg.evaluate("[...document.querySelectorAll('#page-body > .section[id^=home-]')].map(e=>e.id)")
+            check("home sections in Phase 5 order", order == ["home-favorites", "home-favoriteGuides", "home-recentCalc", "home-recentGuide", "home-priorityScores", "home-priorityGroups"], str(order))
             check("empty favourites shows EmptyState", await pg.locator("#home-favorites .empty-state").count() == 1)
             check("settings in top-right app bar", await pg.locator(".appbar a[aria-label=Settings]").count() == 1)
             check("bottom nav has Home|Calculate|Guide", [t.strip() for t in await pg.locator(".bottomnav a").all_inner_texts()] == ["Home", "Calculate", "Guide"])
@@ -121,21 +122,22 @@ async def main():
             await pg.click("[data-act=toggle-priority]")
             await pg.goto(U + "#/home"); await pg.wait_for_selector("#home-favorites")
             check("favourite shown on Home", await pg.locator("#home-favorites >> text=NIHSS").count() == 1)
-            check("recent calculators recorded", await pg.locator("#home-recentCalc >> text=NIHSS").count() == 1)
+            check("opening a calculator without calculating does not record use", await pg.locator("#home-recentCalc >> text=NIHSS").count() == 0)
             check("recent guides recorded", await pg.locator("#home-recentGuide >> text=GCS").count() == 1)
-            check("toggle priority from detail removes NIHSS from priority", await pg.locator("#home-priorityScores >> text=NIHSS").count() == 0)
+            check("promote from detail adds NIHSS to priority", await pg.locator("#home-priorityScores >> text=NIHSS").count() == 1)
 
             # ---- settings: reordering ----
-            await pg.goto(U + "#/settings"); await pg.wait_for_selector("#s-priority")
+            await pg.evaluate("(() => { const s = JSON.parse(localStorage.getItem('ins.store.v3')); s.priorityScores = ['gcs','nihss','ich','wfns']; localStorage.setItem('ins.store.v3', JSON.stringify(s)); })()")
+            await pg.goto(U + "#/settings"); await pg.reload(); await pg.wait_for_selector("#s-priority")
             await pg.screenshot(path=f"{SHOTS}/05_settings.png", full_page=True)
-            before = await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v2')).priorityScores")
+            before = await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v3')).priorityScores")
             await pg.click("#s-priority [data-act=move][data-index='0'][data-delta='1']")
-            after = await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v2')).priorityScores")
+            after = await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v3')).priorityScores")
             check("reorder priority scores", after == [before[1], before[0]] + before[2:], f"{before}→{after}")
             focused = await pg.evaluate("document.activeElement && document.activeElement.getAttribute('aria-label')")
             check("focus follows moved item", focused is not None and "Move" in focused, str(focused))
             await pg.reload(); await pg.wait_for_selector("#s-priority")
-            check("reorder persists after reload", await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v2')).priorityScores") == after)
+            check("reorder persists after reload", await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v3')).priorityScores") == after)
             await pg.goto(U + "#/home"); await pg.wait_for_selector("#home-priorityScores")
             firsts = await pg.locator("#home-priorityScores .score-card .title").all_inner_texts()
             check("Home reflects priority order", firsts[0].startswith(score_abbr := {"gcs":"GCS","ich":"ICH Score","wfns":"WFNS","nihss":"NIHSS"}[after[0]]), f"{firsts}")
@@ -145,7 +147,7 @@ async def main():
             await pg.click("#s-home input[data-id=recentGuide]")
             await pg.goto(U + "#/home"); await pg.wait_for_selector(".section")
             ids = await pg.evaluate("[...document.querySelectorAll('#page-body > .section[id^=home-]')].map(e=>e.id)")
-            check("Home section order + visibility applied", ids[:2] == ["home-priorityGroups", "home-priorityScores"] and "home-recentGuide" not in ids, str(ids))
+            check("Home section order + visibility applied", ids[:2] == ["home-favoriteGuides", "home-favorites"] and "home-recentGuide" not in ids, str(ids))
             # group order & hide
             await pg.goto(U + "#/settings"); await pg.wait_for_selector("#s-groups")
             await pg.click("#s-groups [data-act=move][data-index='1'][data-delta='-1']")
@@ -162,7 +164,7 @@ async def main():
             check("priority group picker adds chip", await pg.locator("#home-priorityGroups >> text=Spine and spinal cord").count() == 1)
             await pg.goto(U + "#/settings"); await pg.wait_for_selector("#s-favorites")
             await pg.click("#s-favorites [data-act=remove]")
-            check("remove favourite in Settings", await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v2')).favorites.length") == 0)
+            check("remove favourite in Settings", await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v3')).favorites.length") == 0)
 
             # ---- themes ----
             bg = lambda: pg.evaluate("getComputedStyle(document.body).backgroundColor")
@@ -199,11 +201,11 @@ async def main():
             # ---- migration from v0.1.0 ----
             legacy = json.dumps({"theme": "dark", "startup": "calc", "pinned": ["mrs", "rass"], "favGuides": ["four"], "homeGroups": ["sah"], "hiddenGroups": ["spine"]})
             mp = await newpage(412, 915, storage={"ins.prefs": legacy})
-            st = await mp.evaluate("JSON.parse(localStorage.getItem('ins.store.v2'))")
-            check("migrates v0.1.0 preferences", st["priorityScores"] == ["mrs", "rass"] and st["favorites"] == ["four"] and st["startup"] == "calculate" and st["theme"] == "dark" and st["hiddenGroups"] == ["spine"], str(st))
+            st = await mp.evaluate("JSON.parse(localStorage.getItem('ins.store.v3'))")
+            check("migrates v0.1.0 preferences", st["priorityScores"] == ["mrs", "rass"] and st["favoriteGuides"] == ["four"] and st["favorites"] == [] and st["startup"] == "calculate" and st["theme"] == "dark" and st["hiddenGroups"] == ["spine"], str(st))
             check("legacy key removed after migration", await mp.evaluate("localStorage.getItem('ins.prefs')") is None)
             # corrupt storage resilience
-            cp = await newpage(412, 915, storage={"ins.store.v2": "{not json"})
+            cp = await newpage(412, 915, storage={"ins.store.v3": "{not json"})
             check("corrupt storage falls back to defaults", await hashof(cp) == "#/home" and not cp.errs, cp.errs[:2])
 
             # ---- loading / error states ----

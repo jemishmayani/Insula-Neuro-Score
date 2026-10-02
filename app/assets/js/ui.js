@@ -129,7 +129,8 @@
   /** ScoreCard({score, href, sub, badge, favorite, trailing}) — list row (render inside CardList) */
   function ScoreCard(o) {
     var s = o.score;
-    var fav = o.favorite == null ? "" : IconButton({ icon: "star", label: (o.favorite ? "Remove " : "Add ") + s.abbreviation + (o.favorite ? " from favourites" : " to favourites"), act: "toggle-favorite", pressed: o.favorite, data: { id: s.id } });
+    var noun = o.favKey === "favoriteGuides" ? "favorite guides" : "favorite scores";
+    var fav = o.favorite == null ? "" : IconButton({ icon: "star", label: (o.favorite ? "Remove " : "Add ") + s.abbreviation + (o.favorite ? " from " : " to ") + noun, act: "toggle-favorite", pressed: o.favorite, data: { id: s.id, key: o.favKey || "favorites" } });
     return '<li class="score-card"><a class="open" href="' + esc(o.href) + '" data-nav><span class="text"><span class="title">' + esc(s.abbreviation) +
       (o.badge ? " " + o.badge : "") + '</span><span class="sub">' + esc(o.sub != null ? o.sub : s.name) + "</span></span>" + icon("chevron", "chev") + "</a>" + fav + (o.trailing || "") + "</li>";
   }

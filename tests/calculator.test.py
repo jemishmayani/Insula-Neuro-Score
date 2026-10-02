@@ -152,7 +152,7 @@ async def main():
 
             # ---- light / dark ----
             for theme in ["light", "dark"]:
-                await pg.evaluate(f"localStorage.setItem('ins.store.v2', JSON.stringify(Object.assign(JSON.parse(localStorage.getItem('ins.store.v2')||'{{}}'), {{theme:'{theme}'}})))"); await pg.reload(); await pg.wait_for_selector(".bottomnav")
+                await pg.evaluate(f"localStorage.setItem('ins.store.v3', JSON.stringify(Object.assign(JSON.parse(localStorage.getItem('ins.store.v3')||'{{}}'), {{theme:'{theme}'}})))"); await pg.reload(); await pg.wait_for_selector(".bottomnav")
                 for sid, fill in [("gcs", [("e","2"),("v","2"),("m","4")]), ("mrs", [("grade","4")]), ("sins", [("location","2"),("pain","3"),("lesion","2"),("alignment","2"),("collapse","3"),("posterolateral","3")])]:
                     await pg.goto(U + f"#/calculate/s/{sid}"); await pg.wait_for_selector(".field")
                     for i, v in fill: await pick(pg, i, v)
@@ -227,7 +227,7 @@ async def main():
                 await pg.screenshot(path=f"{SHOTS}/p4_guide_{sid}.png", full_page=True)
 
             # ---- dark + tablet ----
-            await pg.evaluate("localStorage.setItem('ins.store.v2', JSON.stringify(Object.assign(JSON.parse(localStorage.getItem('ins.store.v2')||'{}'), {theme:'dark'})))")
+            await pg.evaluate("localStorage.setItem('ins.store.v3', JSON.stringify(Object.assign(JSON.parse(localStorage.getItem('ins.store.v3')||'{}'), {theme:'dark'})))")
             await pg.goto(U + "#/calculate/s/nihss"); await pg.wait_for_selector(".field"); await pg.screenshot(path=f"{SHOTS}/p3_nihss_dark.png")
             t = await b.new_context(viewport={"width": 1280, "height": 900}); tp = await t.new_page(); await tp.goto(U + "#/calculate/s/sins"); await tp.wait_for_selector(".field")
             for i, v in [("location", "2"), ("pain", "3"), ("lesion", "2"), ("alignment", "2"), ("collapse", "3"), ("posterolateral", "3")]: await pick(tp, i, v)
