@@ -1,0 +1,441 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-03",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "sofa",
+  "organ failure",
+  "sepsis",
+  "organ dysfunction"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing original SOFA and SOFA-2 thresholds.",
+  "Using a single time point instead of the worst value in the period.",
+  "Scoring respiration 3–4 without respiratory support."
+ ],
+ "relatedScores": [
+  {
+   "id": "sofa2",
+   "relation": "Updated version (under review)"
+  },
+  {
+   "id": "gcs",
+   "relation": "CNS component"
+  },
+  {
+   "id": "rass",
+   "relation": "Sedation level (under review)"
+  }
+ ],
+ "id": "sofa",
+ "name": "Sequential Organ Failure Assessment (original SOFA)",
+ "abbreviation": "SOFA",
+ "category": "neurocritical",
+ "subcategory": "Organ dysfunction",
+ "specialties": [
+  "Critical Care",
+  "Neurocritical Care"
+ ],
+ "version": {
+  "label": "Original SOFA (Vincent et al. 1996), as tabulated in Sepsis-3 (Singer et al. 2016)",
+  "detail": "Six organ systems scored 0–4, total 0–24. SOFA-2 (JAMA 2025) is a different version with new variables and thresholds and is not combined here."
+ },
+ "purpose": "Describes the degree of organ dysfunction in critically ill adults, repeatedly over time.",
+ "intendedPopulation": "Adults in intensive care.",
+ "resultPresentation": {
+  "type": "severity",
+  "typeLabel": "Organ dysfunction",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Original SOFA, not SOFA-2",
+  "message": "Select the band for each organ using the worst value in the assessment period. Catecholamine doses are µg/kg/min given for at least 1 hour."
+ },
+ "inputDefinitions": [
+  {
+   "id": "resp",
+   "type": "single",
+   "label": "Respiration: PaO₂/FiO₂, mmHg (kPa)",
+   "short": "Respiration",
+   "options": [
+    {
+     "value": "0",
+     "label": "≥400 (53.3)",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "<400 (53.3)",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "<300 (40)",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "<200 (26.7) with respiratory support",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "<100 (13.3) with respiratory support",
+     "points": 4,
+     "code": "4"
+    }
+   ],
+   "help": "Scores 3 and 4 require respiratory support."
+  },
+  {
+   "id": "coag",
+   "type": "single",
+   "label": "Coagulation: platelets, ×10³/µL",
+   "short": "Coagulation",
+   "options": [
+    {
+     "value": "0",
+     "label": "≥150",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "<150",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "<100",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "<50",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "<20",
+     "points": 4,
+     "code": "4"
+    }
+   ]
+  },
+  {
+   "id": "liver",
+   "type": "single",
+   "label": "Liver: bilirubin, mg/dL (µmol/L)",
+   "short": "Liver",
+   "options": [
+    {
+     "value": "0",
+     "label": "<1.2 (<20)",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "1.2–1.9 (20–32)",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "2.0–5.9 (33–101)",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "6.0–11.9 (102–204)",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": ">12.0 (>204)",
+     "points": 4,
+     "code": "4"
+    }
+   ]
+  },
+  {
+   "id": "cv",
+   "type": "single",
+   "label": "Cardiovascular",
+   "short": "Cardiovascular",
+   "options": [
+    {
+     "value": "0",
+     "label": "MAP ≥70 mmHg",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "MAP <70 mmHg",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Dopamine <5 or dobutamine (any dose)",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Dopamine 5.1–15, or epinephrine ≤0.1, or norepinephrine ≤0.1",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "Dopamine >15, or epinephrine >0.1, or norepinephrine >0.1",
+     "points": 4,
+     "code": "4"
+    }
+   ],
+   "help": "Doses in µg/kg/min, given for at least 1 hour."
+  },
+  {
+   "id": "cns",
+   "type": "single",
+   "label": "Central nervous system: GCS",
+   "short": "CNS",
+   "options": [
+    {
+     "value": "0",
+     "label": "15",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "13–14",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "10–12",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "6–9",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "<6",
+     "points": 4,
+     "code": "4"
+    }
+   ]
+  },
+  {
+   "id": "renal",
+   "type": "single",
+   "label": "Renal: creatinine, mg/dL (µmol/L), or urine output",
+   "short": "Renal",
+   "options": [
+    {
+     "value": "0",
+     "label": "<1.2 (<110)",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "1.2–1.9 (110–170)",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "2.0–3.4 (171–299)",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "3.5–4.9 (300–440) or urine output <500 mL/day",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": ">5.0 (>440) or urine output <200 mL/day",
+     "points": 4,
+     "code": "4"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 24
+  },
+  "display": "{total}",
+  "share": "SOFA {total} (R{resp} C{coag} L{liver} CV{cv} CNS{cns} Re{renal})"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "zero"
+  },
+  {
+   "state": "scored"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "zero",
+   "tone": "favorable",
+   "label": "No organ dysfunction measured",
+   "summary": "No organ dysfunction measured by SOFA at this assessment.",
+   "range": "0",
+   "detail": "SOFA covers six organ systems only; dysfunction elsewhere is not captured."
+  },
+  {
+   "id": "scored",
+   "tone": "informational",
+   "label": "SOFA {total}",
+   "summary": "Higher totals indicate more organ dysfunction. Change over time is often more informative than a single value.",
+   "range": "1–24",
+   "detail": "Interpret each organ score and the trend with the clinical picture."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Describes organ dysfunction across six systems, repeatedly during an ICU stay.",
+   "importance": "major"
+  },
+  {
+   "text": "Sepsis-3 uses an acute change in total SOFA of 2 or more points as part of its sepsis criteria."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Record the timing and whether values are worst-in-24-hours; a pre-existing baseline (e.g. chronic kidney disease) affects interpretation."
+  },
+  {
+   "when": "cns >= 1",
+   "text": "The CNS component uses GCS, which is affected by sedation; many protocols use the best estimate of the unsedated GCS."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Published reproductions differ slightly at some boundaries (e.g. dopamine 5, creatinine 5.0); this implementation follows the Sepsis-3 table."
+  },
+  {
+   "importance": "major",
+   "text": "Values below 200 mmHg without respiratory support are not explicitly assigned in the table; follow local convention."
+  },
+  "Catecholamine categories do not include vasopressin or newer agents.",
+  "Not designed as a mortality prediction tool for an individual patient."
+ ],
+ "confounders": [
+  {
+   "factor": "Sedation",
+   "effect": "Lowers GCS independently of brain dysfunction."
+  },
+  {
+   "factor": "Chronic organ disease",
+   "effect": "Raises the baseline score."
+  },
+  {
+   "factor": "Transfusion or dialysis",
+   "effect": "Changes platelet and creatinine values."
+  },
+  {
+   "factor": "Missing arterial blood gas",
+   "effect": "Limits the respiratory component."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause of organ dysfunction.",
+  "Whether infection is present.",
+  "An individual patient's prognosis."
+ ],
+ "guideSections": {
+  "what": "A score of dysfunction in six organ systems (respiratory, coagulation, liver, cardiovascular, CNS, renal), each 0–4.",
+  "whenToUse": "Serial description of organ dysfunction in the ICU; research and Sepsis-3 criteria.",
+  "howToPerform": "For each organ, select the band matching the worst value in the assessment period. The total is the sum of the six organ scores.",
+  "clinicalContext": "A descriptive and sequential measure; trends and organ-specific scores are interpreted with the clinical picture."
+ },
+ "sources": [
+  {
+   "citation": "Vincent JL, Moreno R, Takala J, et al. The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure. Intensive Care Med. 1996;22(7):707-710."
+  },
+  {
+   "citation": "Singer M, Deutschman CS, Seymour CW, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):801-810.",
+   "doi": "10.1001/jama.2016.0287"
+  }
+ ],
+ "licensing": {
+  "status": "Published score, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_resp",
+   "label": "Respiration: PaO₂/FiO₂, mmHg (kPa)",
+   "inputs": [
+    "resp"
+   ]
+  },
+  {
+   "id": "c_coag",
+   "label": "Coagulation: platelets, ×10³/µL",
+   "inputs": [
+    "coag"
+   ]
+  },
+  {
+   "id": "c_liver",
+   "label": "Liver: bilirubin, mg/dL (µmol/L)",
+   "inputs": [
+    "liver"
+   ]
+  },
+  {
+   "id": "c_cv",
+   "label": "Cardiovascular",
+   "inputs": [
+    "cv"
+   ]
+  },
+  {
+   "id": "c_cns",
+   "label": "Central nervous system: GCS",
+   "inputs": [
+    "cns"
+   ]
+  },
+  {
+   "id": "c_renal",
+   "label": "Renal: creatinine, mg/dL (µmol/L), or urine output",
+   "inputs": [
+    "renal"
+   ]
+  }
+ ]
+}

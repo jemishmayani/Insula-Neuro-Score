@@ -1,0 +1,134 @@
+{
+ "scoreId": "gpa",
+ "cases": [
+  {
+   "name": "maximum 4",
+   "answers": {
+    "age": "u50",
+    "kps": "90to100",
+    "nmets": "one",
+    "ecm": "none"
+   },
+   "expect": {
+    "total": 4,
+    "display": "4.0",
+    "state": "g4"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1+1+1=4 → 11.0 months",
+    "source": "Sperduto 2008 (RTOG)"
+   }
+  },
+  {
+   "name": "minimum 0",
+   "answers": {
+    "age": "o60",
+    "kps": "lt70",
+    "nmets": "gt3",
+    "ecm": "present"
+   },
+   "expect": {
+    "total": 0,
+    "state": "g1",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0 → 2.6 months",
+    "source": "Sperduto 2008 (RTOG)"
+   }
+  },
+  {
+   "name": "boundary 1.0",
+   "answers": {
+    "age": "o60",
+    "kps": "90to100",
+    "nmets": "gt3",
+    "ecm": "present"
+   },
+   "expect": {
+    "total": 1,
+    "state": "g1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0+1+0+0=1 → 0–1 group",
+    "source": "Sperduto 2008 (RTOG)"
+   }
+  },
+  {
+   "name": "boundary 1.5",
+   "answers": {
+    "age": "50to60",
+    "kps": "90to100",
+    "nmets": "gt3",
+    "ecm": "present"
+   },
+   "expect": {
+    "total": 1.5,
+    "display": "1.5",
+    "state": "g2"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0.5+1=1.5 → 1.5–2.5 group",
+    "source": "Sperduto 2008 (RTOG)"
+   }
+  },
+  {
+   "name": "boundary 2.5",
+   "answers": {
+    "age": "50to60",
+    "kps": "90to100",
+    "nmets": "one",
+    "ecm": "present"
+   },
+   "expect": {
+    "total": 2.5,
+    "state": "g2"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0.5+1+1+0=2.5",
+    "source": "Sperduto 2008 (RTOG)"
+   }
+  },
+  {
+   "name": "3.0",
+   "answers": {
+    "age": "u50",
+    "kps": "90to100",
+    "nmets": "one",
+    "ecm": "present"
+   },
+   "expect": {
+    "total": 3,
+    "state": "g3"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1+1+0=3 → 6.9 months",
+    "source": "Sperduto 2008 (RTOG)"
+   }
+  },
+  {
+   "name": "3.5",
+   "answers": {
+    "age": "u50",
+    "kps": "70to80",
+    "nmets": "one",
+    "ecm": "none"
+   },
+   "expect": {
+    "total": 3.5,
+    "state": "g4"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+0.5+1+1=3.5",
+    "source": "Sperduto 2008 (RTOG)"
+   }
+  }
+ ]
+}

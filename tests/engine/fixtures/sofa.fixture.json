@@ -1,0 +1,103 @@
+{
+ "scoreId": "sofa",
+ "cases": [
+  {
+   "name": "all normal",
+   "answers": {
+    "resp": "0",
+    "coag": "0",
+    "liver": "0",
+    "cv": "0",
+    "cns": "0",
+    "renal": "0"
+   },
+   "expect": {
+    "total": 0,
+    "state": "zero",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Vincent 1996 / Sepsis-3 table"
+   }
+  },
+  {
+   "name": "maximum",
+   "answers": {
+    "resp": "4",
+    "coag": "4",
+    "liver": "4",
+    "cv": "4",
+    "cns": "4",
+    "renal": "4"
+   },
+   "expect": {
+    "total": 24
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "6×4=24",
+    "source": "Vincent 1996 / Sepsis-3 table"
+   }
+  },
+  {
+   "name": "mixed",
+   "answers": {
+    "resp": "2",
+    "coag": "1",
+    "liver": "0",
+    "cv": "3",
+    "cns": "2",
+    "renal": "1"
+   },
+   "expect": {
+    "total": 9,
+    "state": "scored"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+1+0+3+2+1=9",
+    "source": "Vincent 1996 / Sepsis-3 table"
+   }
+  },
+  {
+   "name": "invalid band",
+   "answers": {
+    "resp": "5",
+    "coag": "0",
+    "liver": "0",
+    "cv": "0",
+    "cns": "0",
+    "renal": "0"
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0–4 only",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "missing organ",
+   "answers": {
+    "resp": "1",
+    "coag": "1",
+    "liver": "1",
+    "cv": "1",
+    "cns": "1"
+   },
+   "expect": {
+    "status": "incomplete",
+    "missing": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "renal missing",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

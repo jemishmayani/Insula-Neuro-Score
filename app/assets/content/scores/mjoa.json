@@ -1,0 +1,352 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-03",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "mjoa",
+  "myelopathy",
+  "dcm",
+  "cervical myelopathy",
+  "benzel"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing JOA (17-point) and mJOA (18-point) totals.",
+  "Scoring lower-limb items from imaging rather than function."
+ ],
+ "relatedScores": [
+  {
+   "id": "nurick",
+   "relation": "Myelopathy grade"
+  },
+  {
+   "id": "joa",
+   "relation": "Original JOA (under review)"
+  },
+  {
+   "id": "frankel",
+   "relation": "Spinal cord injury grade"
+  }
+ ],
+ "id": "mjoa",
+ "name": "Modified Japanese Orthopaedic Association Score",
+ "abbreviation": "mJOA",
+ "category": "spine",
+ "subcategory": "Cervical myelopathy",
+ "specialties": [
+  "Neurosurgery",
+  "Spine Surgery",
+  "Neurology"
+ ],
+ "version": {
+  "label": "mJOA, clinician-rated (Benzel et al. 1991), 0–18",
+  "detail": "Upper-limb motor 0–5, lower-limb motor 0–7, upper-limb sensation 0–3, micturition 0–3. Severity bands from Tetreault/Fehlings (2017). Not the original JOA (1975, 17 points) and not the patient-derived mJOA."
+ },
+ "purpose": "Clinician-rated severity of degenerative cervical myelopathy.",
+ "intendedPopulation": "Adults with degenerative cervical myelopathy.",
+ "resultPresentation": {
+  "type": "severity",
+  "typeLabel": "Myelopathy severity",
+  "meter": true
+ },
+ "inputDefinitions": [
+  {
+   "id": "ue",
+   "type": "single",
+   "label": "Upper-limb motor function",
+   "short": "Upper motor",
+   "options": [
+    {
+     "value": "0",
+     "label": "Unable to move hands",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Unable to eat with a spoon but able to move hands",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Unable to button shirt but able to eat with a spoon",
+     "points": 2
+    },
+    {
+     "value": "3",
+     "label": "Able to button shirt with great difficulty",
+     "points": 3
+    },
+    {
+     "value": "4",
+     "label": "Able to button shirt with slight difficulty",
+     "points": 4
+    },
+    {
+     "value": "5",
+     "label": "No dysfunction",
+     "points": 5
+    }
+   ]
+  },
+  {
+   "id": "le",
+   "type": "single",
+   "label": "Lower-limb motor function",
+   "short": "Lower motor",
+   "options": [
+    {
+     "value": "0",
+     "label": "Complete loss of motor and sensory function",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Sensory preservation without ability to move legs",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Able to move legs but unable to walk",
+     "points": 2
+    },
+    {
+     "value": "3",
+     "label": "Able to walk on a flat floor with a walking aid",
+     "points": 3
+    },
+    {
+     "value": "4",
+     "label": "Able to walk up and/or down stairs with a hand rail",
+     "points": 4
+    },
+    {
+     "value": "5",
+     "label": "Moderate to significant lack of stability, but walks up and/or down stairs without a hand rail",
+     "points": 5
+    },
+    {
+     "value": "6",
+     "label": "Mild lack of stability; walks unaided with smooth reciprocation",
+     "points": 6
+    },
+    {
+     "value": "7",
+     "label": "No dysfunction",
+     "points": 7
+    }
+   ]
+  },
+  {
+   "id": "sens",
+   "type": "single",
+   "label": "Upper-limb sensation",
+   "short": "Sensation",
+   "options": [
+    {
+     "value": "0",
+     "label": "Complete loss of hand sensation",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Severe sensory loss or pain",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Mild sensory loss",
+     "points": 2
+    },
+    {
+     "value": "3",
+     "label": "No sensory loss",
+     "points": 3
+    }
+   ]
+  },
+  {
+   "id": "bladder",
+   "type": "single",
+   "label": "Micturition",
+   "short": "Sphincter",
+   "options": [
+    {
+     "value": "0",
+     "label": "Unable to micturate voluntarily",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Marked difficulty with micturition",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Mild to moderate difficulty with micturition",
+     "points": 2
+    },
+    {
+     "value": "3",
+     "label": "Normal micturition",
+     "points": 3
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 18
+  },
+  "display": "{total}",
+  "share": "mJOA {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 18",
+   "state": "none"
+  },
+  {
+   "when": "total <= 11",
+   "state": "severe"
+  },
+  {
+   "when": "total <= 14",
+   "state": "moderate"
+  },
+  {
+   "state": "mild"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "severe",
+   "tone": "high",
+   "label": "Severe myelopathy",
+   "summary": "mJOA 0–11: severe myelopathy.",
+   "range": "0–11",
+   "detail": "Correlate with examination, imaging and progression according to local practice.",
+   "min": 0,
+   "max": 11
+  },
+  {
+   "id": "moderate",
+   "tone": "moderate",
+   "label": "Moderate myelopathy",
+   "summary": "mJOA 12–14: moderate myelopathy.",
+   "range": "12–14",
+   "min": 12,
+   "max": 14
+  },
+  {
+   "id": "mild",
+   "tone": "mild",
+   "label": "Mild myelopathy",
+   "summary": "mJOA 15–17: mild myelopathy.",
+   "range": "15–17",
+   "min": 15,
+   "max": 17
+  },
+  {
+   "id": "none",
+   "tone": "favorable",
+   "label": "No dysfunction measured",
+   "summary": "mJOA 18: no dysfunction measured at this assessment.",
+   "range": "18",
+   "detail": "Does not exclude imaging cord compression or subtle signs.",
+   "min": 18,
+   "max": 18
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The standard clinician-rated severity measure for degenerative cervical myelopathy in Western practice.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Report the domain scores with the total; motor items carry 12 of 18 points."
+  },
+  {
+   "text": "Compare serial scores using the same version (mJOA and JOA are not interchangeable)."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Not interchangeable with the original JOA score (1975) or the patient-derived mJOA."
+  },
+  "Upper-limb sensation only; lower-limb and trunk sensation are not scored.",
+  "Function can be limited by non-myelopathic conditions."
+ ],
+ "confounders": [
+  {
+   "factor": "Peripheral neuropathy or carpal tunnel syndrome",
+   "effect": "Lowers hand sensation and dexterity."
+  },
+  {
+   "factor": "Lower-limb arthritis",
+   "effect": "Limits walking."
+  },
+  {
+   "factor": "Urological disease",
+   "effect": "Affects the micturition item."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Imaging severity of compression.",
+  "Whether surgery is appropriate.",
+  "Rate of progression on its own."
+ ],
+ "guideSections": {
+  "what": "An 18-point clinician-rated scale of upper- and lower-limb motor function, hand sensation and micturition.",
+  "whenToUse": "Severity grading and follow-up of degenerative cervical myelopathy.",
+  "howToPerform": "Score each of the four domains from history and examination. Add the four domain scores.",
+  "clinicalContext": "Used with examination findings, imaging and the time course."
+ },
+ "sources": [
+  {
+   "citation": "Benzel EC, Lancon J, Kesterson L, Hadden T. Cervical laminectomy and dentate ligament section for cervical spondylotic myelopathy. J Spinal Disord. 1991;4(3):286-295."
+  },
+  {
+   "citation": "Tetreault L, Kopjar B, Nouri A, et al. The modified Japanese Orthopaedic Association scale: establishing criteria for mild, moderate and severe impairment in patients with degenerative cervical myelopathy. Eur Spine J. 2017;26(1):78-84."
+  }
+ ],
+ "licensing": {
+  "status": "Published clinician-rated scale",
+  "note": "Reproduced in open-access literature. The patient-derived mJOA (myelopathy.org, reproduced with permission) is a separate instrument and is not implemented."
+ },
+ "components": [
+  {
+   "id": "c_ue",
+   "label": "Upper-limb motor function",
+   "inputs": [
+    "ue"
+   ]
+  },
+  {
+   "id": "c_le",
+   "label": "Lower-limb motor function",
+   "inputs": [
+    "le"
+   ]
+  },
+  {
+   "id": "c_sens",
+   "label": "Upper-limb sensation",
+   "inputs": [
+    "sens"
+   ]
+  },
+  {
+   "id": "c_bladder",
+   "label": "Micturition",
+   "inputs": [
+    "bladder"
+   ]
+  }
+ ]
+}

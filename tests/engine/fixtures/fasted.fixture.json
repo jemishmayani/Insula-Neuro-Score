@@ -1,0 +1,77 @@
+{
+ "scoreId": "fasted",
+ "cases": [
+  {
+   "name": "no deficit",
+   "answers": {
+    "face": "0",
+    "arm": "0",
+    "speech": "0",
+    "eye": "0",
+    "neglect": "0"
+   },
+   "expect": {
+    "total": 0,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Lima 2016"
+   }
+  },
+  {
+   "name": "maximum",
+   "answers": {
+    "face": "1",
+    "arm": "2",
+    "speech": "2",
+    "eye": "2",
+    "neglect": "2"
+   },
+   "expect": {
+    "total": 9
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+2+2+2+2=9",
+    "source": "Lima 2016"
+   }
+  },
+  {
+   "name": "right hemisphere pattern",
+   "answers": {
+    "face": "1",
+    "arm": "2",
+    "speech": "0",
+    "eye": "1",
+    "neglect": "2"
+   },
+   "expect": {
+    "total": 6,
+    "insightsContains": "right-hemisphere"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+2+0+1+2=6",
+    "source": "Lima 2016"
+   }
+  },
+  {
+   "name": "missing item",
+   "answers": {
+    "face": "1",
+    "arm": "1"
+   },
+   "expect": {
+    "status": "incomplete",
+    "missing": 3
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3 missing",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -154,7 +154,7 @@
     "sedation"
    ],
    "reviewCategory": "Licensing",
-   "reviewReason": "The published FOUR score figure is © Mayo Foundation; permission to be confirmed before reproducing the instrument."
+   "reviewReason": "Reproductions carry 'Used with permission of Mayo Foundation… All rights reserved'; the author handles permission requests. Not reproduced until permission is confirmed."
   },
   {
    "id": "gos",
@@ -379,8 +379,13 @@
    "name": "Graeb Score",
    "category": "ich",
    "summary": "Intraventricular haemorrhage burden",
-   "status": "review",
-   "specialties": [],
+   "status": "implemented",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Neuroradiology",
+    "Stroke"
+   ],
    "keywords": [
     "bleed",
     "haemorrhage",
@@ -390,10 +395,16 @@
     "intracerebral haemorrhage",
     "intracerebral hemorrhage",
     "intraventricular",
+    "intraventricular haemorrhage (ct)",
     "ivh"
    ],
-   "reviewCategory": "Verification",
-   "reviewReason": "Scoring definitions not yet verified against the primary source."
+   "aliases": [
+    "graeb",
+    "ivh score",
+    "intraventricular haemorrhage",
+    "intraventricular hemorrhage"
+   ],
+   "version": "Original Graeb score (Graeb et al. 1982)"
   },
   {
    "id": "mgraeb",
@@ -415,7 +426,7 @@
     "ivh"
    ],
    "reviewCategory": "Verification",
-   "reviewReason": "Scoring definitions not yet verified against the primary source."
+   "reviewReason": "Sources agree on the 0–32 total and +1 per region for expansion, but describe the scored regions and fill thresholds inconsistently; requires the Morgan 2013 primary table."
   },
   {
    "id": "hunthess",
@@ -652,8 +663,12 @@
    "name": "Trauma and Injury Severity Score",
    "category": "tbi",
    "summary": "Combined anatomical and physiological model",
-   "status": "review",
-   "specialties": [],
+   "status": "implemented",
+   "specialties": [
+    "Trauma",
+    "Emergency Medicine",
+    "Neurosurgery"
+   ],
    "keywords": [
     "head injury",
     "injury",
@@ -662,10 +677,16 @@
     "tbi",
     "trauma",
     "trauma severity",
+    "trauma survival model",
     "traumatic brain injury"
    ],
-   "reviewCategory": "Version",
-   "reviewReason": "Multiple published coefficient sets exist (MTOS and later revisions); the coefficient version must be selected and verified."
+   "aliases": [
+    "triss",
+    "probability of survival",
+    "ps",
+    "trauma survival"
+   ],
+   "version": "TRISS with 1995 MTOS coefficients (Champion et al.)"
   },
   {
    "id": "ais",
@@ -798,11 +819,15 @@
   {
    "id": "mjoa",
    "abbreviation": "mJOA",
-   "name": "Modified JOA Score",
+   "name": "Modified Japanese Orthopaedic Association Score",
    "category": "spine",
    "summary": "Cervical myelopathy severity",
-   "status": "review",
-   "specialties": [],
+   "status": "implemented",
+   "specialties": [
+    "Neurosurgery",
+    "Spine Surgery",
+    "Neurology"
+   ],
    "keywords": [
     "cervical",
     "cervical myelopathy",
@@ -815,8 +840,14 @@
     "spine",
     "spine and spinal cord"
    ],
-   "reviewCategory": "Licensing / verification",
-   "reviewReason": "Published reproductions carry permission statements, and descriptor wording differs between sources; requires licensing and source review."
+   "aliases": [
+    "mjoa",
+    "myelopathy",
+    "dcm",
+    "cervical myelopathy",
+    "benzel"
+   ],
+   "version": "mJOA, clinician-rated (Benzel et al. 1991), 0–18"
   },
   {
    "id": "odi",
@@ -838,7 +869,7 @@
     "spine and spinal cord"
    ],
    "reviewCategory": "Licensing",
-   "reviewReason": "The Oswestry Disability Index questionnaire is copyrighted; licensing required before reproduction."
+   "reviewReason": "ODI version 2.1a is © Jeremy Fairbank, licensed through Mapi Research Trust; free only for unfunded academic research and individual clinical practice, with a fee for commercial use."
   },
   {
    "id": "tokuhashi",
@@ -858,8 +889,8 @@
     "tumor",
     "tumour"
    ],
-   "reviewCategory": "Version",
-   "reviewReason": "Original 1990 version superseded by the revised 2005 score (implemented as 'Revised Tokuhashi'); not implemented to avoid version confusion."
+   "reviewCategory": "Verification",
+   "reviewReason": "Original 1990 item weights verified, but the vertebral-body metastasis item has the same unresolved conflict as the revised score, and published prognosis bands for the original are inconsistent. Revised Tokuhashi (2005) is implemented separately."
   },
   {
    "id": "tomita",
@@ -1024,23 +1055,32 @@
   {
    "id": "sofa",
    "abbreviation": "SOFA",
-   "name": "Sequential Organ Failure Assessment",
+   "name": "Sequential Organ Failure Assessment (original SOFA)",
    "category": "neurocritical",
    "summary": "Organ dysfunction",
-   "status": "review",
-   "specialties": [],
+   "status": "implemented",
+   "specialties": [
+    "Critical Care",
+    "Neurocritical Care"
+   ],
    "keywords": [
     "critical care",
     "icu",
     "intensive care",
     "neurocritical",
     "neurocritical care",
+    "organ dysfunction",
     "organ failure",
     "sedation",
     "sepsis"
    ],
-   "reviewCategory": "Version",
-   "reviewReason": "SOFA-2 (JAMA 2025) revised thresholds and variables; the version to implement must be decided and verified."
+   "aliases": [
+    "sofa",
+    "organ failure",
+    "sepsis",
+    "organ dysfunction"
+   ],
+   "version": "Original SOFA (Vincent et al. 1996), as tabulated in Sepsis-3 (Singer et al. 2016)"
   },
   {
    "id": "abcd2",
@@ -1148,8 +1188,12 @@
    "name": "Field Assessment Stroke Triage for Emergency Destination",
    "category": "stroke",
    "summary": "Under review",
-   "status": "review",
-   "specialties": [],
+   "status": "implemented",
+   "specialties": [
+    "Stroke",
+    "Emergency Medicine",
+    "Prehospital"
+   ],
    "keywords": [
     "cerebrovascular",
     "ems",
@@ -1158,13 +1202,20 @@
     "large vessel occlusion",
     "lvo",
     "prehospital",
+    "prehospital large vessel occlusion screen",
     "prehospital lvo screens",
     "stroke",
     "thrombectomy",
     "tia"
    ],
-   "reviewCategory": "Verification",
-   "reviewReason": "Published tools define the denial/neglect item differently; requires primary-source review."
+   "aliases": [
+    "fast-ed",
+    "fasted",
+    "lvo",
+    "prehospital",
+    "large vessel occlusion"
+   ],
+   "version": "FAST-ED (Lima et al. 2016)"
   },
   {
    "id": "rtokuhashi",
@@ -1222,12 +1273,66 @@
     "spine and spinal cord"
    ],
    "reviewCategory": "Version",
-   "reviewReason": "Several JOA versions exist (1975, 1994 revision; related JOACMEQ questionnaire). A single version must be selected and verified."
+   "reviewReason": "Five substantially different versions exist (1975 original, 1994 revised, 1991/1993/1999 modifications). The 1975 item wording (including the chopsticks item) was not available in a verifiable English source. mJOA (Benzel 1991) is implemented separately."
   },
   {
    "id": "gpa",
    "abbreviation": "GPA",
-   "name": "Graded Prognostic Assessment (variants)",
+   "name": "Graded Prognostic Assessment (original)",
+   "category": "oncology",
+   "summary": "Under review",
+   "status": "implemented",
+   "specialties": [
+    "Neuro-oncology",
+    "Radiation Oncology",
+    "Neurosurgery",
+    "Oncology"
+   ],
+   "keywords": [
+    "brain metastases",
+    "brain metastases prognosis",
+    "cancer",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "spinal metastases",
+    "tumor",
+    "tumour"
+   ],
+   "aliases": [
+    "gpa",
+    "brain metastases",
+    "sperduto",
+    "rtog"
+   ],
+   "version": "Original GPA (Sperduto et al. 2008, RTOG database)"
+  },
+  {
+   "id": "sofa2",
+   "abbreviation": "SOFA-2",
+   "name": "Sequential Organ Failure Assessment-2 (2025)",
+   "category": "neurocritical",
+   "summary": "Under review",
+   "status": "review",
+   "specialties": [],
+   "keywords": [
+    "critical care",
+    "icu",
+    "intensive care",
+    "neurocritical",
+    "neurocritical care",
+    "organ failure",
+    "sedation",
+    "sepsis"
+   ],
+   "reviewCategory": "Verification",
+   "reviewReason": "SOFA-2 (Ranzani et al., JAMA 2025) has detailed sub-rules (organ-support definitions, vasopressor dose categories, alternatives when no arterial blood gas). Only a simplified adaptation was available for verification; not implemented until the full published table is checked."
+  },
+  {
+   "id": "dsgpa",
+   "abbreviation": "DS-GPA",
+   "name": "Disease-specific Graded Prognostic Assessments",
    "category": "oncology",
    "summary": "Under review",
    "status": "review",
@@ -1244,7 +1349,7 @@
     "tumour"
    ],
    "reviewCategory": "Version",
-   "reviewReason": "Graded Prognostic Assessment has multiple disease-specific versions that are updated frequently; requires dedicated review."
+   "reviewReason": "Disease-specific GPAs (lung, breast, melanoma, renal, GI and others) are separate instruments that are updated frequently; each needs its own verified version before implementation."
   }
  ]
 }

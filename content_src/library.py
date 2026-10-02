@@ -789,16 +789,10 @@ def build(gcs_inputs):
 # Scores listed in the Phase 6 brief that are NOT implemented, with the reason (shown in the app and the audit).
 UNDER_REVIEW = {
     "rass": ("Licensing", "Virginia Commonwealth University lists RASS as a licensable technology; terms for use in a commercial app must be confirmed. Content is verified and ready to reinstate after licensing review."),
-    "four": ("Licensing", "The published FOUR score figure is © Mayo Foundation; permission to be confirmed before reproducing the instrument."),
+    "four": ("Licensing", "Reproductions carry 'Used with permission of Mayo Foundation… All rights reserved'; the author handles permission requests. Not reproduced until permission is confirmed."),
     "ais": ("Licensing / version", "ISNCSCI and the AIS worksheet are maintained by ASIA/ISCoS with reproduction terms and periodic revisions (current 2019 revision); requires licensing and version review."),
-    "mjoa": ("Licensing / verification", "Published reproductions carry permission statements, and descriptor wording differs between sources; requires licensing and source review."),
-    "joa": ("Version", "Several JOA versions exist (1975, 1994 revision; related JOACMEQ questionnaire). A single version must be selected and verified."),
-    "odi": ("Licensing", "The Oswestry Disability Index questionnaire is copyrighted; licensing required before reproduction."),
-    "triss": ("Version", "Multiple published coefficient sets exist (MTOS and later revisions); the coefficient version must be selected and verified."),
-    "sofa": ("Version", "SOFA-2 (JAMA 2025) revised thresholds and variables; the version to implement must be decided and verified."),
-    "graeb": ("Verification", "Scoring definitions not yet verified against the primary source."),
-    "mgraeb": ("Verification", "Scoring definitions not yet verified against the primary source."),
-    "fasted": ("Verification", "Published tools define the denial/neglect item differently; requires primary-source review."),
-    "tokuhashi": ("Version", "Original 1990 version superseded by the revised 2005 score (implemented as 'Revised Tokuhashi'); not implemented to avoid version confusion."),
-    "gpa": ("Version", "Graded Prognostic Assessment has multiple disease-specific versions that are updated frequently; requires dedicated review."),
+    "joa": ("Version", "Five substantially different versions exist (1975 original, 1994 revised, 1991/1993/1999 modifications). The 1975 item wording (including the chopsticks item) was not available in a verifiable English source. mJOA (Benzel 1991) is implemented separately."),
+    "odi": ("Licensing", "ODI version 2.1a is © Jeremy Fairbank, licensed through Mapi Research Trust; free only for unfunded academic research and individual clinical practice, with a fee for commercial use."),
+    "mgraeb": ("Verification", "Sources agree on the 0–32 total and +1 per region for expansion, but describe the scored regions and fill thresholds inconsistently; requires the Morgan 2013 primary table."),
+    "tokuhashi": ("Verification", "Original 1990 item weights verified, but the vertebral-body metastasis item has the same unresolved conflict as the revised score, and published prognosis bands for the original are inconsistent. Revised Tokuhashi (2005) is implemented separately."),
 }

@@ -1,0 +1,151 @@
+{
+ "scoreId": "triss",
+ "cases": [
+  {
+   "name": "blunt adult, normal physiology, ISS 13",
+   "answers": {
+    "mech": "blunt",
+    "age": "adult",
+    "gcs": 15,
+    "sbp": 120,
+    "rr": 16,
+    "head": 3,
+    "face": 0,
+    "chest": 2,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "status": "complete",
+    "display": "99.2%"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "RTS 7.8408; ISS 9+4=13; b=−0.4499+0.8085×7.8408−0.0835×13=4.8039; Ps=1/(1+e^−4.8039)=99.2%",
+    "source": "Champion 1995 MTOS coefficients"
+   }
+  },
+  {
+   "name": "penetrating, ≥55, deranged physiology, ISS 50",
+   "answers": {
+    "mech": "pen",
+    "age": "older",
+    "gcs": 8,
+    "sbp": 70,
+    "rr": 32,
+    "head": 5,
+    "face": 0,
+    "chest": 4,
+    "abdomen": 3,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "display": "6.0%"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "RTS 4.2112; ISS 25+16+9=50; b=−2.5355+0.9934×4.2112−0.0651×50−1.1360=−2.7431; Ps=6.0%",
+    "source": "Champion 1995 MTOS coefficients"
+   }
+  },
+  {
+   "name": "child: penetrating mechanism uses blunt model",
+   "answers": {
+    "mech": "pen",
+    "age": "child",
+    "gcs": 15,
+    "sbp": 120,
+    "rr": 16,
+    "head": 3,
+    "face": 0,
+    "chest": 2,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "display": "99.2%",
+    "insightsContains": "Under 15"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "same as blunt adult case: 99.2%",
+    "source": "Champion 1995 MTOS coefficients"
+   }
+  },
+  {
+   "name": "AIS 6, all codes 0, ≥55",
+   "answers": {
+    "mech": "blunt",
+    "age": "older",
+    "gcs": 3,
+    "sbp": 0,
+    "rr": 0,
+    "head": 6,
+    "face": 0,
+    "chest": 0,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "display": "0.0%"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "RTS 0; ISS 75; b=−0.4499−6.2625−1.7430=−8.4554; Ps=0.02% → 0.0%",
+    "source": "Champion 1995 MTOS coefficients"
+   }
+  },
+  {
+   "name": "AIS 7 invalid",
+   "answers": {
+    "mech": "blunt",
+    "age": "adult",
+    "gcs": 15,
+    "sbp": 120,
+    "rr": 16,
+    "head": 7,
+    "face": 0,
+    "chest": 0,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "AIS 0–6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "mechanism missing",
+   "answers": {
+    "age": "adult",
+    "gcs": 15,
+    "sbp": 120,
+    "rr": 16,
+    "head": 3,
+    "face": 0,
+    "chest": 2,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "status": "incomplete",
+    "missing": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1 missing",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

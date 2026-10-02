@@ -7,6 +7,7 @@ Derived automatically from the shipped score files through the production engine
 | ABCD² | sum | 0–7 | 0–7 | 72 (all) | 3/3 | Yes | n/a | None |
 | ASPECTS | expression | 0–10 | 0–10 | 1,024 (all) | 2/2 | Yes | n/a | None |
 | ECOG | select | 0–5 | 0–5 | 6 (all) | 6/6 | Yes | n/a | None |
+| FAST-ED | sum | 0–9 | 0–9 | 162 (all) | 2/2 | Yes | n/a | None |
 | Fisher | select | 1–4 | 1–4 | 4 (all) | 4/4 | Yes | n/a | None |
 | Frankel | select | 1–5 | 1–5 | 5 (all) | 5/5 | Yes | n/a | None |
 | FUNC | sum | 0–11 | 0–11 | 108 (all) | 3/3 | Yes | n/a | None |
@@ -14,6 +15,8 @@ Derived automatically from the shipped score files through the production engine
 | GCS-P | expression | 1–15 | 1–15 | 360 (all) | 3/3 | Yes | block | None |
 | GOS | select | 1–5 | 1–5 | 5 (all) | 5/5 | Yes | n/a | None |
 | GOSE | select | 1–8 | 1–8 | 8 (all) | 8/8 | Yes | n/a | None |
+| GPA | sum | 0–4 | 0–4 | 54 (all) | 4/4 | Yes | n/a | None |
+| Graeb | sum | 0–12 | 0–12 | 225 (all) | 2/2 | Yes | n/a | None |
 | Hunt & Hess | expression | 1–5 | 1–5 | 10 (all) | 5/5 | Yes | n/a | None |
 | ICH Score | sum | 0–6 | 0–6 | 48 (all) | 7/7 | Yes | n/a | None |
 | ISS | expression | 0–75 | 0–75 | 117,649 (all) | 4/4 | Yes | n/a | None |
@@ -21,6 +24,7 @@ Derived automatically from the shipped score files through the production engine
 | LAMS | sum | 0–5 | 0–5 | 18 (all) | 2/2 | Yes | n/a | None |
 | Marshall | expression | 1–6 | 1–6 | 32 (all) | 6/6 | Yes | n/a | None |
 | mFisher | expression | -1–4 | -1–4 | 6 (all) | 6/6 | Yes | n/a | None |
+| mJOA | sum | 0–18 | 0–18 | 768 (all) | 4/4 | Yes | n/a | None |
 | mRS | select | 0–6 | 0–6 | 7 (all) | 7/7 | Yes | n/a | None |
 | NIHSS | sum | 0–42 | 0–42 | 300,059 (sample) | 2/2 | Yes | exclude | None |
 | Nurick | select | 0–5 | 0–5 | 6 (all) | 6/6 | Yes | n/a | None |
@@ -30,7 +34,9 @@ Derived automatically from the shipped score files through the production engine
 | Revised Tokuhashi | sum | 0–15 | 0–15 | 1,458 (all) | 3/3 | Yes | n/a | None |
 | RTS | expression | 0–7.8408 | 0–7.8408 | 3,328 (all) | 3/3 | Yes | n/a | None |
 | SINS | sum | 0–18 | 0–18 | 1,296 (all) | 3/3 | Yes | n/a | None |
+| SOFA | sum | 0–24 | 0–24 | 15,625 (all) | 2/2 | Yes | n/a | None |
 | Tomita | sum | 2–10 | 2–10 | 18 (all) | 1/1 | Yes | n/a | None |
+| TRISS | expression | 0–100 | 0.121427–44.650844 | 300,007 (sample) | 1/1 | Yes | n/a | None |
 | WFNS | expression | 0–5 | 0–5 | 26 (all) | 6/6 | Yes | n/a | None |
 
 ## Per-score detail
@@ -88,6 +94,25 @@ Version: ECOG Performance Status (Oken et al. 1982). Method: `select`.
 | ECOG 5 | informational | 5 | 5 |
 
 Boundaries: 0→1: g0 → g1; 1→2: g1 → g2; 2→3: g2 → g3; 3→4: g3 → g4; 4→5: g4 → g5
+
+### FAST-ED
+
+Version: FAST-ED (Lima et al. 2016). Method: `sum`.
+
+| Component | Points |
+|---|---|
+| Facial palsy | 0=0, 1=1 |
+| Arm weakness | 0=0, 1=1, 2=2 |
+| Speech changes | 0=0, 1=1, 2=2 |
+| Eye deviation | 0=0, 1=1, 2=2 |
+| Denial / neglect | 0=0, 1=1, 2=2 |
+
+| State | Tone | Declared range | Totals that reach it |
+|---|---|---|---|
+| No deficit on FAST-ED items | favorable | 0 | 0 |
+| FAST-ED {total} | informational | 1–9 | 1–9 |
+
+Boundaries: 0→1: zero → scored
 
 ### Fisher
 
@@ -224,6 +249,44 @@ Version: GOSE, eight categories (Wilson et al. 1998). Method: `select`.
 | Upper good recovery | favorable | 8 | 8 |
 
 Boundaries: 1→2: g1 → g2; 2→3: g2 → g3; 3→4: g3 → g4; 4→5: g4 → g5; 5→6: g5 → g6; 6→7: g6 → g7; 7→8: g7 → g8
+
+### GPA
+
+Version: Original GPA (Sperduto et al. 2008, RTOG database). Method: `sum`.
+
+| Component | Points |
+|---|---|
+| Age | o60=0, 50to60=0.5, u50=1 |
+| Karnofsky Performance Status | lt70=0, 70to80=0.5, 90to100=1 |
+| Number of brain metastases | gt3=0, 2to3=0.5, one=1 |
+| Extracranial metastases | present=0, none=1 |
+
+| State | Tone | Declared range | Totals that reach it |
+|---|---|---|---|
+| GPA 0–1 | high | 0–1 | 0–1 |
+| GPA 1.5–2.5 | moderate | 1.5–2.5 | 1.5–2.5 |
+| GPA 3 | mild | 3 | 3 |
+| GPA 3.5–4 | low | 3.5–4 | 3.5–4 |
+
+Boundaries: 1→1.5: g1 → g2; 2.5→3: g2 → g3; 3→3.5: g3 → g4
+
+### Graeb
+
+Version: Original Graeb score (Graeb et al. 1982). Method: `sum`.
+
+| Component | Points |
+|---|---|
+| Right lateral ventricle | 0=0, 1=1, 2=2, 3=3, 4=4 |
+| Left lateral ventricle | 0=0, 1=1, 2=2, 3=3, 4=4 |
+| Third ventricle | 0=0, 1=1, 2=2 |
+| Fourth ventricle | 0=0, 1=1, 2=2 |
+
+| State | Tone | Declared range | Totals that reach it |
+|---|---|---|---|
+| No intraventricular blood | favorable | 0 | 0 |
+| Graeb {total} | informational | 1–12 | 1–12 |
+
+Boundaries: 0→1: none → scored
 
 ### Hunt & Hess
 
@@ -367,6 +430,26 @@ Version: Modified Fisher (Frontera et al. 2006). Method: `expression: sah == 0 ?
 | Grade 4 | high | 4 | 4 |
 
 Boundaries: -1→0: undef → g0; 0→1: g0 → g1; 1→2: g1 → g2; 2→3: g2 → g3; 3→4: g3 → g4
+
+### mJOA
+
+Version: mJOA, clinician-rated (Benzel et al. 1991), 0–18. Method: `sum`.
+
+| Component | Points |
+|---|---|
+| Upper-limb motor function | 0=0, 1=1, 2=2, 3=3, 4=4, 5=5 |
+| Lower-limb motor function | 0=0, 1=1, 2=2, 3=3, 4=4, 5=5, 6=6, 7=7 |
+| Upper-limb sensation | 0=0, 1=1, 2=2, 3=3 |
+| Micturition | 0=0, 1=1, 2=2, 3=3 |
+
+| State | Tone | Declared range | Totals that reach it |
+|---|---|---|---|
+| Severe myelopathy | high | 0–11 | 0–11 |
+| Moderate myelopathy | moderate | 12–14 | 12–14 |
+| Mild myelopathy | mild | 15–17 | 15–17 |
+| No dysfunction measured | favorable | 18 | 18 |
+
+Boundaries: 11→12: severe → moderate; 14→15: moderate → mild; 17→18: mild → none
 
 ### mRS
 
@@ -554,6 +637,26 @@ Version: SOSG SINS (Fisher et al. 2010). Method: `sum`.
 
 Boundaries: 6→7: stable → potential; 12→13: potential → unstable
 
+### SOFA
+
+Version: Original SOFA (Vincent et al. 1996), as tabulated in Sepsis-3 (Singer et al. 2016). Method: `sum`.
+
+| Component | Points |
+|---|---|
+| Respiration: PaO₂/FiO₂, mmHg (kPa) | 0=0, 1=1, 2=2, 3=3, 4=4 |
+| Coagulation: platelets, ×10³/µL | 0=0, 1=1, 2=2, 3=3, 4=4 |
+| Liver: bilirubin, mg/dL (µmol/L) | 0=0, 1=1, 2=2, 3=3, 4=4 |
+| Cardiovascular | 0=0, 1=1, 2=2, 3=3, 4=4 |
+| Central nervous system: GCS | 0=0, 1=1, 2=2, 3=3, 4=4 |
+| Renal: creatinine, mg/dL (µmol/L), or urine output | 0=0, 1=1, 2=2, 3=3, 4=4 |
+
+| State | Tone | Declared range | Totals that reach it |
+|---|---|---|---|
+| No organ dysfunction measured | favorable | 0 | 0 |
+| SOFA {total} | informational | 1–24 | 1–24 |
+
+Boundaries: 0→1: zero → scored
+
 ### Tomita
 
 Version: Tomita score (Tomita et al. 2001). Method: `sum`.
@@ -567,6 +670,30 @@ Version: Tomita score (Tomita et al. 2001). Method: `sum`.
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
 | Tomita {total} | informational | 2–10 | 2–10 |
+
+Boundaries: none (single state)
+
+### TRISS
+
+Version: TRISS with 1995 MTOS coefficients (Champion et al.). Method: `expression: 100 / (1 + exp(-b))`.
+
+| Component | Points |
+|---|---|
+| Mechanism | blunt=0, pen=1 |
+| Age | child=0, adult=0, older=1 |
+| GCS total | …–3→0, 4–5→1, 6–8→2, 9–12→3, 13–…→4 |
+| Systolic blood pressure | …–0→0, 1–49→1, 50–75→2, 76–89→3, 90–…→4 |
+| Respiratory rate | …–0→0, 1–5→1, 6–9→2, 10–29→4, 30–…→3 |
+| Head or neck | 0–6 |
+| Face | 0–6 |
+| Chest | 0–6 |
+| Abdomen or pelvic contents | 0–6 |
+| Extremities or pelvic girdle | 0–6 |
+| External | 0–6 |
+
+| State | Tone | Declared range | Totals that reach it |
+|---|---|---|---|
+| Ps {fixed(total, 1)}% | informational | 0–100% | 0.121427–44.650844 |
 
 Boundaries: none (single state)
 

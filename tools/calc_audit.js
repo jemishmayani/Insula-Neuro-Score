@@ -62,8 +62,13 @@ for (const id of ids) {
   }
   const tlist = [...totals.values()].sort((a, b) => a.total - b.total);
   const reachMin = tlist.length ? tlist[0].total : null, reachMax = tlist.length ? tlist[tlist.length - 1].total : null;
-  if (reachMin !== cm.range.min && !(id === "mfisher" || id === "wfns")) issues.push(`reachable minimum ${reachMin} ≠ declared ${cm.range.min}`);
-  if (reachMax !== cm.range.max) issues.push(`reachable maximum ${reachMax} ≠ declared ${cm.range.max}`);
+  // Continuous outputs (e.g. TRISS probability) approach but never reach their bounds: check containment instead of equality.
+  const continuous = tlist.some((t) => Math.abs(t.total * 2 - Math.round(t.total * 2)) > 1e-9);
+  if (continuous) { if (reachMin < cm.range.min || reachMax > cm.range.max) issues.push(`continuous output outside declared range (${reachMin}–${reachMax})`); }
+  else {
+    if (reachMin !== cm.range.min && !(id === "mfisher" || id === "wfns")) issues.push(`reachable minimum ${reachMin} ≠ declared ${cm.range.min}`);
+    if (reachMax !== cm.range.max) issues.push(`reachable maximum ${reachMax} ≠ declared ${cm.range.max}`);
+  }
   // every declared state reachable?
   const reachedStates = new Set(tlist.map((t) => t.state));
   s.resultStates.forEach((st) => { if (!reachedStates.has(st.id)) issues.push(`state '${st.id}' (${st.label}) is never reached`); });

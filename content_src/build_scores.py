@@ -409,6 +409,9 @@ if __name__ == "__main__":
     sys.path.insert(0, HERE)
     import library
     scores += library.build(scores[0]["inputDefinitions"])
+    import library2
+    scores += library2.build()
+    library.UNDER_REVIEW.update(library2.UNDER_REVIEW_NEW)
     scores = [x for x in scores if x["id"] not in library.UNDER_REVIEW]   # verified but held back (e.g. licensing review)
     import related
     for sc in scores:
@@ -424,7 +427,9 @@ if __name__ == "__main__":
     extra = {"abcd2": ("ABCD²", "ABCD² Score", "stroke"), "race": ("RACE", "Rapid Arterial oCclusion Evaluation Scale", "stroke"),
              "lams": ("LAMS", "Los Angeles Motor Scale", "stroke"), "fasted": ("FAST-ED", "Field Assessment Stroke Triage for Emergency Destination", "stroke"),
              "rtokuhashi": ("Revised Tokuhashi", "Revised Tokuhashi Score", "oncology"), "joa": ("JOA", "Japanese Orthopaedic Association Score", "spine"),
-             "gpa": ("GPA", "Graded Prognostic Assessment (variants)", "oncology")}
+             "gpa": ("GPA", "Graded Prognostic Assessment (original)", "oncology"),
+             "sofa2": ("SOFA-2", "Sequential Organ Failure Assessment-2 (2025)", "neurocritical"),
+             "dsgpa": ("DS-GPA", "Disease-specific Graded Prognostic Assessments", "oncology")}
     for k, (ab, nm, ct) in extra.items():
         if k not in by_id:
             e = {"id": k, "abbreviation": ab, "name": nm, "category": ct, "summary": "", "status": "placeholder"}; cat["scores"].append(e); by_id[k] = e

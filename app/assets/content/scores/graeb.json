@@ -1,0 +1,279 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-03",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "graeb",
+  "ivh score",
+  "intraventricular haemorrhage",
+  "intraventricular hemorrhage"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring the lateral ventricles together instead of separately.",
+  "Mixing Graeb and modified Graeb scores."
+ ],
+ "relatedScores": [
+  {
+   "id": "ich",
+   "relation": "ICH severity grade"
+  },
+  {
+   "id": "mgraeb",
+   "relation": "Modified version (under review)"
+  },
+  {
+   "id": "mfisher",
+   "relation": "SAH CT grade including IVH"
+  }
+ ],
+ "id": "graeb",
+ "name": "Graeb Score",
+ "abbreviation": "Graeb",
+ "category": "ich",
+ "subcategory": "Intraventricular haemorrhage (CT)",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Neuroradiology",
+  "Stroke"
+ ],
+ "version": {
+  "label": "Original Graeb score (Graeb et al. 1982)",
+  "detail": "Each lateral ventricle 0–4; third and fourth ventricles 0–2 each; total 0–12. The modified Graeb score (Morgan 2013, 0–32) is a different instrument."
+ },
+ "purpose": "Semi-quantitative CT grading of intraventricular haemorrhage burden.",
+ "intendedPopulation": "Patients with intraventricular haemorrhage on CT (primary or secondary to ICH or SAH).",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "IVH burden (CT)",
+  "meter": false
+ },
+ "components": [
+  {
+   "id": "laterals",
+   "label": "Lateral ventricles",
+   "inputs": [
+    "right",
+    "left"
+   ]
+  },
+  {
+   "id": "midline",
+   "label": "Third and fourth ventricles",
+   "inputs": [
+    "third",
+    "fourth"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "right",
+   "type": "single",
+   "label": "Right lateral ventricle",
+   "short": "Right LV",
+   "options": [
+    {
+     "value": "0",
+     "label": "No blood",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Trace of blood or mild bleeding",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Less than half filled with blood",
+     "points": 2
+    },
+    {
+     "value": "3",
+     "label": "More than half filled with blood",
+     "points": 3
+    },
+    {
+     "value": "4",
+     "label": "Filled with blood and expanded",
+     "points": 4
+    }
+   ]
+  },
+  {
+   "id": "left",
+   "type": "single",
+   "label": "Left lateral ventricle",
+   "short": "Left LV",
+   "options": [
+    {
+     "value": "0",
+     "label": "No blood",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Trace of blood or mild bleeding",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Less than half filled with blood",
+     "points": 2
+    },
+    {
+     "value": "3",
+     "label": "More than half filled with blood",
+     "points": 3
+    },
+    {
+     "value": "4",
+     "label": "Filled with blood and expanded",
+     "points": 4
+    }
+   ]
+  },
+  {
+   "id": "third",
+   "type": "single",
+   "label": "Third ventricle",
+   "short": "Third V",
+   "options": [
+    {
+     "value": "0",
+     "label": "No blood",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Blood present, ventricle normal size",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Filled with blood and expanded",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "fourth",
+   "type": "single",
+   "label": "Fourth ventricle",
+   "short": "Fourth V",
+   "options": [
+    {
+     "value": "0",
+     "label": "No blood",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Blood present, ventricle normal size",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Filled with blood and expanded",
+     "points": 2
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 12
+  },
+  "display": "{total}",
+  "share": "Graeb {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "none"
+  },
+  {
+   "state": "scored"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "none",
+   "tone": "favorable",
+   "label": "No intraventricular blood",
+   "summary": "No intraventricular blood on this scan at this assessment.",
+   "range": "0",
+   "detail": "Small amounts of blood can be missed; scan timing matters."
+  },
+  {
+   "id": "scored",
+   "tone": "informational",
+   "label": "Graeb {total}",
+   "summary": "Higher scores indicate more intraventricular blood and ventricular expansion.",
+   "range": "1–12",
+   "detail": "Interpret with clinical status, hydrocephalus and serial imaging."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A long-standing semi-quantitative IVH grade, used in studies of IVH and its treatment.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "right == 4 || left == 4 || third == 2 || fourth == 2",
+   "importance": "major",
+   "text": "Ventricular expansion is recorded; correlate with clinical signs of hydrocephalus."
+  },
+  {
+   "text": "The modified Graeb score scores more regions and correlated better with IVH volume in its derivation study."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Coarse categories correlate only moderately with measured IVH volume."
+  },
+  "Visual estimation varies between readers.",
+  "Does not include parenchymal haematoma or subarachnoid blood."
+ ],
+ "confounders": [
+  {
+   "factor": "Scan timing",
+   "effect": "Blood redistributes and clears over time."
+  },
+  {
+   "factor": "Pre-existing ventriculomegaly",
+   "effect": "Can be mistaken for expansion."
+  },
+  {
+   "factor": "Drain placement",
+   "effect": "Alters ventricular size and blood distribution."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Whether hydrocephalus requires treatment.",
+  "Individual prognosis.",
+  "The source of the haemorrhage."
+ ],
+ "guideSections": {
+  "what": "A 0–12 CT grade of intraventricular blood across the lateral, third and fourth ventricles.",
+  "whenToUse": "Describing IVH burden on CT, including serial scans.",
+  "howToPerform": "Score each lateral ventricle separately from 0 to 4. Score the third and fourth ventricles from 0 to 2. Add the four scores.",
+  "clinicalContext": "A descriptor of IVH burden used alongside clinical assessment and other imaging findings."
+ },
+ "sources": [
+  {
+   "citation": "Graeb DA, Robertson WD, Lapointe JS, Nugent RA, Harrison PB. Computed tomographic diagnosis of intraventricular hemorrhage. Etiology and prognosis. Radiology. 1982;143(1):91-96."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified."
+ }
+}

@@ -318,7 +318,7 @@
     var fk = favKey(tab);
     var st = Store.get(), fav = st[fk].indexOf(id) >= 0, prio = st.priorityScores.indexOf(id) >= 0, c = category(s.category);
     var implemented = s.status === "implemented";
-    var badge = implemented ? UI.StatusBadge({ tone: "warning", label: "Pending clinical review", icon: false }) : badgeFor(s);
+    var badge = badgeFor(s);
     var head = '<div class="detail-head"><p class="abbr">' + esc(s.abbreviation) + '</p><p class="name">' + esc(s.name) + '</p><div class="badges">' + badge +
       '<a href="#/' + tab + "/c/" + c.id + '" data-nav>' + esc(c.name) + "</a>" + '<span id="version-label"></span></div></div>';
     var toggle = '<nav class="segmented" aria-label="Score view" style="margin-top:var(--space-4)">' +
@@ -437,7 +437,7 @@
       UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' +
         UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
         (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
-      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.9.1 (Phase 9: medical content audit)</p>' +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.9.2 (review scores completed)</p>' +
         '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
         UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
     paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });

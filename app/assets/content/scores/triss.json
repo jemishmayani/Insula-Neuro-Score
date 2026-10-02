@@ -1,0 +1,420 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-03",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "triss",
+  "probability of survival",
+  "ps",
+  "trauma survival"
+ ],
+ "scoringRules": [
+  {
+   "id": "rts",
+   "expr": "0.9368 * gcs + 0.7326 * sbp + 0.2908 * rr"
+  },
+  {
+   "id": "l1",
+   "expr": "largest(1, head, face, chest, abdomen, extremity, external)"
+  },
+  {
+   "id": "l2",
+   "expr": "largest(2, head, face, chest, abdomen, extremity, external)"
+  },
+  {
+   "id": "l3",
+   "expr": "largest(3, head, face, chest, abdomen, extremity, external)"
+  },
+  {
+   "id": "iss",
+   "expr": "l1 == 6 ? 75 : l1 * l1 + l2 * l2 + l3 * l3"
+  },
+  {
+   "id": "pen_model",
+   "expr": "mech == 1 && age_value != 'child' ? 1 : 0"
+  },
+  {
+   "id": "b",
+   "expr": "pen_model == 1 ? -2.5355 + 0.9934 * rts - 0.0651 * iss - 1.1360 * age : -0.4499 + 0.8085 * rts - 0.0835 * iss - 1.7430 * age"
+  }
+ ],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using the 1987 and 1995 coefficient sets interchangeably.",
+  "Using the penetrating model for children under 15.",
+  "Entering raw values instead of RTS codes into the formula."
+ ],
+ "relatedScores": [
+  {
+   "id": "rts",
+   "relation": "Physiological component"
+  },
+  {
+   "id": "iss",
+   "relation": "Anatomical component"
+  },
+  {
+   "id": "gcs",
+   "relation": "Input to RTS"
+  }
+ ],
+ "id": "triss",
+ "name": "Trauma and Injury Severity Score",
+ "abbreviation": "TRISS",
+ "category": "tbi",
+ "subcategory": "Trauma survival model",
+ "specialties": [
+  "Trauma",
+  "Emergency Medicine",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "TRISS with 1995 MTOS coefficients (Champion et al.)",
+  "detail": "Probability of survival Ps = 1/(1+e^−b); b = b0 + b1·RTS + b2·ISS + b3·age index. Blunt: −0.4499, 0.8085, −0.0835, −1.7430. Penetrating: −2.5355, 0.9934, −0.0651, −1.1360. Age index 1 if 55 years or older. Patients under 15 use the blunt model. The 1987 coefficients (Boyd et al.) are a different version and are not used."
+ },
+ "purpose": "Estimates probability of survival after injury from physiology (RTS), anatomy (ISS), age and mechanism, mainly for trauma-system quality review.",
+ "intendedPopulation": "Injured patients, using first recorded physiology and full AIS coding (Major Trauma Outcome Study population).",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Probability of survival (model)",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Model estimate for quality review",
+  "message": "TRISS was built to compare outcomes between trauma systems. It is a group-level model and is not designed for decisions about an individual patient. AIS severities come from licensed AIS coding (not reproduced)."
+ },
+ "components": [
+  {
+   "id": "context",
+   "label": "Mechanism and age",
+   "inputs": [
+    "mech",
+    "age"
+   ]
+  },
+  {
+   "id": "physiology",
+   "label": "Physiology (RTS codes)",
+   "inputs": [
+    "gcs",
+    "sbp",
+    "rr"
+   ]
+  },
+  {
+   "id": "anatomy",
+   "label": "Highest AIS severity by region (ISS)",
+   "inputs": [
+    "head",
+    "face",
+    "chest",
+    "abdomen",
+    "extremity",
+    "external"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "mech",
+   "type": "single",
+   "label": "Mechanism",
+   "short": "Mechanism",
+   "options": [
+    {
+     "value": "blunt",
+     "label": "Blunt",
+     "points": 0
+    },
+    {
+     "value": "pen",
+     "label": "Penetrating",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age",
+   "short": "Age",
+   "options": [
+    {
+     "value": "child",
+     "label": "Under 15 years",
+     "points": 0,
+     "detail": "Blunt model used regardless of mechanism."
+    },
+    {
+     "value": "adult",
+     "label": "15–54 years",
+     "points": 0
+    },
+    {
+     "value": "older",
+     "label": "55 years or older",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "gcs",
+   "type": "integer",
+   "label": "GCS total",
+   "short": "GCS",
+   "min": 3,
+   "max": 15,
+   "pointBands": [
+    {
+     "max": 3,
+     "points": 0
+    },
+    {
+     "min": 4,
+     "max": 5,
+     "points": 1
+    },
+    {
+     "min": 6,
+     "max": 8,
+     "points": 2
+    },
+    {
+     "min": 9,
+     "max": 12,
+     "points": 3
+    },
+    {
+     "min": 13,
+     "points": 4
+    }
+   ]
+  },
+  {
+   "id": "sbp",
+   "type": "integer",
+   "label": "Systolic blood pressure",
+   "short": "SBP",
+   "unit": "mmHg",
+   "min": 0,
+   "max": 300,
+   "pointBands": [
+    {
+     "max": 0,
+     "points": 0
+    },
+    {
+     "min": 1,
+     "max": 49,
+     "points": 1
+    },
+    {
+     "min": 50,
+     "max": 75,
+     "points": 2
+    },
+    {
+     "min": 76,
+     "max": 89,
+     "points": 3
+    },
+    {
+     "min": 90,
+     "points": 4
+    }
+   ]
+  },
+  {
+   "id": "rr",
+   "type": "integer",
+   "label": "Respiratory rate",
+   "short": "RR",
+   "unit": "/min",
+   "min": 0,
+   "max": 80,
+   "pointBands": [
+    {
+     "max": 0,
+     "points": 0
+    },
+    {
+     "min": 1,
+     "max": 5,
+     "points": 1
+    },
+    {
+     "min": 6,
+     "max": 9,
+     "points": 2
+    },
+    {
+     "min": 10,
+     "max": 29,
+     "points": 4
+    },
+    {
+     "min": 30,
+     "points": 3
+    }
+   ]
+  },
+  {
+   "id": "head",
+   "type": "integer",
+   "label": "Head or neck",
+   "short": "Head",
+   "min": 0,
+   "max": 6,
+   "help": "Highest AIS severity in this region; 0 = no injury."
+  },
+  {
+   "id": "face",
+   "type": "integer",
+   "label": "Face",
+   "short": "Face",
+   "min": 0,
+   "max": 6,
+   "help": "Highest AIS severity in this region; 0 = no injury."
+  },
+  {
+   "id": "chest",
+   "type": "integer",
+   "label": "Chest",
+   "short": "Chest",
+   "min": 0,
+   "max": 6,
+   "help": "Highest AIS severity in this region; 0 = no injury."
+  },
+  {
+   "id": "abdomen",
+   "type": "integer",
+   "label": "Abdomen or pelvic contents",
+   "short": "Abdomen",
+   "min": 0,
+   "max": 6,
+   "help": "Highest AIS severity in this region; 0 = no injury."
+  },
+  {
+   "id": "extremity",
+   "type": "integer",
+   "label": "Extremities or pelvic girdle",
+   "short": "Extremities",
+   "min": 0,
+   "max": 6,
+   "help": "Highest AIS severity in this region; 0 = no injury."
+  },
+  {
+   "id": "external",
+   "type": "integer",
+   "label": "External",
+   "short": "External",
+   "min": 0,
+   "max": 6,
+   "help": "Highest AIS severity in this region; 0 = no injury."
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "100 / (1 + exp(-b))",
+  "range": {
+   "min": 0,
+   "max": 100
+  },
+  "formula": "{pen_model == 1 ? 'Penetrating' : 'Blunt'} model · RTS {fixed(rts, 4)} · ISS {iss} · age index {age}",
+  "formulaEquals": false,
+  "display": "{fixed(total, 1)}%",
+  "share": "TRISS Ps {fixed(total, 1)}% ({pen_model == 1 ? 'penetrating' : 'blunt'} model, RTS {fixed(rts, 4)}, ISS {iss})"
+ },
+ "interpretationRules": [
+  {
+   "state": "ps"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "ps",
+   "tone": "informational",
+   "label": "Ps {fixed(total, 1)}%",
+   "summary": "Model-estimated probability of survival from the 1995 MTOS coefficients.",
+   "range": "0–100%",
+   "detail": "A group-level estimate used in trauma quality review; interpret with the full clinical picture."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Combines physiological (RTS) and anatomical (ISS) severity with age and mechanism.",
+   "importance": "major"
+  },
+  {
+   "text": "Used in trauma registries to identify unexpected survivors and deaths for case review."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "mech == 1 && age_value == 'child'",
+   "importance": "major",
+   "text": "Under 15 years: the blunt model is applied even for penetrating injury."
+  },
+  {
+   "text": "ISS is usually finalised after full investigation; early estimates may change."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Not designed or validated for decisions about an individual patient."
+  },
+  {
+   "importance": "major",
+   "text": "Coefficients derive from the North American MTOS population; calibration varies between systems and eras."
+  },
+  "Unreliable when intubated (RTS respiratory and verbal components).",
+  "ISS counts one injury per region and depends on AIS coding."
+ ],
+ "confounders": [
+  {
+   "factor": "Intubation or sedation",
+   "effect": "Distorts GCS and respiratory rate in the RTS."
+  },
+  {
+   "factor": "Incomplete injury coding",
+   "effect": "Underestimates ISS."
+  },
+  {
+   "factor": "Pre-hospital interventions",
+   "effect": "Alter first recorded physiology."
+  },
+  {
+   "factor": "AIS version",
+   "effect": "Severity codes differ between AIS versions."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "An individual patient's outcome.",
+  "Which injuries are present.",
+  "Quality of care on its own."
+ ],
+ "guideSections": {
+  "what": "A logistic model estimating probability of survival from RTS, ISS, age and mechanism.",
+  "whenToUse": "Trauma registry and quality review; research comparisons between systems.",
+  "howToPerform": "Enter mechanism and age group. Enter the first recorded GCS, systolic BP and respiratory rate. Enter the highest AIS severity for each body region. The app derives RTS and ISS and applies the 1995 coefficients.",
+  "clinicalContext": "A system-level benchmark, used with case review rather than for individual decisions."
+ },
+ "sources": [
+  {
+   "citation": "Boyd CR, Tolson MA, Copes WS. Evaluating trauma care: the TRISS method. J Trauma. 1987;27(4):370-378."
+  },
+  {
+   "citation": "Champion HR, et al. Coefficients update (editorial comment). J Trauma. 1995;38:94-95."
+  },
+  {
+   "citation": "Champion HR, Sacco WJ, Copes WS, Gann DS, Gennarelli TA, Flanagan ME. A revision of the Trauma Score. J Trauma. 1989;29(5):623-629.",
+   "doi": "10.1097/00005373-198905000-00017"
+  }
+ ],
+ "licensing": {
+  "status": "Published model, original wording",
+  "note": "The AIS dictionary is licensed by AAAM and is not reproduced; only severity numbers are entered."
+ }
+}

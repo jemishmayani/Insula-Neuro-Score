@@ -212,6 +212,82 @@
   "issues": []
  },
  {
+  "id": "fasted",
+  "abbreviation": "FAST-ED",
+  "version": "FAST-ED (Lima et al. 2016)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 9
+  },
+  "reachMin": 0,
+  "reachMax": 9,
+  "space": 162,
+  "evaluated": 162,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 162
+  },
+  "components": [
+   {
+    "id": "face",
+    "label": "Facial palsy",
+    "type": "single",
+    "points": "0=0, 1=1",
+    "nt": ""
+   },
+   {
+    "id": "arm",
+    "label": "Arm weakness",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2",
+    "nt": ""
+   },
+   {
+    "id": "speech",
+    "label": "Speech changes",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2",
+    "nt": ""
+   },
+   {
+    "id": "eye",
+    "label": "Eye deviation",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2",
+    "nt": ""
+   },
+   {
+    "id": "neglect",
+    "label": "Denial / neglect",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "zero",
+    "label": "No deficit on FAST-ED items",
+    "tone": "favorable",
+    "declared": "0",
+    "reached": "0"
+   },
+   {
+    "id": "scored",
+    "label": "FAST-ED {total}",
+    "tone": "informational",
+    "declared": "1–9",
+    "reached": "1–9"
+   }
+  ],
+  "boundaries": [
+   "0→1: zero → scored"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "fisher",
   "abbreviation": "Fisher",
   "version": "Original Fisher scale (1980)",
@@ -801,6 +877,160 @@
    "5→6: g5 → g6",
    "6→7: g6 → g7",
    "7→8: g7 → g8"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "gpa",
+  "abbreviation": "GPA",
+  "version": "Original GPA (Sperduto et al. 2008, RTOG database)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 4
+  },
+  "reachMin": 0,
+  "reachMax": 4,
+  "space": 54,
+  "evaluated": 54,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 54
+  },
+  "components": [
+   {
+    "id": "age",
+    "label": "Age",
+    "type": "single",
+    "points": "o60=0, 50to60=0.5, u50=1",
+    "nt": ""
+   },
+   {
+    "id": "kps",
+    "label": "Karnofsky Performance Status",
+    "type": "single",
+    "points": "lt70=0, 70to80=0.5, 90to100=1",
+    "nt": ""
+   },
+   {
+    "id": "nmets",
+    "label": "Number of brain metastases",
+    "type": "single",
+    "points": "gt3=0, 2to3=0.5, one=1",
+    "nt": ""
+   },
+   {
+    "id": "ecm",
+    "label": "Extracranial metastases",
+    "type": "single",
+    "points": "present=0, none=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "g1",
+    "label": "GPA 0–1",
+    "tone": "high",
+    "declared": "0–1",
+    "reached": "0–1"
+   },
+   {
+    "id": "g2",
+    "label": "GPA 1.5–2.5",
+    "tone": "moderate",
+    "declared": "1.5–2.5",
+    "reached": "1.5–2.5"
+   },
+   {
+    "id": "g3",
+    "label": "GPA 3",
+    "tone": "mild",
+    "declared": "3",
+    "reached": "3"
+   },
+   {
+    "id": "g4",
+    "label": "GPA 3.5–4",
+    "tone": "low",
+    "declared": "3.5–4",
+    "reached": "3.5–4"
+   }
+  ],
+  "boundaries": [
+   "1→1.5: g1 → g2",
+   "2.5→3: g2 → g3",
+   "3→3.5: g3 → g4"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "graeb",
+  "abbreviation": "Graeb",
+  "version": "Original Graeb score (Graeb et al. 1982)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 12
+  },
+  "reachMin": 0,
+  "reachMax": 12,
+  "space": 225,
+  "evaluated": 225,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 225
+  },
+  "components": [
+   {
+    "id": "right",
+    "label": "Right lateral ventricle",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   },
+   {
+    "id": "left",
+    "label": "Left lateral ventricle",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   },
+   {
+    "id": "third",
+    "label": "Third ventricle",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2",
+    "nt": ""
+   },
+   {
+    "id": "fourth",
+    "label": "Fourth ventricle",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "none",
+    "label": "No intraventricular blood",
+    "tone": "favorable",
+    "declared": "0",
+    "reached": "0"
+   },
+   {
+    "id": "scored",
+    "label": "Graeb {total}",
+    "tone": "informational",
+    "declared": "1–12",
+    "reached": "1–12"
+   }
+  ],
+  "boundaries": [
+   "0→1: none → scored"
   ],
   "nt": [],
   "issues": []
@@ -1424,6 +1654,91 @@
    "1→2: g1 → g2",
    "2→3: g2 → g3",
    "3→4: g3 → g4"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "mjoa",
+  "abbreviation": "mJOA",
+  "version": "mJOA, clinician-rated (Benzel et al. 1991), 0–18",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 18
+  },
+  "reachMin": 0,
+  "reachMax": 18,
+  "space": 768,
+  "evaluated": 768,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 768
+  },
+  "components": [
+   {
+    "id": "ue",
+    "label": "Upper-limb motor function",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4, 5=5",
+    "nt": ""
+   },
+   {
+    "id": "le",
+    "label": "Lower-limb motor function",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4, 5=5, 6=6, 7=7",
+    "nt": ""
+   },
+   {
+    "id": "sens",
+    "label": "Upper-limb sensation",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3",
+    "nt": ""
+   },
+   {
+    "id": "bladder",
+    "label": "Micturition",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "severe",
+    "label": "Severe myelopathy",
+    "tone": "high",
+    "declared": "0–11",
+    "reached": "0–11"
+   },
+   {
+    "id": "moderate",
+    "label": "Moderate myelopathy",
+    "tone": "moderate",
+    "declared": "12–14",
+    "reached": "12–14"
+   },
+   {
+    "id": "mild",
+    "label": "Mild myelopathy",
+    "tone": "mild",
+    "declared": "15–17",
+    "reached": "15–17"
+   },
+   {
+    "id": "none",
+    "label": "No dysfunction measured",
+    "tone": "favorable",
+    "declared": "18",
+    "reached": "18"
+   }
+  ],
+  "boundaries": [
+   "11→12: severe → moderate",
+   "14→15: moderate → mild",
+   "17→18: mild → none"
   ],
   "nt": [],
   "issues": []
@@ -2263,6 +2578,89 @@
   "issues": []
  },
  {
+  "id": "sofa",
+  "abbreviation": "SOFA",
+  "version": "Original SOFA (Vincent et al. 1996), as tabulated in Sepsis-3 (Singer et al. 2016)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 24
+  },
+  "reachMin": 0,
+  "reachMax": 24,
+  "space": 15625,
+  "evaluated": 15625,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 15625
+  },
+  "components": [
+   {
+    "id": "resp",
+    "label": "Respiration: PaO₂/FiO₂, mmHg (kPa)",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   },
+   {
+    "id": "coag",
+    "label": "Coagulation: platelets, ×10³/µL",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   },
+   {
+    "id": "liver",
+    "label": "Liver: bilirubin, mg/dL (µmol/L)",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   },
+   {
+    "id": "cv",
+    "label": "Cardiovascular",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   },
+   {
+    "id": "cns",
+    "label": "Central nervous system: GCS",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   },
+   {
+    "id": "renal",
+    "label": "Renal: creatinine, mg/dL (µmol/L), or urine output",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "zero",
+    "label": "No organ dysfunction measured",
+    "tone": "favorable",
+    "declared": "0",
+    "reached": "0"
+   },
+   {
+    "id": "scored",
+    "label": "SOFA {total}",
+    "tone": "informational",
+    "declared": "1–24",
+    "reached": "1–24"
+   }
+  ],
+  "boundaries": [
+   "0→1: zero → scored"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "tomita",
   "abbreviation": "Tomita",
   "version": "Tomita score (Tomita et al. 2001)",
@@ -2309,6 +2707,115 @@
     "tone": "informational",
     "declared": "2–10",
     "reached": "2–10"
+   }
+  ],
+  "boundaries": [],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "triss",
+  "abbreviation": "TRISS",
+  "version": "TRISS with 1995 MTOS coefficients (Champion et al.)",
+  "method": "expression: 100 / (1 + exp(-b))",
+  "declared": {
+   "min": 0,
+   "max": 100
+  },
+  "reachMin": 0.121427,
+  "reachMax": 44.650844,
+  "space": 2349215232,
+  "evaluated": 300007,
+  "exhaustive": false,
+  "statusCount": {
+   "complete": 300000
+  },
+  "components": [
+   {
+    "id": "mech",
+    "label": "Mechanism",
+    "type": "single",
+    "points": "blunt=0, pen=1",
+    "nt": ""
+   },
+   {
+    "id": "age",
+    "label": "Age",
+    "type": "single",
+    "points": "child=0, adult=0, older=1",
+    "nt": ""
+   },
+   {
+    "id": "gcs",
+    "label": "GCS total",
+    "type": "integer",
+    "points": "…–3→0, 4–5→1, 6–8→2, 9–12→3, 13–…→4",
+    "nt": ""
+   },
+   {
+    "id": "sbp",
+    "label": "Systolic blood pressure",
+    "type": "integer",
+    "points": "…–0→0, 1–49→1, 50–75→2, 76–89→3, 90–…→4",
+    "nt": ""
+   },
+   {
+    "id": "rr",
+    "label": "Respiratory rate",
+    "type": "integer",
+    "points": "…–0→0, 1–5→1, 6–9→2, 10–29→4, 30–…→3",
+    "nt": ""
+   },
+   {
+    "id": "head",
+    "label": "Head or neck",
+    "type": "integer",
+    "points": "0–6",
+    "nt": ""
+   },
+   {
+    "id": "face",
+    "label": "Face",
+    "type": "integer",
+    "points": "0–6",
+    "nt": ""
+   },
+   {
+    "id": "chest",
+    "label": "Chest",
+    "type": "integer",
+    "points": "0–6",
+    "nt": ""
+   },
+   {
+    "id": "abdomen",
+    "label": "Abdomen or pelvic contents",
+    "type": "integer",
+    "points": "0–6",
+    "nt": ""
+   },
+   {
+    "id": "extremity",
+    "label": "Extremities or pelvic girdle",
+    "type": "integer",
+    "points": "0–6",
+    "nt": ""
+   },
+   {
+    "id": "external",
+    "label": "External",
+    "type": "integer",
+    "points": "0–6",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "ps",
+    "label": "Ps {fixed(total, 1)}%",
+    "tone": "informational",
+    "declared": "0–100%",
+    "reached": "0.121427–44.650844"
    }
   ],
   "boundaries": [],

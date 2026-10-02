@@ -49,7 +49,7 @@ async def main():
                 await pg.goto(U + f"#/calculate/s/{s['id']}"); await pg.wait_for_selector(".detail-head")
                 txt = await pg.locator("main").inner_text()
                 check(f"{s['id']}: under review, reason shown ({s['reviewCategory']})", "Under review" in txt and s["reviewReason"][:40] in txt and await pg.locator(".field").count() == 0)
-            await pg.goto(U + "#/calculate/c/stroke"); await pg.wait_for_selector(".score-card")
+            await pg.goto(U + "#/calculate/c/spine"); await pg.wait_for_selector(".score-card")
             badges = await pg.locator(".score-card .status-badge").all_inner_texts()
             check("category list distinguishes Calculator / Under review badges", "Calculator" in badges and "Under review" in badges, str(badges))
             await pg.screenshot(path=f"{SHOTS}/p6_stroke_list.png")

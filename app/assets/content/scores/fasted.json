@@ -1,0 +1,300 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-03",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "fast-ed",
+  "fasted",
+  "lvo",
+  "prehospital",
+  "large vessel occlusion"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using a local two-question neglect adaptation while reporting the published FAST-ED.",
+  "Scoring speech items in a patient who is simply drowsy."
+ ],
+ "relatedScores": [
+  {
+   "id": "race",
+   "relation": "Prehospital LVO scale"
+  },
+  {
+   "id": "lams",
+   "relation": "Prehospital motor scale"
+  },
+  {
+   "id": "nihss",
+   "relation": "Full stroke scale"
+  }
+ ],
+ "id": "fasted",
+ "name": "Field Assessment Stroke Triage for Emergency Destination",
+ "abbreviation": "FAST-ED",
+ "category": "stroke",
+ "subcategory": "Prehospital large vessel occlusion screen",
+ "specialties": [
+  "Stroke",
+  "Emergency Medicine",
+  "Prehospital"
+ ],
+ "version": {
+  "label": "FAST-ED (Lima et al. 2016)",
+  "detail": "Five NIHSS-derived items, 0–9. Denial/neglect uses the published definitions; some EMS services use local question-based adaptations, which are not combined here."
+ },
+ "purpose": "Prehospital estimation of large vessel occlusion likelihood in suspected stroke.",
+ "intendedPopulation": "Adults with suspected acute stroke, assessed by trained prehospital clinicians.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Large vessel occlusion screen",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Screening scale",
+  "message": "Destination thresholds are set by regional stroke protocols. FAST-ED does not confirm a vessel occlusion."
+ },
+ "inputDefinitions": [
+  {
+   "id": "face",
+   "type": "single",
+   "label": "Facial palsy",
+   "short": "Face",
+   "options": [
+    {
+     "value": "0",
+     "label": "Normal or minor paralysis",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Partial or complete paralysis",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "arm",
+   "type": "single",
+   "label": "Arm weakness",
+   "short": "Arm",
+   "options": [
+    {
+     "value": "0",
+     "label": "No drift",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Drift or some effort against gravity",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "No effort against gravity or no movement",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "speech",
+   "type": "single",
+   "label": "Speech changes",
+   "short": "Speech",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Mild to moderate",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Severe, global aphasia or mute",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "eye",
+   "type": "single",
+   "label": "Eye deviation",
+   "short": "Eyes",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Partial",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Forced",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "neglect",
+   "type": "single",
+   "label": "Denial / neglect",
+   "short": "Neglect",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Extinction to bilateral simultaneous stimulation in only one sensory modality",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Does not recognise own hand or orients only to one side of the body",
+     "points": 2
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 9
+  },
+  "display": "{total}",
+  "share": "FAST-ED {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "zero"
+  },
+  {
+   "state": "scored"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "zero",
+   "tone": "favorable",
+   "label": "No deficit on FAST-ED items",
+   "summary": "No deficit on the FAST-ED items at this assessment.",
+   "range": "0",
+   "detail": "A score of 0 does not exclude stroke."
+  },
+  {
+   "id": "scored",
+   "tone": "informational",
+   "label": "FAST-ED {total}",
+   "summary": "Higher scores indicate more cortical and motor signs associated with large vessel occlusion.",
+   "range": "1–9",
+   "detail": "Integrate with the full assessment and the regional stroke pathway."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Derived from NIHSS items with high predictive value for large vessel occlusion.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "neglect >= 1",
+   "text": "Denial or neglect suggests a cortical (often right-hemisphere) syndrome."
+  },
+  {
+   "text": "Re-assess on arrival; deficits can evolve during transport."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Does not distinguish ischaemia from haemorrhage or stroke mimics."
+  },
+  "Posterior circulation occlusions may score low.",
+  "Local EMS adaptations of the neglect item differ from the published definitions."
+ ],
+ "confounders": [
+  {
+   "factor": "Stroke mimics",
+   "effect": "Seizure, hypoglycaemia or migraine can produce scorable deficits."
+  },
+  {
+   "factor": "Pre-existing deficits",
+   "effect": "Raise the score."
+  },
+  {
+   "factor": "Reduced consciousness",
+   "effect": "Limits speech and neglect testing."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Whether a vessel is occluded.",
+  "Haemorrhage versus ischaemia.",
+  "Eligibility for treatment."
+ ],
+ "guideSections": {
+  "what": "A five-item prehospital scale (facial palsy, arm weakness, speech, eye deviation, denial/neglect), 0–9.",
+  "whenToUse": "Prehospital assessment of suspected stroke within a regional protocol.",
+  "howToPerform": "Score each item from the examination. Add the five item scores.",
+  "clinicalContext": "A screening scale; confirmation requires vascular imaging."
+ },
+ "sources": [
+  {
+   "citation": "Lima FO, Silva GS, Furie KL, et al. Field Assessment Stroke Triage for Emergency Destination: a simple and accurate prehospital scale to detect large vessel occlusion strokes. Stroke. 2016;47(8):1997-2002."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_face",
+   "label": "Facial palsy",
+   "inputs": [
+    "face"
+   ]
+  },
+  {
+   "id": "c_arm",
+   "label": "Arm weakness",
+   "inputs": [
+    "arm"
+   ]
+  },
+  {
+   "id": "c_speech",
+   "label": "Speech changes",
+   "inputs": [
+    "speech"
+   ]
+  },
+  {
+   "id": "c_eye",
+   "label": "Eye deviation",
+   "inputs": [
+    "eye"
+   ]
+  },
+  {
+   "id": "c_neglect",
+   "label": "Denial / neglect",
+   "inputs": [
+    "neglect"
+   ]
+  }
+ ]
+}

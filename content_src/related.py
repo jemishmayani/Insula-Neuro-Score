@@ -36,7 +36,13 @@ RELATED = {
     "frankel": [("ais", "Current standard (under review)"), ("nurick", "Myelopathy grade"), ("rtokuhashi", "Uses Frankel grade")],
     "nurick": [("mjoa", "Myelopathy score (under review)"), ("frankel", "Spinal cord injury grade")],
     # Neurocritical care
-    "rass": [("gcs", "Level of consciousness"), ("four", "Coma scale (under review)"), ("sofa", "Organ dysfunction (under review)")],
+    "triss": [("rts", "Physiological component"), ("iss", "Anatomical component"), ("gcs", "Input to RTS")],
+    "sofa": [("sofa2", "Updated version (under review)"), ("gcs", "CNS component"), ("rass", "Sedation level (under review)")],
+    "graeb": [("ich", "ICH severity grade"), ("mgraeb", "Modified version (under review)"), ("mfisher", "SAH CT grade including IVH")],
+    "fasted": [("race", "Prehospital LVO scale"), ("lams", "Prehospital motor scale"), ("nihss", "Full stroke scale")],
+    "mjoa": [("nurick", "Myelopathy grade"), ("joa", "Original JOA (under review)"), ("frankel", "Spinal cord injury grade")],
+    "gpa": [("dsgpa", "Disease-specific versions (under review)"), ("kps", "Input: performance status"), ("ecog", "Performance status")],
+    "rass": [("gcs", "Level of consciousness"), ("four", "Coma scale (under review)"), ("sofa", "Organ dysfunction")],
 }
 # Clinical clusters: restored verbatim from the earlier Phase 7 build output (content/related.json).
 CLUSTERS = [
@@ -265,6 +271,6 @@ CATEGORY_KEYWORDS = {
     "neurocritical": ["icu", "critical care", "intensive care", "sedation"],
 }
 EXTRA_KEYWORDS = {"sins": ["spinal metastases", "spine metastases"], "rtokuhashi": ["spinal metastases"], "tomita": ["spinal metastases"],
-                  "four": ["coma", "brainstem"], "fasted": ["lvo", "prehospital"], "sofa": ["organ failure", "sepsis"], "triss": ["survival", "trauma"],
+                  "four": ["coma", "brainstem"], "fasted": ["lvo", "prehospital"], "sofa": ["organ failure", "sepsis"], "sofa2": ["organ failure", "sepsis"], "dsgpa": ["brain metastases"], "triss": ["survival", "trauma"],
                   "ais": ["asia", "isncsci", "spinal cord injury"], "mjoa": ["myelopathy", "dcm"], "joa": ["myelopathy"], "odi": ["back pain", "disability"],
                   "graeb": ["ivh", "intraventricular"], "mgraeb": ["ivh", "intraventricular"], "gpa": ["brain metastases"], "tokuhashi": ["spinal metastases"]}

@@ -52,7 +52,7 @@ md += ["", "### Applies to all scores", "- **Limitations, confounders and clinic
 md += [f"- **{n}**" for n in needs if n not in ("Revised Tokuhashi",)]
 md += [f"- **{a}**" for a in sorted({a for a, _ in flags}) if a not in needs and "held" not in a and a != "Revised Tokuhashi"]
 md += ["", "**Secondary-source verification only (confirm against primary full text):** " + ", ".join(r[0] for r in rows if "secondary" in " ".join(r[2:7])) + ".", "",
-       "**Licensing:** RASS (held back); plus the 12 scores already under review (FOUR, ISNCSCI/AIS, mJOA, ODI, TRISS, JOA, SOFA, GPA, Tokuhashi 1990, FAST-ED, Graeb, Modified Graeb). See [CONTENT-AUDIT.md](CONTENT-AUDIT.md).", "",
+       "**Not implemented (under review):** " + "; ".join(f"{c['abbreviation']} ({c.get('reviewCategory','')})" for c in cat['scores'] if c['status'] == 'review') + ". Reasons: [CONTENT-AUDIT.md](CONTENT-AUDIT.md).", "",
        "## Corrections made during this audit", "- ICH Score: removed an unverified cohort size from the version text.", "- Hunt & Hess: Grade IV restored to the original wording ('…and vegetative disturbances').",
        "- GCS-P: the 1–8 band now states it is not defined in the original publication.", "- Revised Tokuhashi: calculator notice added about the conflicting item (scoring unchanged pending review).",
        "- ECOG: licensing status updated to public domain (ECOG-ACRIN).", "- RASS: held back pending licensing review (content and tests retained; reinstatement is a one-line change).",

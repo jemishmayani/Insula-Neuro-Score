@@ -1,0 +1,285 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-03",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "gpa",
+  "brain metastases",
+  "sperduto",
+  "rtog"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using the original GPA when a disease-specific GPA exists for the primary.",
+  "Mixing points from different GPA versions."
+ ],
+ "relatedScores": [
+  {
+   "id": "dsgpa",
+   "relation": "Disease-specific versions (under review)"
+  },
+  {
+   "id": "kps",
+   "relation": "Input: performance status"
+  },
+  {
+   "id": "ecog",
+   "relation": "Performance status"
+  }
+ ],
+ "id": "gpa",
+ "name": "Graded Prognostic Assessment (original)",
+ "abbreviation": "GPA",
+ "category": "oncology",
+ "subcategory": "Brain metastases prognosis",
+ "specialties": [
+  "Neuro-oncology",
+  "Radiation Oncology",
+  "Neurosurgery",
+  "Oncology"
+ ],
+ "version": {
+  "label": "Original GPA (Sperduto et al. 2008, RTOG database)",
+  "detail": "Four factors scored 0, 0.5 or 1; total 0–4. Superseded for most primaries by disease-specific GPAs (DS-GPA, updated GPAs), which are separate versions and are not combined here."
+ },
+ "purpose": "Estimates median survival group for patients with brain metastases.",
+ "intendedPopulation": "Adults with brain metastases (derived from 1,960 RTOG trial patients).",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Prognostic group (median survival)",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Original, non-disease-specific GPA",
+  "message": "Disease-specific GPAs are preferred where one exists for the primary tumour. Survival figures are RTOG trial medians from the 2008 derivation."
+ },
+ "inputDefinitions": [
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age",
+   "short": "Age",
+   "options": [
+    {
+     "value": "o60",
+     "label": "Over 60 years",
+     "points": 0
+    },
+    {
+     "value": "50to60",
+     "label": "50–60 years",
+     "points": 0.5,
+     "detail": "Some reproductions print 50–59."
+    },
+    {
+     "value": "u50",
+     "label": "Under 50 years",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "kps",
+   "type": "single",
+   "label": "Karnofsky Performance Status",
+   "short": "KPS",
+   "options": [
+    {
+     "value": "lt70",
+     "label": "Below 70",
+     "points": 0
+    },
+    {
+     "value": "70to80",
+     "label": "70–80",
+     "points": 0.5
+    },
+    {
+     "value": "90to100",
+     "label": "90–100",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "nmets",
+   "type": "single",
+   "label": "Number of brain metastases",
+   "short": "Brain metastases",
+   "options": [
+    {
+     "value": "gt3",
+     "label": "More than 3",
+     "points": 0
+    },
+    {
+     "value": "2to3",
+     "label": "2–3",
+     "points": 0.5
+    },
+    {
+     "value": "one",
+     "label": "1",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "ecm",
+   "type": "single",
+   "label": "Extracranial metastases",
+   "short": "Extracranial",
+   "options": [
+    {
+     "value": "present",
+     "label": "Present",
+     "points": 0
+    },
+    {
+     "value": "none",
+     "label": "None",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 4
+  },
+  "display": "{fixed(total, 1)}",
+  "share": "GPA {fixed(total, 1)}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 1",
+   "state": "g1"
+  },
+  {
+   "when": "total <= 2.5",
+   "state": "g2"
+  },
+  {
+   "when": "total <= 3",
+   "state": "g3"
+  },
+  {
+   "state": "g4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g1",
+   "tone": "high",
+   "label": "GPA 0–1",
+   "summary": "Median survival 2.6 months in the RTOG derivation data.",
+   "range": "0–1",
+   "detail": "Group-level median from trial patients; integrate with oncology input and current treatment options."
+  },
+  {
+   "id": "g2",
+   "tone": "moderate",
+   "label": "GPA 1.5–2.5",
+   "summary": "Median survival 3.8 months in the RTOG derivation data.",
+   "range": "1.5–2.5"
+  },
+  {
+   "id": "g3",
+   "tone": "mild",
+   "label": "GPA 3",
+   "summary": "Median survival 6.9 months in the RTOG derivation data.",
+   "range": "3"
+  },
+  {
+   "id": "g4",
+   "tone": "low",
+   "label": "GPA 3.5–4",
+   "summary": "Median survival 11.0 months in the RTOG derivation data.",
+   "range": "3.5–4"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The first GPA, combining four factors into a prognostic index for brain metastases.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "importance": "major",
+   "text": "Survival has improved with modern systemic and targeted therapy; derivation medians may underestimate current survival."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Superseded for most primaries by disease-specific GPAs."
+  },
+  "Derived from patients enrolled in RTOG trials, mainly treated with whole-brain radiotherapy.",
+  "Age boundary at 60 is printed differently in some reproductions."
+ ],
+ "confounders": [
+  {
+   "factor": "Performance status estimate",
+   "effect": "KPS varies between raters."
+  },
+  {
+   "factor": "Imaging completeness",
+   "effect": "Affects counts of brain and extracranial metastases."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Survival for a specific primary tumour type (see disease-specific GPA).",
+  "Which treatment is appropriate.",
+  "An individual patient's survival."
+ ],
+ "guideSections": {
+  "what": "A 0–4 prognostic index for brain metastases from age, KPS, number of brain metastases and extracranial metastases.",
+  "whenToUse": "Prognostic description where a disease-specific GPA is not available, or for historical comparison.",
+  "howToPerform": "Score each of the four factors 0, 0.5 or 1. Add the four scores.",
+  "clinicalContext": "One input to multidisciplinary decisions with tumour-specific information."
+ },
+ "sources": [
+  {
+   "citation": "Sperduto PW, Berkey B, Gaspar LE, Mehta M, Curran W. A new prognostic index and comparison to three other indices for patients with brain metastases: an analysis of 1,960 patients in the RTOG database. Int J Radiat Oncol Biol Phys. 2008;70(2):510-514."
+  }
+ ],
+ "licensing": {
+  "status": "Published index, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_age",
+   "label": "Age",
+   "inputs": [
+    "age"
+   ]
+  },
+  {
+   "id": "c_kps",
+   "label": "Karnofsky Performance Status",
+   "inputs": [
+    "kps"
+   ]
+  },
+  {
+   "id": "c_nmets",
+   "label": "Number of brain metastases",
+   "inputs": [
+    "nmets"
+   ]
+  },
+  {
+   "id": "c_ecm",
+   "label": "Extracranial metastases",
+   "inputs": [
+    "ecm"
+   ]
+  }
+ ]
+}

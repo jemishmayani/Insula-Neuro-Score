@@ -1,0 +1,76 @@
+{
+ "scoreId": "graeb",
+ "cases": [
+  {
+   "name": "no blood",
+   "answers": {
+    "right": "0",
+    "left": "0",
+    "third": "0",
+    "fourth": "0"
+   },
+   "expect": {
+    "total": 0,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Graeb 1982"
+   }
+  },
+  {
+   "name": "maximum",
+   "answers": {
+    "right": "4",
+    "left": "4",
+    "third": "2",
+    "fourth": "2"
+   },
+   "expect": {
+    "total": 12,
+    "insightsContains": "expansion"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4+4+2+2=12",
+    "source": "Graeb 1982"
+   }
+  },
+  {
+   "name": "intermediate",
+   "answers": {
+    "right": "2",
+    "left": "1",
+    "third": "1",
+    "fourth": "0"
+   },
+   "expect": {
+    "total": 4,
+    "state": "scored"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+1+1+0=4",
+    "source": "Graeb 1982"
+   }
+  },
+  {
+   "name": "third ventricle 3 invalid",
+   "answers": {
+    "right": "0",
+    "left": "0",
+    "third": "3",
+    "fourth": "0"
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0–2 only",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

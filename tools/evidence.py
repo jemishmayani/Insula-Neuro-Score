@@ -45,6 +45,17 @@ EVIDENCE = {
                     flags=["CONFLICT: 'Metastases in the vertebral body' is ≥3/2/1 in one reproduction and ≥3/1–2/0 in two others (WJO 2016, PMC review). Implementation uses ≥3/2/1. Verify against the original 2005 paper before clinical use. A notice in the calculator states this."]),
  "tomita": dict(calc=V, interp=V, pop=V, lim=ED, src=VS, basis="Tomita 2001 factors and points (1/2/4; 0/2/4; 1/2) via several independent tables.",
                 flags=["One review table (Global Spine J 2018) gives 3 points for rapid growth; the original 2–10 range requires 4. Implementation uses 4; noted for review."]),
+
+ "triss": dict(calc=VS, interp=V, pop=V, lim=ED, src=VS, basis="1995 MTOS coefficients and age index (<55/≥55) confirmed in multiple papers and calculators citing Champion 1995; children <15 use the blunt model (SFAR). Expected values hand-calculated independently."),
+ "sofa": dict(calc=V, interp=V, pop=V, lim=ED, src=V, basis="Sepsis-3 (JAMA 2016) Table 1, adapted from Vincent 1996; consistent with multiple reproductions.",
+              flags=["Reproductions differ at some boundaries (dopamine ≤5 vs <5; creatinine >5.0 vs ≥5.0; one table gives platelets <25); implementation follows the Sepsis-3 table.",
+                     "PaO2/FiO2 <200 without respiratory support is not explicitly assigned in the table."]),
+ "graeb": dict(calc=VS, interp=VS, pop=V, lim=ED, src=VS, basis="Graeb 1982 grading via multiple published tables (lateral 0–4 each; third/fourth 0–2 each; total 0–12)."),
+ "fasted": dict(calc=VS, interp=VS, pop=V, lim=ED, src=VS, basis="Lima 2016 items via AHA CPR & ECC document, San Diego County EMS and hospital stroke-centre cards (denial/neglect 0/1/2 published definitions).",
+                flags=["No derivation cut-off is applied (not verified); some EMS services use question-based neglect adaptations."]),
+ "mjoa": dict(calc=V, interp=V, pop=V, lim=ED, src=VS, basis="Benzel 1991 clinician-rated items confirmed in an open-access PMC table and two reproductions; Tetreault 2017 severity bands."),
+ "gpa": dict(calc=V, interp=V, pop=V, lim=ED, src=V, basis="Sperduto 2008 factors (RTOG trial protocol appendix, BMC tables) and median survival 2.6/3.8/6.9/11.0 months (validation abstract).",
+             flags=["Middle age band printed as 50–59 or 50–60 in different reproductions; implemented as 50–60 (lowest band is >60)."]),
 }
 # Verified but held back from the app pending licensing review (content and tests retained).
 HELD = {"rass": dict(calc=V, interp=V, pop=V, lim=ED, src=V, basis="All ten levels confirmed in multiple trial protocols citing Sessler 2002.",

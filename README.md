@@ -4,9 +4,9 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: Phase 9, medical content audit (v0.9.1). **Not clinically ready**
+## Status: v0.9.2, 34 scores implemented. **Not clinically ready** (see medical content audit)
 
-**28 scores implemented** (RASS verified but held back pending licensing review), each verified against cited sources; **13 under review**, with the reason recorded (licensing, version or verification). See [docs/CONTENT-AUDIT.md](docs/CONTENT-AUDIT.md). Each was verified against its authoritative source. Results and guides are built by the structured clinical insight engine. **Medical content audit: [docs/MEDICAL-CONTENT-AUDIT.md](docs/MEDICAL-CONTENT-AUDIT.md)** lists unresolved issues that require clinician review before any clinical use. Final UX and performance: [docs/PHASE-8.md](docs/PHASE-8.md). Guide experience: [docs/PHASE-7.md](docs/PHASE-7.md). Library expansion: [docs/PHASE-6.md](docs/PHASE-6.md). Personalized Home: [docs/PHASE-5.md](docs/PHASE-5.md). See [docs/PHASE-4.md](docs/PHASE-4.md), [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
+**34 scores implemented** (RASS verified but held back pending licensing review), each verified against cited sources; **9 under review**, with the reason recorded (licensing, version or verification). See [docs/CONTENT-AUDIT.md](docs/CONTENT-AUDIT.md). Each was verified against its authoritative source. Results and guides are built by the structured clinical insight engine. **Medical content audit: [docs/MEDICAL-CONTENT-AUDIT.md](docs/MEDICAL-CONTENT-AUDIT.md)** lists unresolved issues that require clinician review before any clinical use. Final UX and performance: [docs/PHASE-8.md](docs/PHASE-8.md). Guide experience: [docs/PHASE-7.md](docs/PHASE-7.md). Library expansion: [docs/PHASE-6.md](docs/PHASE-6.md). Personalized Home: [docs/PHASE-5.md](docs/PHASE-5.md). See [docs/PHASE-4.md](docs/PHASE-4.md), [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
 
 ## Repository layout
 
