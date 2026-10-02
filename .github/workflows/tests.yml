@@ -1,0 +1,21 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  engine:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Rebuild score content and check it matches the committed files
+        run: |
+          python3 content_src/build_scores.py
+          git diff --exit-code app/assets/content/
+      - name: Engine, fixture, safety and fuzz tests
+        run: node --test tests/engine/*.test.js
+      - name: Calculation audit (must report 0 issues)
+        run: node tools/calc_audit.js | tee /tmp/calc.txt && grep -q " 0 with issues" /tmp/calc.txt
+      - name: Content audits
+        run: python3 tools/medical_audit.py && python3 tools/content_audit.py
