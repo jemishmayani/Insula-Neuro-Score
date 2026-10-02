@@ -81,6 +81,13 @@
     return l && d !== "–" && l.indexOf(d) >= 0 && l.replace(d, "").replace(/[^A-Za-z]/g, "").length <= 6 ? UI.TONE_LABEL[r.state.tone] : l;
   }
   /* Result order: Score → Breakdown → Interpretation → Context → Considerations → Limitations → Confounders → Boundaries → Related */
+  /** Short form for the narrow points column; the full wording is already in the middle column. */
+  function ptsCell(r) {
+    var d = String(r.status !== "complete" ? "–" : r.display);
+    if (d.length <= 6) return d;
+    var last = d.split(" ").pop();
+    return last.length <= 6 && /[0-9IVX+\-]/.test(last) ? last : "–";
+  }
   function resultHTML(score, r, links, guideHref) {
     var tone = r.state.tone, pres = r.presentation || {};
     var meter = r.bands ? UI.ScaleMeter({ min: r.range.min, max: r.range.max, value: r.status === "complete" ? r.total : null, bands: r.bands, label: score.abbreviation }) : "";
@@ -89,14 +96,14 @@
       meta: UI.TONE_LABEL[tone] + " · " + score.abbreviation + " range " + r.range.min + "–" + r.range.max, summary: r.state.summary, meter: meter });
     if (r.warnings.length) h += '<div class="result-block" data-block="warnings">' + r.warnings.map(function (w) { return UI.WarningBanner({ title: "Check", message: w.message }); }).join("") + "</div>";
     // Breakdown
-    h += '<div class="result-block" data-block="breakdown"><h3 class="result-h">Breakdown</h3><table class="breakdown"><tbody>' + r.breakdown.map(function (c) {
+    h += '<div class="result-block" data-block="breakdown"><h3 class="result-h">Breakdown</h3><table class="breakdown result-breakdown"><colgroup><col class="c-item"><col class="c-value"><col class="c-pts"></colgroup><tbody>' + r.breakdown.map(function (c) {
       var rows = c.items.map(function (it) {
         return '<tr class="bd-' + it.status + '"><th scope="row">' + esc(it.short) + "</th><td>" + esc(it.display) + (it.reason ? " (" + esc(it.reason) + ")" : "") +
           '</td><td class="pts">' + esc(it.status === "ok" ? (it.code != null ? it.code : it.points) : it.status === "nt" ? it.code : "–") + "</td></tr>";
       }).join("");
       var head = c.items.length > 1 ? '<tr class="bd-group"><th scope="rowgroup" colspan="2">' + esc(c.label) + '</th><td class="pts">' + (c.subtotal == null ? "–" : c.subtotal) + "</td></tr>" : "";
       return head + rows;
-    }).join("") + '<tr class="bd-total"><th scope="row">Result</th><td>' + esc(r.state.label) + '</td><td class="pts">' + esc(r.formula && r.status !== "complete" ? r.formula.replace(/ \+ /g, " ") : r.display) + "</td></tr></tbody></table></div>";
+    }).join("") + '<tr class="bd-total"><th scope="row">Result</th><td>' + esc(r.state.label) + '</td><td class="pts">' + esc(ptsCell(r)) + "</td></tr></tbody></table></div>";
     // Interpretation
     var interpItems = [];
     if (r.state.detail) interpItems.push({ text: r.state.detail, importance: tone === "high" || tone === "critical" ? "major" : "standard" });

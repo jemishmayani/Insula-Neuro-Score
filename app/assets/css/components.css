@@ -464,3 +464,8 @@ table td, table th { overflow-wrap: anywhere; }
 .loading-state.delayed { animation: appear-late 1ms 220ms both; }
 @keyframes appear-late { from { visibility: hidden; } to { visibility: visible; } }
 @media (prefers-reduced-motion: reduce) { .loading-state.delayed { animation: none !important; } }
+/* Result breakdown: explicit column widths (fixed layout otherwise takes widths from a colspan header row) */
+table.result-breakdown col.c-item { width: 34%; }
+table.result-breakdown col.c-value { width: auto; }
+table.result-breakdown col.c-pts { width: 4.5rem; }
+table.result-breakdown th { width: auto; }
