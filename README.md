@@ -4,9 +4,9 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: Phase 7, Guide experience (v0.8.0)
+## Status: Phase 8 complete, final UX and performance (v0.9.0)
 
-**29 scores implemented**, each verified against cited sources; **12 under review**, with the reason recorded (licensing, version or verification). See [docs/CONTENT-AUDIT.md](docs/CONTENT-AUDIT.md). Each was verified against its authoritative source. Results and guides are built by the structured clinical insight engine. Guide experience: [docs/PHASE-7.md](docs/PHASE-7.md). Library expansion: [docs/PHASE-6.md](docs/PHASE-6.md). Personalized Home: [docs/PHASE-5.md](docs/PHASE-5.md). See [docs/PHASE-4.md](docs/PHASE-4.md), [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
+**29 scores implemented**, each verified against cited sources; **12 under review**, with the reason recorded (licensing, version or verification). See [docs/CONTENT-AUDIT.md](docs/CONTENT-AUDIT.md). Each was verified against its authoritative source. Results and guides are built by the structured clinical insight engine. Final UX and performance: [docs/PHASE-8.md](docs/PHASE-8.md). Guide experience: [docs/PHASE-7.md](docs/PHASE-7.md). Library expansion: [docs/PHASE-6.md](docs/PHASE-6.md). Personalized Home: [docs/PHASE-5.md](docs/PHASE-5.md). See [docs/PHASE-4.md](docs/PHASE-4.md), [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
 
 ## Repository layout
 
@@ -51,6 +51,9 @@ python3 tests/shell.test.py             # shell regression
 python3 tests/home.test.py              # personalization + performance
 python3 tests/library.test.py           # every calculator and guide in the UI
 python3 tests/guide.test.py             # guide structure, navigation, all related links, search
+python3 tests/journey.test.py           # full user journey (phone + tablet), errors, reduced motion
+python3 tests/perf.test.py              # performance under 4x CPU throttle
+python3 tests/audit.py                  # 585-render responsiveness/accessibility/contrast audit
 python3 tools/content_audit.py          # regenerate docs/CONTENT-AUDIT.md
 cd app && KEYSTORE=/path/to/release.keystore KS_PASS=... ./build.sh
 ```

@@ -436,7 +436,8 @@ table td, table th { overflow-wrap: anywhere; }
 /* Subtle screen transition; disabled for reduced motion */
 @media (prefers-reduced-motion: no-preference) {
   .content { animation: screen-in 140ms var(--motion-ease); }
-  @keyframes screen-in { from { opacity: 0.6; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  /* Opacity only: a transform here would make .content the containing block for fixed children (result bar). */
+  @keyframes screen-in { from { opacity: 0.6; } to { opacity: 1; } }
 }
 .section-action { min-width: 44px; justify-content: center; padding-left: var(--space-2); padding-right: var(--space-2); }
 .segmented > * { min-height: 46px; }
@@ -469,3 +470,8 @@ table.result-breakdown col.c-item { width: 34%; }
 table.result-breakdown col.c-value { width: auto; }
 table.result-breakdown col.c-pts { width: 4.5rem; }
 table.result-breakdown th { width: auto; }
+
+/* Disclosure label reflects state */
+.ins-more .when-open { display: none; }
+.ins-more[open] .when-open { display: inline; }
+.ins-more[open] .when-closed { display: none; }

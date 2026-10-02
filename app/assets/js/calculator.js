@@ -166,11 +166,11 @@
       var total = score.inputDefinitions.filter(function (d) { return d.required !== false; }).length, done = total - r.missing.length;
       el.querySelector(".calc-progress").innerHTML = '<span class="bar"><i style="width:' + Math.round(done / total * 100) + '%"></i></span>' + done + " of " + total + " answered";
       var bar = el.querySelector(".result-bar");
-      bar.className = "result-bar tone-" + r.state.tone + (barHidden ? " is-hidden" : "");
+      if (bar) bar.className = "result-bar tone-" + r.state.tone + (barHidden ? " is-hidden" : "");
       // Compact only code-style formulas (e.g. "E3 + V4 + M5" → "E3 V4 M5"); other formulas are not shown in the bar.
       var compact = r.formula && /^[A-Z]+[A-Z0-9]*( \+ [A-Z]+[A-Z0-9]*)+$/.test(r.formula) ? r.formula.replace(/ \+ /g, " ") : null;
       var barValue = compact ? (r.status === "complete" ? compact + " = " + r.display : compact) : r.display;
-      bar.innerHTML = UI.stateIcon(r.state.tone) + '<span class="rb-value' + (compact ? " has-formula" : "") + '">' + esc(barValue) + '</span><span class="rb-label">' + esc(r.status === "incomplete" ? done + " of " + total + " answered" : stateLabel(r)) + "</span>" + UI.icon("down");
+      if (bar) bar.innerHTML = UI.stateIcon(r.state.tone) + '<span class="rb-value' + (compact ? " has-formula" : "") + '">' + esc(barValue) + '</span><span class="rb-label">' + esc(r.status === "incomplete" ? done + " of " + total + " answered" : stateLabel(r)) + "</span>" + UI.icon("down");
       if (opts.onResult) opts.onResult(r);
     }
     function setAnswer(id, v) { if (v === undefined) delete answers[id]; else answers[id] = v; }
@@ -246,6 +246,7 @@
       else if (act === "calc-share" && last) { var tx = shareText(score, last); try { if (Android && Android.share) Android.share(tx); else if (navigator.share) navigator.share({ text: tx }); else { navigator.clipboard.writeText(tx); if (opts.toast) opts.toast("Result copied"); } } catch (e) {} }
       else if (act === "calc-jump") { var res = document.getElementById("result"); res.scrollIntoView({ block: "start" }); res.focus({ preventScroll: true }); }
     });
+    if (opts.noBar) { var nb = el.querySelector(".result-bar"); if (nb) nb.remove(); }
     update();
     // Show the sticky result bar only while the result panel is out of view (any layout, any text size).
     var bar0 = el.querySelector(".result-bar"), resEl = document.getElementById("result");

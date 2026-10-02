@@ -40,6 +40,8 @@ async def journey(b, name, vp, storage_dir):
     if await lim.locator(".ins-more summary").count(): await lim.locator(".ins-more summary").click()
     after = await lim.locator(".insight-card:visible").count()
     check(f"{name}: limitations open and expand ({before}→{after})", after >= before and after >= 4)
+    if await lim.locator(".ins-more summary").count():
+        check(f"{name}: expanded disclosure reads 'Show fewer'", (await lim.locator(".ins-more summary").inner_text()).strip() == "Show fewer")
     await lim.scroll_into_view_if_needed(); await shot("03_limitations")
     # 7 Open Guide (from the result panel)
     await pg.click("#result [data-role=open-guide]"); await pg.wait_for_selector("#g-sources")
@@ -79,6 +81,9 @@ async def journey(b, name, vp, storage_dir):
     check(f"{name}: after restart, calculator inputs are not persisted (no patient data)", True)
     await pg2.goto(U + "#/calculate/s/gcs"); await pg2.wait_for_selector(".field")
     check(f"{name}: after restart, GCS calculator starts empty", await pg2.locator(".choice.is-on").count() == 0)
+    if vp["width"] < 840:
+        top = await pg2.evaluate("(() => { const r = document.querySelector('.result-bar').getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; })()")
+        check(f"{name}: sticky result bar inside the viewport immediately after opening (no animation side effects)", top)
     await pg2.screenshot(path=f"{SHOTS}/p8_{name}_06_restart_dark.png")
     check(f"{name}: no JS errors through the whole journey", not errs, errs[:2])
     await ctx2.close()
@@ -104,6 +109,30 @@ async def nav_matrix(b):
     check("nav: Back → SINS guide → Home (toggles never add history)", x1 == "#/guide/s/sins" and x2 == "#/home", f"{x1} {x2}")
     check("nav: Back at startup root exits", await pg.evaluate("window.handleBack()") is False)
 
+async def error_and_motion(b):
+    """Missing data, corrupt data, content that fails validation, corrupted prefs, reduced motion."""
+    for label, handler in [("missing score file (404)", lambda r: r.fulfill(status=404, body="")),
+                           ("corrupt score file (invalid JSON)", lambda r: r.fulfill(status=200, content_type="application/json", body="{not json")),
+                           ("score failing validation", lambda r: r.fulfill(status=200, content_type="application/json", body='{"id":"gcs","name":"x"}'))]:
+        ctx = await b.new_context(viewport={"width": 412, "height": 915}); pg = await ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
+        await pg.route("**/content/scores/gcs.json", handler)
+        await pg.goto(U + "#/calculate/s/gcs"); await pg.wait_for_selector(".error-state", timeout=8000)
+        ok_nav = await pg.locator(".error-state .btn").count() == 1
+        await pg.click(".bottomnav a[data-tab=home]"); await pg.wait_for_selector("#home-favorites")
+        check(f"error: {label} → error state with a way out, app keeps working, no crash", ok_nav and not errs, errs[:1])
+        await ctx.close()
+    ctx = await b.new_context(viewport={"width": 412, "height": 915}); pg = await ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
+    await pg.goto(U); await pg.wait_for_selector(".bottomnav")
+    await pg.evaluate("localStorage.setItem('ins.store.v3', '{\"favorites\": 42, \"theme\": \"neon\", \"recentCalc\": \"x\", \"homeSections\": [null, 5]}')")
+    await pg.reload(); await pg.wait_for_selector("#home-favorites")
+    check("error: corrupted preferences → defaults, no crash", await pg.locator("#home-favorites .empty-state").count() == 1 and not errs, errs[:1])
+    await ctx.close()
+    ctx = await b.new_context(viewport={"width": 412, "height": 915}, reduced_motion="reduce"); pg = await ctx.new_page()
+    await pg.goto(U + "#/calculate/s/gcs"); await pg.wait_for_selector(".field")
+    anim = await pg.evaluate("getComputedStyle(document.querySelector('.content')).animationName")
+    check("reduced motion: no screen animation", anim == "none", anim)
+    await ctx.close()
+
 async def main():
     srv = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", ROOT], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep(1)
     try:
@@ -112,6 +141,7 @@ async def main():
             await journey(b, "phone", {"width": 412, "height": 915}, None)
             await journey(b, "tablet", {"width": 1280, "height": 800}, None)
             await nav_matrix(b)
+            await error_and_motion(b)
             await b.close()
     finally: srv.terminate()
     f = [n for n, ok in results if not ok]; print(f"\n{len(results) - len(f)} passed, {len(f)} failed" + (": " + "; ".join(f) if f else "")); sys.exit(1 if f else 0)

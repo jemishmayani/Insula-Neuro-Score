@@ -482,7 +482,7 @@
     paint(frame({ title: "Design system", tab: "", back: true, noSettings: true, body: body, wide: true }), { title: "Design system", focusMain: false });
     loadJSON("content/dev/demo-inputs.json").then(function (sc) {
       var host = document.getElementById("demo-host"); if (!host) return;
-      window.Calculator.mount(host, sc, SESSION_ANSWERS.__demo || (SESSION_ANSWERS.__demo = {}), { links: function () { return null; }, toast: toast }); document.body.classList.add("has-result-bar");
+      window.Calculator.mount(host, sc, SESSION_ANSWERS.__demo || (SESSION_ANSWERS.__demo = {}), { links: function () { return null; }, toast: toast, noBar: true }); document.body.classList.add("has-result-bar");
     });
   }
 

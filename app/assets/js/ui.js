@@ -192,7 +192,7 @@
     return '<section class="insight-section" data-section="' + esc(sec.type) + '" aria-label="' + esc(sec.title) + '">' + (o.hideTitle ? "" : '<h3 class="result-h">' + esc(sec.title) +
       (o.showQuestion ? ' <span class="ins-q">' + esc(sec.question) + "</span>" : "") + "</h3>") +
       '<ul class="insight-list">' + shown.map(card).join("") + "</ul>" +
-      (rest.length ? '<details class="ins-more"><summary>Show ' + rest.length + " more</summary><ul class=\"insight-list\">" + rest.map(card).join("") + "</ul></details>" : "") + "</section>";
+      (rest.length ? '<details class="ins-more"><summary><span class="when-closed">Show ' + rest.length + ' more</span><span class="when-open">Show fewer</span></summary><ul class="insight-list">' + rest.map(card).join("") + "</ul></details>" : "") + "</section>";
   }
   /** StateCard — one result state as used in guides (icon + label + range + explanation). */
   function StateCard(st) {
