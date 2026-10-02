@@ -1,0 +1,289 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "rotterdam ct",
+  "tbi ct",
+  "head injury"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring an epidural mass as 1 (it scores 0).",
+  "Forgetting to add 1."
+ ],
+ "relatedScores": [
+  {
+   "id": "marshall",
+   "relation": "Alternative CT classification"
+  },
+  {
+   "id": "gcs",
+   "relation": "Clinical severity"
+  }
+ ],
+ "id": "rotterdam",
+ "name": "Rotterdam CT Score",
+ "abbreviation": "Rotterdam",
+ "category": "tbi",
+ "subcategory": "CT score",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Neuroradiology",
+  "Trauma"
+ ],
+ "version": {
+  "label": "Rotterdam CT score (Maas et al. 2005)",
+  "detail": "Four items plus 1, giving 1–6. Mortality figures are 6-month mortality in adults with moderate or severe TBI in the derivation data."
+ },
+ "purpose": "CT-based prognostic score in traumatic brain injury.",
+ "intendedPopulation": "Adults with moderate or severe traumatic brain injury.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "CT prognostic score",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "cisterns",
+   "type": "single",
+   "label": "Basal cisterns",
+   "short": "Cisterns",
+   "options": [
+    {
+     "value": "0",
+     "label": "Normal",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Compressed",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Absent",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "shift",
+   "type": "single",
+   "label": "Midline shift",
+   "short": "Shift",
+   "options": [
+    {
+     "value": "0",
+     "label": "None or 5 mm or less",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "More than 5 mm",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "edh",
+   "type": "single",
+   "label": "Epidural mass lesion",
+   "short": "Epidural mass",
+   "options": [
+    {
+     "value": "0",
+     "label": "Present",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Absent",
+     "points": 1
+    }
+   ],
+   "help": "Note the direction: an epidural mass scores 0 and its absence scores 1."
+  },
+  {
+   "id": "ivh",
+   "type": "single",
+   "label": "Intraventricular blood or traumatic SAH",
+   "short": "IVH / tSAH",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "cisterns + shift + edh + ivh + 1",
+  "range": {
+   "min": 1,
+   "max": 6
+  },
+  "display": "{total}",
+  "share": "Rotterdam {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  },
+  {
+   "when": "total == 6",
+   "state": "s6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "favorable",
+   "label": "Score 1",
+   "summary": "Rotterdam 1 at this assessment: 0% 6-month mortality in the derivation data.",
+   "range": "1",
+   "detail": "Group-level figure for adults with moderate or severe TBI."
+  },
+  {
+   "id": "s2",
+   "tone": "low",
+   "label": "Score 2",
+   "summary": "6-month mortality 7% in the derivation data.",
+   "range": "2"
+  },
+  {
+   "id": "s3",
+   "tone": "mild",
+   "label": "Score 3",
+   "summary": "6-month mortality 16% in the derivation data.",
+   "range": "3"
+  },
+  {
+   "id": "s4",
+   "tone": "moderate",
+   "label": "Score 4",
+   "summary": "6-month mortality 26% in the derivation data.",
+   "range": "4"
+  },
+  {
+   "id": "s5",
+   "tone": "high",
+   "label": "Score 5",
+   "summary": "6-month mortality 53% in the derivation data.",
+   "range": "5",
+   "detail": "Group-level figure; integrate with clinical findings."
+  },
+  {
+   "id": "s6",
+   "tone": "critical",
+   "label": "Score 6",
+   "summary": "6-month mortality 61% in the derivation data.",
+   "range": "6",
+   "detail": "Group-level figure; integrate with clinical findings and avoid decisions on the score alone."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Combines individual CT predictors and may discriminate better than the Marshall classification.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Paediatric mortality patterns differ from the adult figures shown."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Mortality figures apply to adults with moderate or severe TBI; mild TBI was not included."
+  },
+  "Excludes contusions and subdural lesions as specific items."
+ ],
+ "confounders": [
+  {
+   "factor": "CT timing",
+   "effect": "Findings evolve."
+  },
+  {
+   "factor": "Post-surgical scans",
+   "effect": "Alter cistern and shift assessment."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Individual prognosis.",
+  "Whether surgery is appropriate.",
+  "Clinical severity (see GCS)."
+ ],
+ "guideSections": {
+  "what": "A 1–6 CT score from cisterns, shift, epidural mass and IVH/tSAH.",
+  "whenToUse": "Admission CT in moderate or severe TBI.",
+  "howToPerform": "Score the four items, sum and add 1.",
+  "clinicalContext": "A prognostic model input, not an individual prediction."
+ },
+ "sources": [
+  {
+   "citation": "Maas AIR, Hukkelhoven CWPM, Marshall LF, Steyerberg EW. Prediction of outcome in traumatic brain injury with computed tomographic characteristics: a comparison between the computed tomographic classification and combinations of computed tomographic predictors. Neurosurgery. 2005;57(6):1173-1182."
+  }
+ ],
+ "licensing": {
+  "status": "Published score, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_cisterns",
+   "label": "Basal cisterns",
+   "inputs": [
+    "cisterns"
+   ]
+  },
+  {
+   "id": "c_shift",
+   "label": "Midline shift",
+   "inputs": [
+    "shift"
+   ]
+  },
+  {
+   "id": "c_edh",
+   "label": "Epidural mass lesion",
+   "inputs": [
+    "edh"
+   ]
+  },
+  {
+   "id": "c_ivh",
+   "label": "Intraventricular blood or traumatic SAH",
+   "inputs": [
+    "ivh"
+   ]
+  }
+ ]
+}

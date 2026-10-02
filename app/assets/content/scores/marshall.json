@@ -1,0 +1,319 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "marshall ct",
+  "tbi ct",
+  "head injury"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [
+  {
+   "when": "path == 0 && (mass == 1 || shift == 1 || cisterns == 1 || evac == 1)",
+   "severity": "warning",
+   "inputs": [
+    "path"
+   ],
+   "message": "No visible pathology was selected, but other findings are present. Check the inputs."
+  }
+ ],
+ "commonErrors": [
+  "Ignoring the order of precedence (evacuated, then mass lesion, then shift, then cisterns).",
+  "Using a later scan without stating it."
+ ],
+ "relatedScores": [
+  {
+   "id": "rotterdam",
+   "relation": "Alternative CT score"
+  },
+  {
+   "id": "gcs",
+   "relation": "Clinical severity"
+  }
+ ],
+ "id": "marshall",
+ "name": "Marshall CT Classification",
+ "abbreviation": "Marshall",
+ "category": "tbi",
+ "subcategory": "CT classification",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Neuroradiology",
+  "Trauma"
+ ],
+ "version": {
+  "label": "Marshall CT classification (1991)",
+  "detail": "Six categories: diffuse injury I–IV, evacuated mass lesion (V), non-evacuated mass lesion >25 mL (VI). Category is derived here from the findings in the published order of precedence."
+ },
+ "purpose": "CT classification of traumatic brain injury.",
+ "intendedPopulation": "Patients with traumatic brain injury, typically moderate to severe.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "CT category",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "evac",
+   "type": "single",
+   "label": "Any lesion surgically evacuated",
+   "short": "Evacuated",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "mass",
+   "type": "single",
+   "label": "High- or mixed-density lesion >25 mL (not evacuated)",
+   "short": "Lesion >25 mL",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "shift",
+   "type": "single",
+   "label": "Midline shift greater than 5 mm",
+   "short": "Shift >5 mm",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "cisterns",
+   "type": "single",
+   "label": "Basal cisterns",
+   "short": "Cisterns",
+   "options": [
+    {
+     "value": "0",
+     "label": "Present",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Compressed or absent",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "path",
+   "type": "single",
+   "label": "Any visible intracranial pathology",
+   "short": "Visible pathology",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "evac == 1 ? 5 : mass == 1 ? 6 : shift == 1 ? 4 : cisterns == 1 ? 3 : path == 1 ? 2 : 1",
+  "range": {
+   "min": 1,
+   "max": 6
+  },
+  "display": "Category {roman(total)}",
+  "share": "Marshall category {roman(total)}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "c1"
+  },
+  {
+   "when": "total == 2",
+   "state": "c2"
+  },
+  {
+   "when": "total == 3",
+   "state": "c3"
+  },
+  {
+   "when": "total == 4",
+   "state": "c4"
+  },
+  {
+   "when": "total == 5",
+   "state": "c5"
+  },
+  {
+   "when": "total == 6",
+   "state": "c6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "c1",
+   "tone": "favorable",
+   "label": "Diffuse injury I",
+   "summary": "No visible intracranial pathology on this CT at this assessment.",
+   "range": "I",
+   "detail": "A normal CT does not exclude diffuse axonal injury."
+  },
+  {
+   "id": "c2",
+   "tone": "low",
+   "label": "Diffuse injury II",
+   "summary": "Cisterns present, shift 0–5 mm, no lesion >25 mL.",
+   "range": "II"
+  },
+  {
+   "id": "c3",
+   "tone": "moderate",
+   "label": "Diffuse injury III (swelling)",
+   "summary": "Cisterns compressed or absent, shift 0–5 mm, no lesion >25 mL.",
+   "range": "III"
+  },
+  {
+   "id": "c4",
+   "tone": "high",
+   "label": "Diffuse injury IV (shift)",
+   "summary": "Midline shift >5 mm, no lesion >25 mL.",
+   "range": "IV",
+   "detail": "Correlate with clinical status according to local protocol."
+  },
+  {
+   "id": "c5",
+   "tone": "high",
+   "label": "Evacuated mass lesion (V)",
+   "summary": "Any lesion surgically evacuated.",
+   "range": "V",
+   "detail": "Category reflects surgical management; correlate with clinical status."
+  },
+  {
+   "id": "c6",
+   "tone": "high",
+   "label": "Non-evacuated mass lesion (VI)",
+   "summary": "High- or mixed-density lesion >25 mL, not evacuated.",
+   "range": "VI",
+   "detail": "Correlate with clinical status according to local protocol."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A widely used CT classification in TBI research and prognostic models.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "The Rotterdam score adds epidural mass and IVH/tSAH and may discriminate better."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Category V depends on whether surgery was done, not only on imaging."
+  },
+  "Struggles with mixed lesion types.",
+  "Does not specify lesion type."
+ ],
+ "confounders": [
+  {
+   "factor": "CT timing",
+   "effect": "Lesions evolve after the first scan."
+  },
+  {
+   "factor": "Volume estimation",
+   "effect": "Affects the >25 mL threshold."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Lesion type.",
+  "Individual prognosis.",
+  "Whether surgery is appropriate."
+ ],
+ "guideSections": {
+  "what": "A six-category CT classification of TBI.",
+  "whenToUse": "Admission CT in TBI, for description and research.",
+  "howToPerform": "Record the findings; the category is derived in the standard order of precedence.",
+  "clinicalContext": "A descriptor and prognostic model input."
+ },
+ "sources": [
+  {
+   "citation": "Marshall LF, Marshall SB, Klauber MR, et al. A new classification of head injury based on computerized tomography. J Neurosurg. 1991;75(Suppl):S14-S20."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_evac",
+   "label": "Any lesion surgically evacuated",
+   "inputs": [
+    "evac"
+   ]
+  },
+  {
+   "id": "c_mass",
+   "label": "High- or mixed-density lesion >25 mL (not evacuated)",
+   "inputs": [
+    "mass"
+   ]
+  },
+  {
+   "id": "c_shift",
+   "label": "Midline shift greater than 5 mm",
+   "inputs": [
+    "shift"
+   ]
+  },
+  {
+   "id": "c_cisterns",
+   "label": "Basal cisterns",
+   "inputs": [
+    "cisterns"
+   ]
+  },
+  {
+   "id": "c_path",
+   "label": "Any visible intracranial pathology",
+   "inputs": [
+    "path"
+   ]
+  }
+ ]
+}

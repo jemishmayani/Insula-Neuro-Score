@@ -1,0 +1,116 @@
+{
+ "scoreId": "abcd2",
+ "cases": [
+  {
+   "name": "published example (3)",
+   "answers": {
+    "age": "1",
+    "bp": "0",
+    "clin": "1",
+    "dur": "1",
+    "dm": "no"
+   },
+   "expect": {
+    "total": 3,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "age 1 + BP 0 + speech 1 + 10 min 1 + no DM 0 = 3",
+    "source": "Worked example in ABCD² documentation"
+   }
+  },
+  {
+   "name": "minimum",
+   "answers": {
+    "age": "0",
+    "bp": "0",
+    "clin": "0",
+    "dur": "0",
+    "dm": "no"
+   },
+   "expect": {
+    "total": 0,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "boundary 4",
+   "answers": {
+    "age": "1",
+    "bp": "1",
+    "clin": "2",
+    "dur": "0",
+    "dm": "no"
+   },
+   "expect": {
+    "total": 4,
+    "state": "moderate"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1+2 = 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "boundary 6",
+   "answers": {
+    "age": "1",
+    "bp": "1",
+    "clin": "2",
+    "dur": "2",
+    "dm": "no"
+   },
+   "expect": {
+    "total": 6,
+    "state": "high",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1+2+2 = 6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "maximum",
+   "answers": {
+    "age": "1",
+    "bp": "1",
+    "clin": "2",
+    "dur": "2",
+    "dm": "yes"
+   },
+   "expect": {
+    "total": 7,
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1+2+2+1 = 7",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "missing",
+   "answers": {
+    "age": "1"
+   },
+   "expect": {
+    "status": "incomplete",
+    "missing": 4
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4 missing",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

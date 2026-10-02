@@ -1,0 +1,302 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "race scale",
+  "large vessel occlusion",
+  "lvo",
+  "prehospital"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring aphasia for left hemiparesis (use agnosia) or agnosia for right hemiparesis (use aphasia).",
+  "Scoring both aphasia and agnosia."
+ ],
+ "relatedScores": [
+  {
+   "id": "lams",
+   "relation": "Prehospital LVO scale"
+  },
+  {
+   "id": "nihss",
+   "relation": "Full stroke scale"
+  }
+ ],
+ "id": "race",
+ "name": "Rapid Arterial oCclusion Evaluation Scale",
+ "abbreviation": "RACE",
+ "category": "stroke",
+ "subcategory": "Prehospital large vessel occlusion screen",
+ "specialties": [
+  "Stroke",
+  "Emergency Medicine",
+  "Prehospital"
+ ],
+ "version": {
+  "label": "RACE (Pérez de la Ossa et al. 2014)",
+  "detail": "Five NIHSS-derived items, 0–9. Aphasia is scored for right hemiparesis; agnosia for left hemiparesis."
+ },
+ "purpose": "Prehospital estimation of the likelihood of large vessel occlusion in suspected stroke.",
+ "intendedPopulation": "Adults with suspected acute stroke, assessed by trained prehospital clinicians.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Large vessel occlusion screen",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Screening scale",
+  "message": "RACE estimates the likelihood of large vessel occlusion. Destination and treatment decisions follow regional protocols."
+ },
+ "inputDefinitions": [
+  {
+   "id": "face",
+   "type": "single",
+   "label": "Facial palsy",
+   "short": "Face",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent (symmetrical)",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Mild (slightly asymmetrical)",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Moderate to severe (completely asymmetrical)",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "arm",
+   "type": "single",
+   "label": "Arm motor function",
+   "short": "Arm",
+   "options": [
+    {
+     "value": "0",
+     "label": "Normal to mild (holds more than 10 s)",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Moderate (holds less than 10 s)",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Severe (cannot raise against gravity)",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "leg",
+   "type": "single",
+   "label": "Leg motor function",
+   "short": "Leg",
+   "options": [
+    {
+     "value": "0",
+     "label": "Normal to mild (holds more than 5 s)",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Moderate (holds less than 5 s)",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Severe (cannot raise against gravity)",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "gaze",
+   "type": "single",
+   "label": "Head and gaze deviation",
+   "short": "Gaze",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Present (eyes or head deviate to one side)",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "cortical",
+   "type": "single",
+   "label": "Aphasia (right hemiparesis) or agnosia (left hemiparesis)",
+   "short": "Aphasia/agnosia",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0,
+     "detail": "Follows both commands / recognises arm and its weakness."
+    },
+    {
+     "value": "1",
+     "label": "Moderate",
+     "points": 1,
+     "detail": "Follows one command / does not recognise arm or is unaware of weakness."
+    },
+    {
+     "value": "2",
+     "label": "Severe",
+     "points": 2,
+     "detail": "Follows neither command / does not recognise arm and is unaware of weakness."
+    }
+   ],
+   "help": "Right hemiparesis: two commands (close your eyes, make a fist). Left hemiparesis: 'Whose arm is this?' and 'Can you move your arm?'."
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 9
+  },
+  "display": "{total}",
+  "share": "RACE {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 4",
+   "state": "below"
+  },
+  {
+   "state": "above"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "below",
+   "tone": "informational",
+   "label": "Below the derivation cut-off",
+   "summary": "Score 0–4: below the ≥5 cut-off used in the derivation study.",
+   "range": "0–4",
+   "detail": "A lower score does not exclude stroke or large vessel occlusion.",
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "above",
+   "tone": "high",
+   "label": "At or above the derivation cut-off",
+   "summary": "Score 5–9: in the derivation study, RACE ≥5 identified large vessel occlusion with sensitivity 0.85.",
+   "range": "5–9",
+   "detail": "Integrate with the full assessment and the regional stroke pathway.",
+   "min": 5,
+   "max": 9
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Designed for prehospital use to estimate large vessel occlusion likelihood.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Posterior circulation occlusions may score low."
+  },
+  {
+   "text": "Re-assess on arrival; deficits can evolve during transport."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Does not distinguish ischaemic stroke from haemorrhage or mimics."
+  },
+  "Accuracy depends on training and setting.",
+  "Weighted toward anterior circulation deficits."
+ ],
+ "confounders": [
+  {
+   "factor": "Stroke mimics",
+   "effect": "Seizure, hypoglycaemia or migraine can produce scorable deficits."
+  },
+  {
+   "factor": "Pre-existing deficits",
+   "effect": "Old deficits raise the score."
+  },
+  {
+   "factor": "Reduced consciousness",
+   "effect": "Limits assessment of aphasia and agnosia."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Whether a vessel is actually occluded.",
+  "Haemorrhage versus ischaemia.",
+  "Eligibility for treatment."
+ ],
+ "guideSections": {
+  "what": "A five-item prehospital scale derived from NIHSS items to estimate large vessel occlusion likelihood.",
+  "whenToUse": "Prehospital assessment of suspected stroke within a regional protocol.",
+  "howToPerform": "Score facial palsy, arm and leg motor function, head and gaze deviation, and either aphasia (right hemiparesis) or agnosia (left hemiparesis). Sum to 0–9.",
+  "clinicalContext": "A screening scale; confirmation requires vascular imaging."
+ },
+ "sources": [
+  {
+   "citation": "Pérez de la Ossa N, Carrera D, Gorchs M, et al. Design and validation of a prehospital stroke scale to predict large arterial occlusion: the Rapid Arterial Occlusion Evaluation Scale. Stroke. 2014;45(1):87-91."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_face",
+   "label": "Facial palsy",
+   "inputs": [
+    "face"
+   ]
+  },
+  {
+   "id": "c_arm",
+   "label": "Arm motor function",
+   "inputs": [
+    "arm"
+   ]
+  },
+  {
+   "id": "c_leg",
+   "label": "Leg motor function",
+   "inputs": [
+    "leg"
+   ]
+  },
+  {
+   "id": "c_gaze",
+   "label": "Head and gaze deviation",
+   "inputs": [
+    "gaze"
+   ]
+  },
+  {
+   "id": "c_cortical",
+   "label": "Aphasia (right hemiparesis) or agnosia (left hemiparesis)",
+   "inputs": [
+    "cortical"
+   ]
+  }
+ ]
+}

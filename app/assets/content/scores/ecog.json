@@ -1,0 +1,237 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "ecog",
+  "who performance status",
+  "zubrod"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using patient-reported rather than clinician-assessed status without noting it."
+ ],
+ "relatedScores": [
+  {
+   "id": "kps",
+   "relation": "Alternative performance scale"
+  }
+ ],
+ "id": "ecog",
+ "name": "ECOG Performance Status",
+ "abbreviation": "ECOG",
+ "category": "oncology",
+ "subcategory": "Performance status",
+ "specialties": [
+  "Neuro-oncology",
+  "Oncology",
+  "Radiation Oncology"
+ ],
+ "version": {
+  "label": "ECOG Performance Status (Oken et al. 1982)",
+  "detail": "Grades 0–5."
+ },
+ "purpose": "Describes functional performance in patients with cancer.",
+ "intendedPopulation": "Adults with cancer.",
+ "resultPresentation": {
+  "type": "functional-status",
+  "typeLabel": "Performance status",
+  "meter": true
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Grade",
+   "short": "ECOG",
+   "options": [
+    {
+     "value": "0",
+     "label": "0: Fully active; no restriction",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "1: Restricted in strenuous activity; ambulatory and able to do light or sedentary work",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "2: Ambulatory and capable of self-care; unable to work; up and about more than 50% of waking hours",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "3: Limited self-care; confined to bed or chair more than 50% of waking hours",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "4: Completely disabled; no self-care; confined to bed or chair",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "5",
+     "label": "5: Dead",
+     "points": 5,
+     "code": "5"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "display": "ECOG {total}",
+  "share": "ECOG {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "g0"
+  },
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g0",
+   "tone": "favorable",
+   "label": "ECOG 0",
+   "summary": "Fully active at this assessment.",
+   "range": "0",
+   "detail": "Describes function, not disease extent.",
+   "min": 0,
+   "max": 0
+  },
+  {
+   "id": "g1",
+   "tone": "informational",
+   "label": "ECOG 1",
+   "summary": "Restricted in strenuous activity; ambulatory and able to do light or sedentary work.",
+   "range": "1",
+   "min": 1,
+   "max": 1
+  },
+  {
+   "id": "g2",
+   "tone": "informational",
+   "label": "ECOG 2",
+   "summary": "Ambulatory and capable of self-care; unable to work; up and about more than 50% of waking hours.",
+   "range": "2",
+   "min": 2,
+   "max": 2
+  },
+  {
+   "id": "g3",
+   "tone": "informational",
+   "label": "ECOG 3",
+   "summary": "Limited self-care; confined to bed or chair more than 50% of waking hours.",
+   "range": "3",
+   "min": 3,
+   "max": 3
+  },
+  {
+   "id": "g4",
+   "tone": "informational",
+   "label": "ECOG 4",
+   "summary": "Completely disabled; no self-care; confined to bed or chair.",
+   "range": "4",
+   "min": 4,
+   "max": 4
+  },
+  {
+   "id": "g5",
+   "tone": "informational",
+   "label": "ECOG 5",
+   "summary": "Dead.",
+   "range": "5",
+   "min": 5,
+   "max": 5
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The most widely used performance scale in oncology trials.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "KPS is an alternative; conversions are approximate."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Subjective, with inter-rater variability, particularly between grades 1 and 2."
+  },
+  "Reflects all causes of impairment."
+ ],
+ "confounders": [
+  {
+   "factor": "Comorbidity",
+   "effect": "Lowers performance independently of cancer."
+  },
+  {
+   "factor": "Acute reversible illness",
+   "effect": "Temporarily lowers performance."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Disease extent.",
+  "Treatment suitability on its own."
+ ],
+ "guideSections": {
+  "what": "A six-grade (0–5) performance scale.",
+  "whenToUse": "Describing functional performance in oncology.",
+  "howToPerform": "Select the grade that best matches current function.",
+  "clinicalContext": "One input to oncology decisions."
+ },
+ "sources": [
+  {
+   "citation": "Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol. 1982;5(6):649-655."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale (ECOG-ACRIN)",
+  "note": "Original wording paraphrased; no reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Grade",
+   "inputs": [
+    "grade"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,365 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "tokuhashi",
+  "spinal metastasis",
+  "spine metastases",
+  "prognosis"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using the original 1990 version weights.",
+  "Scoring vertebral metastases as 0 (at least one is present)."
+ ],
+ "relatedScores": [
+  {
+   "id": "tomita",
+   "relation": "Alternative prognostic score"
+  },
+  {
+   "id": "sins",
+   "relation": "Mechanical stability"
+  },
+  {
+   "id": "kps",
+   "relation": "Input"
+  },
+  {
+   "id": "frankel",
+   "relation": "Input"
+  }
+ ],
+ "id": "rtokuhashi",
+ "name": "Revised Tokuhashi Score",
+ "abbreviation": "Revised Tokuhashi",
+ "category": "oncology",
+ "subcategory": "Spinal metastasis prognosis",
+ "specialties": [
+  "Neurosurgery",
+  "Spine Surgery",
+  "Oncology",
+  "Radiation Oncology"
+ ],
+ "version": {
+  "label": "Revised Tokuhashi (Tokuhashi et al. 2005)",
+  "detail": "Six parameters, 0–15; prognostic groups 0–8 (<6 months), 9–11 (≥6 months), 12–15 (≥1 year). The original 1990 version (0–12) is different and not implemented."
+ },
+ "purpose": "Preoperative prognostic estimate for patients with metastatic spine tumours.",
+ "intendedPopulation": "Adults with spinal metastases.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Predicted survival group",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Group-level estimate",
+  "message": "Developed in the authors' surgical series; modern systemic therapies have changed survival for some primaries. Not a treatment decision."
+ },
+ "inputDefinitions": [
+  {
+   "id": "kps",
+   "type": "single",
+   "label": "General condition (KPS)",
+   "short": "General condition",
+   "options": [
+    {
+     "value": "0",
+     "label": "Poor (KPS 10–40)",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Moderate (KPS 50–70)",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Good (KPS 80–100)",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "extra",
+   "type": "single",
+   "label": "Extraspinal bone metastasis foci",
+   "short": "Extraspinal foci",
+   "options": [
+    {
+     "value": "0",
+     "label": "3 or more",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "1–2",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "None",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "vert",
+   "type": "single",
+   "label": "Metastases in the vertebral body",
+   "short": "Vertebral metastases",
+   "options": [
+    {
+     "value": "0",
+     "label": "3 or more",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "2",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "1",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "organ",
+   "type": "single",
+   "label": "Metastases to major internal organs",
+   "short": "Organ metastases",
+   "options": [
+    {
+     "value": "0",
+     "label": "Unremovable",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Removable",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "None",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "primary",
+   "type": "single",
+   "label": "Primary site",
+   "short": "Primary",
+   "options": [
+    {
+     "value": "p0",
+     "label": "Lung, osteosarcoma, stomach, bladder, oesophagus, pancreas",
+     "points": 0
+    },
+    {
+     "value": "p1",
+     "label": "Liver, gallbladder, unidentified",
+     "points": 1
+    },
+    {
+     "value": "p2",
+     "label": "Others",
+     "points": 2
+    },
+    {
+     "value": "p3",
+     "label": "Kidney, uterus",
+     "points": 3
+    },
+    {
+     "value": "p4",
+     "label": "Rectum",
+     "points": 4
+    },
+    {
+     "value": "p5",
+     "label": "Thyroid, breast, prostate, carcinoid tumour",
+     "points": 5
+    }
+   ]
+  },
+  {
+   "id": "palsy",
+   "type": "single",
+   "label": "Spinal cord palsy",
+   "short": "Palsy",
+   "options": [
+    {
+     "value": "0",
+     "label": "Complete (Frankel A, B)",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Incomplete (Frankel C, D)",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "None (Frankel E)",
+     "points": 2
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 15
+  },
+  "display": "{total}",
+  "share": "Revised Tokuhashi {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 8",
+   "state": "short"
+  },
+  {
+   "when": "total <= 11",
+   "state": "mid"
+  },
+  {
+   "state": "long"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "short",
+   "tone": "high",
+   "label": "Predicted <6 months",
+   "summary": "Score 0–8: predicted survival under 6 months in the authors' series.",
+   "range": "0–8",
+   "detail": "Group-level estimate; integrate with oncology input, current systemic therapy options and patient goals.",
+   "min": 0,
+   "max": 8
+  },
+  {
+   "id": "mid",
+   "tone": "moderate",
+   "label": "Predicted ≥6 months",
+   "summary": "Score 9–11: predicted survival of 6 months or more in the authors' series.",
+   "range": "9–11",
+   "detail": "Group-level estimate.",
+   "min": 9,
+   "max": 11
+  },
+  {
+   "id": "long",
+   "tone": "low",
+   "label": "Predicted ≥1 year",
+   "summary": "Score 12–15: predicted survival of 1 year or more in the authors' series.",
+   "range": "12–15",
+   "detail": "Group-level estimate.",
+   "min": 12,
+   "max": 15
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A widely cited prognostic score for spinal metastases.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "importance": "major",
+   "text": "Survival for some primaries (e.g. lung cancer with targeted therapy) has improved since derivation; the primary-site weights may underestimate it."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Derived before many modern systemic therapies."
+  },
+  "Accuracy varies between primary tumour types.",
+  "Counting metastases depends on imaging extent."
+ ],
+ "confounders": [
+  {
+   "factor": "Imaging completeness",
+   "effect": "Affects metastasis counts."
+  },
+  {
+   "factor": "Reversible deficits",
+   "effect": "Affect palsy and KPS."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Mechanical stability (see SINS).",
+  "Response to modern systemic therapy.",
+  "Which treatment to choose."
+ ],
+ "guideSections": {
+  "what": "A six-parameter prognostic score for spinal metastases, 0–15.",
+  "whenToUse": "Preoperative prognostic estimation in spinal metastatic disease.",
+  "howToPerform": "Score each parameter and sum.",
+  "clinicalContext": "One input to multidisciplinary decisions alongside SINS, neurology and oncology."
+ },
+ "sources": [
+  {
+   "citation": "Tokuhashi Y, Matsuzaki H, Oda H, Oshima M, Ryu J. A revised scoring system for preoperative evaluation of metastatic spine tumor prognosis. Spine. 2005;30(19):2186-2191."
+  }
+ ],
+ "licensing": {
+  "status": "Published score, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_kps",
+   "label": "General condition (KPS)",
+   "inputs": [
+    "kps"
+   ]
+  },
+  {
+   "id": "c_extra",
+   "label": "Extraspinal bone metastasis foci",
+   "inputs": [
+    "extra"
+   ]
+  },
+  {
+   "id": "c_vert",
+   "label": "Metastases in the vertebral body",
+   "inputs": [
+    "vert"
+   ]
+  },
+  {
+   "id": "c_organ",
+   "label": "Metastases to major internal organs",
+   "inputs": [
+    "organ"
+   ]
+  },
+  {
+   "id": "c_primary",
+   "label": "Primary site",
+   "inputs": [
+    "primary"
+   ]
+  },
+  {
+   "id": "c_palsy",
+   "label": "Spinal cord palsy",
+   "inputs": [
+    "palsy"
+   ]
+  }
+ ]
+}

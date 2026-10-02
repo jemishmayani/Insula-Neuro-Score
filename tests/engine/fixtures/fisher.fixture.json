@@ -1,0 +1,50 @@
+{
+ "scoreId": "fisher",
+ "cases": [
+  {
+   "name": "grade 1",
+   "answers": {
+    "grade": "1"
+   },
+   "expect": {
+    "total": 1,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no blood",
+    "source": "Fisher et al. 1980"
+   }
+  },
+  {
+   "name": "grade 3 (peak vasospasm)",
+   "answers": {
+    "grade": "3"
+   },
+   "expect": {
+    "total": 3,
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "thick/localised",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 4 lower than 3",
+   "answers": {
+    "grade": "4"
+   },
+   "expect": {
+    "total": 4,
+    "tone": "moderate"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "non-monotonic",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -1,0 +1,231 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "frankel grade",
+  "spinal cord injury",
+  "sci"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Grading during spinal shock without reassessment.",
+  "Treating Frankel and AIS grades as interchangeable."
+ ],
+ "relatedScores": [
+  {
+   "id": "ais",
+   "relation": "Current standard (under review)"
+  },
+  {
+   "id": "rtokuhashi",
+   "relation": "Uses Frankel for palsy"
+  }
+ ],
+ "id": "frankel",
+ "name": "Frankel Classification",
+ "abbreviation": "Frankel",
+ "category": "spine",
+ "subcategory": "Spinal cord injury grade",
+ "specialties": [
+  "Neurosurgery",
+  "Spine Surgery",
+  "Rehabilitation"
+ ],
+ "version": {
+  "label": "Frankel grade (Frankel et al. 1969)",
+  "detail": "Grades A–E. Superseded for standard classification by the ASIA Impairment Scale (ISNCSCI), which is not implemented pending review."
+ },
+ "purpose": "Simple grading of neurological function below a spinal cord injury.",
+ "intendedPopulation": "Patients with spinal cord injury.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Spinal cord injury grade",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Historical classification",
+  "message": "The ASIA Impairment Scale (ISNCSCI) is the current standard. Frankel grades are still used in older literature and some scores, such as Tokuhashi."
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Neurological function below the injury",
+   "short": "Frankel",
+   "options": [
+    {
+     "value": "1",
+     "label": "A: Complete",
+     "points": 1,
+     "code": "A",
+     "detail": "No motor or sensory function below the level."
+    },
+    {
+     "value": "2",
+     "label": "B: Sensory only",
+     "points": 2,
+     "code": "B",
+     "detail": "Some sensation preserved; no motor function below the level."
+    },
+    {
+     "value": "3",
+     "label": "C: Motor useless",
+     "points": 3,
+     "code": "C",
+     "detail": "Some motor function preserved, of no practical use."
+    },
+    {
+     "value": "4",
+     "label": "D: Motor useful",
+     "points": 4,
+     "code": "D",
+     "detail": "Useful motor function below the level."
+    },
+    {
+     "value": "5",
+     "label": "E: Recovery",
+     "points": 5,
+     "code": "E",
+     "detail": "Normal motor and sensory function; abnormal reflexes may persist."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Grade {grade_code}",
+  "share": "Frankel {grade_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g1",
+   "tone": "high",
+   "label": "Grade A: complete",
+   "summary": "No motor or sensory function below the level.",
+   "range": "A",
+   "detail": "Assess for spinal shock; reassess serially according to local protocol."
+  },
+  {
+   "id": "g2",
+   "tone": "high",
+   "label": "Grade B: sensory only",
+   "summary": "Sensory but no motor function below the level.",
+   "range": "B",
+   "detail": "Reassess serially according to local protocol."
+  },
+  {
+   "id": "g3",
+   "tone": "moderate",
+   "label": "Grade C: motor useless",
+   "summary": "Some motor function, not of practical use.",
+   "range": "C"
+  },
+  {
+   "id": "g4",
+   "tone": "mild",
+   "label": "Grade D: motor useful",
+   "summary": "Useful motor function below the level.",
+   "range": "D"
+  },
+  {
+   "id": "g5",
+   "tone": "favorable",
+   "label": "Grade E: recovery",
+   "summary": "Normal motor and sensory function at this assessment.",
+   "range": "E",
+   "detail": "Abnormal reflexes may persist."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The first widely used spinal cord injury grading system.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Report the neurological level alongside the grade."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "'Motor useful' and 'motor useless' are not precisely defined, so grading is subjective."
+  },
+  "Does not define the neurological level or sacral sparing.",
+  "Superseded by ISNCSCI/AIS."
+ ],
+ "confounders": [
+  {
+   "factor": "Spinal shock",
+   "effect": "Can make an incomplete injury appear complete."
+  },
+  {
+   "factor": "Sedation or reduced consciousness",
+   "effect": "Limits examination."
+  },
+  {
+   "factor": "Associated injuries",
+   "effect": "Limit motor testing."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The neurological level.",
+  "Sacral sparing.",
+  "Prognosis on its own."
+ ],
+ "guideSections": {
+  "what": "A five-grade (A–E) classification of function below a spinal cord injury.",
+  "whenToUse": "Where Frankel grading is required, e.g. older protocols or scores.",
+  "howToPerform": "Assess motor and sensory function below the level and choose the grade.",
+  "clinicalContext": "ISNCSCI/AIS is the current standard."
+ },
+ "sources": [
+  {
+   "citation": "Frankel HL, Hancock DO, Hyslop G, et al. The value of postural reduction in the initial management of closed injuries of the spine with paraplegia and tetraplegia. Paraplegia. 1969;7(3):179-192."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Neurological function below the injury",
+   "inputs": [
+    "grade"
+   ]
+  }
+ ]
+}

@@ -79,6 +79,7 @@
     if (pres && PRESENTATIONS[pres.type]) {
       var allowed = PRESENTATIONS[pres.type].tones;
       (score.resultStates || []).forEach(function (st) {
+        if (st.tone === "incomplete" || st.tone === "not-interpretable") return;   // status markers, valid for every type
         if (allowed.indexOf(st.tone) < 0) e.push("state " + st.id + ": tone '" + st.tone + "' is not used for " + pres.type + " results (allowed: " + allowed.join(", ") + ")");
       });
     }

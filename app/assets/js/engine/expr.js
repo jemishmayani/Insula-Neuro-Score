@@ -26,6 +26,8 @@
     clamp: function (x, a, b) { return isNull(x) ? null : Math.max(a, Math.min(b, x)); },
     between: function (x, a, b) { return !isNull(x) && x >= a && x <= b; },
     isnull: function (x) { return isNull(x); },
+    /* largest(k, a, b, ...) → k-th largest value (1-based); null if any value is null. Used by ISS. */
+    largest: function (k) { var a = [].slice.call(arguments, 1); if (a.some(isNull) || k < 1 || k > a.length) return null; return a.sort(function (x, y) { return y - x; })[k - 1]; },
     coalesce: function (x, d) { return isNull(x) ? d : x; },
     roman: function (n) { return ["0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][n] || String(n); },
     signed: function (n) { return isNull(n) ? "" : (n > 0 ? "+" + n : String(n)); },

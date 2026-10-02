@@ -1,0 +1,237 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "los angeles",
+  "large vessel occlusion",
+  "lvo",
+  "prehospital"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring the stronger side.",
+  "Not testing grip separately from arm drift."
+ ],
+ "relatedScores": [
+  {
+   "id": "race",
+   "relation": "Prehospital LVO scale"
+  },
+  {
+   "id": "nihss",
+   "relation": "Full stroke scale"
+  }
+ ],
+ "id": "lams",
+ "name": "Los Angeles Motor Scale",
+ "abbreviation": "LAMS",
+ "category": "stroke",
+ "subcategory": "Prehospital large vessel occlusion screen",
+ "specialties": [
+  "Stroke",
+  "Emergency Medicine",
+  "Prehospital"
+ ],
+ "version": {
+  "label": "LAMS (Llanes et al. 2004)",
+  "detail": "Three motor items, 0–5. The ≥4 association with large arterial occlusion is from Nazliel et al. 2008."
+ },
+ "purpose": "Brief prehospital stroke severity scale.",
+ "intendedPopulation": "Adults with suspected acute stroke assessed in the field or emergency department.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Motor severity / LVO screen",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Screening scale",
+  "message": "LAMS describes motor severity. Destination and treatment decisions follow regional protocols."
+ },
+ "inputDefinitions": [
+  {
+   "id": "face",
+   "type": "single",
+   "label": "Facial droop",
+   "short": "Face",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "arm",
+   "type": "single",
+   "label": "Arm drift",
+   "short": "Arm",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Drifts down",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Falls rapidly",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "grip",
+   "type": "single",
+   "label": "Grip strength",
+   "short": "Grip",
+   "options": [
+    {
+     "value": "0",
+     "label": "Normal",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Weak grip",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "No grip",
+     "points": 2
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "display": "{total}",
+  "share": "LAMS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 3",
+   "state": "below"
+  },
+  {
+   "state": "above"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "below",
+   "tone": "informational",
+   "label": "Below the ≥4 cut-off",
+   "summary": "Score 0–3.",
+   "range": "0–3",
+   "detail": "A lower score does not exclude large vessel occlusion.",
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "above",
+   "tone": "high",
+   "label": "At or above the ≥4 cut-off",
+   "summary": "Score 4–5: associated with persisting large arterial occlusion (Nazliel et al. 2008).",
+   "range": "4–5",
+   "detail": "Integrate with the full assessment and the regional stroke pathway.",
+   "min": 4,
+   "max": 5
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A motor-only severity scale suited to rapid field assessment.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Language, gaze and neglect are not assessed."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Motor items only: cortical signs and posterior circulation deficits are not captured."
+  },
+  "Does not distinguish ischaemia from haemorrhage or mimics."
+ ],
+ "confounders": [
+  {
+   "factor": "Stroke mimics",
+   "effect": "Can produce motor deficits."
+  },
+  {
+   "factor": "Pre-existing weakness",
+   "effect": "Raises the score."
+  },
+  {
+   "factor": "Reduced cooperation",
+   "effect": "Limits grip and drift testing."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Vessel occlusion status.",
+  "Haemorrhage versus ischaemia.",
+  "Eligibility for treatment."
+ ],
+ "guideSections": {
+  "what": "A three-item motor scale (facial droop, arm drift, grip) from 0 to 5.",
+  "whenToUse": "Prehospital or emergency assessment of suspected stroke.",
+  "howToPerform": "Score the weaker side for each item and sum.",
+  "clinicalContext": "A screening scale; confirmation requires vascular imaging."
+ },
+ "sources": [
+  {
+   "citation": "Llanes JN, Kidwell CS, Starkman S, Leary MC, Eckstein M, Saver JL. The Los Angeles Motor Scale (LAMS): a new measure to characterize stroke severity in the field. Prehosp Emerg Care. 2004;8(1):46-50."
+  },
+  {
+   "citation": "Nazliel B, Starkman S, Liebeskind DS, et al. A brief prehospital stroke severity scale identifies ischemic stroke patients harboring persisting large arterial occlusions. Stroke. 2008;39(8):2264-2267."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_face",
+   "label": "Facial droop",
+   "inputs": [
+    "face"
+   ]
+  },
+  {
+   "id": "c_arm",
+   "label": "Arm drift",
+   "inputs": [
+    "arm"
+   ]
+  },
+  {
+   "id": "c_grip",
+   "label": "Grip strength",
+   "inputs": [
+    "grip"
+   ]
+  }
+ ]
+}

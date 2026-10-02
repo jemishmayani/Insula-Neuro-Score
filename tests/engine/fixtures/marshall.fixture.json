@@ -1,0 +1,133 @@
+{
+ "scoreId": "marshall",
+ "cases": [
+  {
+   "name": "no pathology → I",
+   "answers": {
+    "evac": "no",
+    "mass": "no",
+    "shift": "no",
+    "cisterns": "0",
+    "path": "no"
+   },
+   "expect": {
+    "total": 1,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "pathology, cisterns present → II",
+   "answers": {
+    "evac": "no",
+    "mass": "no",
+    "shift": "no",
+    "cisterns": "0",
+    "path": "yes"
+   },
+   "expect": {
+    "total": 2
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "II",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "cisterns compressed → III",
+   "answers": {
+    "evac": "no",
+    "mass": "no",
+    "shift": "no",
+    "cisterns": "1",
+    "path": "yes"
+   },
+   "expect": {
+    "total": 3
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "shift >5 → IV (precedes cisterns)",
+   "answers": {
+    "evac": "no",
+    "mass": "no",
+    "shift": "yes",
+    "cisterns": "1",
+    "path": "yes"
+   },
+   "expect": {
+    "total": 4
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IV",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "non-evacuated mass → VI (precedes shift)",
+   "answers": {
+    "evac": "no",
+    "mass": "yes",
+    "shift": "yes",
+    "cisterns": "1",
+    "path": "yes"
+   },
+   "expect": {
+    "total": 6
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "VI",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "evacuated → V (highest precedence)",
+   "answers": {
+    "evac": "yes",
+    "mass": "yes",
+    "shift": "yes",
+    "cisterns": "1",
+    "path": "yes"
+   },
+   "expect": {
+    "total": 5
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "V",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "inconsistent inputs warn",
+   "answers": {
+    "evac": "no",
+    "mass": "no",
+    "shift": "yes",
+    "cisterns": "0",
+    "path": "no"
+   },
+   "expect": {
+    "total": 4,
+    "warnings": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "shift but 'no pathology'",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

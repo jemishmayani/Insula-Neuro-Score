@@ -1,0 +1,67 @@
+{
+ "scoreId": "mfisher",
+ "cases": [
+  {
+   "name": "grade 0",
+   "answers": {
+    "sah": "0",
+    "ivh": "no"
+   },
+   "expect": {
+    "total": 0,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "none",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "thin + IVH",
+   "answers": {
+    "sah": "1",
+    "ivh": "yes"
+   },
+   "expect": {
+    "total": 2
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "thick + IVH",
+   "answers": {
+    "sah": "2",
+    "ivh": "yes"
+   },
+   "expect": {
+    "total": 4,
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "IVH only undefined",
+   "answers": {
+    "sah": "0",
+    "ivh": "yes"
+   },
+   "expect": {
+    "display": "Not defined"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "undefined",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

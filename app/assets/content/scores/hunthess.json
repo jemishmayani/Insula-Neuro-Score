@@ -1,0 +1,254 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "hunt hess",
+  "sah grade",
+  "subarachnoid"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing modified and unmodified use without stating which."
+ ],
+ "relatedScores": [
+  {
+   "id": "wfns",
+   "relation": "GCS-based SAH grade"
+  },
+  {
+   "id": "mfisher",
+   "relation": "CT grade"
+  }
+ ],
+ "id": "hunthess",
+ "name": "Hunt and Hess Scale",
+ "abbreviation": "Hunt & Hess",
+ "category": "sah",
+ "subcategory": "Clinical grade",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care"
+ ],
+ "version": {
+  "label": "Hunt & Hess 1968 (original, with modifier)",
+  "detail": "Serious systemic disease or severe arteriographic vasospasm moves the grade one level worse (maximum V). Many units omit the modifier; this implementation applies it only when selected."
+ },
+ "purpose": "Clinical grading of aneurysmal subarachnoid haemorrhage.",
+ "intendedPopulation": "Patients with aneurysmal subarachnoid haemorrhage.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Clinical grade",
+  "meter": true
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Clinical presentation",
+   "short": "Clinical grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "Asymptomatic, or minimal headache and slight neck stiffness",
+     "points": 1,
+     "code": "I"
+    },
+    {
+     "value": "2",
+     "label": "Moderate to severe headache, neck stiffness; no deficit other than cranial nerve palsy",
+     "points": 2,
+     "code": "II"
+    },
+    {
+     "value": "3",
+     "label": "Drowsiness, confusion, or mild focal deficit",
+     "points": 3,
+     "code": "III"
+    },
+    {
+     "value": "4",
+     "label": "Stupor, moderate to severe hemiparesis; possible early decerebrate rigidity",
+     "points": 4,
+     "code": "IV"
+    },
+    {
+     "value": "5",
+     "label": "Deep coma, decerebrate rigidity, moribund appearance",
+     "points": 5,
+     "code": "V"
+    }
+   ]
+  },
+  {
+   "id": "mod",
+   "type": "single",
+   "label": "Serious systemic disease or severe arteriographic vasospasm",
+   "short": "Modifier",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ],
+   "help": "Original examples: hypertension, diabetes, severe arteriosclerosis, chronic pulmonary disease."
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "min(5, grade + mod)",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Grade {roman(total)}",
+  "share": "Hunt & Hess Grade {roman(total)}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g1",
+   "tone": "low",
+   "label": "Grade I",
+   "summary": "Least severe clinical grade.",
+   "range": "I",
+   "min": 1,
+   "max": 1
+  },
+  {
+   "id": "g2",
+   "tone": "mild",
+   "label": "Grade II",
+   "summary": "Headache and meningism without focal deficit (cranial nerve palsy allowed).",
+   "range": "II",
+   "min": 2,
+   "max": 2
+  },
+  {
+   "id": "g3",
+   "tone": "moderate",
+   "label": "Grade III",
+   "summary": "Drowsiness, confusion or mild focal deficit.",
+   "range": "III",
+   "min": 3,
+   "max": 3
+  },
+  {
+   "id": "g4",
+   "tone": "high",
+   "label": "Grade IV",
+   "summary": "Commonly grouped as poor grade (IV–V).",
+   "range": "IV",
+   "detail": "Assess for hydrocephalus, seizures and other reversible causes according to local protocol.",
+   "min": 4,
+   "max": 4
+  },
+  {
+   "id": "g5",
+   "tone": "high",
+   "label": "Grade V",
+   "summary": "Commonly grouped as poor grade (IV–V).",
+   "range": "V",
+   "detail": "Assess for hydrocephalus, seizures and other reversible causes according to local protocol.",
+   "min": 5,
+   "max": 5
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A long-standing clinical grading scale for aneurysmal SAH.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "mod == 1",
+   "importance": "major",
+   "text": "The grade includes the original systemic disease/vasospasm modifier; state this when reporting."
+  },
+  {
+   "text": "Grade can change after treatment of hydrocephalus or seizures; record timing."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Subjective descriptors; modest inter-rater reliability."
+  },
+  "The modifier is applied inconsistently between centres."
+ ],
+ "confounders": [
+  {
+   "factor": "Acute hydrocephalus",
+   "effect": "Worsens grade reversibly."
+  },
+  {
+   "factor": "Post-ictal state or sedation",
+   "effect": "Depresses consciousness."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Vasospasm or delayed cerebral ischaemia risk.",
+  "Aneurysm characteristics.",
+  "Treatment choice."
+ ],
+ "guideSections": {
+  "what": "A five-grade clinical classification of aneurysmal SAH.",
+  "whenToUse": "Admission grading and communication.",
+  "howToPerform": "Choose the best-fitting description; apply the modifier only if using the original version.",
+  "clinicalContext": "Grades IV–V are commonly termed poor grade."
+ },
+ "sources": [
+  {
+   "citation": "Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Clinical presentation",
+   "inputs": [
+    "grade"
+   ]
+  },
+  {
+   "id": "c_mod",
+   "label": "Serious systemic disease or severe arteriographic vasospasm",
+   "inputs": [
+    "mod"
+   ]
+  }
+ ]
+}

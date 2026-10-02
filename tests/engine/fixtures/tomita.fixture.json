@@ -1,0 +1,54 @@
+{
+ "scoreId": "tomita",
+ "cases": [
+  {
+   "name": "minimum 2",
+   "answers": {
+    "primary": "1",
+    "visceral": "0",
+    "bone": "1"
+   },
+   "expect": {
+    "total": 2
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+0+1 = 2",
+    "source": "Tomita et al. 2001"
+   }
+  },
+  {
+   "name": "maximum 10",
+   "answers": {
+    "primary": "4",
+    "visceral": "4",
+    "bone": "2"
+   },
+   "expect": {
+    "total": 10
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4+4+2 = 10",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "intermediate 6",
+   "answers": {
+    "primary": "2",
+    "visceral": "2",
+    "bone": "2"
+   },
+   "expect": {
+    "total": 6,
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+2+2 = 6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

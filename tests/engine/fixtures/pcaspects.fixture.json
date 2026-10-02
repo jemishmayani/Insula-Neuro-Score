@@ -1,0 +1,79 @@
+{
+ "scoreId": "pcaspects",
+ "cases": [
+  {
+   "name": "no early change",
+   "answers": {
+    "regions": [
+     "none"
+    ]
+   },
+   "expect": {
+    "total": 10,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10 − 0 = 10",
+    "source": "Puetz et al. 2008"
+   }
+  },
+  {
+   "name": "pons only (2 points)",
+   "answers": {
+    "regions": [
+     "po"
+    ]
+   },
+   "expect": {
+    "total": 8
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10 − 2 = 8",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "pons + midbrain + left thalamus",
+   "answers": {
+    "regions": [
+     "po",
+     "mb",
+     "lt"
+    ]
+   },
+   "expect": {
+    "total": 5
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10 − (2+2+1) = 5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "all regions",
+   "answers": {
+    "regions": [
+     "lt",
+     "rt",
+     "lc",
+     "rc",
+     "lp",
+     "rp",
+     "mb",
+     "po"
+    ]
+   },
+   "expect": {
+    "total": 0
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10 − 10 = 0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

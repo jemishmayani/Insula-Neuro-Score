@@ -1,0 +1,122 @@
+{
+ "scoreId": "rts",
+ "cases": [
+  {
+   "name": "all normal",
+   "answers": {
+    "gcs": 15,
+    "sbp": 120,
+    "rr": 16
+   },
+   "expect": {
+    "total": 7.8408,
+    "state": "full",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0.9368×4 + 0.7326×4 + 0.2908×4 = 7.8408",
+    "source": "Champion et al. 1989"
+   }
+  },
+  {
+   "name": "GCS 8, SBP 70, RR 32",
+   "answers": {
+    "gcs": 8,
+    "sbp": 70,
+    "rr": 32
+   },
+   "expect": {
+    "total": 4.2112,
+    "state": "mid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "codes 2,2,3: 1.8736 + 1.4652 + 0.8724 = 4.2112",
+    "source": "Champion et al. 1989"
+   }
+  },
+  {
+   "name": "all zero codes",
+   "answers": {
+    "gcs": 3,
+    "sbp": 0,
+    "rr": 0
+   },
+   "expect": {
+    "total": 0,
+    "state": "low4",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "SBP 89 boundary (code 3)",
+   "answers": {
+    "gcs": 15,
+    "sbp": 89,
+    "rr": 16
+   },
+   "expect": {
+    "total": 7.1082
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3.7472 + 0.7326×3 + 1.1632 = 7.1082",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "SBP 90 boundary (code 4)",
+   "answers": {
+    "gcs": 15,
+    "sbp": 90,
+    "rr": 16
+   },
+   "expect": {
+    "total": 7.8408
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "code 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "RR 30 (code 3)",
+   "answers": {
+    "gcs": 15,
+    "sbp": 120,
+    "rr": 30
+   },
+   "expect": {
+    "total": 7.55
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3.7472 + 2.9304 + 0.2908×3 = 7.5500",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "decimal GCS invalid",
+   "answers": {
+    "gcs": 14.5,
+    "sbp": 120,
+    "rr": 16
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "GCS must be an integer",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

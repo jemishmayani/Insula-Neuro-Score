@@ -94,7 +94,11 @@
     if (d < 172800) return "yesterday"; return new Date(at).toLocaleDateString(undefined, { day: "numeric", month: "short" });
   }
   var placeholderBadge = function () { return UI.StatusBadge({ tone: "neutral", label: "Placeholder", icon: false }); };
-  function badgeFor(s) { return s.status === "implemented" ? UI.StatusBadge({ tone: "primary", label: "Calculator", icon: false }) : placeholderBadge(); }
+  function badgeFor(s) {
+    if (s.status === "implemented") return UI.StatusBadge({ tone: "primary", label: "Calculator", icon: false });
+    if (s.status === "review") return UI.StatusBadge({ tone: "warning", label: "Under review", icon: false });
+    return placeholderBadge();
+  }
   function sub(s) { return s.name === s.abbreviation ? s.summary : s.name; }
 
   /* ---------------- theme ---------------- */
@@ -203,7 +207,7 @@
     var primaryTab = kind === "guide" ? "guide" : "calculate", altTab = primaryTab === "guide" ? "calculate" : "guide";
     var meta = o.time ? '<span class="row-meta">' + esc(o.time) + "</span>" : "";
     var main = '<a class="open" href="#/' + primaryTab + "/s/" + s.id + '" data-nav><span class="row-icon" aria-hidden="true">' + UI.icon(primaryTab === "guide" ? "guide" : "calculate") + '</span><span class="text"><span class="title">' + esc(s.abbreviation) +
-      (s.status !== "implemented" ? " " + placeholderBadge() : "") + '</span><span class="sub">' + esc(sub(s)) + "</span>" + meta + "</span></a>";
+      (s.status !== "implemented" ? " " + badgeFor(s) : "") + '</span><span class="sub">' + esc(sub(s)) + "</span>" + meta + "</span></a>";
     var tail;
     if (o.edit) {
       tail = UI.IconButton({ icon: "up", label: "Move " + s.abbreviation + " up", act: "home-move", disabled: o.index === 0, data: { key: o.key, index: o.index, delta: -1 } }) +
@@ -308,7 +312,7 @@
     var fk = favKey(tab);
     var st = Store.get(), fav = st[fk].indexOf(id) >= 0, prio = st.priorityScores.indexOf(id) >= 0, c = category(s.category);
     var implemented = s.status === "implemented";
-    var badge = implemented ? UI.StatusBadge({ tone: "warning", label: "Pending clinical review", icon: false }) : placeholderBadge();
+    var badge = implemented ? UI.StatusBadge({ tone: "warning", label: "Pending clinical review", icon: false }) : badgeFor(s);
     var head = '<div class="detail-head"><p class="abbr">' + esc(s.abbreviation) + '</p><p class="name">' + esc(s.name) + '</p><div class="badges">' + badge +
       '<a href="#/' + tab + "/c/" + c.id + '" data-nav>' + esc(c.name) + "</a>" + '<span id="version-label"></span></div></div>';
     var toggle = '<nav class="segmented" aria-label="Score view" style="margin-top:var(--space-4)">' +
@@ -346,16 +350,19 @@
   }
   function calcShell(s) {
     var rows = ""; for (var i = 1; i <= 3; i++) rows += '<div class="row"><span class="dot" aria-hidden="true"></span>Component ' + i + " (pending verification)</div>";
-    return '<div class="section">' + UI.WarningBanner({ title: "Calculator not available yet", message: "This is a placeholder in the app shell. Scoring criteria are added only after the published version, sources and licensing are verified." }) + "</div>" +
+    var why = s.status === "review" ? UI.WarningBanner({ title: "Under review: " + (s.reviewCategory || "pending"), message: (s.reviewReason || "") + " The calculator is not available until this is resolved." })
+      : UI.WarningBanner({ title: "Calculator not available yet", message: "This is a placeholder in the app shell. Scoring criteria are added only after the published version, sources and licensing are verified." });
+    return '<div class="section">' + why + "</div>" +
       '<div class="detail-grid two"><div>' + UI.Section({ id: "inputs", title: "Inputs", body: '<div class="input-shell" aria-label="Input placeholders">' + rows + "</div>" }) + "</div>" +
       '<div class="aside">' + UI.Section({ id: "result", title: "Result", body: UI.ResultCard({ tone: "incomplete", label: "Not available", value: "–", meta: s.abbreviation + " · placeholder", summary: "No calculation in this build." }) +
         '<div class="btn-row" style="margin-top:var(--space-3)">' + UI.SecondaryButton({ label: "Reset", icon: "reset", disabled: true }) +
         UI.SecondaryButton({ label: "Open guide", icon: "guide", href: "#/guide/s/" + s.id, replace: true }) + "</div>" }) + "</div></div>";
   }
   function guideShell(s) {
+    var reviewNote = s.status === "review" ? '<div class="section">' + UI.WarningBanner({ title: "Under review: " + (s.reviewCategory || "pending"), message: s.reviewReason || "" }) + "</div>" : "";
     var toc = '<nav class="toc" aria-label="Guide sections">' + GUIDE_SECTIONS.map(function (t, i) { return '<a href="#" data-jump="g' + (i + 1) + '">' + (i + 1) + ". " + esc(t.split(" / ")[0]) + "</a>"; }).join("") + "</nav>";
     var cards = GUIDE_SECTIONS.map(function (t, i) {
-      return UI.SectionCard({ id: "g" + (i + 1), number: i + 1, title: t, body: '<p class="lede" style="margin:0">Content pending verification.</p><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div>' });
+      return reviewNote + UI.SectionCard({ id: "g" + (i + 1), number: i + 1, title: t, body: '<p class="lede" style="margin:0">Content pending verification.</p><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div>' });
     }).join("");
     return '<div class="section">' + UI.PrimaryButton({ label: "Calculate this score →", icon: "calculate", href: "#/calculate/s/" + s.id, replace: true, block: true }) + "</div>" +
       '<div class="section">' + UI.InfoBanner({ title: "Guide content pending", message: "Every guide follows the same 15-section structure shown below." }) + "</div>" +
@@ -419,7 +426,7 @@
       UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' +
         UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
         (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
-      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.6.0 (Phase 5: personalized Home)</p>' +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.7.0 (Phase 6: score library)</p>' +
         '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
         UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
     paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });

@@ -1,0 +1,96 @@
+{
+ "scoreId": "wfns",
+ "cases": [
+  {
+   "name": "GCS 15 no deficit",
+   "answers": {
+    "gcs": 15,
+    "deficit": "no"
+   },
+   "expect": {
+    "display": "Grade I"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "GCS 15 with deficit undefined",
+   "answers": {
+    "gcs": 15,
+    "deficit": "yes"
+   },
+   "expect": {
+    "display": "Not defined",
+    "tone": "incomplete"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "undefined in 1988 scale",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "GCS 13 with deficit",
+   "answers": {
+    "gcs": 13,
+    "deficit": "yes"
+   },
+   "expect": {
+    "display": "Grade III"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "GCS 7",
+   "answers": {
+    "gcs": 7,
+    "deficit": "no"
+   },
+   "expect": {
+    "display": "Grade IV"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "7–12 = IV",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "GCS 6",
+   "answers": {
+    "gcs": 6,
+    "deficit": "yes"
+   },
+   "expect": {
+    "display": "Grade V"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3–6 = V",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "GCS 16 invalid",
+   "answers": {
+    "gcs": 16,
+    "deficit": "no"
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "range 3–15",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

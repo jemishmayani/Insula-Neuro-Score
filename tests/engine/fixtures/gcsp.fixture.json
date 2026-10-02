@@ -1,0 +1,136 @@
+{
+ "scoreId": "gcsp",
+ "cases": [
+  {
+   "name": "GCS 15, both reactive",
+   "answers": {
+    "e": "4",
+    "v": "5",
+    "m": "6",
+    "prs": "0"
+   },
+   "expect": {
+    "total": 15,
+    "state": "none",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "15 − 0 = 15",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "GCS 15, one unreactive",
+   "answers": {
+    "e": "4",
+    "v": "5",
+    "m": "6",
+    "prs": "1"
+   },
+   "expect": {
+    "total": 14,
+    "state": "above"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "15 − 1 = 14",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "GCS 9, one unreactive → 8 (boundary)",
+   "answers": {
+    "e": "2",
+    "v": "3",
+    "m": "4",
+    "prs": "1"
+   },
+   "expect": {
+    "total": 8,
+    "state": "severe",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E2+V3+M4 = 9; 9 − 1 = 8",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "minimum",
+   "answers": {
+    "e": "1",
+    "v": "1",
+    "m": "1",
+    "prs": "2"
+   },
+   "expect": {
+    "total": 1,
+    "state": "severe"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3 − 2 = 1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "verbal NT → no GCS-P",
+   "answers": {
+    "e": "3",
+    "v": {
+     "nt": true
+    },
+    "m": "5",
+    "prs": "0"
+   },
+   "expect": {
+    "status": "not-interpretable",
+    "total": null
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "V non-testable → not reported",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "pupils not assessable",
+   "answers": {
+    "e": "3",
+    "v": "4",
+    "m": "5",
+    "prs": {
+     "nt": true,
+     "reason": "Ocular trauma"
+    }
+   },
+   "expect": {
+    "status": "not-interpretable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "PRS NT → not reported",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "missing pupils",
+   "answers": {
+    "e": "3",
+    "v": "4",
+    "m": "5"
+   },
+   "expect": {
+    "status": "incomplete",
+    "missing": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "PRS not entered",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

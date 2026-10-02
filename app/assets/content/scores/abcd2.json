@@ -1,0 +1,304 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "abcd2",
+  "tia",
+  "transient ischaemic attack"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring speech disturbance when unilateral weakness was also present (score 2 only).",
+  "Using a later rather than the first BP."
+ ],
+ "relatedScores": [
+  {
+   "id": "nihss",
+   "relation": "Stroke deficit"
+  }
+ ],
+ "id": "abcd2",
+ "name": "ABCD² Score",
+ "abbreviation": "ABCD²",
+ "category": "stroke",
+ "subcategory": "Risk after TIA",
+ "specialties": [
+  "Stroke",
+  "Neurology",
+  "Emergency Medicine",
+  "Primary Care"
+ ],
+ "version": {
+  "label": "ABCD² (Johnston et al. 2007)",
+  "detail": "Five factors, 0–7. Risk groups 0–3, 4–5, 6–7 with 2-day stroke risks of 1.0%, 4.1% and 8.1% in the validation cohorts."
+ },
+ "purpose": "Estimates short-term stroke risk after transient ischaemic attack.",
+ "intendedPopulation": "Patients assessed early after a suspected transient ischaemic attack.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Early stroke risk group",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Not a standalone triage tool",
+  "message": "ABCD² performed poorly in a large emergency department validation. Imaging and vascular findings, such as atrial fibrillation or carotid stenosis, are not included."
+ },
+ "inputDefinitions": [
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age",
+   "short": "Age",
+   "options": [
+    {
+     "value": "0",
+     "label": "Under 60 years",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "60 years or older",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "bp",
+   "type": "single",
+   "label": "Blood pressure at first assessment",
+   "short": "BP",
+   "options": [
+    {
+     "value": "0",
+     "label": "Below 140/90 mmHg",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Systolic ≥140 or diastolic ≥90 mmHg",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "clin",
+   "type": "single",
+   "label": "Clinical features",
+   "short": "Clinical",
+   "options": [
+    {
+     "value": "0",
+     "label": "Other symptoms",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Speech disturbance without weakness",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Unilateral weakness",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "dur",
+   "type": "single",
+   "label": "Duration of symptoms",
+   "short": "Duration",
+   "options": [
+    {
+     "value": "0",
+     "label": "Less than 10 minutes",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "10–59 minutes",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "60 minutes or more",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "dm",
+   "type": "single",
+   "label": "Diabetes",
+   "short": "Diabetes",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 7
+  },
+  "display": "{total}",
+  "share": "ABCD² {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 3",
+   "state": "low"
+  },
+  {
+   "when": "total <= 5",
+   "state": "moderate"
+  },
+  {
+   "state": "high"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low",
+   "tone": "low",
+   "label": "Lower risk group",
+   "summary": "Score 0–3: 2-day stroke risk 1.0% in the validation cohorts.",
+   "range": "0–3",
+   "detail": "Group-level estimate; individual risk depends on findings the score does not include.",
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "moderate",
+   "tone": "moderate",
+   "label": "Moderate risk group",
+   "summary": "Score 4–5: 2-day stroke risk 4.1% in the validation cohorts.",
+   "range": "4–5",
+   "detail": "Interpret with imaging, vascular findings and rhythm assessment.",
+   "min": 4,
+   "max": 5
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "Higher risk group",
+   "summary": "Score 6–7: 2-day stroke risk 8.1% in the validation cohorts.",
+   "range": "6–7",
+   "detail": "Correlate with full clinical, imaging and vascular assessment according to local TIA pathways.",
+   "min": 6,
+   "max": 7
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Developed to estimate early stroke risk after TIA from bedside features.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Findings such as atrial fibrillation, symptomatic carotid stenosis or DWI-positive lesions carry risk not captured by ABCD²."
+  },
+  {
+   "when": "total <= 3",
+   "importance": "major",
+   "text": "A low score does not exclude high-risk mechanisms."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Performed poorly in a large emergency department validation in both low- and high-risk groups."
+  },
+  {
+   "importance": "major",
+   "text": "Does not include imaging, vascular or cardiac findings."
+  },
+  "Depends on the accuracy of the TIA diagnosis."
+ ],
+ "confounders": [
+  {
+   "factor": "TIA mimics",
+   "effect": "Migraine, seizure or syncope can be misclassified as TIA."
+  },
+  {
+   "factor": "Timing of BP measurement",
+   "effect": "Uses the first recorded BP after the event."
+  },
+  {
+   "factor": "Recall of symptoms",
+   "effect": "Duration and features rely on history."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The mechanism of the TIA.",
+  "Whether an urgent vascular or cardiac cause is present.",
+  "Which investigations or treatments are needed."
+ ],
+ "guideSections": {
+  "what": "A five-factor score (Age, Blood pressure, Clinical features, Duration, Diabetes) for early stroke risk after TIA.",
+  "whenToUse": "Early assessment of patients with suspected TIA, as one part of a comprehensive evaluation.",
+  "howToPerform": "Score each factor from the history and first blood pressure, then sum (0–7).",
+  "clinicalContext": "Used alongside imaging and vascular assessment, not instead of them."
+ },
+ "sources": [
+  {
+   "citation": "Johnston SC, Rothwell PM, Nguyen-Huynh MN, et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-292.",
+   "doi": "10.1016/S0140-6736(07)60150-0"
+  }
+ ],
+ "licensing": {
+  "status": "Published score, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_age",
+   "label": "Age",
+   "inputs": [
+    "age"
+   ]
+  },
+  {
+   "id": "c_bp",
+   "label": "Blood pressure at first assessment",
+   "inputs": [
+    "bp"
+   ]
+  },
+  {
+   "id": "c_clin",
+   "label": "Clinical features",
+   "inputs": [
+    "clin"
+   ]
+  },
+  {
+   "id": "c_dur",
+   "label": "Duration of symptoms",
+   "inputs": [
+    "dur"
+   ]
+  },
+  {
+   "id": "c_dm",
+   "label": "Diabetes",
+   "inputs": [
+    "dm"
+   ]
+  }
+ ]
+}

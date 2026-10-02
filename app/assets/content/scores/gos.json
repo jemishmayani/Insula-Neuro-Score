@@ -1,0 +1,249 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "glasgow outcome",
+  "outcome after brain injury"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Assigning categories from mobility alone.",
+  "Omitting the assessment timepoint."
+ ],
+ "relatedScores": [
+  {
+   "id": "gose",
+   "relation": "Extended 8-category version"
+  },
+  {
+   "id": "mrs",
+   "relation": "Global disability scale"
+  }
+ ],
+ "id": "gos",
+ "name": "Glasgow Outcome Scale",
+ "abbreviation": "GOS",
+ "category": "consciousness",
+ "subcategory": "Global outcome after brain injury",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Rehabilitation"
+ ],
+ "version": {
+  "label": "GOS, five categories (Jennett & Bond 1975)",
+  "detail": "1 = death, 2 = vegetative state, 3 = severe disability, 4 = moderate disability, 5 = good recovery. Structured interview guidance (Wilson et al. 1998) is not reproduced."
+ },
+ "purpose": "Global functional outcome after brain injury.",
+ "intendedPopulation": "Adults after traumatic or non-traumatic acute brain injury, usually after discharge.",
+ "resultPresentation": {
+  "type": "disability",
+  "typeLabel": "Global outcome",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Global outcome scale",
+  "message": "Describes overall outcome, not neurological severity. A structured interview improves consistency."
+ },
+ "inputDefinitions": [
+  {
+   "id": "cat",
+   "type": "single",
+   "label": "Outcome category",
+   "short": "GOS",
+   "options": [
+    {
+     "value": "1",
+     "label": "Death",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Vegetative state",
+     "points": 2,
+     "code": "2",
+     "detail": "Unresponsive and speechless; no evidence of meaningful responsiveness."
+    },
+    {
+     "value": "3",
+     "label": "Severe disability",
+     "points": 3,
+     "code": "3",
+     "detail": "Conscious but dependent on others for daily support."
+    },
+    {
+     "value": "4",
+     "label": "Moderate disability",
+     "points": 4,
+     "code": "4",
+     "detail": "Independent in daily life but disabled (e.g. unable to resume previous work or activities)."
+    },
+    {
+     "value": "5",
+     "label": "Good recovery",
+     "points": 5,
+     "code": "5",
+     "detail": "Resumption of normal life, possibly with minor deficits."
+    }
+   ],
+   "help": "Assign the category that best describes overall outcome."
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "cat",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "GOS {total}",
+  "share": "GOS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g1",
+   "tone": "informational",
+   "label": "Death",
+   "summary": "Outcome: death.",
+   "range": "1",
+   "min": 1,
+   "max": 1
+  },
+  {
+   "id": "g2",
+   "tone": "informational",
+   "label": "Vegetative state",
+   "summary": "Outcome: vegetative state.",
+   "range": "2",
+   "min": 2,
+   "max": 2
+  },
+  {
+   "id": "g3",
+   "tone": "informational",
+   "label": "Severe disability",
+   "summary": "Outcome: conscious but dependent.",
+   "range": "3",
+   "min": 3,
+   "max": 3
+  },
+  {
+   "id": "g4",
+   "tone": "informational",
+   "label": "Moderate disability",
+   "summary": "Outcome: independent but disabled.",
+   "range": "4",
+   "min": 4,
+   "max": 4
+  },
+  {
+   "id": "g5",
+   "tone": "favorable",
+   "label": "Good recovery",
+   "summary": "Outcome: good recovery at this assessment.",
+   "range": "5",
+   "detail": "Minor deficits may persist; this describes global function, not every impairment.",
+   "min": 5,
+   "max": 5
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A widely used global outcome measure after brain injury.",
+   "importance": "major"
+  },
+  {
+   "text": "Often dichotomised in studies (e.g. 4–5 versus 1–3); definitions vary."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Record the timepoint and the information source."
+  },
+  {
+   "when": "total >= 3 && total <= 5",
+   "text": "The extended GOS (GOSE) separates upper and lower bands within categories 3–5."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Broad categories are insensitive to smaller changes in outcome."
+  },
+  "Inter-rater variability without a structured interview.",
+  "Reflects disability from all causes, not only the brain injury."
+ ],
+ "confounders": [
+  {
+   "factor": "Non-neurological injuries or comorbidity",
+   "effect": "Can lower the category independently of the brain injury."
+  },
+  {
+   "factor": "Proxy versus patient report",
+   "effect": "Informants may differ."
+  },
+  {
+   "factor": "Timing",
+   "effect": "Outcome changes during recovery."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Specific cognitive or physical deficits.",
+  "Quality of life.",
+  "The cause of disability."
+ ],
+ "guideSections": {
+  "what": "A five-category global outcome scale after brain injury.",
+  "whenToUse": "Follow-up outcome assessment after brain injury; research outcomes.",
+  "howToPerform": "Establish consciousness, independence in daily life, and return to previous activities, then assign the category that fits. A structured interview is recommended.",
+  "clinicalContext": "Used as an outcome measure, typically months after injury."
+ },
+ "sources": [
+  {
+   "citation": "Jennett B, Bond M. Assessment of outcome after severe brain damage. Lancet. 1975;1(7905):480-484."
+  },
+  {
+   "citation": "Wilson JTL, Pettigrew LEL, Teasdale GM. Structured interviews for the Glasgow Outcome Scale and the extended Glasgow Outcome Scale: guidelines for their use. J Neurotrauma. 1998;15(8):573-585.",
+   "doi": "10.1089/neu.1998.15.573"
+  }
+ ],
+ "licensing": {
+  "status": "Category names with attribution",
+  "note": "The structured interview (© Wilson, Pettigrew, Teasdale 1998) is not reproduced."
+ },
+ "components": [
+  {
+   "id": "c_cat",
+   "label": "Outcome category",
+   "inputs": [
+    "cat"
+   ]
+  }
+ ]
+}

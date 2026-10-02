@@ -1,0 +1,397 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "gcs pupils",
+  "pupil reactivity score"
+ ],
+ "scoringRules": [
+  {
+   "id": "gcs_total",
+   "expr": "e + v + m"
+  }
+ ],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Counting pupil size or anisocoria instead of reactivity.",
+  "Calculating GCS-P from a GCS with a non-testable component."
+ ],
+ "relatedScores": [
+  {
+   "id": "gcs",
+   "relation": "Underlying scale"
+  },
+  {
+   "id": "four",
+   "relation": "Includes brainstem reflexes"
+  }
+ ],
+ "id": "gcsp",
+ "name": "GCS-Pupils Score",
+ "abbreviation": "GCS-P",
+ "category": "consciousness",
+ "subcategory": "Level of consciousness",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Trauma"
+ ],
+ "version": {
+  "label": "GCS-P (Brennan, Murray & Teasdale 2018)",
+  "detail": "GCS total minus the Pupil Reactivity Score (number of unreactive pupils). Range 1–15. Uses the Glasgow structured approach for the GCS."
+ },
+ "purpose": "A single index combining GCS and pupil reactivity to describe early severity after traumatic brain injury.",
+ "intendedPopulation": "Adults with traumatic brain injury.",
+ "resultPresentation": {
+  "type": "severity",
+  "typeLabel": "Clinical severity",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Components first",
+  "message": "GCS-P requires all three GCS components and an assessable pupil response. If any is non-testable, no GCS-P is reported."
+ },
+ "components": [
+  {
+   "id": "gcs_part",
+   "label": "Glasgow Coma Scale",
+   "inputs": [
+    "e",
+    "v",
+    "m"
+   ]
+  },
+  {
+   "id": "pupil_part",
+   "label": "Pupil Reactivity Score",
+   "inputs": [
+    "prs"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "e",
+   "type": "single",
+   "label": "Eye opening (E)",
+   "short": "E",
+   "help": "Check for factors that interfere, observe, then stimulate: sound before physical pressure.",
+   "notTestable": {
+    "label": "Non-testable",
+    "code": "ENT",
+    "description": "Closed by local factor.",
+    "reasons": [
+     "Periorbital swelling",
+     "Dressing or bandage",
+     "Other local factor"
+    ]
+   },
+   "options": [
+    {
+     "value": "4",
+     "label": "Spontaneous",
+     "points": 4,
+     "code": "E4",
+     "detail": "Open before stimulus."
+    },
+    {
+     "value": "3",
+     "label": "To sound",
+     "points": 3,
+     "code": "E3",
+     "detail": "After spoken or shouted request."
+    },
+    {
+     "value": "2",
+     "label": "To pressure",
+     "points": 2,
+     "code": "E2",
+     "detail": "After fingertip stimulus."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "E1",
+     "detail": "No opening at any time, no interfering factor."
+    }
+   ]
+  },
+  {
+   "id": "v",
+   "type": "single",
+   "label": "Verbal response (V)",
+   "short": "V",
+   "notTestable": {
+    "label": "Non-testable",
+    "code": "VNT",
+    "description": "Factor interfering with communication.",
+    "reasons": [
+     "Endotracheal tube or tracheostomy",
+     "Other factor interfering with communication"
+    ]
+   },
+   "options": [
+    {
+     "value": "5",
+     "label": "Orientated",
+     "points": 5,
+     "code": "V5",
+     "detail": "Correctly gives name, place and date."
+    },
+    {
+     "value": "4",
+     "label": "Confused",
+     "points": 4,
+     "code": "V4",
+     "detail": "Not orientated but communicates coherently."
+    },
+    {
+     "value": "3",
+     "label": "Words",
+     "points": 3,
+     "code": "V3",
+     "detail": "Intelligible single words."
+    },
+    {
+     "value": "2",
+     "label": "Sounds",
+     "points": 2,
+     "code": "V2",
+     "detail": "Only moans or groans."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "V1",
+     "detail": "No audible response, no interfering factor."
+    }
+   ]
+  },
+  {
+   "id": "m",
+   "type": "single",
+   "label": "Best motor response (M)",
+   "short": "M",
+   "help": "Record the best response; test the arms.",
+   "notTestable": {
+    "label": "Non-testable",
+    "code": "MNT",
+    "description": "Paralysed or other limiting factor.",
+    "reasons": [
+     "Paralysed",
+     "Other limiting factor"
+    ]
+   },
+   "options": [
+    {
+     "value": "6",
+     "label": "Obeys commands",
+     "points": 6,
+     "code": "M6",
+     "detail": "Obeys a two-part request."
+    },
+    {
+     "value": "5",
+     "label": "Localising",
+     "points": 5,
+     "code": "M5",
+     "detail": "Brings hand above clavicle to stimulus on head or neck."
+    },
+    {
+     "value": "4",
+     "label": "Normal flexion",
+     "points": 4,
+     "code": "M4",
+     "detail": "Bends arm at elbow rapidly; features not predominantly abnormal."
+    },
+    {
+     "value": "3",
+     "label": "Abnormal flexion",
+     "points": 3,
+     "code": "M3",
+     "detail": "Bends arm at elbow; features clearly predominantly abnormal."
+    },
+    {
+     "value": "2",
+     "label": "Extension",
+     "points": 2,
+     "code": "M2",
+     "detail": "Extends arm at elbow."
+    },
+    {
+     "value": "1",
+     "label": "None",
+     "points": 1,
+     "code": "M1",
+     "detail": "No movement in arms or legs, no interfering factor."
+    }
+   ]
+  },
+  {
+   "id": "prs",
+   "type": "single",
+   "label": "Pupil reactivity to light",
+   "short": "Pupils",
+   "options": [
+    {
+     "value": "0",
+     "label": "Both pupils react",
+     "points": 0,
+     "code": "PRS 0"
+    },
+    {
+     "value": "1",
+     "label": "One pupil unreactive",
+     "points": 1,
+     "code": "PRS 1"
+    },
+    {
+     "value": "2",
+     "label": "Both pupils unreactive",
+     "points": 2,
+     "code": "PRS 2"
+    }
+   ],
+   "help": "Only reactivity counts; pupil size does not enter the calculation.",
+   "notTestable": {
+    "label": "Not assessable",
+    "code": "PRS-NT",
+    "reasons": [
+     "Ocular trauma",
+     "Prior eye surgery or disease",
+     "Drug effect on pupils"
+    ],
+    "description": "Reactivity cannot be assessed."
+   }
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "e + v + m - prs",
+  "notTestablePolicy": "block",
+  "range": {
+   "min": 1,
+   "max": 15
+  },
+  "formula": "{e_code} + {v_code} + {m_code} − PRS {prs}",
+  "display": "{total}",
+  "share": "GCS-P {total} (GCS {gcs_total}, PRS {prs})"
+ },
+ "notTestable": {
+  "label": "GCS-P not reported",
+  "summary": "A GCS component or the pupil response is not testable, so GCS-P is not reported.",
+  "display": "No total",
+  "share": "GCS-P not reported (component not testable)"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 15",
+   "state": "none"
+  },
+  {
+   "when": "total >= 9",
+   "state": "above"
+  },
+  {
+   "state": "severe"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "severe",
+   "tone": "high",
+   "label": "Severe range",
+   "summary": "GCS-P in the severe range (1–8).",
+   "range": "1–8",
+   "detail": "Correlate with airway, respiratory, neurological and systemic assessment, according to the clinical situation and local protocol.",
+   "min": 1,
+   "max": 8
+  },
+  {
+   "id": "above",
+   "tone": "informational",
+   "label": "Above the severe range",
+   "summary": "Lower values indicate more severe injury.",
+   "range": "9–14",
+   "detail": "Interpret with the components, pupil findings and imaging.",
+   "min": 9,
+   "max": 14
+  },
+  {
+   "id": "none",
+   "tone": "favorable",
+   "label": "No impairment measured",
+   "summary": "No impairment measured by GCS-P at this assessment.",
+   "range": "15",
+   "detail": "Describes consciousness and pupil reactivity only; it does not exclude intracranial injury.",
+   "min": 15,
+   "max": 15
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Extends the GCS with pupil reactivity, which carries prognostic information the GCS does not.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "prs >= 1",
+   "importance": "major",
+   "text": "Pupil unreactivity lowers GCS-P below the GCS total."
+  },
+  {
+   "text": "Report the GCS components, the pupil findings and the GCS-P together."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Derived in traumatic brain injury; not validated as a general coma measure."
+  },
+  "Adds pupil reactivity only, not size or asymmetry.",
+  "The authors' probability charts (combining GCS-P with age and CT) are not reproduced."
+ ],
+ "confounders": [
+  {
+   "factor": "Ocular trauma or prior eye surgery",
+   "effect": "Can make pupil reactivity unassessable or misleading."
+  },
+  {
+   "factor": "Mydriatic or miotic drugs",
+   "effect": "Alter the pupil response."
+  },
+  {
+   "factor": "Sedation, intoxication, hypoxia or hypotension",
+   "effect": "Lower the GCS component."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "An individual patient's outcome.",
+  "The cause of pupil abnormality.",
+  "Which intervention is needed."
+ ],
+ "guideSections": {
+  "what": "GCS total minus the number of unreactive pupils, giving a 1–15 index.",
+  "whenToUse": "Early severity description after TBI.",
+  "howToPerform": "Assess E, V and M with the structured approach and each pupil's reaction to light. PRS = number of unreactive pupils. GCS-P = GCS − PRS.",
+  "clinicalContext": "A severity index for communication and research; individual prognosis needs the full clinical picture."
+ },
+ "sources": [
+  {
+   "citation": "Brennan PM, Murray GD, Teasdale GM. Simplifying the use of prognostic information in traumatic brain injury. Part 1: The GCS-Pupils score: an extended index of clinical severity. J Neurosurg. 2018;128(6):1612-1620.",
+   "doi": "10.3171/2017.12.JNS172780"
+  },
+  {
+   "citation": "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. A practical scale. Lancet. 1974;2(7872):81-84."
+  }
+ ],
+ "licensing": {
+  "status": "Published index, original wording",
+  "note": "Official GCS aids and the authors' probability charts are not reproduced."
+ }
+}

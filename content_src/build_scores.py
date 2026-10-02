@@ -99,8 +99,8 @@ scores.append(base(
     "whenToUse": "Initial and serial assessment of consciousness, handover, trauma triage, and as an input to other scores (WFNS, ICH Score, GCS-Pupils).",
     "howToPerform": "Use the structured approach. Check for factors that interfere with each response (e.g. intubation, swelling, paralysis). Observe for spontaneous behaviour. Stimulate in sequence: spoken or shouted request, then physical pressure (fingertip, trapezius or supraorbital). Rate the best response for each component. Record NT for a component that cannot be tested. Report E, V and M, and the total only when all three are testable.",
     "clinicalContext": "Trends matter more than a single value. Always communicate the components, which carry more information than the total."},
-  sources=[{"citation": "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. A practical scale. Lancet. 1974;2(7872):81-84.", "doi": "10.1016/S0140-6736(74)91639-0"},
-           {"citation": "Teasdale G, Maas A, Lecky F, Manley G, Stocchetti N, Murray G. The Glasgow Coma Scale at 40 years: standing the test of time. Lancet Neurol. 2014;13(8):844-854.", "doi": "10.1016/S1474-4422(14)70120-6"},
+  sources=[{"citation": "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. A practical scale. Lancet. 1974;2(7872):81-84."},
+           {"citation": "Teasdale G, Maas A, Lecky F, Manley G, Stocchetti N, Murray G. The Glasgow Coma Scale at 40 years: standing the test of time. Lancet Neurol. 2014;13(8):844-854."},
            {"citation": "The Glasgow structured approach to assessment of the Glasgow Coma Scale. Royal College of Physicians and Surgeons of Glasgow.", "url": "https://www.glasgowcomascale.org"}],
   licensing={"status": "Criteria with attribution", "note": "The official GCS aid, charts, videos and translations (glasgowcomascale.org) are not reproduced."}))
 
@@ -234,7 +234,7 @@ scores.append(base(
     "howToPerform": "Administer the items in the listed order and record each score immediately. Do not go back and change scores. Score what the patient does, not what you think they can do. Do not coach unless an item allows it. Use UN only where the instrument allows it, and record the reason.",
     "clinicalContext": "The NIHSS supports, but does not replace, the full neurological examination and imaging. Treatment decisions combine it with timing, imaging, patient factors and local protocol."},
   sources=[{"citation": "National Institute of Neurological Disorders and Stroke. NIH Stroke Scale (updated February 2024).", "url": "https://www.ninds.nih.gov/sites/default/files/documents/NIH-Stroke-Scale_updatedFeb2024_508.pdf"},
-           {"citation": "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870.", "doi": "10.1161/01.STR.20.7.864"},
+           {"citation": "Brott T, Adams HP Jr, Olinger CP, et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-870."},
            {"citation": "Martin-Schild S, Albright KC, Tanksley J, et al. Zero on the NIHSS does not equal the absence of stroke. Ann Emerg Med. 2011;57(1):42-45.", "doi": "10.1016/j.annemergmed.2010.06.564"},
            {"citation": "Woo D, et al. Does the National Institutes of Health Stroke Scale favor left hemisphere strokes? NINDS t-PA Stroke Study Group. Stroke. 1999."}],
   licensing={"status": "Public domain (NINDS)", "note": "The NIHSS is public domain. The picture, naming and reading stimulus pages (marked © Apex Innovations in the NINDS document) and official training/certification materials are not reproduced."}))
@@ -296,7 +296,7 @@ scores.append(base(
     "whenToUse": "Documenting pre-morbid function, discharge status and follow-up outcomes after stroke and other neurological conditions; trial outcomes.",
     "howToPerform": "Establish the person's usual activities and current level of help needed. Choose the single grade that best fits overall function. Record the timepoint and information source. Structured interviews improve consistency.",
     "clinicalContext": "A functional outcome measure, used alongside measures of neurological deficit (e.g. NIHSS) rather than in place of them."},
-  sources=[{"citation": "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607.", "doi": "10.1161/01.STR.19.5.604"},
+  sources=[{"citation": "van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. Interobserver agreement for the assessment of handicap in stroke patients. Stroke. 1988;19(5):604-607."},
            {"citation": "Rankin J. Cerebral vascular accidents in patients over the age of 60. II. Prognosis. Scott Med J. 1957;2(5):200-215."}],
   licensing={"status": "Widely published grade definitions", "note": "Structured mRS interview instruments (e.g. mRS-9Q, Rankin Focused Assessment) have their own terms and are not reproduced."}))
 
@@ -368,8 +368,8 @@ scores.append(base(
     "whenToUse": "Communicating instability between oncology, radiation oncology, radiology and spine surgery, and identifying patients for surgical consultation.",
     "howToPerform": "For the affected level, take the history (mechanical pain) and review CT/MRI for the five imaging components. Score each component and sum. Score each involved level separately.",
     "clinicalContext": "SINS is one input to multidisciplinary decisions, alongside neurological status, oncological factors, systemic disease, prognosis and patient preference."},
-  sources=[{"citation": "Fisher CG, DiPaola CP, Ryken TC, et al. A novel classification system for spinal instability in neoplastic disease: an evidence-based approach and expert consensus from the Spine Oncology Study Group. Spine. 2010;35(22):E1221-E1229.", "doi": "10.1097/BRS.0b013e3181e16ae2"},
-           {"citation": "Fourney DR, Frangou EM, Ryken TC, et al. Spinal instability neoplastic score: an analysis of reliability and validity from the Spine Oncology Study Group. J Clin Oncol. 2011;29(22):3072-3077.", "doi": "10.1200/JCO.2010.34.3897"}],
+  sources=[{"citation": "Fisher CG, DiPaola CP, Ryken TC, et al. A novel classification system for spinal instability in neoplastic disease: an evidence-based approach and expert consensus from the Spine Oncology Study Group. Spine. 2010;35(22):E1221-E1229."},
+           {"citation": "Fourney DR, Frangou EM, Ryken TC, et al. Spinal instability neoplastic score: an analysis of reliability and validity from the Spine Oncology Study Group. J Clin Oncol. 2011;29(22):3072-3077."}],
   licensing={"status": "Published classification", "note": "Criteria in original wording with attribution. No reproduction restrictions identified."}))
 
 # ====================================================  Input-types demo (non-clinical, design system only)
@@ -405,17 +405,39 @@ demo = base(
   relatedScores=[], guideSections={"what": "Demo."}, sources=[{"citation": "Not applicable (design-system demonstration)."}])
 
 if __name__ == "__main__":
-    import subprocess
+    import sys
+    sys.path.insert(0, HERE)
+    import library
+    scores += library.build(scores[0]["inputDefinitions"])
     os.makedirs(os.path.join(OUT, "scores"), exist_ok=True); os.makedirs(os.path.join(OUT, "dev"), exist_ok=True)
+    for f in os.listdir(os.path.join(OUT, "scores")): os.remove(os.path.join(OUT, "scores", f))
     for s in scores:
         json.dump(s, open(os.path.join(OUT, "scores", s["id"] + ".json"), "w"), ensure_ascii=False, indent=1)
     json.dump(demo, open(os.path.join(OUT, "dev", "demo-inputs.json"), "w"), ensure_ascii=False, indent=1)
-    # mark implemented scores in the catalogue
+    # ---- catalogue: implemented / under review (with reason) / placeholder
     cat_path = os.path.join(OUT, "catalog.json"); cat = json.load(open(cat_path))
-    ids = {s["id"] for s in scores}
+    by_id = {c["id"]: c for c in cat["scores"]}
+    extra = {"abcd2": ("ABCD²", "ABCD² Score", "stroke"), "race": ("RACE", "Rapid Arterial oCclusion Evaluation Scale", "stroke"),
+             "lams": ("LAMS", "Los Angeles Motor Scale", "stroke"), "fasted": ("FAST-ED", "Field Assessment Stroke Triage for Emergency Destination", "stroke"),
+             "rtokuhashi": ("Revised Tokuhashi", "Revised Tokuhashi Score", "oncology"), "joa": ("JOA", "Japanese Orthopaedic Association Score", "spine"),
+             "gpa": ("GPA", "Graded Prognostic Assessment (variants)", "oncology")}
+    for k, (ab, nm, ct) in extra.items():
+        if k not in by_id:
+            e = {"id": k, "abbreviation": ab, "name": nm, "category": ct, "summary": "", "status": "placeholder"}; cat["scores"].append(e); by_id[k] = e
+    by_id["tokuhashi"].update({"abbreviation": "Tokuhashi (1990)", "name": "Tokuhashi Score (original 1990)"})
+    impl = {s["id"]: s for s in scores}
     for c in cat["scores"]:
-        c["status"] = "implemented" if c["id"] in ids else "placeholder"
-    cat["contentVersion"] = CV
-    cat["note"] = "Catalogue. Scores with status 'implemented' have a content file in content/scores/; placeholders contain no scoring criteria."
+        c.pop("reviewReason", None); c.pop("reviewCategory", None)
+        if c["id"] in impl:
+            s = impl[c["id"]]; c["status"] = "implemented"; c["abbreviation"] = s["abbreviation"]; c["name"] = s["name"]; c["category"] = s["category"]
+            c["aliases"] = s.get("aliases", []); c["version"] = s["version"]["label"]
+            if not c.get("summary"): c["summary"] = s["purpose"]
+        elif c["id"] in library.UNDER_REVIEW:
+            c["status"] = "review"; c["reviewCategory"], c["reviewReason"] = library.UNDER_REVIEW[c["id"]]
+            if not c.get("summary"): c["summary"] = "Under review"
+        else:
+            c["status"] = "placeholder"
+    cat["contentVersion"] = library.CV
+    cat["note"] = "Catalogue. 'implemented' scores have content files; 'review' entries record why a listed score is not yet implemented; 'placeholder' entries contain no scoring criteria."
     json.dump(cat, open(cat_path, "w"), ensure_ascii=False, indent=1)
-    print("wrote", ", ".join(sorted(ids)), "+ demo")
+    print("implemented:", len(scores), "| review:", sum(1 for c in cat["scores"] if c["status"] == "review"), "| placeholder:", sum(1 for c in cat["scores"] if c["status"] == "placeholder"))

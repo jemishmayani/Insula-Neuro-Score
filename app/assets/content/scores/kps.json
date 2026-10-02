@@ -1,0 +1,249 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "karnofsky",
+  "performance status"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Selecting intermediate values (only multiples of 10 exist).",
+  "Rating best rather than current function."
+ ],
+ "relatedScores": [
+  {
+   "id": "ecog",
+   "relation": "Alternative performance scale"
+  },
+  {
+   "id": "rtokuhashi",
+   "relation": "Uses KPS"
+  }
+ ],
+ "id": "kps",
+ "name": "Karnofsky Performance Status",
+ "abbreviation": "KPS",
+ "category": "oncology",
+ "subcategory": "Performance status",
+ "specialties": [
+  "Neuro-oncology",
+  "Oncology",
+  "Neurosurgery",
+  "Radiation Oncology"
+ ],
+ "version": {
+  "label": "Karnofsky Performance Status (Karnofsky 1949)",
+  "detail": "11 levels from 100 (normal) to 0 (dead) in steps of 10."
+ },
+ "purpose": "Describes functional performance, commonly in patients with cancer.",
+ "intendedPopulation": "Adults, particularly with cancer.",
+ "resultPresentation": {
+  "type": "functional-status",
+  "typeLabel": "Performance status",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "level",
+   "type": "single",
+   "label": "Performance level",
+   "short": "KPS",
+   "options": [
+    {
+     "value": "100",
+     "label": "100: Normal; no complaints; no evidence of disease",
+     "points": 100,
+     "code": "100"
+    },
+    {
+     "value": "90",
+     "label": "90: Able to carry on normal activity; minor signs or symptoms",
+     "points": 90,
+     "code": "90"
+    },
+    {
+     "value": "80",
+     "label": "80: Normal activity with effort; some signs or symptoms",
+     "points": 80,
+     "code": "80"
+    },
+    {
+     "value": "70",
+     "label": "70: Cares for self; unable to carry on normal activity or active work",
+     "points": 70,
+     "code": "70"
+    },
+    {
+     "value": "60",
+     "label": "60: Requires occasional assistance; cares for most needs",
+     "points": 60,
+     "code": "60"
+    },
+    {
+     "value": "50",
+     "label": "50: Requires considerable assistance and frequent medical care",
+     "points": 50,
+     "code": "50"
+    },
+    {
+     "value": "40",
+     "label": "40: Disabled; requires special care and assistance",
+     "points": 40,
+     "code": "40"
+    },
+    {
+     "value": "30",
+     "label": "30: Severely disabled; hospital care needed, death not imminent",
+     "points": 30,
+     "code": "30"
+    },
+    {
+     "value": "20",
+     "label": "20: Very sick; hospital care and active support needed",
+     "points": 20,
+     "code": "20"
+    },
+    {
+     "value": "10",
+     "label": "10: Moribund",
+     "points": 10,
+     "code": "10"
+    },
+    {
+     "value": "0",
+     "label": "0: Dead",
+     "points": 0,
+     "code": "0"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "level",
+  "range": {
+   "min": 0,
+   "max": 100
+  },
+  "display": "KPS {total}",
+  "share": "KPS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 100",
+   "state": "k100"
+  },
+  {
+   "when": "total >= 80",
+   "state": "normal_act"
+  },
+  {
+   "when": "total >= 50",
+   "state": "self"
+  },
+  {
+   "when": "total >= 10",
+   "state": "dependent"
+  },
+  {
+   "state": "dead"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "k100",
+   "tone": "favorable",
+   "label": "KPS 100",
+   "summary": "Normal function with no complaints at this assessment.",
+   "range": "100",
+   "detail": "Describes function, not disease extent."
+  },
+  {
+   "id": "normal_act",
+   "tone": "informational",
+   "label": "KPS {total}",
+   "summary": "Able to carry on normal activity and work.",
+   "range": "80–90"
+  },
+  {
+   "id": "self",
+   "tone": "informational",
+   "label": "KPS {total}",
+   "summary": "Unable to work; lives at home and cares for most personal needs with varying assistance.",
+   "range": "50–70"
+  },
+  {
+   "id": "dependent",
+   "tone": "informational",
+   "label": "KPS {total}",
+   "summary": "Unable to care for self; needs institutional or hospital-level care.",
+   "range": "10–40"
+  },
+  {
+   "id": "dead",
+   "tone": "informational",
+   "label": "KPS 0",
+   "summary": "Dead.",
+   "range": "0"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A long-established performance scale used in oncology trials and prognostic scores (e.g. Tokuhashi).",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "ECOG is an alternative performance scale; conversions between them are approximate."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Subjective; inter-rater variability is substantial."
+  },
+  "Reflects all causes of impairment, not only cancer."
+ ],
+ "confounders": [
+  {
+   "factor": "Comorbidity",
+   "effect": "Lowers performance independently of cancer."
+  },
+  {
+   "factor": "Acute reversible illness",
+   "effect": "Temporarily lowers performance."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Disease extent.",
+  "Treatment suitability on its own.",
+  "Specific deficits."
+ ],
+ "guideSections": {
+  "what": "An 11-level performance scale from 100 to 0.",
+  "whenToUse": "Describing functional performance, especially in oncology.",
+  "howToPerform": "Select the level that best matches current function.",
+  "clinicalContext": "One input to multidisciplinary oncology decisions."
+ },
+ "sources": [
+  {
+   "citation": "Karnofsky DA, Burchenal JH. The clinical evaluation of chemotherapeutic agents in cancer. In: MacLeod CM, ed. Evaluation of Chemotherapeutic Agents. Columbia University Press; 1949:191-205."
+  }
+ ],
+ "licensing": {
+  "status": "Widely published scale",
+  "note": "Original wording paraphrased; no reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_level",
+   "label": "Performance level",
+   "inputs": [
+    "level"
+   ]
+  }
+ ]
+}

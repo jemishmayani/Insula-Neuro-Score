@@ -1,0 +1,212 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "tomita",
+  "spinal metastasis",
+  "prognosis"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using the score as a surgical decision."
+ ],
+ "relatedScores": [
+  {
+   "id": "rtokuhashi",
+   "relation": "Alternative prognostic score"
+  },
+  {
+   "id": "sins",
+   "relation": "Mechanical stability"
+  }
+ ],
+ "id": "tomita",
+ "name": "Tomita Score",
+ "abbreviation": "Tomita",
+ "category": "oncology",
+ "subcategory": "Spinal metastasis prognosis",
+ "specialties": [
+  "Neurosurgery",
+  "Spine Surgery",
+  "Oncology"
+ ],
+ "version": {
+  "label": "Tomita score (Tomita et al. 2001)",
+  "detail": "Three factors, 2–10. The original paper linked score ranges to surgical strategies; those strategies are not reproduced as recommendations."
+ },
+ "purpose": "Prognostic scoring for patients with spinal metastases.",
+ "intendedPopulation": "Adults with spinal metastases.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Prognostic score",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Score only",
+  "message": "Higher scores were associated with shorter survival. The original treatment-strategy groupings are not presented as recommendations."
+ },
+ "inputDefinitions": [
+  {
+   "id": "primary",
+   "type": "single",
+   "label": "Primary tumour growth",
+   "short": "Primary",
+   "options": [
+    {
+     "value": "1",
+     "label": "Slow growth (e.g. breast, thyroid)",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Moderate growth (e.g. kidney, uterus)",
+     "points": 2
+    },
+    {
+     "value": "4",
+     "label": "Rapid growth (e.g. lung, stomach)",
+     "points": 4
+    }
+   ]
+  },
+  {
+   "id": "visceral",
+   "type": "single",
+   "label": "Visceral metastases",
+   "short": "Visceral",
+   "options": [
+    {
+     "value": "0",
+     "label": "None",
+     "points": 0
+    },
+    {
+     "value": "2",
+     "label": "Treatable",
+     "points": 2
+    },
+    {
+     "value": "4",
+     "label": "Untreatable",
+     "points": 4
+    }
+   ]
+  },
+  {
+   "id": "bone",
+   "type": "single",
+   "label": "Bone metastases",
+   "short": "Bone",
+   "options": [
+    {
+     "value": "1",
+     "label": "Solitary or isolated",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "Multiple",
+     "points": 2
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 2,
+   "max": 10
+  },
+  "display": "{total}",
+  "share": "Tomita {total}"
+ },
+ "interpretationRules": [
+  {
+   "state": "scored"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "scored",
+   "tone": "informational",
+   "label": "Tomita {total}",
+   "summary": "Higher scores were associated with shorter survival in the derivation series.",
+   "range": "2–10",
+   "detail": "Group-level association; integrate with oncology input and current treatment options."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A three-factor prognostic score for spinal metastases.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Tumour growth categories reflect the era of derivation; modern therapies may change behaviour."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Derived before many modern systemic therapies."
+  },
+  "Growth categories require clinical judgement for less common primaries."
+ ],
+ "confounders": [
+  {
+   "factor": "Imaging completeness",
+   "effect": "Affects visceral and bone metastasis assessment."
+  },
+  {
+   "factor": "Response to systemic therapy",
+   "effect": "Changes 'treatable' status."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Mechanical stability.",
+  "Neurological status.",
+  "Which treatment to choose."
+ ],
+ "guideSections": {
+  "what": "A 2–10 prognostic score from primary tumour growth, visceral metastases and bone metastases.",
+  "whenToUse": "Prognostic description in spinal metastatic disease.",
+  "howToPerform": "Score the three factors and sum.",
+  "clinicalContext": "One input to multidisciplinary decisions."
+ },
+ "sources": [
+  {
+   "citation": "Tomita K, Kawahara N, Kobayashi T, Yoshida A, Murakami H, Akamaru T. Surgical strategy for spinal metastases. Spine. 2001;26(3):298-306."
+  }
+ ],
+ "licensing": {
+  "status": "Published score, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_primary",
+   "label": "Primary tumour growth",
+   "inputs": [
+    "primary"
+   ]
+  },
+  {
+   "id": "c_visceral",
+   "label": "Visceral metastases",
+   "inputs": [
+    "visceral"
+   ]
+  },
+  {
+   "id": "c_bone",
+   "label": "Bone metastases",
+   "inputs": [
+    "bone"
+   ]
+  }
+ ]
+}

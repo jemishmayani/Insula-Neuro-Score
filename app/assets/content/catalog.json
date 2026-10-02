@@ -1,6 +1,6 @@
 {
- "contentVersion": "2.0.0",
- "note": "Catalogue. Scores with status 'implemented' have a content file in content/scores/; placeholders contain no scoring criteria.",
+ "contentVersion": "6.0.0",
+ "note": "Catalogue. 'implemented' scores have content files; 'review' entries record why a listed score is not yet implemented; 'placeholder' entries contain no scoring criteria.",
  "categories": [
   {
    "id": "consciousness",
@@ -64,7 +64,14 @@
    "name": "Glasgow Coma Scale",
    "category": "consciousness",
    "summary": "Eye, verbal and motor responsiveness",
-   "status": "implemented"
+   "status": "implemented",
+   "aliases": [
+    "glasgow",
+    "coma",
+    "consciousness",
+    "evm"
+   ],
+   "version": "Adult GCS, Glasgow structured approach"
   },
   {
    "id": "gcsp",
@@ -72,7 +79,12 @@
    "name": "GCS-Pupils Score",
    "category": "consciousness",
    "summary": "GCS combined with pupil reactivity",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "gcs pupils",
+    "pupil reactivity score"
+   ],
+   "version": "GCS-P (Brennan, Murray & Teasdale 2018)"
   },
   {
    "id": "four",
@@ -80,7 +92,9 @@
    "name": "Full Outline of UnResponsiveness",
    "category": "consciousness",
    "summary": "Eye, motor, brainstem and respiration",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Licensing",
+   "reviewReason": "The published FOUR score figure is © Mayo Foundation; permission to be confirmed before reproducing the instrument."
   },
   {
    "id": "gos",
@@ -88,7 +102,12 @@
    "name": "Glasgow Outcome Scale",
    "category": "consciousness",
    "summary": "Global outcome after brain injury",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "glasgow outcome",
+    "outcome after brain injury"
+   ],
+   "version": "GOS, five categories (Jennett & Bond 1975)"
   },
   {
    "id": "gose",
@@ -96,7 +115,12 @@
    "name": "Extended Glasgow Outcome Scale",
    "category": "consciousness",
    "summary": "Eight-level outcome after brain injury",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "gos-e",
+    "extended glasgow outcome"
+   ],
+   "version": "GOSE, eight categories (Wilson et al. 1998)"
   },
   {
    "id": "nihss",
@@ -104,7 +128,13 @@
    "name": "NIH Stroke Scale",
    "category": "stroke",
    "summary": "Neurological deficit in acute stroke",
-   "status": "implemented"
+   "status": "implemented",
+   "aliases": [
+    "stroke scale",
+    "national institutes of health",
+    "nih"
+   ],
+   "version": "NINDS NIH Stroke Scale (2024 update), 15 items"
   },
   {
    "id": "aspects",
@@ -112,7 +142,13 @@
    "name": "Alberta Stroke Program Early CT Score",
    "category": "stroke",
    "summary": "Early ischaemic change, MCA territory",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "early ct score",
+    "early ischaemic change",
+    "ischemic"
+   ],
+   "version": "ASPECTS (Barber et al. 2000), non-contrast CT"
   },
   {
    "id": "pcaspects",
@@ -120,7 +156,13 @@
    "name": "Posterior Circulation ASPECTS",
    "category": "stroke",
    "summary": "Early ischaemic change, posterior circulation",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "early ct score",
+    "early ischaemic change",
+    "ischemic"
+   ],
+   "version": "pc-ASPECTS (Puetz et al. 2008)"
   },
   {
    "id": "ich",
@@ -128,7 +170,13 @@
    "name": "ICH Score",
    "category": "ich",
    "summary": "Severity grading at presentation",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "intracerebral haemorrhage",
+    "intracerebral hemorrhage",
+    "hemphill"
+   ],
+   "version": "ICH Score (Hemphill et al. 2001)"
   },
   {
    "id": "func",
@@ -136,7 +184,13 @@
    "name": "FUNC Score",
    "category": "ich",
    "summary": "Functional independence after ICH",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "functional outcome",
+    "intracerebral haemorrhage",
+    "rost"
+   ],
+   "version": "FUNC (Rost et al. 2008)"
   },
   {
    "id": "graeb",
@@ -144,7 +198,9 @@
    "name": "Graeb Score",
    "category": "ich",
    "summary": "Intraventricular haemorrhage burden",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Verification",
+   "reviewReason": "Scoring definitions not yet verified against the primary source."
   },
   {
    "id": "mgraeb",
@@ -152,7 +208,9 @@
    "name": "Modified Graeb Score",
    "category": "ich",
    "summary": "Intraventricular haemorrhage burden",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Verification",
+   "reviewReason": "Scoring definitions not yet verified against the primary source."
   },
   {
    "id": "hunthess",
@@ -160,15 +218,27 @@
    "name": "Hunt and Hess Scale",
    "category": "sah",
    "summary": "Clinical grade of aneurysmal SAH",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "hunt hess",
+    "sah grade",
+    "subarachnoid"
+   ],
+   "version": "Hunt & Hess 1968 (original, with modifier)"
   },
   {
    "id": "wfns",
    "abbreviation": "WFNS",
-   "name": "WFNS Grade",
+   "name": "WFNS Subarachnoid Haemorrhage Grade",
    "category": "sah",
    "summary": "GCS-based SAH grade",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "world federation",
+    "sah grade",
+    "subarachnoid"
+   ],
+   "version": "Original WFNS (1988)"
   },
   {
    "id": "fisher",
@@ -176,7 +246,13 @@
    "name": "Fisher Scale",
    "category": "sah",
    "summary": "CT blood pattern",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "fisher grade",
+    "sah ct",
+    "vasospasm"
+   ],
+   "version": "Original Fisher scale (1980)"
   },
   {
    "id": "mfisher",
@@ -184,7 +260,13 @@
    "name": "Modified Fisher Scale",
    "category": "sah",
    "summary": "CT blood burden and IVH",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "modified fisher",
+    "vasospasm",
+    "frontera"
+   ],
+   "version": "Modified Fisher (Frontera et al. 2006)"
   },
   {
    "id": "marshall",
@@ -192,7 +274,13 @@
    "name": "Marshall CT Classification",
    "category": "tbi",
    "summary": "CT classification of TBI",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "marshall ct",
+    "tbi ct",
+    "head injury"
+   ],
+   "version": "Marshall CT classification (1991)"
   },
   {
    "id": "rotterdam",
@@ -200,7 +288,13 @@
    "name": "Rotterdam CT Score",
    "category": "tbi",
    "summary": "CT score of TBI",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "rotterdam ct",
+    "tbi ct",
+    "head injury"
+   ],
+   "version": "Rotterdam CT score (Maas et al. 2005)"
   },
   {
    "id": "rts",
@@ -208,7 +302,13 @@
    "name": "Revised Trauma Score",
    "category": "tbi",
    "summary": "Physiological trauma score",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "trauma score",
+    "t-rts",
+    "physiological"
+   ],
+   "version": "RTS (Champion et al. 1989), weighted"
   },
   {
    "id": "iss",
@@ -216,7 +316,14 @@
    "name": "Injury Severity Score",
    "category": "tbi",
    "summary": "Anatomical injury severity",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "injury severity",
+    "ais",
+    "polytrauma",
+    "major trauma"
+   ],
+   "version": "ISS (Baker et al. 1974)"
   },
   {
    "id": "triss",
@@ -224,7 +331,9 @@
    "name": "Trauma and Injury Severity Score",
    "category": "tbi",
    "summary": "Combined anatomical and physiological model",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Version",
+   "reviewReason": "Multiple published coefficient sets exist (MTOS and later revisions); the coefficient version must be selected and verified."
   },
   {
    "id": "ais",
@@ -232,15 +341,23 @@
    "name": "ASIA Impairment Scale (ISNCSCI)",
    "category": "spine",
    "summary": "Spinal cord injury classification",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Licensing / version",
+   "reviewReason": "ISNCSCI and the AIS worksheet are maintained by ASIA/ISCoS with reproduction terms and periodic revisions (current 2019 revision); requires licensing and version review."
   },
   {
    "id": "frankel",
    "abbreviation": "Frankel",
-   "name": "Frankel Grade",
+   "name": "Frankel Classification",
    "category": "spine",
    "summary": "Spinal cord injury grade",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "frankel grade",
+    "spinal cord injury",
+    "sci"
+   ],
+   "version": "Frankel grade (Frankel et al. 1969)"
   },
   {
    "id": "sins",
@@ -248,7 +365,15 @@
    "name": "Spinal Instability Neoplastic Score",
    "category": "spine",
    "summary": "Neoplastic spinal instability",
-   "status": "implemented"
+   "status": "implemented",
+   "aliases": [
+    "spinal instability",
+    "metastasis",
+    "neoplastic",
+    "sosg",
+    "spine tumour"
+   ],
+   "version": "SOSG SINS (Fisher et al. 2010)"
   },
   {
    "id": "nurick",
@@ -256,7 +381,13 @@
    "name": "Nurick Grade",
    "category": "spine",
    "summary": "Cervical myelopathy disability",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "nurick",
+    "cervical myelopathy",
+    "dcm"
+   ],
+   "version": "Nurick grade (1972)"
   },
   {
    "id": "mjoa",
@@ -264,7 +395,9 @@
    "name": "Modified JOA Score",
    "category": "spine",
    "summary": "Cervical myelopathy severity",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Licensing / verification",
+   "reviewReason": "Published reproductions carry permission statements, and descriptor wording differs between sources; requires licensing and source review."
   },
   {
    "id": "odi",
@@ -272,15 +405,19 @@
    "name": "Oswestry Disability Index",
    "category": "spine",
    "summary": "Low back pain disability",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Licensing",
+   "reviewReason": "The Oswestry Disability Index questionnaire is copyrighted; licensing required before reproduction."
   },
   {
    "id": "tokuhashi",
-   "abbreviation": "Tokuhashi",
-   "name": "Revised Tokuhashi Score",
+   "abbreviation": "Tokuhashi (1990)",
+   "name": "Tokuhashi Score (original 1990)",
    "category": "oncology",
    "summary": "Spinal metastasis prognosis",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Version",
+   "reviewReason": "Original 1990 version superseded by the revised 2005 score (implemented as 'Revised Tokuhashi'); not implemented to avoid version confusion."
   },
   {
    "id": "tomita",
@@ -288,7 +425,13 @@
    "name": "Tomita Score",
    "category": "oncology",
    "summary": "Spinal metastasis prognosis",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "tomita",
+    "spinal metastasis",
+    "prognosis"
+   ],
+   "version": "Tomita score (Tomita et al. 2001)"
   },
   {
    "id": "kps",
@@ -296,7 +439,12 @@
    "name": "Karnofsky Performance Status",
    "category": "oncology",
    "summary": "Functional performance",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "karnofsky",
+    "performance status"
+   ],
+   "version": "Karnofsky Performance Status (Karnofsky 1949)"
   },
   {
    "id": "ecog",
@@ -304,7 +452,13 @@
    "name": "ECOG Performance Status",
    "category": "oncology",
    "summary": "Functional performance",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "ecog",
+    "who performance status",
+    "zubrod"
+   ],
+   "version": "ECOG Performance Status (Oken et al. 1982)"
   },
   {
    "id": "mrs",
@@ -312,7 +466,14 @@
    "name": "Modified Rankin Scale",
    "category": "functional",
    "summary": "Global disability and dependence",
-   "status": "implemented"
+   "status": "implemented",
+   "aliases": [
+    "rankin",
+    "disability",
+    "functional outcome",
+    "dependence"
+   ],
+   "version": "Modified Rankin Scale 0–6 (van Swieten et al. 1988)"
   },
   {
    "id": "rass",
@@ -320,7 +481,14 @@
    "name": "Richmond Agitation–Sedation Scale",
    "category": "neurocritical",
    "summary": "Agitation and sedation level",
-   "status": "placeholder"
+   "status": "implemented",
+   "aliases": [
+    "sedation",
+    "agitation",
+    "richmond",
+    "icu"
+   ],
+   "version": "RASS (Sessler et al. 2002)"
   },
   {
    "id": "sofa",
@@ -328,7 +496,98 @@
    "name": "Sequential Organ Failure Assessment",
    "category": "neurocritical",
    "summary": "Organ dysfunction",
-   "status": "placeholder"
+   "status": "review",
+   "reviewCategory": "Version",
+   "reviewReason": "SOFA-2 (JAMA 2025) revised thresholds and variables; the version to implement must be decided and verified."
+  },
+  {
+   "id": "abcd2",
+   "abbreviation": "ABCD²",
+   "name": "ABCD² Score",
+   "category": "stroke",
+   "summary": "Estimates short-term stroke risk after transient ischaemic attack.",
+   "status": "implemented",
+   "aliases": [
+    "abcd2",
+    "tia",
+    "transient ischaemic attack"
+   ],
+   "version": "ABCD² (Johnston et al. 2007)"
+  },
+  {
+   "id": "race",
+   "abbreviation": "RACE",
+   "name": "Rapid Arterial oCclusion Evaluation Scale",
+   "category": "stroke",
+   "summary": "Prehospital estimation of the likelihood of large vessel occlusion in suspected stroke.",
+   "status": "implemented",
+   "aliases": [
+    "race scale",
+    "large vessel occlusion",
+    "lvo",
+    "prehospital"
+   ],
+   "version": "RACE (Pérez de la Ossa et al. 2014)"
+  },
+  {
+   "id": "lams",
+   "abbreviation": "LAMS",
+   "name": "Los Angeles Motor Scale",
+   "category": "stroke",
+   "summary": "Brief prehospital stroke severity scale.",
+   "status": "implemented",
+   "aliases": [
+    "los angeles",
+    "large vessel occlusion",
+    "lvo",
+    "prehospital"
+   ],
+   "version": "LAMS (Llanes et al. 2004)"
+  },
+  {
+   "id": "fasted",
+   "abbreviation": "FAST-ED",
+   "name": "Field Assessment Stroke Triage for Emergency Destination",
+   "category": "stroke",
+   "summary": "Under review",
+   "status": "review",
+   "reviewCategory": "Verification",
+   "reviewReason": "Published tools define the denial/neglect item differently; requires primary-source review."
+  },
+  {
+   "id": "rtokuhashi",
+   "abbreviation": "Revised Tokuhashi",
+   "name": "Revised Tokuhashi Score",
+   "category": "oncology",
+   "summary": "Preoperative prognostic estimate for patients with metastatic spine tumours.",
+   "status": "implemented",
+   "aliases": [
+    "tokuhashi",
+    "spinal metastasis",
+    "spine metastases",
+    "prognosis"
+   ],
+   "version": "Revised Tokuhashi (Tokuhashi et al. 2005)"
+  },
+  {
+   "id": "joa",
+   "abbreviation": "JOA",
+   "name": "Japanese Orthopaedic Association Score",
+   "category": "spine",
+   "summary": "Under review",
+   "status": "review",
+   "reviewCategory": "Version",
+   "reviewReason": "Several JOA versions exist (1975, 1994 revision; related JOACMEQ questionnaire). A single version must be selected and verified."
+  },
+  {
+   "id": "gpa",
+   "abbreviation": "GPA",
+   "name": "Graded Prognostic Assessment (variants)",
+   "category": "oncology",
+   "summary": "Under review",
+   "status": "review",
+   "reviewCategory": "Version",
+   "reviewReason": "Graded Prognostic Assessment has multiple disease-specific versions that are updated frequently; requires dedicated review."
   }
  ]
 }

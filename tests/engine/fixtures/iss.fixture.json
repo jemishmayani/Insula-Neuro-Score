@@ -1,0 +1,165 @@
+{
+ "scoreId": "iss",
+ "cases": [
+  {
+   "name": "published example 3²+4²+5² = 50",
+   "answers": {
+    "head": 3,
+    "face": 0,
+    "chest": 4,
+    "abdomen": 5,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "total": 50,
+    "state": "major",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "9 + 16 + 25 = 50",
+    "source": "Baker et al. 1974 method"
+   }
+  },
+  {
+   "name": "only one region counts per region",
+   "answers": {
+    "head": 2,
+    "face": 2,
+    "chest": 2,
+    "abdomen": 2,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "total": 12,
+    "state": "below"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4+4+4 = 12 (fourth region ignored)",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "AIS 6 → 75",
+   "answers": {
+    "head": 6,
+    "face": 0,
+    "chest": 0,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "total": 75,
+    "state": "max",
+    "tone": "critical"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "any AIS 6 = 75",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "three AIS 5 → 75",
+   "answers": {
+    "head": 5,
+    "face": 0,
+    "chest": 5,
+    "abdomen": 5,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "total": 75
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "25+25+25 = 75",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "boundary 16 (4²)",
+   "answers": {
+    "head": 4,
+    "face": 0,
+    "chest": 0,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "total": 16,
+    "state": "major"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "16 > 15",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "boundary 14",
+   "answers": {
+    "head": 3,
+    "face": 0,
+    "chest": 2,
+    "abdomen": 1,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "total": 14,
+    "state": "below"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "9+4+1 = 14",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "no injury",
+   "answers": {
+    "head": 0,
+    "face": 0,
+    "chest": 0,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "total": 0,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "AIS 7 invalid",
+   "answers": {
+    "head": 7,
+    "face": 0,
+    "chest": 0,
+    "abdomen": 0,
+    "extremity": 0,
+    "external": 0
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "AIS 0–6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -1,0 +1,64 @@
+{
+ "scoreId": "rass",
+ "cases": [
+  {
+   "name": "+4",
+   "answers": {
+    "level": "4"
+   },
+   "expect": {
+    "display": "RASS +4",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "+4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "0",
+   "answers": {
+    "level": "0"
+   },
+   "expect": {
+    "display": "RASS 0",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "−3",
+   "answers": {
+    "level": "-3"
+   },
+   "expect": {
+    "state": "sedated"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "−3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "−5",
+   "answers": {
+    "level": "-5"
+   },
+   "expect": {
+    "state": "deep",
+    "tone": "moderate"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "−5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

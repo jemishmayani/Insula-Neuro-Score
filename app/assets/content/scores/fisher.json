@@ -1,0 +1,204 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "fisher grade",
+  "sah ct",
+  "vasospasm"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing Fisher and modified Fisher grades.",
+  "Grading from a post-treatment scan."
+ ],
+ "relatedScores": [
+  {
+   "id": "mfisher",
+   "relation": "Modified scale"
+  },
+  {
+   "id": "wfns",
+   "relation": "Clinical grade"
+  }
+ ],
+ "id": "fisher",
+ "name": "Fisher Scale",
+ "abbreviation": "Fisher",
+ "category": "sah",
+ "subcategory": "CT grade",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Neuroradiology"
+ ],
+ "version": {
+  "label": "Original Fisher scale (1980)",
+  "detail": "Grades 1–4. Vasospasm risk peaked at grade 3 and was lower at grade 4. The modified Fisher scale is a different scale and must not be mixed."
+ },
+ "purpose": "CT classification of subarachnoid blood in relation to vasospasm.",
+ "intendedPopulation": "Patients with aneurysmal SAH, on the admission CT.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "CT grade",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Non-linear scale",
+  "message": "In the original study, vasospasm was most frequent in grade 3, not grade 4. Many centres now use the modified Fisher scale; state which is used."
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "CT appearance",
+   "short": "Fisher grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "No blood detected",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Diffuse or vertical layers under 1 mm",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Localised clot and/or vertical layer 1 mm or thicker",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "Intracerebral or intraventricular clot, with diffuse or no SAH",
+     "points": 4,
+     "code": "4"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "display": "Grade {total}",
+  "share": "Fisher grade {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g1",
+   "tone": "favorable",
+   "label": "Grade 1",
+   "summary": "No subarachnoid blood detected on this CT at this assessment.",
+   "range": "1",
+   "detail": "Timing of the CT affects detection."
+  },
+  {
+   "id": "g2",
+   "tone": "mild",
+   "label": "Grade 2",
+   "summary": "Diffuse thin subarachnoid blood.",
+   "range": "2"
+  },
+  {
+   "id": "g3",
+   "tone": "high",
+   "label": "Grade 3",
+   "summary": "Localised clot or thick layer: the grade with the highest vasospasm frequency in the original study.",
+   "range": "3",
+   "detail": "Correlate with clinical grade and monitoring according to local protocol."
+  },
+  {
+   "id": "g4",
+   "tone": "moderate",
+   "label": "Grade 4",
+   "summary": "Intracerebral or intraventricular clot with diffuse or no SAH.",
+   "range": "4"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The original CT scale relating subarachnoid blood to vasospasm.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Report as 'Fisher grade' explicitly to avoid confusion with the modified Fisher scale."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Non-monotonic: risk does not rise steadily with grade."
+  },
+  "Thickness judgement is subjective.",
+  "Grade 4 treats small and large ventricular clots alike."
+ ],
+ "confounders": [
+  {
+   "factor": "CT timing",
+   "effect": "Blood redistributes and clears over time."
+  },
+  {
+   "factor": "Post-procedural blood or contrast",
+   "effect": "Can mimic or mask SAH."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Clinical grade.",
+  "Individual vasospasm risk.",
+  "Treatment choice."
+ ],
+ "guideSections": {
+  "what": "A four-grade CT classification of SAH blood.",
+  "whenToUse": "Admission CT in aneurysmal SAH, where the original scale is used.",
+  "howToPerform": "Choose the grade that best describes the admission CT.",
+  "clinicalContext": "Used with clinical grading; specify the scale version."
+ },
+ "sources": [
+  {
+   "citation": "Fisher CM, Kistler JP, Davis JM. Relation of cerebral vasospasm to subarachnoid hemorrhage visualized by computerized tomographic scanning. Neurosurgery. 1980;6(1):1-9."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "CT appearance",
+   "inputs": [
+    "grade"
+   ]
+  }
+ ]
+}

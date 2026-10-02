@@ -1,0 +1,242 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "injury severity",
+  "ais",
+  "polytrauma",
+  "major trauma"
+ ],
+ "scoringRules": [
+  {
+   "id": "l1",
+   "expr": "largest(1, head, face, chest, abdomen, extremity, external)"
+  },
+  {
+   "id": "l2",
+   "expr": "largest(2, head, face, chest, abdomen, extremity, external)"
+  },
+  {
+   "id": "l3",
+   "expr": "largest(3, head, face, chest, abdomen, extremity, external)"
+  }
+ ],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Squaring more than one injury from the same region.",
+  "Not assigning 75 when any AIS 6 is present."
+ ],
+ "relatedScores": [
+  {
+   "id": "rts",
+   "relation": "Physiological severity"
+  }
+ ],
+ "id": "iss",
+ "name": "Injury Severity Score",
+ "abbreviation": "ISS",
+ "category": "tbi",
+ "subcategory": "Anatomical trauma score",
+ "specialties": [
+  "Trauma",
+  "Emergency Medicine",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "ISS (Baker et al. 1974)",
+  "detail": "Sum of squares of the highest AIS severity in the three most severely injured of six body regions. Any AIS 6 gives ISS 75. Range 0–75."
+ },
+ "purpose": "Anatomical summary of multiple injuries.",
+ "intendedPopulation": "Injured patients with AIS-coded injuries.",
+ "resultPresentation": {
+  "type": "severity",
+  "typeLabel": "Anatomical injury severity",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Requires AIS severities",
+  "message": "Enter the highest AIS severity (0–6) for each region, from AIS coding. The AIS dictionary is licensed by AAAM and is not reproduced here."
+ },
+ "components": [
+  {
+   "id": "regions_c",
+   "label": "Highest AIS severity by region",
+   "inputs": [
+    "head",
+    "face",
+    "chest",
+    "abdomen",
+    "extremity",
+    "external"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "head",
+   "type": "integer",
+   "label": "Head or neck",
+   "short": "Head",
+   "min": 0,
+   "max": 6,
+   "help": "0 = no injury in this region."
+  },
+  {
+   "id": "face",
+   "type": "integer",
+   "label": "Face",
+   "short": "Face",
+   "min": 0,
+   "max": 6,
+   "help": "0 = no injury in this region."
+  },
+  {
+   "id": "chest",
+   "type": "integer",
+   "label": "Chest",
+   "short": "Chest",
+   "min": 0,
+   "max": 6,
+   "help": "0 = no injury in this region."
+  },
+  {
+   "id": "abdomen",
+   "type": "integer",
+   "label": "Abdomen or pelvic contents",
+   "short": "Abdomen",
+   "min": 0,
+   "max": 6,
+   "help": "0 = no injury in this region."
+  },
+  {
+   "id": "extremity",
+   "type": "integer",
+   "label": "Extremities or pelvic girdle",
+   "short": "Extremities",
+   "min": 0,
+   "max": 6,
+   "help": "0 = no injury in this region."
+  },
+  {
+   "id": "external",
+   "type": "integer",
+   "label": "External",
+   "short": "External",
+   "min": 0,
+   "max": 6,
+   "help": "0 = no injury in this region."
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "l1 == 6 ? 75 : l1 * l1 + l2 * l2 + l3 * l3",
+  "range": {
+   "min": 0,
+   "max": 75
+  },
+  "formula": "{l1 == 6 ? 'AIS 6 present' : l1 + '² + ' + l2 + '² + ' + l3 + '²'}",
+  "display": "{total}",
+  "share": "ISS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "none"
+  },
+  {
+   "when": "total == 75",
+   "state": "max"
+  },
+  {
+   "when": "total > 15",
+   "state": "major"
+  },
+  {
+   "state": "below"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "none",
+   "tone": "favorable",
+   "label": "No injury recorded",
+   "summary": "No AIS-coded injury recorded at this assessment.",
+   "range": "0",
+   "detail": "Depends on complete injury identification and coding."
+  },
+  {
+   "id": "below",
+   "tone": "informational",
+   "label": "ISS {total}",
+   "summary": "Below the ISS >15 threshold commonly used to define major trauma.",
+   "range": "1–15"
+  },
+  {
+   "id": "major",
+   "tone": "high",
+   "label": "ISS {total}: above 15",
+   "summary": "ISS >15 is commonly used to define major trauma.",
+   "range": "16–74",
+   "detail": "Correlate with physiology and clinical status according to local trauma protocols."
+  },
+  {
+   "id": "max",
+   "tone": "critical",
+   "label": "ISS 75",
+   "summary": "Maximum ISS (includes an AIS 6 injury, or three AIS 5 regions).",
+   "range": "75",
+   "detail": "Correlate with the full clinical picture; ISS describes anatomy, not current physiology."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The standard anatomical severity summary in trauma registries and research.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Only the single most severe injury in each region counts; multiple severe injuries in one region are under-represented (the New ISS addresses this)."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Depends on accurate AIS coding, usually after full investigation."
+  },
+  "Counts only one injury per body region.",
+  "Weights all body regions equally."
+ ],
+ "confounders": [
+  {
+   "factor": "Incomplete injury identification",
+   "effect": "Lowers ISS early in care."
+  },
+  {
+   "factor": "AIS version",
+   "effect": "Severity codes differ between AIS versions."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Physiological state (see RTS).",
+  "Which injuries are present.",
+  "Individual survival."
+ ],
+ "guideSections": {
+  "what": "A 0–75 anatomical score derived from AIS severities in six body regions.",
+  "whenToUse": "Trauma registries, research and retrospective severity description.",
+  "howToPerform": "For each region, enter the highest AIS severity. Square the three highest and sum; any AIS 6 gives 75.",
+  "clinicalContext": "An anatomical descriptor, usually finalised after full assessment."
+ },
+ "sources": [
+  {
+   "citation": "Baker SP, O'Neill B, Haddon W Jr, Long WB. The Injury Severity Score: a method for describing patients with multiple injuries and evaluating emergency care. J Trauma. 1974;14(3):187-196."
+  }
+ ],
+ "licensing": {
+  "status": "Published formula; AIS not reproduced",
+  "note": "The Abbreviated Injury Scale dictionary is licensed by AAAM; only severity numbers are entered."
+ }
+}

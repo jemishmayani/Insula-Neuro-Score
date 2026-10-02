@@ -1,0 +1,96 @@
+{
+ "scoreId": "aspects",
+ "cases": [
+  {
+   "name": "no early change",
+   "answers": {
+    "regions": [
+     "none"
+    ]
+   },
+   "expect": {
+    "total": 10,
+    "state": "ten",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10 − 0 = 10",
+    "source": "Barber et al. 2000"
+   }
+  },
+  {
+   "name": "insula, lentiform, M2",
+   "answers": {
+    "regions": [
+     "i",
+     "l",
+     "m2"
+    ]
+   },
+   "expect": {
+    "total": 7,
+    "state": "scored"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10 − 3 = 7 (published worked example)",
+    "source": "Worked example in ASPECTS documentation"
+   }
+  },
+  {
+   "name": "all ten regions",
+   "answers": {
+    "regions": [
+     "c",
+     "l",
+     "ic",
+     "i",
+     "m1",
+     "m2",
+     "m3",
+     "m4",
+     "m5",
+     "m6"
+    ]
+   },
+   "expect": {
+    "total": 0
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10 − 10 = 0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "'None' with a region is invalid",
+   "answers": {
+    "regions": [
+     "none",
+     "c"
+    ]
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "exclusive option",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "nothing selected",
+   "answers": {},
+   "expect": {
+    "status": "incomplete"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no selection",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -1,0 +1,275 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "trauma score",
+  "t-rts",
+  "physiological"
+ ],
+ "scoringRules": [
+  {
+   "id": "trts",
+   "expr": "gcs + sbp + rr"
+  }
+ ],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using raw values instead of coded values in the formula.",
+  "Mixing T-RTS (sum of codes) with weighted RTS."
+ ],
+ "relatedScores": [
+  {
+   "id": "iss",
+   "relation": "Anatomical severity"
+  },
+  {
+   "id": "gcs",
+   "relation": "Input"
+  }
+ ],
+ "id": "rts",
+ "name": "Revised Trauma Score",
+ "abbreviation": "RTS",
+ "category": "tbi",
+ "subcategory": "Physiological trauma score",
+ "specialties": [
+  "Trauma",
+  "Emergency Medicine",
+  "Prehospital"
+ ],
+ "version": {
+  "label": "RTS (Champion et al. 1989), weighted",
+  "detail": "Coded GCS, systolic BP and respiratory rate (0–4 each). RTS = 0.9368 GCSc + 0.7326 SBPc + 0.2908 RRc, range 0–7.8408. The triage version (T-RTS, 0–12) is shown alongside."
+ },
+ "purpose": "Physiological summary of injury severity.",
+ "intendedPopulation": "Injured patients, using first recorded values.",
+ "resultPresentation": {
+  "type": "severity",
+  "typeLabel": "Physiological severity",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Lower is worse",
+  "message": "RTS is weighted toward GCS. Respiratory rate and the verbal component are unreliable after intubation."
+ },
+ "components": [
+  {
+   "id": "codes",
+   "label": "Coded values",
+   "inputs": [
+    "gcs",
+    "sbp",
+    "rr"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "gcs",
+   "type": "integer",
+   "label": "GCS total",
+   "short": "GCS",
+   "min": 3,
+   "max": 15,
+   "pointBands": [
+    {
+     "max": 3,
+     "points": 0
+    },
+    {
+     "min": 4,
+     "max": 5,
+     "points": 1
+    },
+    {
+     "min": 6,
+     "max": 8,
+     "points": 2
+    },
+    {
+     "min": 9,
+     "max": 12,
+     "points": 3
+    },
+    {
+     "min": 13,
+     "points": 4
+    }
+   ]
+  },
+  {
+   "id": "sbp",
+   "type": "integer",
+   "label": "Systolic blood pressure",
+   "short": "SBP",
+   "unit": "mmHg",
+   "min": 0,
+   "max": 300,
+   "pointBands": [
+    {
+     "max": 0,
+     "points": 0
+    },
+    {
+     "min": 1,
+     "max": 49,
+     "points": 1
+    },
+    {
+     "min": 50,
+     "max": 75,
+     "points": 2
+    },
+    {
+     "min": 76,
+     "max": 89,
+     "points": 3
+    },
+    {
+     "min": 90,
+     "points": 4
+    }
+   ]
+  },
+  {
+   "id": "rr",
+   "type": "integer",
+   "label": "Respiratory rate",
+   "short": "RR",
+   "unit": "/min",
+   "min": 0,
+   "max": 80,
+   "pointBands": [
+    {
+     "max": 0,
+     "points": 0
+    },
+    {
+     "min": 1,
+     "max": 5,
+     "points": 1
+    },
+    {
+     "min": 6,
+     "max": 9,
+     "points": 2
+    },
+    {
+     "min": 10,
+     "max": 29,
+     "points": 4
+    },
+    {
+     "min": 30,
+     "points": 3
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "0.9368 * gcs + 0.7326 * sbp + 0.2908 * rr",
+  "range": {
+   "min": 0,
+   "max": 7.8408
+  },
+  "formula": "Codes G{gcs} S{sbp} R{rr} · T-RTS {trts}",
+  "formulaEquals": false,
+  "display": "{fixed(total, 4)}",
+  "share": "RTS {fixed(total, 4)} (T-RTS {trts})"
+ },
+ "interpretationRules": [
+  {
+   "when": "total >= 7.8408",
+   "state": "full"
+  },
+  {
+   "when": "total < 4",
+   "state": "low4"
+  },
+  {
+   "state": "mid"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "full",
+   "tone": "favorable",
+   "label": "All coded values normal",
+   "summary": "All three coded values normal at this assessment (maximum RTS).",
+   "range": "7.8408",
+   "detail": "Physiology can deteriorate; RTS does not describe anatomical injury."
+  },
+  {
+   "id": "mid",
+   "tone": "informational",
+   "label": "RTS {fixed(total, 4)}",
+   "summary": "Lower values indicate greater physiological derangement.",
+   "range": "4–7.84"
+  },
+  {
+   "id": "low4",
+   "tone": "high",
+   "label": "RTS below 4",
+   "summary": "A threshold below 4 has been proposed to identify severe injury.",
+   "range": "< 4",
+   "detail": "Correlate with full assessment and the local trauma protocol."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A physiological score used in triage and in trauma outcome models (e.g. TRISS).",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Use the first recorded values."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Unreliable in intubated patients (respiratory rate and verbal response)."
+  },
+  "Physiology changes rapidly; values are timepoint-specific.",
+  "Does not describe anatomical injury (see ISS)."
+ ],
+ "confounders": [
+  {
+   "factor": "Intubation or sedation",
+   "effect": "Affects GCS and respiratory rate."
+  },
+  {
+   "factor": "Intoxication",
+   "effect": "Lowers GCS."
+  },
+  {
+   "factor": "Prehospital interventions",
+   "effect": "Change BP and RR before measurement."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Anatomical injury severity.",
+  "Which injuries are present.",
+  "Individual survival."
+ ],
+ "guideSections": {
+  "what": "A weighted sum of coded GCS, systolic BP and respiratory rate.",
+  "whenToUse": "Initial physiological assessment after injury; trauma registries.",
+  "howToPerform": "Enter the first recorded values; each is converted to a 0–4 code and weighted.",
+  "clinicalContext": "Combined with anatomical scores in outcome models."
+ },
+ "sources": [
+  {
+   "citation": "Champion HR, Sacco WJ, Copes WS, Gann DS, Gennarelli TA, Flanagan ME. A revision of the Trauma Score. J Trauma. 1989;29(5):623-629.",
+   "doi": "10.1097/00005373-198905000-00017"
+  }
+ ],
+ "licensing": {
+  "status": "Published score, original wording",
+  "note": "No reproduction restrictions identified."
+ }
+}

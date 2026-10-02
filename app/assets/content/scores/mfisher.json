@@ -1,0 +1,238 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "modified fisher",
+  "vasospasm",
+  "frontera"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Confusing with the original Fisher scale.",
+  "Grading from a post-treatment CT."
+ ],
+ "relatedScores": [
+  {
+   "id": "fisher",
+   "relation": "Original scale"
+  },
+  {
+   "id": "wfns",
+   "relation": "Clinical grade"
+  }
+ ],
+ "id": "mfisher",
+ "name": "Modified Fisher Scale",
+ "abbreviation": "mFisher",
+ "category": "sah",
+ "subcategory": "CT grade",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Neuroradiology"
+ ],
+ "version": {
+  "label": "Modified Fisher (Frontera et al. 2006)",
+  "detail": "Grade 0–4 from cisternal clot thickness and IVH. Distinct from the original Fisher scale."
+ },
+ "purpose": "CT grading of SAH blood burden associated with symptomatic vasospasm.",
+ "intendedPopulation": "Patients with aneurysmal SAH, on the admission CT.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "CT grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "sah",
+   "type": "single",
+   "label": "Cisternal subarachnoid blood",
+   "short": "SAH",
+   "options": [
+    {
+     "value": "0",
+     "label": "None",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Thin (focal or diffuse)",
+     "points": 1,
+     "detail": "Not completely filling a cistern or fissure."
+    },
+    {
+     "value": "2",
+     "label": "Thick",
+     "points": 2,
+     "detail": "Completely filling at least one cistern or fissure."
+    }
+   ]
+  },
+  {
+   "id": "ivh",
+   "type": "single",
+   "label": "Intraventricular haemorrhage",
+   "short": "IVH",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "sah == 0 ? (ivh == 0 ? 0 : -1) : sah == 1 ? (ivh == 1 ? 2 : 1) : (ivh == 1 ? 4 : 3)",
+  "range": {
+   "min": -1,
+   "max": 4
+  },
+  "display": "{total < 0 ? 'Not defined' : 'Grade ' + total}",
+  "share": "Modified Fisher {total < 0 ? 'not defined' : 'Grade ' + total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total < 0",
+   "state": "undef"
+  },
+  {
+   "when": "total == 0",
+   "state": "g0"
+  },
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "undef",
+   "tone": "incomplete",
+   "label": "Not defined",
+   "summary": "The modified Fisher scale does not define IVH without subarachnoid blood.",
+   "range": "IVH only"
+  },
+  {
+   "id": "g0",
+   "tone": "favorable",
+   "label": "Grade 0",
+   "summary": "No SAH or IVH on this CT at this assessment.",
+   "range": "0",
+   "detail": "CT timing affects detection."
+  },
+  {
+   "id": "g1",
+   "tone": "low",
+   "label": "Grade 1",
+   "summary": "Thin SAH, no IVH (reference group with grade 0).",
+   "range": "1"
+  },
+  {
+   "id": "g2",
+   "tone": "moderate",
+   "label": "Grade 2",
+   "summary": "Thin SAH with IVH. Crude odds ratio for symptomatic vasospasm 1.6 versus grades 0–1.",
+   "range": "2"
+  },
+  {
+   "id": "g3",
+   "tone": "moderate",
+   "label": "Grade 3",
+   "summary": "Thick SAH, no IVH. Crude odds ratio 1.6 versus grades 0–1.",
+   "range": "3"
+  },
+  {
+   "id": "g4",
+   "tone": "high",
+   "label": "Grade 4",
+   "summary": "Thick SAH with IVH. Crude odds ratio 2.2 versus grades 0–1.",
+   "range": "4",
+   "detail": "Group-level association; correlate with clinical grade and monitoring according to local protocol."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A CT grade with a more consistent relationship to vasospasm than the original Fisher scale.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Odds ratios come from the derivation cohort (placebo arms of tirilazad trials)."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "The original study did not define a measurement threshold for thick versus thin blood."
+  },
+  "IVH is binary regardless of volume."
+ ],
+ "confounders": [
+  {
+   "factor": "CT timing",
+   "effect": "Blood clears over time."
+  },
+  {
+   "factor": "Post-procedural blood or contrast",
+   "effect": "Can mimic SAH."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Clinical grade.",
+  "Individual vasospasm probability.",
+  "Treatment choice."
+ ],
+ "guideSections": {
+  "what": "A 0–4 CT grade from cisternal blood thickness and IVH.",
+  "whenToUse": "Admission CT in aneurysmal SAH.",
+  "howToPerform": "0 none; 1 thin, no IVH; 2 thin + IVH; 3 thick, no IVH; 4 thick + IVH.",
+  "clinicalContext": "Used with clinical grading."
+ },
+ "sources": [
+  {
+   "citation": "Frontera JA, Claassen J, Schmidt JM, et al. Prediction of symptomatic vasospasm after subarachnoid hemorrhage: the modified Fisher scale. Neurosurgery. 2006;59(1):21-27."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_sah",
+   "label": "Cisternal subarachnoid blood",
+   "inputs": [
+    "sah"
+   ]
+  },
+  {
+   "id": "c_ivh",
+   "label": "Intraventricular haemorrhage",
+   "inputs": [
+    "ivh"
+   ]
+  }
+ ]
+}

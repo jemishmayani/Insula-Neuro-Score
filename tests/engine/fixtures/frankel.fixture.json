@@ -1,0 +1,49 @@
+{
+ "scoreId": "frankel",
+ "cases": [
+  {
+   "name": "grade A",
+   "answers": {
+    "grade": "1"
+   },
+   "expect": {
+    "display": "Grade A",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "A",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade E",
+   "answers": {
+    "grade": "5"
+   },
+   "expect": {
+    "display": "Grade E",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "E",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade C",
+   "answers": {
+    "grade": "3"
+   },
+   "expect": {
+    "display": "Grade C"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "C",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

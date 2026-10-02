@@ -1,0 +1,52 @@
+{
+ "scoreId": "hunthess",
+ "cases": [
+  {
+   "name": "grade III",
+   "answers": {
+    "grade": "3",
+    "mod": "no"
+   },
+   "expect": {
+    "total": 3,
+    "display": "Grade III"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III, no modifier",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade III + modifier",
+   "answers": {
+    "grade": "3",
+    "mod": "yes"
+   },
+   "expect": {
+    "total": 4,
+    "display": "Grade IV"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III + 1 = IV",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "capped at V",
+   "answers": {
+    "grade": "5",
+    "mod": "yes"
+   },
+   "expect": {
+    "total": 5
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "min(5, 6) = 5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

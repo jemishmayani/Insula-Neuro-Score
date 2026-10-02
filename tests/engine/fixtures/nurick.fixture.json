@@ -1,0 +1,49 @@
+{
+ "scoreId": "nurick",
+ "cases": [
+  {
+   "name": "grade 0",
+   "answers": {
+    "grade": "0"
+   },
+   "expect": {
+    "total": 0,
+    "display": "Grade 0"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 5",
+   "answers": {
+    "grade": "5"
+   },
+   "expect": {
+    "total": 5,
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "invalid",
+   "answers": {
+    "grade": "6"
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0–5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

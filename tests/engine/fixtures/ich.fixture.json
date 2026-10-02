@@ -1,0 +1,80 @@
+{
+ "scoreId": "ich",
+ "cases": [
+  {
+   "name": "score 0",
+   "answers": {
+    "gcs": "0",
+    "vol": "0",
+    "ivh": "no",
+    "infra": "0",
+    "age": "0"
+   },
+   "expect": {
+    "total": 0,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Hemphill et al. 2001"
+   }
+  },
+  {
+   "name": "ACEP example (4)",
+   "answers": {
+    "gcs": "1",
+    "vol": "1",
+    "ivh": "yes",
+    "infra": "0",
+    "age": "1"
+   },
+   "expect": {
+    "total": 4,
+    "tone": "critical"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "GCS 5–12 1 + vol 1 + IVH 1 + age 1 = 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "score 3 → 72%",
+   "answers": {
+    "gcs": "1",
+    "vol": "1",
+    "ivh": "yes",
+    "infra": "0",
+    "age": "0"
+   },
+   "expect": {
+    "total": 3,
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1+1 = 3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "maximum 6",
+   "answers": {
+    "gcs": "2",
+    "vol": "1",
+    "ivh": "yes",
+    "infra": "1",
+    "age": "1"
+   },
+   "expect": {
+    "total": 6
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+1+1+1+1 = 6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -1,0 +1,299 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "functional outcome",
+  "intracerebral haemorrhage",
+  "rost"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Reversing the direction (higher FUNC is better).",
+  "Applying to traumatic ICH."
+ ],
+ "relatedScores": [
+  {
+   "id": "ich",
+   "relation": "Severity grade"
+  },
+  {
+   "id": "gcs",
+   "relation": "Input"
+  }
+ ],
+ "id": "func",
+ "name": "FUNC Score",
+ "abbreviation": "FUNC",
+ "category": "ich",
+ "subcategory": "Functional outcome after ICH",
+ "specialties": [
+  "Stroke",
+  "Neurocritical Care",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "FUNC (Rost et al. 2008)",
+  "detail": "Five components, 0–11. Higher scores were associated with a greater likelihood of 90-day functional independence (GOS ≥4)."
+ },
+ "purpose": "Estimates the likelihood of functional independence at 90 days after primary ICH.",
+ "intendedPopulation": "Adults with primary intracerebral haemorrhage, assessed at diagnosis.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Functional independence (derivation data)",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Group-level estimate",
+  "message": "Higher scores mean better expected function. Goals-of-care decisions should not rest on the FUNC score alone."
+ },
+ "inputDefinitions": [
+  {
+   "id": "vol",
+   "type": "single",
+   "label": "ICH volume",
+   "short": "Volume",
+   "options": [
+    {
+     "value": "4",
+     "label": "Less than 30 mL",
+     "points": 4
+    },
+    {
+     "value": "2",
+     "label": "30–60 mL",
+     "points": 2
+    },
+    {
+     "value": "0",
+     "label": "More than 60 mL",
+     "points": 0
+    }
+   ]
+  },
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age",
+   "short": "Age",
+   "options": [
+    {
+     "value": "2",
+     "label": "Under 70 years",
+     "points": 2
+    },
+    {
+     "value": "1",
+     "label": "70–79 years",
+     "points": 1
+    },
+    {
+     "value": "0",
+     "label": "80 years or older",
+     "points": 0
+    }
+   ]
+  },
+  {
+   "id": "loc",
+   "type": "single",
+   "label": "ICH location",
+   "short": "Location",
+   "options": [
+    {
+     "value": "2",
+     "label": "Lobar",
+     "points": 2
+    },
+    {
+     "value": "1",
+     "label": "Deep",
+     "points": 1
+    },
+    {
+     "value": "0",
+     "label": "Infratentorial",
+     "points": 0
+    }
+   ]
+  },
+  {
+   "id": "gcs",
+   "type": "single",
+   "label": "GCS",
+   "short": "GCS",
+   "options": [
+    {
+     "value": "2",
+     "label": "9 or more",
+     "points": 2
+    },
+    {
+     "value": "0",
+     "label": "8 or less",
+     "points": 0
+    }
+   ]
+  },
+  {
+   "id": "cog",
+   "type": "single",
+   "label": "Pre-ICH cognitive impairment",
+   "short": "Pre-ICH cognition",
+   "options": [
+    {
+     "value": "1",
+     "label": "No",
+     "points": 1
+    },
+    {
+     "value": "0",
+     "label": "Yes",
+     "points": 0
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 11
+  },
+  "display": "{total}",
+  "share": "FUNC {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 4",
+   "state": "low4"
+  },
+  {
+   "when": "total == 11",
+   "state": "top"
+  },
+  {
+   "state": "mid"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low4",
+   "tone": "high",
+   "label": "FUNC 0–4",
+   "summary": "No patient with FUNC ≤4 achieved 90-day functional independence in the derivation cohort.",
+   "range": "0–4",
+   "detail": "Group-level finding; integrate with the full clinical picture and avoid early care limitation based on the score alone."
+  },
+  {
+   "id": "mid",
+   "tone": "informational",
+   "label": "FUNC {total}",
+   "summary": "The likelihood of 90-day functional independence increased with the score in the derivation cohort.",
+   "range": "5–10"
+  },
+  {
+   "id": "top",
+   "tone": "favorable",
+   "label": "FUNC 11",
+   "summary": "FUNC 11 at this assessment: over 80% achieved 90-day functional independence in the derivation cohort.",
+   "range": "11",
+   "detail": "Group-level finding; individual outcomes vary."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Complements severity grading (ICH Score) with an estimate of functional outcome.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Use at diagnosis, not as a repeatedly changing measure."
+  },
+  {
+   "text": "Pre-ICH cognitive impairment is assessed from history, often with an informant."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Derived and validated at a single institution."
+  },
+  "Excludes traumatic ICH and haemorrhage from other causes.",
+  "Outcome defined by GOS ≥4 at 90 days."
+ ],
+ "confounders": [
+  {
+   "factor": "Sedation",
+   "effect": "Lowers the GCS component."
+  },
+  {
+   "factor": "Volume estimation",
+   "effect": "ABC/2 error affects the volume band."
+  },
+  {
+   "factor": "Informant availability",
+   "effect": "Affects assessment of pre-ICH cognition."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Mortality (see ICH Score).",
+  "An individual patient's outcome.",
+  "Whether intervention is appropriate."
+ ],
+ "guideSections": {
+  "what": "A 0–11 score estimating likelihood of 90-day functional independence after primary ICH.",
+  "whenToUse": "When primary ICH is first identified.",
+  "howToPerform": "Score volume, age, location, GCS and pre-ICH cognitive status; sum.",
+  "clinicalContext": "A group-level estimate for discussion, alongside the full clinical picture."
+ },
+ "sources": [
+  {
+   "citation": "Rost NS, Smith EE, Chang Y, et al. Prediction of functional outcome in patients with primary intracerebral hemorrhage: the FUNC score. Stroke. 2008;39(8):2304-2309."
+  }
+ ],
+ "licensing": {
+  "status": "Published score, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_vol",
+   "label": "ICH volume",
+   "inputs": [
+    "vol"
+   ]
+  },
+  {
+   "id": "c_age",
+   "label": "Age",
+   "inputs": [
+    "age"
+   ]
+  },
+  {
+   "id": "c_loc",
+   "label": "ICH location",
+   "inputs": [
+    "loc"
+   ]
+  },
+  {
+   "id": "c_gcs",
+   "label": "GCS",
+   "inputs": [
+    "gcs"
+   ]
+  },
+  {
+   "id": "c_cog",
+   "label": "Pre-ICH cognitive impairment",
+   "inputs": [
+    "cog"
+   ]
+  }
+ ]
+}

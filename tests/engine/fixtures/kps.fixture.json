@@ -1,0 +1,90 @@
+{
+ "scoreId": "kps",
+ "cases": [
+  {
+   "name": "KPS 100",
+   "answers": {
+    "level": "100"
+   },
+   "expect": {
+    "total": 100,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "100",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "KPS 80 boundary",
+   "answers": {
+    "level": "80"
+   },
+   "expect": {
+    "state": "normal_act"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "80–90",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "KPS 70",
+   "answers": {
+    "level": "70"
+   },
+   "expect": {
+    "state": "self"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "50–70",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "KPS 40",
+   "answers": {
+    "level": "40"
+   },
+   "expect": {
+    "state": "dependent"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10–40",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "KPS 0",
+   "answers": {
+    "level": "0"
+   },
+   "expect": {
+    "state": "dead"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "KPS 75 invalid",
+   "answers": {
+    "level": "75"
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "steps of 10 only",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

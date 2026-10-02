@@ -1,0 +1,83 @@
+{
+ "scoreId": "func",
+ "cases": [
+  {
+   "name": "maximum 11",
+   "answers": {
+    "vol": "4",
+    "age": "2",
+    "loc": "2",
+    "gcs": "2",
+    "cog": "1"
+   },
+   "expect": {
+    "total": 11,
+    "state": "top",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4+2+2+2+1 = 11",
+    "source": "Rost et al. 2008"
+   }
+  },
+  {
+   "name": "minimum 0",
+   "answers": {
+    "vol": "0",
+    "age": "0",
+    "loc": "0",
+    "gcs": "0",
+    "cog": "0"
+   },
+   "expect": {
+    "total": 0,
+    "state": "low4"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "boundary 4",
+   "answers": {
+    "vol": "2",
+    "age": "0",
+    "loc": "1",
+    "gcs": "0",
+    "cog": "1"
+   },
+   "expect": {
+    "total": 4,
+    "state": "low4",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+0+1+0+1 = 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "boundary 5",
+   "answers": {
+    "vol": "2",
+    "age": "1",
+    "loc": "1",
+    "gcs": "0",
+    "cog": "1"
+   },
+   "expect": {
+    "total": 5,
+    "state": "mid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+1+1+0+1 = 5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

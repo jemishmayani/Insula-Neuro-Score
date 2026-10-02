@@ -1,0 +1,239 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "nurick",
+  "cervical myelopathy",
+  "dcm"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Grading walking limited by non-myelopathic causes.",
+  "Ignoring the employment criteria in grades 2–3."
+ ],
+ "relatedScores": [
+  {
+   "id": "mjoa",
+   "relation": "Broader myelopathy score (under review)"
+  }
+ ],
+ "id": "nurick",
+ "name": "Nurick Grade",
+ "abbreviation": "Nurick",
+ "category": "spine",
+ "subcategory": "Cervical myelopathy",
+ "specialties": [
+  "Neurosurgery",
+  "Spine Surgery",
+  "Neurology"
+ ],
+ "version": {
+  "label": "Nurick grade (1972)",
+  "detail": "Six grades (0–5) based mainly on walking ability and employment."
+ },
+ "purpose": "Grades disability from cervical spondylotic myelopathy.",
+ "intendedPopulation": "Adults with cervical spondylosis and suspected or confirmed myelopathy.",
+ "resultPresentation": {
+  "type": "disability",
+  "typeLabel": "Myelopathy disability grade",
+  "meter": true
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Grade",
+   "short": "Nurick",
+   "options": [
+    {
+     "value": "0",
+     "label": "Root signs or symptoms; no evidence of cord involvement",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "Signs of cord involvement; no difficulty walking",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Slight difficulty walking; does not prevent full-time employment",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Difficulty walking prevents full-time employment or all housework; walks without help",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "Walks only with someone's help or a frame",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "5",
+     "label": "Chairbound or bedridden",
+     "points": 5,
+     "code": "5"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "display": "Grade {total}",
+  "share": "Nurick {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "g0"
+  },
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g0",
+   "tone": "informational",
+   "label": "Grade 0",
+   "summary": "Root involvement without cord disease.",
+   "range": "0",
+   "min": 0,
+   "max": 0
+  },
+  {
+   "id": "g1",
+   "tone": "informational",
+   "label": "Grade 1",
+   "summary": "Cord signs without walking difficulty.",
+   "range": "1",
+   "min": 1,
+   "max": 1
+  },
+  {
+   "id": "g2",
+   "tone": "informational",
+   "label": "Grade 2",
+   "summary": "Slight walking difficulty; full-time work possible.",
+   "range": "2",
+   "min": 2,
+   "max": 2
+  },
+  {
+   "id": "g3",
+   "tone": "informational",
+   "label": "Grade 3",
+   "summary": "Walking difficulty limits work or housework; walks unaided.",
+   "range": "3",
+   "min": 3,
+   "max": 3
+  },
+  {
+   "id": "g4",
+   "tone": "informational",
+   "label": "Grade 4",
+   "summary": "Walks only with help or a frame.",
+   "range": "4",
+   "min": 4,
+   "max": 4
+  },
+  {
+   "id": "g5",
+   "tone": "informational",
+   "label": "Grade 5",
+   "summary": "Chairbound or bedridden.",
+   "range": "5",
+   "min": 5,
+   "max": 5
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A simple disability grade for cervical myelopathy, centred on gait.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Hand function is not assessed; the mJOA captures upper limb function (under review in this app)."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Gait-focused: upper limb and bladder function are not graded."
+  },
+  "Employment-based wording depends on occupation.",
+  "Coarse steps are insensitive to small changes."
+ ],
+ "confounders": [
+  {
+   "factor": "Lower limb arthritis or neuropathy",
+   "effect": "Impairs walking independently of myelopathy."
+  },
+  {
+   "factor": "Occupation",
+   "effect": "Affects grades 2–3."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Hand function.",
+  "Imaging severity.",
+  "Whether surgery is appropriate."
+ ],
+ "guideSections": {
+  "what": "A six-grade scale of disability from cervical myelopathy, based on walking.",
+  "whenToUse": "Clinical grading of cervical myelopathy.",
+  "howToPerform": "Select the grade that best describes walking and work limitation.",
+  "clinicalContext": "Used with examination and imaging."
+ },
+ "sources": [
+  {
+   "citation": "Nurick S. The pathogenesis of the spinal cord disorder associated with cervical spondylosis. Brain. 1972;95(1):87-100."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Grade",
+   "inputs": [
+    "grade"
+   ]
+  }
+ ]
+}

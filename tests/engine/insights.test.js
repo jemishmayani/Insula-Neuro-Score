@@ -84,8 +84,8 @@ function allText(o, out = []) { if (typeof o === "string") out.push(o); else if 
 test("content lint: no autonomous diagnosis or treatment directives in any score", () => {
   for (const id of scoreIds()) for (const t of allText(load(id))) for (const re of DIRECTIVES) assert.ok(!re.test(t), `${id}: "${t}" matches ${re}`);
 });
-test("favourable states are positive but cautious (time-bound, not 'normal')", () => {
-  for (const id of IDS) for (const st of load(id).resultStates.filter((x) => x.tone === "favorable")) {
+test("favourable states are positive but cautious (time-bound, not 'normal') — all scores", () => {
+  for (const id of scoreIds()) for (const st of load(id).resultStates.filter((x) => x.tone === "favorable")) {
     assert.match(st.summary, /(at this assessment|at the time of assessment)/, id + " " + st.id);
     assert.ok(st.detail && st.detail.length > 20, id + " " + st.id + " has a cautionary detail");
   }
@@ -96,8 +96,8 @@ test("NIHSS 0 and severe GCS use the specified language", () => {
   const g = Engine.calculate(load("gcs"), { e: "1", v: "2", m: "4" });
   assert.equal(g.state.tone, "high"); assert.match(g.state.detail, /^Correlate with airway, respiratory, neurological and systemic assessment/);
 });
-test("high and critical states explain themselves without directing treatment", () => {
-  for (const id of IDS) for (const st of load(id).resultStates.filter((x) => ["high", "critical"].includes(x.tone))) {
+test("high and critical states explain themselves without directing treatment — all scores", () => {
+  for (const id of scoreIds()) for (const st of load(id).resultStates.filter((x) => ["high", "critical"].includes(x.tone))) {
     assert.ok(st.detail, id + " " + st.id + " needs explanation");
     assert.match(st.detail, /(correlate|according to|depends on|integrate|management depends|assess)/i, id + " " + st.id);
   }
@@ -144,4 +144,30 @@ test("NIHSS: 3,000 random examinations including UN items give well-formed defic
     if (r.notTestable.length) { withUN++; assert.ok(sec(r, "limitation").items[0].contextual, "UN limitation first"); assert.ok(r.warnings.some((w) => /untestable/.test(w.message))); }
   }
   assert.ok(withUN > 300, "UN path exercised " + withUN);
+});
+
+/* ---------- Phase 6: every library score, every combination (or a deterministic sample) ---------- */
+function* combos(defs) {
+  if (!defs.length) { yield {}; return; }
+  const [d, ...rest] = defs;
+  let vals;
+  if (d.type === "single" || d.type === "dropdown") vals = d.options.map((o) => o.value);
+  else if (d.type === "multi") { const nonEx = d.options.filter((o) => !o.exclusive).map((o) => o.value); vals = [["none"], [nonEx[0]], nonEx.slice(0, 3), nonEx]; }
+  else if (d.type === "integer") vals = [...new Set([d.min, Math.round((d.min + d.max) / 2), d.max, ...(d.pointBands || []).flatMap((b) => [b.min, b.max]).filter((x) => x != null)])];
+  for (const v of vals) for (const r of combos(rest)) yield { [d.id]: v, ...r };
+}
+test("every implemented score: all (or banded) input combinations yield well-formed results", () => {
+  let total = 0;
+  for (const id of scoreIds()) {
+    const s = load(id); let n = 0;
+    for (const a of combos(s.inputDefinitions)) {
+      if (n++ > 20000) break;
+      const r = Engine.calculate(s, a); wellFormed(id, r); total++;
+      assert.ok(["complete", "not-interpretable"].includes(r.status) || r.state.tone === "incomplete", id + " status " + r.status + " " + JSON.stringify(a));
+      if (r.status === "complete") assert.ok(r.total >= s.calculationMethod.range.min && r.total <= s.calculationMethod.range.max, id + " in range");
+      const allowed = Engine.insights.PRESENTATIONS[s.resultPresentation.type].tones.concat(["incomplete", "not-interpretable"]);
+      assert.ok(allowed.includes(r.state.tone), id + " tone policy " + r.state.tone);
+    }
+  }
+  assert.ok(total > 10000, "combinations evaluated: " + total);
 });

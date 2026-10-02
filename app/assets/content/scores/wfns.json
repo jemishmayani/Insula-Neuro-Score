@@ -1,0 +1,227 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "world federation",
+  "sah grade",
+  "subarachnoid"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing original and modified WFNS.",
+  "Counting cranial nerve palsy as a major focal deficit."
+ ],
+ "relatedScores": [
+  {
+   "id": "hunthess",
+   "relation": "Clinical grade"
+  },
+  {
+   "id": "mfisher",
+   "relation": "CT grade"
+  },
+  {
+   "id": "gcs",
+   "relation": "Input"
+  }
+ ],
+ "id": "wfns",
+ "name": "WFNS Subarachnoid Haemorrhage Grade",
+ "abbreviation": "WFNS",
+ "category": "sah",
+ "subcategory": "Clinical grade",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care"
+ ],
+ "version": {
+  "label": "Original WFNS (1988)",
+  "detail": "GCS with presence of major focal deficit. GCS 15 with a focal deficit is not defined in the original scale. The 2015 modified WFNS is a different scale."
+ },
+ "purpose": "Grading of aneurysmal SAH from GCS and focal motor deficit.",
+ "intendedPopulation": "Patients with aneurysmal subarachnoid haemorrhage.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Clinical grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "gcs",
+   "type": "integer",
+   "label": "GCS total",
+   "short": "GCS",
+   "min": 3,
+   "max": 15,
+   "help": "A complete GCS total (3–15)."
+  },
+  {
+   "id": "deficit",
+   "type": "single",
+   "label": "Major focal neurological deficit",
+   "short": "Focal deficit",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ],
+   "help": "Commonly interpreted as hemiparesis or aphasia."
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "gcs == 15 ? (deficit == 0 ? 1 : 0) : gcs >= 13 ? (deficit == 0 ? 2 : 3) : gcs >= 7 ? 4 : 5",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "display": "{total == 0 ? 'Not defined' : 'Grade ' + roman(total)}",
+  "share": "WFNS (original) {total == 0 ? 'not defined' : 'Grade ' + roman(total)}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "undef"
+  },
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "undef",
+   "tone": "incomplete",
+   "label": "Not defined in original WFNS",
+   "summary": "The original WFNS does not define a grade for GCS 15 with a focal deficit.",
+   "range": "GCS 15 + deficit",
+   "detail": "Document GCS and the deficit explicitly."
+  },
+  {
+   "id": "g1",
+   "tone": "low",
+   "label": "Grade I",
+   "summary": "GCS 15, no deficit.",
+   "range": "I"
+  },
+  {
+   "id": "g2",
+   "tone": "mild",
+   "label": "Grade II",
+   "summary": "GCS 13–14, no deficit.",
+   "range": "II"
+  },
+  {
+   "id": "g3",
+   "tone": "moderate",
+   "label": "Grade III",
+   "summary": "GCS 13–14 with deficit.",
+   "range": "III"
+  },
+  {
+   "id": "g4",
+   "tone": "high",
+   "label": "Grade IV",
+   "summary": "GCS 7–12. Commonly grouped as poor grade.",
+   "range": "IV",
+   "detail": "Assess for hydrocephalus, seizures and other reversible causes according to local protocol."
+  },
+  {
+   "id": "g5",
+   "tone": "high",
+   "label": "Grade V",
+   "summary": "GCS 3–6. Commonly grouped as poor grade.",
+   "range": "V",
+   "detail": "Assess for hydrocephalus, seizures and other reversible causes according to local protocol."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A widely used SAH grade based on GCS.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "gcs >= 13 && gcs <= 14",
+   "text": "In this GCS range the deficit separates Grade II from III."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "GCS 15 with deficit is undefined."
+  },
+  "Inherits GCS limitations."
+ ],
+ "confounders": [
+  {
+   "factor": "Acute hydrocephalus",
+   "effect": "Lowers GCS reversibly."
+  },
+  {
+   "factor": "Sedation or intubation",
+   "effect": "GCS may not be fully testable."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Imaging burden or vasospasm risk.",
+  "Treatment choice."
+ ],
+ "guideSections": {
+  "what": "A five-grade SAH scale from GCS and major focal deficit.",
+  "whenToUse": "Admission grading.",
+  "howToPerform": "15 without deficit = I; 13–14 without = II; 13–14 with = III; 7–12 = IV; 3–6 = V.",
+  "clinicalContext": "Grades IV–V are commonly termed poor grade."
+ },
+ "sources": [
+  {
+   "citation": "Drake CG. Report of World Federation of Neurological Surgeons Committee on a Universal Subarachnoid Hemorrhage Grading Scale. J Neurosurg. 1988;68(6):985-986."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_gcs",
+   "label": "GCS total",
+   "inputs": [
+    "gcs"
+   ]
+  },
+  {
+   "id": "c_deficit",
+   "label": "Major focal neurological deficit",
+   "inputs": [
+    "deficit"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,341 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "intracerebral haemorrhage",
+  "intracerebral hemorrhage",
+  "hemphill"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using a GCS obtained after sedation.",
+  "Using a later CT instead of the initial scan.",
+  "Applying to traumatic or tumour-related haemorrhage."
+ ],
+ "relatedScores": [
+  {
+   "id": "func",
+   "relation": "Functional outcome"
+  },
+  {
+   "id": "gcs",
+   "relation": "Input"
+  }
+ ],
+ "id": "ich",
+ "name": "ICH Score",
+ "abbreviation": "ICH Score",
+ "category": "ich",
+ "subcategory": "Severity at presentation",
+ "specialties": [
+  "Stroke",
+  "Neurocritical Care",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "ICH Score (Hemphill et al. 2001)",
+  "detail": "Five components, 0–6. Mortality figures are observed 30-day mortality in the derivation cohort (n = 152)."
+ },
+ "purpose": "Standardised grading of spontaneous intracerebral haemorrhage severity at presentation.",
+ "intendedPopulation": "Adults with spontaneous intracerebral haemorrhage, at presentation.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Severity grade (derivation mortality)",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Severity grade, not an individual prognosis",
+  "message": "Mortality figures come from a 2001 cohort with frequent early care limitation. Decisions about goals of care should not rest on this score alone."
+ },
+ "inputDefinitions": [
+  {
+   "id": "gcs",
+   "type": "single",
+   "label": "GCS at presentation",
+   "short": "GCS",
+   "options": [
+    {
+     "value": "0",
+     "label": "13–15",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "5–12",
+     "points": 1
+    },
+    {
+     "value": "2",
+     "label": "3–4",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "vol",
+   "type": "single",
+   "label": "ICH volume (initial CT)",
+   "short": "Volume",
+   "options": [
+    {
+     "value": "0",
+     "label": "Less than 30 mL",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "30 mL or more",
+     "points": 1
+    }
+   ],
+   "help": "Commonly estimated with ABC/2."
+  },
+  {
+   "id": "ivh",
+   "type": "single",
+   "label": "Intraventricular haemorrhage",
+   "short": "IVH",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "infra",
+   "type": "single",
+   "label": "Origin",
+   "short": "Origin",
+   "options": [
+    {
+     "value": "0",
+     "label": "Supratentorial",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "Infratentorial",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age",
+   "short": "Age",
+   "options": [
+    {
+     "value": "0",
+     "label": "Under 80 years",
+     "points": 0
+    },
+    {
+     "value": "1",
+     "label": "80 years or older",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 6
+  },
+  "display": "{total}",
+  "share": "ICH Score {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "s0"
+  },
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  },
+  {
+   "when": "total == 6",
+   "state": "s6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s0",
+   "tone": "favorable",
+   "label": "Score 0",
+   "summary": "ICH Score 0 at this assessment: 0% observed 30-day mortality in the derivation cohort.",
+   "range": "0",
+   "detail": "Group-level figure from a small cohort; not an individual prognosis."
+  },
+  {
+   "id": "s1",
+   "tone": "low",
+   "label": "Score 1",
+   "summary": "Observed 30-day mortality in the derivation cohort: 13%.",
+   "range": "1"
+  },
+  {
+   "id": "s2",
+   "tone": "moderate",
+   "label": "Score 2",
+   "summary": "Observed 30-day mortality in the derivation cohort: 26%.",
+   "range": "2"
+  },
+  {
+   "id": "s3",
+   "tone": "high",
+   "label": "Score 3",
+   "summary": "Observed 30-day mortality in the derivation cohort: 72%.",
+   "range": "3",
+   "detail": "Integrate with the full clinical picture; early care limitation can make scores self-fulfilling."
+  },
+  {
+   "id": "s4",
+   "tone": "critical",
+   "label": "Score 4",
+   "summary": "Observed 30-day mortality in the derivation cohort: 97%.",
+   "range": "4",
+   "detail": "Integrate with the full clinical picture; goals of care should not be based on the score alone."
+  },
+  {
+   "id": "s5",
+   "tone": "critical",
+   "label": "Score 5",
+   "summary": "Observed 30-day mortality in the derivation cohort: 100%.",
+   "range": "5",
+   "detail": "Integrate with the full clinical picture; goals of care should not be based on the score alone."
+  },
+  {
+   "id": "s6",
+   "tone": "critical",
+   "label": "Score 6",
+   "summary": "No patient in the derivation cohort scored 6; no observed figure exists.",
+   "range": "6",
+   "detail": "Integrate with the full clinical picture; goals of care should not be based on the score alone."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Describes ICH severity at presentation in a common language.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "importance": "major",
+   "text": "Early do-not-resuscitate decisions were common in the derivation era and can make prognostic scores self-fulfilling."
+  },
+  {
+   "when": "total >= 3",
+   "text": "Guidelines advise against early care limitation based on a single prognostic score."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Derived in a small single-centre cohort."
+  },
+  "Does not include haematoma expansion, anticoagulation or detailed location.",
+  "Not designed to guide individual treatment."
+ ],
+ "confounders": [
+  {
+   "factor": "Sedation or intubation",
+   "effect": "Lowers the presentation GCS."
+  },
+  {
+   "factor": "Volume estimation",
+   "effect": "ABC/2 can over- or under-estimate irregular haematomas."
+  },
+  {
+   "factor": "CT timing",
+   "effect": "Volume changes with expansion."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Functional outcome in survivors (see FUNC).",
+  "Whether any intervention is appropriate.",
+  "An individual patient's prognosis."
+ ],
+ "guideSections": {
+  "what": "A 0–6 grading scale combining GCS, haematoma volume, intraventricular extension, infratentorial origin and age.",
+  "whenToUse": "Standardised description of ICH severity at presentation.",
+  "howToPerform": "Use the presentation GCS and initial CT. Assign points and sum.",
+  "clinicalContext": "A severity descriptor; prognostic discussions integrate the whole clinical picture."
+ },
+ "sources": [
+  {
+   "citation": "Hemphill JC 3rd, Bonovich DC, Besmertis L, Manley GT, Johnston SC. The ICH score: a simple, reliable grading scale for intracerebral hemorrhage. Stroke. 2001;32(4):891-897."
+  }
+ ],
+ "licensing": {
+  "status": "Published score, original wording",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_gcs",
+   "label": "GCS at presentation",
+   "inputs": [
+    "gcs"
+   ]
+  },
+  {
+   "id": "c_vol",
+   "label": "ICH volume (initial CT)",
+   "inputs": [
+    "vol"
+   ]
+  },
+  {
+   "id": "c_ivh",
+   "label": "Intraventricular haemorrhage",
+   "inputs": [
+    "ivh"
+   ]
+  },
+  {
+   "id": "c_infra",
+   "label": "Origin",
+   "inputs": [
+    "infra"
+   ]
+  },
+  {
+   "id": "c_age",
+   "label": "Age",
+   "inputs": [
+    "age"
+   ]
+  }
+ ]
+}

@@ -85,7 +85,7 @@
     var tone = r.state.tone, pres = r.presentation || {};
     var meter = r.bands ? UI.ScaleMeter({ min: r.range.min, max: r.range.max, value: r.status === "complete" ? r.total : null, bands: r.bands, label: score.abbreviation }) : "";
     var h = UI.ResultCard({ tone: tone, label: stateLabel(r), value: r.display, typeLabel: pres.typeLabel,
-      formula: r.formula, formulaJoin: r.formula && r.status === "complete" ? "=" : null,
+      formula: r.formula, formulaJoin: r.formula && r.status === "complete" && r.formulaEquals !== false ? "=" : null,
       meta: UI.TONE_LABEL[tone] + " · " + score.abbreviation + " range " + r.range.min + "–" + r.range.max, summary: r.state.summary, meter: meter });
     if (r.warnings.length) h += '<div class="result-block" data-block="warnings">' + r.warnings.map(function (w) { return UI.WarningBanner({ title: "Check", message: w.message }); }).join("") + "</div>";
     // Breakdown
@@ -157,7 +157,8 @@
       el.querySelector(".calc-progress").innerHTML = '<span class="bar"><i style="width:' + Math.round(done / total * 100) + '%"></i></span>' + done + " of " + total + " answered";
       var bar = el.querySelector(".result-bar");
       bar.className = "result-bar tone-" + r.state.tone;
-      var compact = r.formula ? r.formula.replace(/ \+ /g, " ") : null;
+      // Compact only code-style formulas (e.g. "E3 + V4 + M5" → "E3 V4 M5"); other formulas are not shown in the bar.
+      var compact = r.formula && /^[A-Z]+[A-Z0-9]*( \+ [A-Z]+[A-Z0-9]*)+$/.test(r.formula) ? r.formula.replace(/ \+ /g, " ") : null;
       var barValue = compact ? (r.status === "complete" ? compact + " = " + r.display : compact) : r.display;
       bar.innerHTML = UI.stateIcon(r.state.tone) + '<span class="rb-value' + (compact ? " has-formula" : "") + '">' + esc(barValue) + '</span><span class="rb-label">' + esc(r.status === "incomplete" ? done + " of " + total + " answered" : stateLabel(r)) + "</span>" + UI.icon("down");
       if (opts.onResult) opts.onResult(r);

@@ -1,0 +1,49 @@
+{
+ "scoreId": "ecog",
+ "cases": [
+  {
+   "name": "ECOG 0",
+   "answers": {
+    "grade": "0"
+   },
+   "expect": {
+    "total": 0,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "ECOG 2",
+   "answers": {
+    "grade": "2"
+   },
+   "expect": {
+    "total": 2,
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "ECOG 5",
+   "answers": {
+    "grade": "5"
+   },
+   "expect": {
+    "total": 5
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

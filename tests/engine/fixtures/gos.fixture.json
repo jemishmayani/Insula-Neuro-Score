@@ -1,0 +1,64 @@
+{
+ "scoreId": "gos",
+ "cases": [
+  {
+   "name": "death",
+   "answers": {
+    "cat": "1"
+   },
+   "expect": {
+    "total": 1,
+    "display": "GOS 1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "category 1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "good recovery",
+   "answers": {
+    "cat": "5"
+   },
+   "expect": {
+    "total": 5,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "category 5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "moderate disability",
+   "answers": {
+    "cat": "4"
+   },
+   "expect": {
+    "total": 4,
+    "tone": "informational"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "category 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "invalid 6",
+   "answers": {
+    "cat": "6"
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "GOS is 1–5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

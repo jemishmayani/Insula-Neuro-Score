@@ -1,0 +1,218 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "early ct score",
+  "early ischaemic change",
+  "ischemic"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Counting old infarcts as acute change.",
+  "Using inconsistent window settings.",
+  "Reporting the total without the affected regions."
+ ],
+ "relatedScores": [
+  {
+   "id": "nihss",
+   "relation": "Clinical deficit"
+  },
+  {
+   "id": "aspects",
+   "relation": "Other circulation"
+  }
+ ],
+ "id": "pcaspects",
+ "name": "Posterior Circulation ASPECTS",
+ "abbreviation": "pc-ASPECTS",
+ "category": "stroke",
+ "subcategory": "Imaging (posterior circulation)",
+ "specialties": [
+  "Stroke",
+  "Neuroradiology",
+  "Neurology"
+ ],
+ "version": {
+  "label": "pc-ASPECTS (Puetz et al. 2008)",
+  "detail": "10 points: thalami, cerebellar hemispheres and PCA territories 1 point each; midbrain and pons 2 points each."
+ },
+ "purpose": "Quantifies the extent of early ischaemic change on non-contrast CT.",
+ "intendedPopulation": "Adults with suspected acute posterior circulation ischaemic stroke.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Early ischaemic change (CT)",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Imaging score, not a treatment decision",
+  "message": "Lower scores mean more extensive early ischaemic change. Treatment eligibility thresholds vary between trials and protocols and are not applied here."
+ },
+ "components": [
+  {
+   "id": "affected",
+   "label": "Regions with early ischaemic change",
+   "inputs": [
+    "regions"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "regions",
+   "type": "multi",
+   "label": "Regions with early ischaemic change",
+   "short": "Affected regions",
+   "help": "Select every region with early ischaemic change (hypoattenuation or focal swelling). Select 'None' if no region is affected.",
+   "options": [
+    {
+     "value": "lt",
+     "label": "Left thalamus",
+     "points": 1
+    },
+    {
+     "value": "rt",
+     "label": "Right thalamus",
+     "points": 1
+    },
+    {
+     "value": "lc",
+     "label": "Left cerebellar hemisphere",
+     "points": 1
+    },
+    {
+     "value": "rc",
+     "label": "Right cerebellar hemisphere",
+     "points": 1
+    },
+    {
+     "value": "lp",
+     "label": "Left PCA territory",
+     "points": 1
+    },
+    {
+     "value": "rp",
+     "label": "Right PCA territory",
+     "points": 1
+    },
+    {
+     "value": "mb",
+     "label": "Midbrain (any part)",
+     "points": 2,
+     "detail": "2 points regardless of extent."
+    },
+    {
+     "value": "po",
+     "label": "Pons (any part)",
+     "points": 2,
+     "detail": "2 points regardless of extent."
+    },
+    {
+     "value": "none",
+     "label": "None: no early ischaemic change",
+     "points": 0,
+     "exclusive": true
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "10 - regions",
+  "range": {
+   "min": 0,
+   "max": 10
+  },
+  "display": "{total}",
+  "share": "pc-ASPECTS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 10",
+   "state": "ten"
+  },
+  {
+   "state": "scored"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "ten",
+   "tone": "favorable",
+   "label": "No early ischaemic change",
+   "summary": "No early ischaemic change in the scored regions at this assessment.",
+   "range": "10",
+   "detail": "A normal score does not exclude ischaemia: early CT changes can be absent or subtle."
+  },
+  {
+   "id": "scored",
+   "tone": "informational",
+   "label": "pc-ASPECTS {total}",
+   "summary": "Early ischaemic change reduces the score by {regions} point(s) from 10.",
+   "range": "0–9",
+   "detail": "Interpret with timing, imaging modality and the clinical picture."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A topographic CT score used to describe the extent of early ischaemia.",
+   "importance": "major"
+  },
+  {
+   "text": "Commonly reported in acute stroke imaging and trials."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Thresholds used for treatment selection differ between trials and protocols; this app does not apply them."
+  },
+  {
+   "when": "total <= 9",
+   "text": "Report which regions are affected, not only the total."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Early ischaemic changes are subtle; inter-rater agreement is moderate and improves with training and windowing."
+  },
+  "Sensitive to time from onset and CT technique.",
+  "Equal weighting does not reflect the functional importance of each region."
+ ],
+ "confounders": [
+  {
+   "factor": "Time from onset",
+   "effect": "Very early scans may show little change."
+  },
+  {
+   "factor": "Old infarcts or leukoaraiosis",
+   "effect": "Can be mistaken for acute change."
+  },
+  {
+   "factor": "Motion or beam-hardening artefact",
+   "effect": "Reduces reliability, especially in the posterior fossa."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Vessel occlusion status or collateral flow.",
+  "Eligibility for a specific treatment.",
+  "Penumbra or tissue viability."
+ ],
+ "guideSections": {
+  "what": "A 10-point topographic score for the posterior circulation.",
+  "whenToUse": "Initial non-contrast CT in suspected acute ischaemic stroke.",
+  "howToPerform": "Subtract the weight of each affected region from 10: 1 point for each thalamus, cerebellar hemisphere and PCA territory; 2 points for any midbrain or pons involvement.",
+  "clinicalContext": "One imaging descriptor among several; decisions integrate clinical, imaging and timing information."
+ },
+ "sources": [
+  {
+   "citation": "Puetz V, Sylaja PN, Coutts SB, et al. Extent of hypoattenuation on CT angiography source images predicts functional outcome in patients with basilar artery occlusion. Stroke. 2008;39(9):2485-2490."
+  }
+ ],
+ "licensing": {
+  "status": "Published scoring method, original wording",
+  "note": "No reproduction restrictions identified; template images are not reproduced."
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "scoreId": "gose",
+ "cases": [
+  {
+   "name": "death",
+   "answers": {
+    "cat": "1"
+   },
+   "expect": {
+    "total": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "category 1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "upper good recovery",
+   "answers": {
+    "cat": "8"
+   },
+   "expect": {
+    "total": 8,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "category 8",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "lower moderate disability",
+   "answers": {
+    "cat": "5"
+   },
+   "expect": {
+    "total": 5,
+    "tone": "informational",
+    "display": "GOSE 5"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "category 5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "missing",
+   "answers": {},
+   "expect": {
+    "status": "incomplete"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no category",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

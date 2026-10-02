@@ -1,0 +1,58 @@
+{
+ "scoreId": "rotterdam",
+ "cases": [
+  {
+   "name": "normal scan = 1",
+   "answers": {
+    "cisterns": "0",
+    "shift": "0",
+    "edh": "0",
+    "ivh": "0"
+   },
+   "expect": {
+    "total": 1,
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0+0+0+0+1 = 1 (epidural present scores 0)",
+    "source": "Maas et al. 2005"
+   }
+  },
+  {
+   "name": "no EDH, everything else normal = 2",
+   "answers": {
+    "cisterns": "0",
+    "shift": "0",
+    "edh": "1",
+    "ivh": "0"
+   },
+   "expect": {
+    "total": 2
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0+0+1+0+1 = 2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "maximum 6",
+   "answers": {
+    "cisterns": "2",
+    "shift": "1",
+    "edh": "1",
+    "ivh": "1"
+   },
+   "expect": {
+    "total": 6,
+    "tone": "critical"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+1+1+1+1 = 6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

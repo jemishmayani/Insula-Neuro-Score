@@ -1,0 +1,293 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-02",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "gos-e",
+  "extended glasgow outcome"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Assigning a category without the structured interview.",
+  "Using the highest rather than the lowest category indicated."
+ ],
+ "relatedScores": [
+  {
+   "id": "gos",
+   "relation": "Original 5-category scale"
+  },
+  {
+   "id": "mrs",
+   "relation": "Global disability scale"
+  }
+ ],
+ "id": "gose",
+ "name": "Extended Glasgow Outcome Scale",
+ "abbreviation": "GOSE",
+ "category": "consciousness",
+ "subcategory": "Global outcome after brain injury",
+ "specialties": [
+  "Neurosurgery",
+  "Neurocritical Care",
+  "Rehabilitation"
+ ],
+ "version": {
+  "label": "GOSE, eight categories (Wilson et al. 1998)",
+  "detail": "Splits severe disability, moderate disability and good recovery into lower and upper bands. Categories only: the copyrighted structured interview used to assign them is not reproduced."
+ },
+ "purpose": "Global functional outcome after brain injury, with finer categories than the GOS.",
+ "intendedPopulation": "Adults after traumatic or non-traumatic acute brain injury.",
+ "resultPresentation": {
+  "type": "disability",
+  "typeLabel": "Global outcome",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Assign with the structured interview",
+  "message": "GOSE categories should be assigned using the official structured interview (Wilson et al. 1998), which is not reproduced here. This tool records the category only."
+ },
+ "inputDefinitions": [
+  {
+   "id": "cat",
+   "type": "single",
+   "label": "GOSE category",
+   "short": "GOSE",
+   "options": [
+    {
+     "value": "1",
+     "label": "Death",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Vegetative state",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Lower severe disability",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "Upper severe disability",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "5",
+     "label": "Lower moderate disability",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "6",
+     "label": "Upper moderate disability",
+     "points": 6,
+     "code": "6"
+    },
+    {
+     "value": "7",
+     "label": "Lower good recovery",
+     "points": 7,
+     "code": "7"
+    },
+    {
+     "value": "8",
+     "label": "Upper good recovery",
+     "points": 8,
+     "code": "8"
+    }
+   ],
+   "help": "Overall rating is the lowest category indicated across the interview."
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "cat",
+  "range": {
+   "min": 1,
+   "max": 8
+  },
+  "display": "GOSE {total}",
+  "share": "GOSE {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  },
+  {
+   "when": "total == 6",
+   "state": "g6"
+  },
+  {
+   "when": "total == 7",
+   "state": "g7"
+  },
+  {
+   "when": "total == 8",
+   "state": "g8"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g1",
+   "tone": "informational",
+   "label": "Death",
+   "summary": "Outcome category: death.",
+   "range": "1",
+   "min": 1,
+   "max": 1
+  },
+  {
+   "id": "g2",
+   "tone": "informational",
+   "label": "Vegetative state",
+   "summary": "Outcome category: vegetative state.",
+   "range": "2",
+   "min": 2,
+   "max": 2
+  },
+  {
+   "id": "g3",
+   "tone": "informational",
+   "label": "Lower severe disability",
+   "summary": "Outcome category: lower severe disability.",
+   "range": "3",
+   "min": 3,
+   "max": 3
+  },
+  {
+   "id": "g4",
+   "tone": "informational",
+   "label": "Upper severe disability",
+   "summary": "Outcome category: upper severe disability.",
+   "range": "4",
+   "min": 4,
+   "max": 4
+  },
+  {
+   "id": "g5",
+   "tone": "informational",
+   "label": "Lower moderate disability",
+   "summary": "Outcome category: lower moderate disability.",
+   "range": "5",
+   "min": 5,
+   "max": 5
+  },
+  {
+   "id": "g6",
+   "tone": "informational",
+   "label": "Upper moderate disability",
+   "summary": "Outcome category: upper moderate disability.",
+   "range": "6",
+   "min": 6,
+   "max": 6
+  },
+  {
+   "id": "g7",
+   "tone": "informational",
+   "label": "Lower good recovery",
+   "summary": "Outcome category: lower good recovery.",
+   "range": "7",
+   "min": 7,
+   "max": 7
+  },
+  {
+   "id": "g8",
+   "tone": "favorable",
+   "label": "Upper good recovery",
+   "summary": "Outcome category: upper good recovery at this assessment.",
+   "range": "8",
+   "detail": "Describes global outcome; it does not exclude all injury-related problems.",
+   "min": 8,
+   "max": 8
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A standard outcome measure in traumatic brain injury research.",
+   "importance": "major"
+  },
+  {
+   "text": "'Favourable outcome' cut-offs differ between studies."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Record the timepoint, information source and whether the structured interview was used."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Reliability depends on the structured interview, which is not included here."
+  },
+  "Reflects disability from all causes, not only the brain injury."
+ ],
+ "confounders": [
+  {
+   "factor": "Non-neurological injuries",
+   "effect": "Can lower the category independently of the brain injury."
+  },
+  {
+   "factor": "Proxy versus patient report",
+   "effect": "Informants may differ."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Specific deficits.",
+  "Quality of life.",
+  "The cause of disability."
+ ],
+ "guideSections": {
+  "what": "An eight-category extension of the Glasgow Outcome Scale.",
+  "whenToUse": "Outcome assessment after brain injury, particularly in research.",
+  "howToPerform": "Use the official structured interview; the overall rating is the lowest category indicated. Record the category here.",
+  "clinicalContext": "An outcome measure; it does not describe acute severity."
+ },
+ "sources": [
+  {
+   "citation": "Wilson JTL, Pettigrew LEL, Teasdale GM. Structured interviews for the Glasgow Outcome Scale and the extended Glasgow Outcome Scale: guidelines for their use. J Neurotrauma. 1998;15(8):573-585.",
+   "doi": "10.1089/neu.1998.15.573"
+  },
+  {
+   "citation": "Jennett B, Bond M. Assessment of outcome after severe brain damage. Lancet. 1975;1(7905):480-484."
+  }
+ ],
+ "licensing": {
+  "status": "Category names only",
+  "note": "The GOSE structured interview is © Wilson, Pettigrew, Teasdale 1998 and is not reproduced."
+ },
+ "components": [
+  {
+   "id": "c_cat",
+   "label": "GOSE category",
+   "inputs": [
+    "cat"
+   ]
+  }
+ ]
+}
