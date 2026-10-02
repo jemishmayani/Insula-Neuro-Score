@@ -119,7 +119,7 @@ svg.icon { width: 1.25em; height: 1.25em; flex: none; vertical-align: -0.25em; }
   border: var(--border-width-strong) solid transparent; transition: filter var(--motion-fast) var(--motion-ease); }
 .btn:active { filter: brightness(0.94); }
 .btn[disabled], .btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
-.btn-primary { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+.btn-primary { background: var(--color-primary-fill); color: var(--color-on-primary); border-color: var(--color-primary-fill); }
 .btn-secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border-strong); }
 .btn-block { display: flex; width: 100%; }
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
@@ -326,8 +326,9 @@ ol.sources { margin: 0; padding-left: var(--space-5); font-size: var(--text-sm);
 .result-bar .rb-value { font-size: var(--text-xl); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .result-bar .rb-label { flex: 1; min-width: 0; font-weight: var(--weight-bold); color: var(--tone); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .has-result-bar .content { padding-bottom: calc(56px + var(--space-8)); }
-@media (min-width: 840px) { .result-bar { display: none; } .has-result-bar .content { padding-bottom: var(--space-10); }
-  .detail-grid.two.calc > .aside { max-height: calc(100vh - var(--appbar-height) - var(--space-8)); overflow: auto; } }
+/* Result bar: shown only while the result panel is out of view (set by an IntersectionObserver), on any layout. */
+.result-bar { transform: translateY(0); }
+.result-bar.is-hidden { display: none; }
 @media (orientation: landscape) and (min-width: 560px) and (max-height: 560px) { .result-bar { left: calc(var(--rail-width) + env(safe-area-inset-left, 0px)); bottom: 0; } }
 #result:focus { outline: none; }
 
@@ -415,3 +416,51 @@ table.g-facts th { width: 34%; color: var(--color-text-muted); font-weight: var(
 .related-row .alt-view { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 64px; min-height: var(--touch-target); color: var(--color-primary-text); text-decoration: none; font-size: var(--text-xs); font-weight: var(--weight-bold); border-radius: var(--radius-md); }
 .table-scroll { overflow-x: auto; } .breakdown thead th { font-size: var(--text-xs); color: var(--color-text-muted); }
 .section-card { scroll-margin-top: calc(var(--appbar-height) + var(--space-4)); }
+
+/* ================= Phase 8: responsiveness, large text, targets ================= */
+body { overflow-wrap: break-word; }
+.detail-grid { grid-template-columns: minmax(0, 1fr); }
+.detail-grid > *, .calc-inputs, .empty-state.compact > div, .banner .text, .score-card .open, .home-row .open .text { min-width: 0; }
+.btn { white-space: normal; max-width: 100%; line-height: 1.25; padding-top: var(--space-2); padding-bottom: var(--space-2); }
+.btn span { min-width: 0; }
+table { table-layout: fixed; width: 100%; }
+table td, table th { overflow-wrap: anywhere; }
+.bottomnav a { overflow: hidden; padding: 0 var(--space-1); }
+.bottomnav .nav-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: min(var(--text-xs), 15px); }
+.chip, .section-action, .ins-more summary, .g-jump, .see-all { min-height: 44px; }
+.section-action, .g-jump, .see-all { display: inline-flex; align-items: center; }
+/* Meter: range legend below the track (wraps at any text size) */
+.meter-legend { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: var(--space-2) 0 0; padding: 0; list-style: none; font-size: var(--text-xs); color: var(--color-text-muted); }
+.meter-legend li.is-on { color: var(--tone); font-weight: var(--weight-bold); }
+.meter-legend li.is-on::before { content: "▲ "; }
+/* Subtle screen transition; disabled for reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .content { animation: screen-in 140ms var(--motion-ease); }
+  @keyframes screen-in { from { opacity: 0.6; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+.section-action { min-width: 44px; justify-content: center; padding-left: var(--space-2); padding-right: var(--space-2); }
+.segmented > * { min-height: 46px; }
+.segmented > * { min-width: 0; flex-wrap: wrap; text-align: center; row-gap: 2px; }
+.insight-list { grid-template-columns: minmax(0, 1fr); }
+.insight-list > li, .ins-body { min-width: 0; }
+.guide-nav { flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+/* Large text: chips and warning groups wrap instead of overflowing */
+.chip { max-width: 100%; white-space: normal; flex-wrap: wrap; text-align: left; line-height: 1.3; padding-top: var(--space-1); padding-bottom: var(--space-1); }
+.chip .n { min-width: 0; }
+.guide-warnings { grid-template-columns: minmax(0, 1fr); }
+.guide-warnings > *, .sub-h, .banner .text b { min-width: 0; overflow-wrap: anywhere; }
+
+/* ================= Phase 8: space-aware two-pane layout ================= */
+/* Panes sit side by side only when both fit at the current text size; otherwise they stack. */
+.detail-grid.two { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-8); align-items: flex-start; }
+.detail-grid.two > :first-child { flex: 1.4 1 24rem; min-width: 0; }
+.detail-grid.two > .aside { flex: 1 1 20rem; min-width: 0; position: sticky; top: calc(var(--appbar-height) + var(--space-4)); }
+.detail-grid.two.calc > .aside { max-height: calc(100vh - var(--appbar-height) - var(--space-8)); overflow: auto; }
+@media (max-width: 839px) { .detail-grid.two > .aside { position: static; max-height: none !important; overflow: visible !important; } }
+/* Touch targets: steppers never shrink; secondary actions meet 48dp */
+.number-field .stepper { flex: none; min-width: var(--touch-target); }
+.chip, .section-action, .ins-more summary, .g-jump, .see-all, .toast-action { min-height: 48px; }
+/* Loading indicator appears only if loading takes noticeably long (no flash for fast or cached loads) */
+.loading-state.delayed { animation: appear-late 1ms 220ms both; }
+@keyframes appear-late { from { visibility: hidden; } to { visibility: visible; } }
+@media (prefers-reduced-motion: reduce) { .loading-state.delayed { animation: none !important; } }

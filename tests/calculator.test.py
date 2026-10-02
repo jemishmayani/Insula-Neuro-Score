@@ -7,7 +7,7 @@ def check(n, c, info=""): results.append((n, bool(c))); print(("PASS " if c else
 
 async def pick(pg, inp, val): await pg.click(f'.field[data-field="{inp}"] input[value="{val}"] >> xpath=..')
 async def state(pg): return await pg.evaluate("(() => { const c = document.querySelector('#result .result-card'); return { tone: [...c.classList].find(x => x.startsWith('tone-')), value: c.querySelector('.value').textContent, label: c.querySelector('.state span').textContent }; })()")
-async def card(pg): return await pg.evaluate("(() => { const c = document.querySelector('#result .result-card'); const f = c.querySelector('.formula'); const m = c.querySelector('.meter-seg.is-on .meter-lbl'); return { type: (c.querySelector('.result-type')||{}).textContent, formula: f ? f.textContent : null, meter: m ? m.textContent : null, formulaBeforeValue: !!f && !!(f.compareDocumentPosition(c.querySelector('.value')) & 4) }; })()")
+async def card(pg): return await pg.evaluate("(() => { const c = document.querySelector('#result .result-card'); const f = c.querySelector('.formula'); const m = c.querySelector('.meter-legend li.is-on'); return { type: (c.querySelector('.result-type')||{}).textContent, formula: f ? f.textContent : null, meter: m ? m.textContent : null, formulaBeforeValue: !!f && !!(f.compareDocumentPosition(c.querySelector('.value')) & 4) }; })()")
 
 async def main():
     srv = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", ROOT], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep(1)
@@ -168,8 +168,9 @@ async def main():
                     first = sp.locator(f'.field[data-field="{inp}"] input[type=radio]:not([value="__nt"])').last if sid == "nihss" else sp.locator(f'.field[data-field="{inp}"] input[type=radio]').nth(1)
                     await first.locator("xpath=..").click()
                 over = await sp.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
-                barvis = await sp.locator(".result-bar").is_visible()
-                check(f"small phone 320px: {sid} completes, no overflow, result bar visible", over and barvis and (await state(sp))["tone"] != "tone-incomplete")
+                # Result always visible: either the panel is on screen or the sticky bar is shown (Phase 8 observer behaviour)
+                barvis = await sp.locator(".result-bar").is_visible() or await sp.evaluate("(() => { const r = document.querySelector('#result').getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; })()")
+                check(f"small phone 320px: {sid} completes, no overflow, result always visible (panel or bar)", over and barvis and (await state(sp))["tone"] != "tone-incomplete")
                 await sp.screenshot(path=f"{SHOTS}/p3_small_{sid}.png")
                 await sp.goto(U + f"#/guide/s/{sid}"); await sp.wait_for_selector("#g-sources")
                 check(f"small phone 320px: {sid} guide no overflow", await sp.evaluate("document.documentElement.scrollWidth <= window.innerWidth"))

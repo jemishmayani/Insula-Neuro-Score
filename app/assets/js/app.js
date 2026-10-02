@@ -40,7 +40,7 @@
   var GUIDE_SECTIONS = [["overview", "Overview"], ["purpose", "Purpose"], ["population", "Intended population"], ["when", "When to use"], ["calculation", "Calculation"],
     ["interpretation", "Interpretation"], ["context", "Clinical context"], ["limitations", "Limitations"], ["confounders", "Confounders"], ["mistakes", "Common mistakes"],
     ["boundaries", "What it does not tell you"], ["related", "Related scores"], ["version", "Version"], ["sources", "Sources"]];
-  var RELATED = [];   // clinical clusters (content/related.json)
+  var RELATED = [], GUIDE_CACHE = {};   // clinical clusters (content/related.json)
   var HOME_SECTION_META = {
     favorites: { title: "Favorite scores", kind: "score", emptyTitle: "No favorite scores yet.", empty: "Add a score to Favorites for one-tap access.", icon: "star",
                  action: { label: "Browse calculators", href: "#/calculate", icon: "calculate" }, editable: true, picker: "favorites" },
@@ -325,7 +325,7 @@
       '<a href="#/calculate/s/' + id + '" data-replace' + (tab === "calculate" ? ' aria-current="page"' : "") + ">" + UI.icon("calculate") + "Calculate</a>" +
       '<a href="#/guide/s/' + id + '" data-replace' + (tab === "guide" ? ' aria-current="page"' : "") + ">" + UI.icon("guide") + "Guide</a></nav>";
     var prioBtn = UI.SecondaryButton({ label: prio ? "On Home (priority)" : "Add to Home priority", icon: "pin", act: "toggle-priority", data: { id: id } });
-    var inner = implemented ? '<div id="score-host">' + UI.LoadingState({ message: "Loading " + s.abbreviation + "…", rows: 3 }) + "</div>" : (tab === "calculate" ? calcShell(s) : guideShell(s));
+    var inner = implemented ? '<div id="score-host">' + UI.LoadingState({ message: "Loading " + s.abbreviation + "…", rows: 3 }).replace("loading-state", "loading-state delayed") + "</div>" : (tab === "calculate" ? calcShell(s) : guideShell(s));
     var body = head + toggle + inner + '<div class="section btn-row">' + prioBtn + "</div>";
     var favNoun = tab === "guide" ? "favorite guides" : "favorite scores";
     var favBtn = UI.IconButton({ icon: "star", label: (fav ? "Remove from " : "Add to ") + favNoun, act: "toggle-favorite", pressed: fav, data: { id: id, key: fk } });
@@ -339,14 +339,15 @@
       if (tab === "calculate") {
         var answers = SESSION_ANSWERS[id] || (SESSION_ANSWERS[id] = window.InsulaEngine.engine.initialAnswers(sc));
         var recorded = false;
-        window.Calculator.mount(host, sc, answers, { links: scoreLinks("calculate"), toast: toast, onResult: function (r) {
+        window.Calculator.mount(host, sc, answers, { links: scoreLinks("calculate"), toast: toast, guideHref: "#/guide/s/" + id, onResult: function (r) {
           // Record use only for a completed calculation (score id + time only; inputs are never stored).
           if ((r.status === "complete" || r.status === "not-interpretable") && !recorded) { recorded = true; Store.pushRecent("recentCalc", id); }
           if (r.status === "incomplete") recorded = false;
         } });
         document.body.classList.add("has-result-bar");
       } else {
-        host.innerHTML = window.Calculator.guideHTML(sc, scoreLinks("guide"), "#/calculate/s/" + id, { clusters: RELATED, entry: score });
+        // Score content is immutable for the session, so the generated Guide is cached per score.
+        host.innerHTML = GUIDE_CACHE[id] || (GUIDE_CACHE[id] = window.Calculator.guideHTML(sc, scoreLinks("guide"), "#/calculate/s/" + id, { clusters: RELATED, entry: score }));
       }
       if (restoreY) window.scrollTo(0, restoreY);
     }).catch(function (e) {
@@ -436,7 +437,7 @@
       UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' +
         UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
         (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
-      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.8.0 (Phase 7: Guide experience)</p>' +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.9.0 (Phase 8: final UX and performance)</p>' +
         '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
         UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
     paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });

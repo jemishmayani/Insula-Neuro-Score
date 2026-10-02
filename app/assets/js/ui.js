@@ -109,7 +109,7 @@
   function BottomNavigation(o) {
     return '<nav class="bottomnav" aria-label="Main">' + o.items.map(function (it) {
       return '<a href="' + esc(it.href) + '" data-nav data-tab="' + esc(it.id) + '"' + (o.active === it.id ? ' aria-current="page"' : "") + '>' +
-        '<span class="indicator">' + icon(it.icon) + "</span>" + esc(it.label) + "</a>";
+        '<span class="indicator">' + icon(it.icon) + '</span><span class="nav-label">' + esc(it.label) + "</span></a>";
     }).join("") + "</nav>";
   }
 
@@ -146,15 +146,18 @@
   /** ScaleMeter({min, max, value, bands:[{min,max,tone,label}], label}) — position on a score's own scale */
   function ScaleMeter(o) {
     var span = o.max - o.min + 1, active = null;
+    var rng = function (b) { return b.min === b.max ? String(b.min) : b.min + "–" + b.max; };
     var segs = o.bands.map(function (b) {
       var on = o.value != null && o.value >= b.min && o.value <= b.max; if (on) active = b;
-      var w = (b.max - b.min + 1) / span * 100;
-      return '<span class="meter-seg tone-' + esc(b.tone) + (on ? " is-on" : "") + '" style="width:' + w.toFixed(3) + '%"><i></i><span class="meter-lbl">' + (b.min === b.max ? b.min : b.min + "–" + b.max) + "</span></span>";
+      return '<span class="meter-seg tone-' + esc(b.tone) + (on ? " is-on" : "") + '" style="width:' + ((b.max - b.min + 1) / span * 100).toFixed(3) + '%"><i></i></span>';
     }).join("");
+    var legend = '<ul class="meter-legend" aria-hidden="true">' + o.bands.map(function (b) {
+      var on = o.value != null && o.value >= b.min && o.value <= b.max;
+      return '<li class="tone-' + esc(b.tone) + (on ? " is-on" : "") + '">' + esc(rng(b)) + "</li>"; }).join("") + "</ul>";
     var pos = o.value == null ? null : ((o.value - o.min + 0.5) / span * 100);
-    var desc = o.value == null ? o.label + ": not yet calculated" : o.label + " " + o.value + " on a scale of " + o.min + " to " + o.max + (active ? ", band " + active.label : "");
+    var desc = o.value == null ? o.label + ": not yet calculated" : o.label + " " + o.value + " on a scale of " + o.min + " to " + o.max + (active ? ", band " + active.label + " (" + rng(active) + ")" : "");
     return '<div class="meter" role="img" aria-label="' + esc(desc) + '"><div class="meter-track">' + segs + "</div>" +
-      (pos == null ? "" : '<span class="meter-marker" style="left:' + pos.toFixed(3) + '%" aria-hidden="true"></span>') + "</div>";
+      (pos == null ? "" : '<span class="meter-marker" style="left:' + pos.toFixed(3) + '%" aria-hidden="true"></span>') + legend + "</div>";
   }
 
   /* ---------------- Insight cards ---------------- */

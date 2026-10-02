@@ -11,6 +11,7 @@
   --brand-300: #4FD0D9;            /* primary text/links on dark */
   --brand-050: #E2F4F5;
   --brand-900: #0F3236;
+  --brand-600: #00939E;            /* accessible teal for UI components on light surfaces (3.6:1 on white) */
   --brand-mark-bg: #7E7B9A;        /* app icon background */
 
   /* ---- Typography ---- */
@@ -65,7 +66,8 @@
   --color-border-strong: #B8C6CB;
   --color-scrim: rgba(13, 24, 28, 0.45);
 
-  --color-primary: var(--brand-500);
+  --color-primary: var(--brand-600);       /* UI components (radios, toggles, bars): ≥3:1 on white */
+  --color-primary-fill: var(--brand-700);  /* filled buttons carrying text: 5.1:1 with white */
   --color-on-primary: #FFFFFF;
   --color-primary-text: var(--brand-700);
   --color-primary-container: var(--brand-050);
@@ -97,6 +99,7 @@
   --color-scrim: rgba(0, 0, 0, 0.6);
 
   --color-primary: var(--brand-500);
+  --color-primary-fill: var(--brand-500);
   --color-on-primary: #00262A;
   --color-primary-text: var(--brand-300);
   --color-primary-container: var(--brand-900);

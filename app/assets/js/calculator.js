@@ -42,7 +42,7 @@
         var step = d.type === "integer" ? 1 : d.type === "decimal" ? Math.pow(10, -(d.decimals || 1)) : "any";
         html = '<div class="number-field">' +
           (d.type === "integer" ? '<button type="button" class="stepper" data-step="-1" data-input="' + esc(d.id) + '" aria-label="Decrease ' + esc(d.short || d.label) + '"' + (nt ? " disabled" : "") + ">−</button>" : "") +
-          '<input id="' + fieldId(d) + '" type="text" inputmode="' + (d.type === "integer" ? "numeric" : "decimal") + '" autocomplete="off" data-input="' + esc(d.id) + '" data-step-size="' + step + '" value="' + (nt || a == null ? "" : esc(a)) + '" aria-describedby="' + described + '"' + (nt ? " disabled" : "") + ">" +
+          '<input id="' + fieldId(d) + '" type="text" inputmode="' + (d.type === "integer" ? "numeric" : "decimal") + '" enterkeyhint="next" autocomplete="off" data-input="' + esc(d.id) + '" data-step-size="' + step + '" value="' + (nt || a == null ? "" : esc(a)) + '" aria-describedby="' + described + '"' + (nt ? " disabled" : "") + ">" +
           (d.type === "integer" ? '<button type="button" class="stepper" data-step="1" data-input="' + esc(d.id) + '" aria-label="Increase ' + esc(d.short || d.label) + '"' + (nt ? " disabled" : "") + ">+</button>" : "") +
           '<span class="unit">' + esc(d.unit || "") + " " + rangeText(d) + "</span></div>";
         break;
@@ -81,7 +81,7 @@
     return l && d !== "–" && l.indexOf(d) >= 0 && l.replace(d, "").replace(/[^A-Za-z]/g, "").length <= 6 ? UI.TONE_LABEL[r.state.tone] : l;
   }
   /* Result order: Score → Breakdown → Interpretation → Context → Considerations → Limitations → Confounders → Boundaries → Related */
-  function resultHTML(score, r, links) {
+  function resultHTML(score, r, links, guideHref) {
     var tone = r.state.tone, pres = r.presentation || {};
     var meter = r.bands ? UI.ScaleMeter({ min: r.range.min, max: r.range.max, value: r.status === "complete" ? r.total : null, bands: r.bands, label: score.abbreviation }) : "";
     var h = UI.ResultCard({ tone: tone, label: stateLabel(r), value: r.display, typeLabel: pres.typeLabel,
@@ -109,7 +109,8 @@
     if (r.related.length) h += '<div class="result-block" data-block="related"><h3 class="result-h">Related scores</h3><div class="chip-row">' + r.related.map(function (x) {
       var l = links(x.id); return l ? '<a class="chip" href="' + l.href + '" data-nav>' + esc(l.label) + ' <span class="n">' + esc(x.relation) + "</span></a>" : ""; }).join("") + "</div></div>";
     var canShare = r.status === "complete" || r.status === "not-interpretable";
-    h += '<div class="result-block btn-row">' + UI.SecondaryButton({ label: "Reset", icon: "reset", act: "calc-reset" }) +
+    h += '<div class="result-block btn-row">' + (guideHref ? UI.SecondaryButton({ label: "Guide", icon: "guide", href: guideHref, replace: true, data: { role: "open-guide" } }) : "") +
+      UI.SecondaryButton({ label: "Reset", icon: "reset", act: "calc-reset" }) +
       UI.SecondaryButton({ label: "Copy result", icon: "copy", act: "calc-copy", disabled: !canShare }) +
       UI.SecondaryButton({ label: "Share", icon: "share", act: "calc-share", disabled: !canShare }) + "</div>";
     h += '<p class="fineprint">' + esc(score.version.label) + " · content v" + esc(score.contentVersion) + ". Calculation and reference support; it does not diagnose or recommend treatment.</p>";
@@ -138,10 +139,12 @@
       '<div class="calc-progress" aria-live="polite"></div>' + grouped + '</form><div class="aside"><section id="result" aria-label="Result" tabindex="-1"></section></div></div>' +
       '<button type="button" class="result-bar" data-act="calc-jump" aria-label="Jump to result"></button>';
 
-    var last = null;
+    var last = null, lastSig = null, barHidden = false;
     function update(changedId) {
       var r = Engine.calculate(score, answers); last = r;
-      document.getElementById("result").innerHTML = resultHTML(score, r, links);
+      // Avoid unnecessary DOM work: rebuild the result panel only when the result actually changed.
+      var sig = JSON.stringify([r.status, r.display, r.formula, r.state, r.warnings, r.insights, r.limitations, r.breakdown]);
+      if (sig !== lastSig) { document.getElementById("result").innerHTML = resultHTML(score, r, links, opts.guideHref); lastSig = sig; }
       // per-field errors & warning highlights
       score.inputDefinitions.forEach(function (d) {
         var f = el.querySelector('[data-field="' + d.id + '"]'); if (!f) return;
@@ -156,7 +159,7 @@
       var total = score.inputDefinitions.filter(function (d) { return d.required !== false; }).length, done = total - r.missing.length;
       el.querySelector(".calc-progress").innerHTML = '<span class="bar"><i style="width:' + Math.round(done / total * 100) + '%"></i></span>' + done + " of " + total + " answered";
       var bar = el.querySelector(".result-bar");
-      bar.className = "result-bar tone-" + r.state.tone;
+      bar.className = "result-bar tone-" + r.state.tone + (barHidden ? " is-hidden" : "");
       // Compact only code-style formulas (e.g. "E3 + V4 + M5" → "E3 V4 M5"); other formulas are not shown in the bar.
       var compact = r.formula && /^[A-Z]+[A-Z0-9]*( \+ [A-Z]+[A-Z0-9]*)+$/.test(r.formula) ? r.formula.replace(/ \+ /g, " ") : null;
       var barValue = compact ? (r.status === "complete" ? compact + " = " + r.display : compact) : r.display;
@@ -170,13 +173,33 @@
       tmp.innerHTML = controlHTML(d, answers[id]); f.replaceWith(tmp.firstChild);
     }
 
+    el.addEventListener("keydown", function (ev) {
+      var t = ev.target; if (ev.key !== "Enter" || t.tagName !== "INPUT" || t.type !== "text") return;
+      ev.preventDefault();
+      var all = [].slice.call(el.querySelectorAll('input[type=text][data-input]:not([disabled])')), i = all.indexOf(t);
+      if (i >= 0 && i < all.length - 1) all[i + 1].focus(); else t.blur();
+    });
+    /* Minimal taps: after answering a choice, bring the next unanswered question into view (scroll only; focus stays put). */
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function revealNext(id) {
+      var f = el.querySelector('[data-field="' + id + '"]'); if (!f) return;
+      var fields = [].slice.call(el.querySelectorAll(".field")), i = fields.indexOf(f);
+      for (var j = i + 1; j < fields.length; j++) {
+        var nid = fields[j].getAttribute("data-field");
+        if (answers[nid] === undefined) {
+          var r = fields[j].getBoundingClientRect(), barH = (document.querySelector(".result-bar:not(.is-hidden)") || { offsetHeight: 0 }).offsetHeight + 72;
+          if (r.top > window.innerHeight - barH - 40) window.scrollBy({ top: r.top - 120, behavior: reduce ? "auto" : "smooth" });
+          return;
+        }
+      }
+    }
     el.addEventListener("change", function (ev) {
       var t = ev.target, id = t.getAttribute("data-input"); if (!id) return;
       var d = def(id), part = t.getAttribute("data-part");
       if (part === "nt") { setAnswer(id, t.checked ? { nt: true } : undefined); rerenderField(id); }
       else if (part === "reason") { setAnswer(id, { nt: true, reason: t.value || undefined }); }
       else if (part === "unit") { var cur = answers[id] && !ntValue(answers[id]) ? answers[id] : {}; setAnswer(id, { value: cur.value, unit: t.value }); }
-      else if (d.type === "single") { setAnswer(id, t.value === "__nt" ? { nt: true } : t.value); rerenderField(id); }
+      else if (d.type === "single") { setAnswer(id, t.value === "__nt" ? { nt: true } : t.value); rerenderField(id); if (t.value !== "__nt") setTimeout(function () { revealNext(id); }, 0); }
       else if (d.type === "multi") {
         var checked = [].slice.call(el.querySelectorAll('input[name="' + id + '"]:checked')).map(function (x) { return x.value; });
         setAnswer(id, checked.length ? checked : undefined); rerenderField(id);
@@ -206,12 +229,23 @@
         next = Math.max(d.min, Math.min(d.max, next)); inp.value = next; setAnswer(id, String(next)); opts.typing = false; update(id); return;
       }
       var act = b.getAttribute("data-act");
-      if (act === "calc-reset") { Object.keys(answers).forEach(function (k) { delete answers[k]; }); mount(el, score, answers, opts); if (opts.toast) opts.toast("Inputs cleared"); var first = el.querySelector("[data-input]"); if (first) first.focus(); }
+      if (act === "calc-reset") {
+        var snap = JSON.parse(JSON.stringify(answers));
+        Object.keys(answers).forEach(function (k) { delete answers[k]; }); mount(el, score, answers, opts);
+        if (opts.toast) opts.toast("Inputs cleared", { label: "Undo", run: function () { Object.keys(snap).forEach(function (k) { answers[k] = snap[k]; }); mount(el, score, answers, opts); } });
+        var first = el.querySelector("[data-input]"); if (first) first.focus({ preventScroll: true }); window.scrollTo(0, 0);
+      }
       else if (act === "calc-copy" && last) { var txt = shareText(score, last); try { if (Android && Android.copy) Android.copy(txt); else navigator.clipboard.writeText(txt); if (opts.toast) opts.toast("Result copied"); } catch (e) { if (opts.toast) opts.toast("Copy failed"); } }
       else if (act === "calc-share" && last) { var tx = shareText(score, last); try { if (Android && Android.share) Android.share(tx); else if (navigator.share) navigator.share({ text: tx }); else { navigator.clipboard.writeText(tx); if (opts.toast) opts.toast("Result copied"); } } catch (e) {} }
       else if (act === "calc-jump") { var res = document.getElementById("result"); res.scrollIntoView({ block: "start" }); res.focus({ preventScroll: true }); }
     });
     update();
+    // Show the sticky result bar only while the result panel is out of view (any layout, any text size).
+    var bar0 = el.querySelector(".result-bar"), resEl = document.getElementById("result");
+    if (window.IntersectionObserver && bar0 && resEl) {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { barHidden = e.isIntersecting; bar0.classList.toggle("is-hidden", barHidden); }); }, { threshold: [0, 0.15] });
+      io.observe(resEl);
+    }
     return { result: function () { return last; } };
   }
 
