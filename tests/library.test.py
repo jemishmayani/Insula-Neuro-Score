@@ -41,10 +41,10 @@ async def main():
                 check(f"{sid}: calculator completes ({st['value']}, {st['type']}), insight sections present", ok_calc and st["type"] and "breakdown" in blocks and "limitation" in blocks, str(st) + str(blocks))
                 if sid in SHOT_IDS:
                     await pg.click("#result >> text=Breakdown"); await pg.screenshot(path=f"{SHOTS}/p6_{sid}.png")
-                await pg.click('.segmented a:has-text("Guide")'); await pg.wait_for_selector("#g15")
-                n = await pg.locator(".section-card").count(); srcs = await pg.locator("#g15 li").count()
-                ver = await pg.locator("#g14").inner_text()
-                check(f"{sid}: guide has 15 sections, version shown, {srcs} source(s)", n == 15 and srcs >= 1 and score["version"]["label"] in ver)
+                await pg.click('.segmented a:has-text("Guide")'); await pg.wait_for_selector("#g-sources")
+                n = await pg.locator(".section-card").count(); srcs = await pg.locator("#g-sources li").count()
+                ver = await pg.locator("#g-version").inner_text()
+                check(f"{sid}: guide has 14 sections, version shown, {srcs} source(s)", n == 14 and srcs >= 1 and score["version"]["label"] in ver)
             for s in REVIEW:
                 await pg.goto(U + f"#/calculate/s/{s['id']}"); await pg.wait_for_selector(".detail-head")
                 txt = await pg.locator("main").inner_text()

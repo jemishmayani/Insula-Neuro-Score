@@ -45,7 +45,7 @@ async def main():
             await pg.click(".appbar [data-act=toggle-favorite]")
             st = await store(pg)
             check("star on calculator → favorite scores only", st["favorites"] == ["gcs"] and st["favoriteGuides"] == [])
-            await go(pg, "#/guide/s/nihss", "#g15")
+            await go(pg, "#/guide/s/nihss", "#g-sources")
             star = pg.locator(".appbar [data-act=toggle-favorite]")
             check("guide star is a separate favorite (unpressed)", await star.get_attribute("aria-pressed") == "false" and "favorite guides" in await star.get_attribute("aria-label"))
             await star.click(); st = await store(pg)
@@ -58,9 +58,9 @@ async def main():
             check("Favorite guides section shows NIHSS, SINS", await titles(pg, "favoriteGuides") == ["NIHSS", "SINS"])
             await pg.click("#home-favorites .home-row a.open"); await pg.wait_for_selector(".field")
             ok1 = await pg.evaluate("location.hash") == "#/calculate/s/gcs"
-            await go(pg, "#/home"); await pg.click("#home-favorites .home-row a.alt-view"); await pg.wait_for_selector("#g15")
+            await go(pg, "#/home"); await pg.click("#home-favorites .home-row a.alt-view"); await pg.wait_for_selector("#g-sources")
             check("favorite score: row opens calculator, second button opens guide (both one tap)", ok1 and await pg.evaluate("location.hash") == "#/guide/s/gcs")
-            await go(pg, "#/home"); await pg.click("#home-favoriteGuides .home-row:has-text('NIHSS') a.open"); await pg.wait_for_selector("#g15")
+            await go(pg, "#/home"); await pg.click("#home-favoriteGuides .home-row:has-text('NIHSS') a.open"); await pg.wait_for_selector("#g-sources")
             ok2 = await pg.evaluate("location.hash") == "#/guide/s/nihss"
             await go(pg, "#/home"); await pg.click("#home-favoriteGuides .home-row:has-text('NIHSS') a.alt-view"); await pg.wait_for_selector(".field")
             check("favorite guide: row opens guide, second button opens calculator", ok2 and await pg.evaluate("location.hash") == "#/calculate/s/nihss")

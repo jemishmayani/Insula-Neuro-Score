@@ -37,9 +37,10 @@
     { id: "calculate", label: "Calculate", icon: "calculate", href: "#/calculate" },
     { id: "guide", label: "Guide", icon: "guide", href: "#/guide" }
   ];
-  var GUIDE_SECTIONS = ["What is this score?", "Purpose", "Intended population", "When it is useful", "Components", "How to calculate",
-    "Interpretation", "Clinical context", "Important limitations", "Confounders / factors affecting scoring", "Common calculation mistakes",
-    "What the score does NOT tell you", "Related scores", "Version / classification information", "Evidence / sources"];
+  var GUIDE_SECTIONS = [["overview", "Overview"], ["purpose", "Purpose"], ["population", "Intended population"], ["when", "When to use"], ["calculation", "Calculation"],
+    ["interpretation", "Interpretation"], ["context", "Clinical context"], ["limitations", "Limitations"], ["confounders", "Confounders"], ["mistakes", "Common mistakes"],
+    ["boundaries", "What it does not tell you"], ["related", "Related scores"], ["version", "Version"], ["sources", "Sources"]];
+  var RELATED = [];   // clinical clusters (content/related.json)
   var HOME_SECTION_META = {
     favorites: { title: "Favorite scores", kind: "score", emptyTitle: "No favorite scores yet.", empty: "Add a score to Favorites for one-tap access.", icon: "star",
                  action: { label: "Browse calculators", href: "#/calculate", icon: "calculate" }, editable: true, picker: "favorites" },
@@ -55,14 +56,15 @@
   var homeEdit = {};   // section id → edit mode on/off (session only)
 
   /* ---------------- catalogue helpers ---------------- */
-  var IDX = null;   // built once per catalogue load; Home and search never touch score documents
+  var IDX = null, LAST_WHY = {};   // built once per catalogue load; Home and search never touch score documents
   function buildIndex(cat) {
     var byId = {}, catById = {}, byCat = {}, search = [];
     cat.categories.forEach(function (c) { catById[c.id] = c; byCat[c.id] = []; });
     cat.scores.forEach(function (s) {
       byId[s.id] = s; (byCat[s.category] = byCat[s.category] || []).push(s);
-      search.push({ s: s, a: s.abbreviation.toLowerCase(), n: s.name.toLowerCase(), m: (s.summary || "").toLowerCase(), al: (s.aliases || []).join(" ").toLowerCase(),
-                    c: ((catById[s.category] || {}).name || "").toLowerCase() });
+      search.push({ s: s, a: s.abbreviation.toLowerCase(), n: s.name.toLowerCase(), m: (s.summary || "").toLowerCase(), al: (s.aliases || []).join(" | ").toLowerCase(),
+                    c: ((catById[s.category] || {}).name || "").toLowerCase(), kw: (s.keywords || []).map(function (k) { return k.toLowerCase(); }),
+                    sp: (s.specialties || []).join(" | ").toLowerCase() });
     });
     return { byId: byId, catById: catById, byCat: byCat, search: search };
   }
@@ -79,12 +81,16 @@
     var hidden = {}; Store.get().hiddenGroups.forEach(function (h) { hidden[h] = 1; });
     var out = [];
     for (var i = 0; i < IDX.search.length; i++) {
-      var e = IDX.search[i], r = 99;
+      var e = IDX.search[i], r = 99, why = null;
       if (e.a === q) r = 0; else if (e.a.indexOf(q) === 0) r = 1; else if (e.n.indexOf(q) === 0) r = 2;
-      else if (e.a.indexOf(q) >= 0 || e.n.indexOf(q) >= 0) r = 3; else if (e.al.indexOf(q) >= 0) r = 4; else if (e.m.indexOf(q) >= 0) r = 5; else if (e.c.indexOf(q) >= 0) r = 6;
-      if (r < 99) out.push({ s: e.s, r: r + (hidden[e.s.category] ? 10 : 0) });
+      else if (e.a.indexOf(q) >= 0 || e.n.indexOf(q) >= 0) r = 3;
+      else if (e.kw.indexOf(q) >= 0) { r = 4; why = "keyword"; } else if (e.al.indexOf(q) >= 0) { r = 4; why = "keyword"; }
+      else if (e.c.indexOf(q) >= 0) { r = 5; why = "category"; } else if (e.kw.some(function (k) { return k.indexOf(q) >= 0; })) { r = 6; why = "keyword"; }
+      else if (e.sp.indexOf(q) >= 0) { r = 7; why = "specialty"; } else if (e.m.indexOf(q) >= 0) { r = 8; why = "description"; }
+      if (r < 99) out.push({ s: e.s, r: r + (hidden[e.s.category] ? 10 : 0), why: why });
     }
     out.sort(function (x, y) { return x.r - y.r || (x.s.abbreviation < y.s.abbreviation ? -1 : 1); });
+    LAST_WHY = {}; out.slice(0, limit || 50).forEach(function (x) { LAST_WHY[x.s.id] = x.why; });
     return out.slice(0, limit || 50).map(function (x) { return x.s; });
   }
   function relTime(at) {
@@ -198,7 +204,7 @@
   function scoreCard(s, tab, opts) {
     opts = opts || {};
     var st = Store.get(), key = favKey(tab);
-    return UI.ScoreCard({ score: s, href: "#/" + tab + "/s/" + s.id, sub: opts.withCategory ? sub(s) + " · " + category(s.category).name : sub(s),
+    return UI.ScoreCard({ score: s, href: "#/" + tab + "/s/" + s.id, sub: (opts.withCategory ? sub(s) + " · " + category(s.category).name : sub(s)) + (opts.why ? " · matched " + opts.why : ""),
       badge: badgeFor(s), favorite: opts.noStar ? null : st[key].indexOf(s.id) >= 0, favKey: key });
   }
   /** Home row: primary tap opens one view; a second button opens the other, so both are one tap away. */
@@ -229,7 +235,7 @@
     if (!q.trim()) { res.innerHTML = ""; if (body) body.hidden = false; return; }
     var tab = route.tab === "guide" ? "guide" : "calculate", hits = search(q);
     if (body) body.hidden = true;
-    var rows = route.tab === "home" ? hits.map(function (s) { return homeRow(s, "score"); }) : hits.map(function (s) { return scoreCard(s, tab, { withCategory: true }); });
+    var rows = route.tab === "home" ? hits.map(function (s) { return homeRow(s, "score"); }) : hits.map(function (s) { return scoreCard(s, tab, { withCategory: true, why: LAST_WHY[s.id] }); });
     res.innerHTML = UI.Section({ id: "results", title: hits.length + " result" + (hits.length === 1 ? "" : "s"),
       body: hits.length ? UI.CardList(rows, "Search results")
         : UI.EmptyState({ icon: "search", title: "No matching scores", message: "Try an abbreviation such as GCS or WFNS, or a topic such as sedation or spine." }) });
@@ -340,7 +346,7 @@
         } });
         document.body.classList.add("has-result-bar");
       } else {
-        host.innerHTML = window.Calculator.guideHTML(sc, scoreLinks("guide"), "#/calculate/s/" + id);
+        host.innerHTML = window.Calculator.guideHTML(sc, scoreLinks("guide"), "#/calculate/s/" + id, { clusters: RELATED, entry: score });
       }
       if (restoreY) window.scrollTo(0, restoreY);
     }).catch(function (e) {
@@ -360,14 +366,18 @@
   }
   function guideShell(s) {
     var reviewNote = s.status === "review" ? '<div class="section">' + UI.WarningBanner({ title: "Under review: " + (s.reviewCategory || "pending"), message: s.reviewReason || "" }) + "</div>" : "";
-    var toc = '<nav class="toc" aria-label="Guide sections">' + GUIDE_SECTIONS.map(function (t, i) { return '<a href="#" data-jump="g' + (i + 1) + '">' + (i + 1) + ". " + esc(t.split(" / ")[0]) + "</a>"; }).join("") + "</nav>";
+    var toc = '<nav class="toc" aria-label="Guide sections">' + GUIDE_SECTIONS.map(function (t, i) { return '<a href="#" data-jump="g-' + t[0] + '">' + (i + 1) + ". " + esc(t[1]) + "</a>"; }).join("") + "</nav>";
+    var groups = RELATED.filter(function (c) { return c.members.indexOf(s.id) >= 0; });
+    var relatedHtml = groups.length ? groups.map(function (c) {
+      return '<div class="g-cluster" data-cluster="' + esc(c.id) + '"><h4 class="sub-h">' + esc(c.title) + '</h4><ul class="card-list">' + c.members.filter(function (m) { return m !== s.id && score(m); }).map(function (m) {
+        var e = score(m); return '<li class="score-card related-row" data-related="' + esc(m) + '"><a class="open" href="#/guide/s/' + m + '" data-nav><span class="text"><span class="title">' + esc(e.abbreviation) + '</span><span class="sub">' + esc(e.name) + "</span></span></a></li>"; }).join("") + "</ul></div>";
+    }).join("") : '<p class="lede">None listed.</p>';
     var cards = GUIDE_SECTIONS.map(function (t, i) {
-      return reviewNote + UI.SectionCard({ id: "g" + (i + 1), number: i + 1, title: t, body: '<p class="lede" style="margin:0">Content pending verification.</p><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div>' });
+      return UI.SectionCard({ id: "g-" + t[0], number: i + 1, title: t[1], body: t[0] === "related" ? relatedHtml : '<p class="lede" style="margin:0">Content pending verification.</p><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div>' });
     }).join("");
-    return '<div class="section">' + UI.PrimaryButton({ label: "Calculate this score →", icon: "calculate", href: "#/calculate/s/" + s.id, replace: true, block: true }) + "</div>" +
-      '<div class="section">' + UI.InfoBanner({ title: "Guide content pending", message: "Every guide follows the same 15-section structure shown below." }) + "</div>" +
+    return reviewNote + '<div class="guide-nav top" data-block="guide-nav-top">' + UI.PrimaryButton({ label: "Calculate", icon: "calculate", href: "#/calculate/s/" + s.id, replace: true }) + "</div>" +
       UI.Section({ id: "contents", title: "Contents", body: toc }) + '<div class="section">' + cards + "</div>" +
-      '<div class="section">' + UI.PrimaryButton({ label: "Calculate this score →", icon: "calculate", href: "#/calculate/s/" + s.id, replace: true, block: true }) + "</div>";
+      '<div class="section guide-nav bottom" data-block="guide-nav-bottom">' + UI.PrimaryButton({ label: "Calculate this score", icon: "calculate", href: "#/calculate/s/" + s.id, replace: true, block: true }) + "</div>";
   }
 
   /* ---------------- SETTINGS ---------------- */
@@ -426,7 +436,7 @@
       UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' +
         UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
         (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
-      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.7.0 (Phase 6: score library)</p>' +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.8.0 (Phase 7: Guide experience)</p>' +
         '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
         UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
     paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });
@@ -578,7 +588,8 @@
   applyTheme();
   root.innerHTML = '<div class="shell">' + UI.AppBar({ title: "Insula Neuro Score", brand: true }) + '<main class="content">' + UI.LoadingState({ message: "Loading scores…", rows: 4 }) + "</main></div>";
   function boot() {
-    loadJSON("content/catalog.json")
+    Promise.all([loadJSON("content/catalog.json"), loadJSON("content/related.json").catch(function () { return { clusters: [] }; })])
+      .then(function (both) { RELATED = both[1].clusters || []; return both[0]; })
       .then(function (c) {
         if (!c || !Array.isArray(c.scores) || !Array.isArray(c.categories)) throw new Error("Catalogue format is invalid");
         CATALOG = c; IDX = buildIndex(c);

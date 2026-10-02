@@ -71,7 +71,36 @@
     "consciousness",
     "evm"
    ],
-   "version": "Adult GCS, Glasgow structured approach"
+   "version": "Adult GCS, Glasgow structured approach",
+   "specialties": [
+    "Neurology",
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Emergency Medicine",
+    "Trauma"
+   ],
+   "keywords": [
+    "bleed",
+    "brain injury",
+    "coma",
+    "consciousness",
+    "critical care",
+    "haemorrhage",
+    "head injury",
+    "hemorrhage",
+    "ich",
+    "icu",
+    "intracerebral haemorrhage",
+    "intracerebral hemorrhage",
+    "level of consciousness",
+    "loc",
+    "neurocritical care",
+    "outcome",
+    "sedation",
+    "tbi",
+    "trauma",
+    "traumatic brain injury"
+   ]
   },
   {
    "id": "gcsp",
@@ -84,7 +113,24 @@
     "gcs pupils",
     "pupil reactivity score"
    ],
-   "version": "GCS-P (Brennan, Murray & Teasdale 2018)"
+   "version": "GCS-P (Brennan, Murray & Teasdale 2018)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Trauma"
+   ],
+   "keywords": [
+    "brain injury",
+    "coma",
+    "consciousness",
+    "head injury",
+    "level of consciousness",
+    "loc",
+    "outcome",
+    "tbi",
+    "trauma",
+    "traumatic brain injury"
+   ]
   },
   {
    "id": "four",
@@ -93,6 +139,20 @@
    "category": "consciousness",
    "summary": "Eye, motor, brainstem and respiration",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "brain injury",
+    "brainstem",
+    "coma",
+    "consciousness",
+    "critical care",
+    "icu",
+    "level of consciousness",
+    "loc",
+    "neurocritical care",
+    "outcome",
+    "sedation"
+   ],
    "reviewCategory": "Licensing",
    "reviewReason": "The published FOUR score figure is © Mayo Foundation; permission to be confirmed before reproducing the instrument."
   },
@@ -107,7 +167,24 @@
     "glasgow outcome",
     "outcome after brain injury"
    ],
-   "version": "GOS, five categories (Jennett & Bond 1975)"
+   "version": "GOS, five categories (Jennett & Bond 1975)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Rehabilitation"
+   ],
+   "keywords": [
+    "brain injury",
+    "coma",
+    "consciousness",
+    "disability",
+    "function",
+    "functional outcome",
+    "global outcome after brain injury",
+    "level of consciousness",
+    "loc",
+    "outcome"
+   ]
   },
   {
    "id": "gose",
@@ -120,7 +197,24 @@
     "gos-e",
     "extended glasgow outcome"
    ],
-   "version": "GOSE, eight categories (Wilson et al. 1998)"
+   "version": "GOSE, eight categories (Wilson et al. 1998)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Rehabilitation"
+   ],
+   "keywords": [
+    "brain injury",
+    "coma",
+    "consciousness",
+    "disability",
+    "function",
+    "functional outcome",
+    "global outcome after brain injury",
+    "level of consciousness",
+    "loc",
+    "outcome"
+   ]
   },
   {
    "id": "nihss",
@@ -134,7 +228,30 @@
     "national institutes of health",
     "nih"
    ],
-   "version": "NINDS NIH Stroke Scale (2024 update), 15 items"
+   "version": "NINDS NIH Stroke Scale (2024 update), 15 items",
+   "specialties": [
+    "Stroke",
+    "Neurology",
+    "Emergency Medicine"
+   ],
+   "keywords": [
+    "acute stroke assessment",
+    "cerebrovascular",
+    "cva",
+    "ems",
+    "ischaemic",
+    "ischemic",
+    "large vessel occlusion",
+    "lvo",
+    "prehospital",
+    "prehospital lvo screens",
+    "stroke",
+    "stroke deficit quantification",
+    "thrombectomy",
+    "tia",
+    "transient ischaemic attack",
+    "transient ischemic attack"
+   ]
   },
   {
    "id": "aspects",
@@ -148,7 +265,24 @@
     "early ischaemic change",
     "ischemic"
    ],
-   "version": "ASPECTS (Barber et al. 2000), non-contrast CT"
+   "version": "ASPECTS (Barber et al. 2000), non-contrast CT",
+   "specialties": [
+    "Stroke",
+    "Neuroradiology",
+    "Neurology"
+   ],
+   "keywords": [
+    "acute stroke assessment",
+    "cerebrovascular",
+    "cva",
+    "imaging (anterior circulation)",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "stroke",
+    "thrombectomy",
+    "tia"
+   ]
   },
   {
    "id": "pcaspects",
@@ -162,7 +296,24 @@
     "early ischaemic change",
     "ischemic"
    ],
-   "version": "pc-ASPECTS (Puetz et al. 2008)"
+   "version": "pc-ASPECTS (Puetz et al. 2008)",
+   "specialties": [
+    "Stroke",
+    "Neuroradiology",
+    "Neurology"
+   ],
+   "keywords": [
+    "acute stroke assessment",
+    "cerebrovascular",
+    "cva",
+    "imaging (posterior circulation)",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "stroke",
+    "thrombectomy",
+    "tia"
+   ]
   },
   {
    "id": "ich",
@@ -176,7 +327,22 @@
     "intracerebral hemorrhage",
     "hemphill"
    ],
-   "version": "ICH Score (Hemphill et al. 2001)"
+   "version": "ICH Score (Hemphill et al. 2001)",
+   "specialties": [
+    "Stroke",
+    "Neurocritical Care",
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "bleed",
+    "haemorrhage",
+    "hemorrhage",
+    "ich",
+    "intracerebral",
+    "intracerebral haemorrhage",
+    "intracerebral hemorrhage",
+    "severity at presentation"
+   ]
   },
   {
    "id": "func",
@@ -190,7 +356,22 @@
     "intracerebral haemorrhage",
     "rost"
    ],
-   "version": "FUNC (Rost et al. 2008)"
+   "version": "FUNC (Rost et al. 2008)",
+   "specialties": [
+    "Stroke",
+    "Neurocritical Care",
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "bleed",
+    "functional outcome after ich",
+    "haemorrhage",
+    "hemorrhage",
+    "ich",
+    "intracerebral",
+    "intracerebral haemorrhage",
+    "intracerebral hemorrhage"
+   ]
   },
   {
    "id": "graeb",
@@ -199,6 +380,18 @@
    "category": "ich",
    "summary": "Intraventricular haemorrhage burden",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "bleed",
+    "haemorrhage",
+    "hemorrhage",
+    "ich",
+    "intracerebral",
+    "intracerebral haemorrhage",
+    "intracerebral hemorrhage",
+    "intraventricular",
+    "ivh"
+   ],
    "reviewCategory": "Verification",
    "reviewReason": "Scoring definitions not yet verified against the primary source."
   },
@@ -209,6 +402,18 @@
    "category": "ich",
    "summary": "Intraventricular haemorrhage burden",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "bleed",
+    "haemorrhage",
+    "hemorrhage",
+    "ich",
+    "intracerebral",
+    "intracerebral haemorrhage",
+    "intracerebral hemorrhage",
+    "intraventricular",
+    "ivh"
+   ],
    "reviewCategory": "Verification",
    "reviewReason": "Scoring definitions not yet verified against the primary source."
   },
@@ -224,7 +429,21 @@
     "sah grade",
     "subarachnoid"
    ],
-   "version": "Hunt & Hess 1968 (original, with modifier)"
+   "version": "Hunt & Hess 1968 (original, with modifier)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care"
+   ],
+   "keywords": [
+    "aneurysm",
+    "aneurysmal",
+    "clinical grade",
+    "sah",
+    "sah grading",
+    "subarachnoid",
+    "subarachnoid haemorrhage",
+    "vasospasm"
+   ]
   },
   {
    "id": "wfns",
@@ -238,7 +457,21 @@
     "sah grade",
     "subarachnoid"
    ],
-   "version": "Original WFNS (1988)"
+   "version": "Original WFNS (1988)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care"
+   ],
+   "keywords": [
+    "aneurysm",
+    "aneurysmal",
+    "clinical grade",
+    "sah",
+    "sah grading",
+    "subarachnoid",
+    "subarachnoid haemorrhage",
+    "vasospasm"
+   ]
   },
   {
    "id": "fisher",
@@ -252,7 +485,22 @@
     "sah ct",
     "vasospasm"
    ],
-   "version": "Original Fisher scale (1980)"
+   "version": "Original Fisher scale (1980)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Neuroradiology"
+   ],
+   "keywords": [
+    "aneurysm",
+    "aneurysmal",
+    "ct grade",
+    "sah",
+    "sah grading",
+    "subarachnoid",
+    "subarachnoid haemorrhage",
+    "vasospasm"
+   ]
   },
   {
    "id": "mfisher",
@@ -266,7 +514,22 @@
     "vasospasm",
     "frontera"
    ],
-   "version": "Modified Fisher (Frontera et al. 2006)"
+   "version": "Modified Fisher (Frontera et al. 2006)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Neuroradiology"
+   ],
+   "keywords": [
+    "aneurysm",
+    "aneurysmal",
+    "ct grade",
+    "sah",
+    "sah grading",
+    "subarachnoid",
+    "subarachnoid haemorrhage",
+    "vasospasm"
+   ]
   },
   {
    "id": "marshall",
@@ -280,7 +543,21 @@
     "tbi ct",
     "head injury"
    ],
-   "version": "Marshall CT classification (1991)"
+   "version": "Marshall CT classification (1991)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Neuroradiology",
+    "Trauma"
+   ],
+   "keywords": [
+    "ct classification",
+    "head injury",
+    "polytrauma",
+    "tbi",
+    "trauma",
+    "traumatic brain injury"
+   ]
   },
   {
    "id": "rotterdam",
@@ -294,7 +571,21 @@
     "tbi ct",
     "head injury"
    ],
-   "version": "Rotterdam CT score (Maas et al. 2005)"
+   "version": "Rotterdam CT score (Maas et al. 2005)",
+   "specialties": [
+    "Neurosurgery",
+    "Neurocritical Care",
+    "Neuroradiology",
+    "Trauma"
+   ],
+   "keywords": [
+    "ct score",
+    "head injury",
+    "polytrauma",
+    "tbi",
+    "trauma",
+    "traumatic brain injury"
+   ]
   },
   {
    "id": "rts",
@@ -308,7 +599,22 @@
     "t-rts",
     "physiological"
    ],
-   "version": "RTS (Champion et al. 1989), weighted"
+   "version": "RTS (Champion et al. 1989), weighted",
+   "specialties": [
+    "Trauma",
+    "Emergency Medicine",
+    "Prehospital"
+   ],
+   "keywords": [
+    "head injury",
+    "injury",
+    "physiological trauma score",
+    "polytrauma",
+    "tbi",
+    "trauma",
+    "trauma severity",
+    "traumatic brain injury"
+   ]
   },
   {
    "id": "iss",
@@ -323,7 +629,22 @@
     "polytrauma",
     "major trauma"
    ],
-   "version": "ISS (Baker et al. 1974)"
+   "version": "ISS (Baker et al. 1974)",
+   "specialties": [
+    "Trauma",
+    "Emergency Medicine",
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "anatomical trauma score",
+    "head injury",
+    "injury",
+    "polytrauma",
+    "tbi",
+    "trauma",
+    "trauma severity",
+    "traumatic brain injury"
+   ]
   },
   {
    "id": "triss",
@@ -332,6 +653,17 @@
    "category": "tbi",
    "summary": "Combined anatomical and physiological model",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "head injury",
+    "injury",
+    "polytrauma",
+    "survival",
+    "tbi",
+    "trauma",
+    "trauma severity",
+    "traumatic brain injury"
+   ],
    "reviewCategory": "Version",
    "reviewReason": "Multiple published coefficient sets exist (MTOS and later revisions); the coefficient version must be selected and verified."
   },
@@ -342,6 +674,21 @@
    "category": "spine",
    "summary": "Spinal cord injury classification",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "asia",
+    "cervical",
+    "isncsci",
+    "myelopathy",
+    "paraplegia",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spinal cord injury",
+    "spine",
+    "spine and spinal cord",
+    "tetraplegia"
+   ],
    "reviewCategory": "Licensing / version",
    "reviewReason": "ISNCSCI and the AIS worksheet are maintained by ASIA/ISCoS with reproduction terms and periodic revisions (current 2019 revision); requires licensing and version review."
   },
@@ -357,7 +704,25 @@
     "spinal cord injury",
     "sci"
    ],
-   "version": "Frankel grade (Frankel et al. 1969)"
+   "version": "Frankel grade (Frankel et al. 1969)",
+   "specialties": [
+    "Neurosurgery",
+    "Spine Surgery",
+    "Rehabilitation"
+   ],
+   "keywords": [
+    "cervical",
+    "myelopathy",
+    "paraplegia",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spinal cord injury",
+    "spinal cord injury grade",
+    "spine",
+    "spine and spinal cord",
+    "tetraplegia"
+   ]
   },
   {
    "id": "sins",
@@ -373,7 +738,31 @@
     "sosg",
     "spine tumour"
    ],
-   "version": "SOSG SINS (Fisher et al. 2010)"
+   "version": "SOSG SINS (Fisher et al. 2010)",
+   "specialties": [
+    "Neurosurgery",
+    "Spine Surgery",
+    "Radiation Oncology",
+    "Radiology",
+    "Oncology"
+   ],
+   "keywords": [
+    "cancer",
+    "cervical",
+    "metastases",
+    "myelopathy",
+    "neoplastic spinal instability",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spinal metastases",
+    "spinal metastasis",
+    "spine",
+    "spine and spinal cord",
+    "spine metastases",
+    "spine tumor",
+    "spine tumour"
+   ]
   },
   {
    "id": "nurick",
@@ -387,7 +776,24 @@
     "cervical myelopathy",
     "dcm"
    ],
-   "version": "Nurick grade (1972)"
+   "version": "Nurick grade (1972)",
+   "specialties": [
+    "Neurosurgery",
+    "Spine Surgery",
+    "Neurology"
+   ],
+   "keywords": [
+    "cervical",
+    "cervical myelopathy",
+    "cervical spondylosis",
+    "dcm",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord"
+   ]
   },
   {
    "id": "mjoa",
@@ -396,6 +802,19 @@
    "category": "spine",
    "summary": "Cervical myelopathy severity",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "cervical",
+    "cervical myelopathy",
+    "cervical spondylosis",
+    "dcm",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord"
+   ],
    "reviewCategory": "Licensing / verification",
    "reviewReason": "Published reproductions carry permission statements, and descriptor wording differs between sources; requires licensing and source review."
   },
@@ -406,6 +825,18 @@
    "category": "spine",
    "summary": "Low back pain disability",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "back pain",
+    "cervical",
+    "disability",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord"
+   ],
    "reviewCategory": "Licensing",
    "reviewReason": "The Oswestry Disability Index questionnaire is copyrighted; licensing required before reproduction."
   },
@@ -416,6 +847,17 @@
    "category": "oncology",
    "summary": "Spinal metastasis prognosis",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "cancer",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "spinal metastases",
+    "tumor",
+    "tumour"
+   ],
    "reviewCategory": "Version",
    "reviewReason": "Original 1990 version superseded by the revised 2005 score (implemented as 'Revised Tokuhashi'); not implemented to avoid version confusion."
   },
@@ -431,7 +873,26 @@
     "spinal metastasis",
     "prognosis"
    ],
-   "version": "Tomita score (Tomita et al. 2001)"
+   "version": "Tomita score (Tomita et al. 2001)",
+   "specialties": [
+    "Neurosurgery",
+    "Spine Surgery",
+    "Oncology"
+   ],
+   "keywords": [
+    "cancer",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "spinal metastases",
+    "spinal metastasis",
+    "spinal metastasis prognosis",
+    "spine tumor",
+    "spine tumour",
+    "tumor",
+    "tumour"
+   ]
   },
   {
    "id": "kps",
@@ -444,7 +905,27 @@
     "karnofsky",
     "performance status"
    ],
-   "version": "Karnofsky Performance Status (Karnofsky 1949)"
+   "version": "Karnofsky Performance Status (Karnofsky 1949)",
+   "specialties": [
+    "Neuro-oncology",
+    "Oncology",
+    "Neurosurgery",
+    "Radiation Oncology"
+   ],
+   "keywords": [
+    "cancer",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "performance status",
+    "spinal metastases",
+    "spinal metastasis",
+    "spine tumor",
+    "spine tumour",
+    "tumor",
+    "tumour"
+   ]
   },
   {
    "id": "ecog",
@@ -458,7 +939,26 @@
     "who performance status",
     "zubrod"
    ],
-   "version": "ECOG Performance Status (Oken et al. 1982)"
+   "version": "ECOG Performance Status (Oken et al. 1982)",
+   "specialties": [
+    "Neuro-oncology",
+    "Oncology",
+    "Radiation Oncology"
+   ],
+   "keywords": [
+    "cancer",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "performance status",
+    "spinal metastases",
+    "spinal metastasis",
+    "spine tumor",
+    "spine tumour",
+    "tumor",
+    "tumour"
+   ]
   },
   {
    "id": "mrs",
@@ -473,7 +973,27 @@
     "functional outcome",
     "dependence"
    ],
-   "version": "Modified Rankin Scale 0–6 (van Swieten et al. 1988)"
+   "version": "Modified Rankin Scale 0–6 (van Swieten et al. 1988)",
+   "specialties": [
+    "Stroke",
+    "Neurology",
+    "Neurosurgery",
+    "Rehabilitation"
+   ],
+   "keywords": [
+    "acute stroke assessment",
+    "cva",
+    "disability",
+    "function",
+    "functional",
+    "functional and disability",
+    "functional outcome",
+    "global disability and dependence",
+    "ischaemic",
+    "ischemic",
+    "outcome",
+    "stroke"
+   ]
   },
   {
    "id": "rass",
@@ -488,7 +1008,20 @@
     "richmond",
     "icu"
    ],
-   "version": "RASS (Sessler et al. 2002)"
+   "version": "RASS (Sessler et al. 2002)",
+   "specialties": [
+    "Neurocritical Care",
+    "Critical Care"
+   ],
+   "keywords": [
+    "critical care",
+    "icu",
+    "intensive care",
+    "neurocritical",
+    "neurocritical care",
+    "sedation",
+    "sedation and agitation"
+   ]
   },
   {
    "id": "sofa",
@@ -497,6 +1030,17 @@
    "category": "neurocritical",
    "summary": "Organ dysfunction",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "critical care",
+    "icu",
+    "intensive care",
+    "neurocritical",
+    "neurocritical care",
+    "organ failure",
+    "sedation",
+    "sepsis"
+   ],
    "reviewCategory": "Version",
    "reviewReason": "SOFA-2 (JAMA 2025) revised thresholds and variables; the version to implement must be decided and verified."
   },
@@ -512,7 +1056,25 @@
     "tia",
     "transient ischaemic attack"
    ],
-   "version": "ABCD² (Johnston et al. 2007)"
+   "version": "ABCD² (Johnston et al. 2007)",
+   "specialties": [
+    "Stroke",
+    "Neurology",
+    "Emergency Medicine",
+    "Primary Care"
+   ],
+   "keywords": [
+    "cerebrovascular",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "risk after tia",
+    "stroke",
+    "thrombectomy",
+    "tia",
+    "transient ischaemic attack",
+    "transient ischemic attack"
+   ]
   },
   {
    "id": "race",
@@ -527,7 +1089,26 @@
     "lvo",
     "prehospital"
    ],
-   "version": "RACE (Pérez de la Ossa et al. 2014)"
+   "version": "RACE (Pérez de la Ossa et al. 2014)",
+   "specialties": [
+    "Stroke",
+    "Emergency Medicine",
+    "Prehospital"
+   ],
+   "keywords": [
+    "cerebrovascular",
+    "ems",
+    "ischaemic",
+    "ischemic",
+    "large vessel occlusion",
+    "lvo",
+    "prehospital",
+    "prehospital large vessel occlusion screen",
+    "prehospital lvo screens",
+    "stroke",
+    "thrombectomy",
+    "tia"
+   ]
   },
   {
    "id": "lams",
@@ -542,7 +1123,26 @@
     "lvo",
     "prehospital"
    ],
-   "version": "LAMS (Llanes et al. 2004)"
+   "version": "LAMS (Llanes et al. 2004)",
+   "specialties": [
+    "Stroke",
+    "Emergency Medicine",
+    "Prehospital"
+   ],
+   "keywords": [
+    "cerebrovascular",
+    "ems",
+    "ischaemic",
+    "ischemic",
+    "large vessel occlusion",
+    "lvo",
+    "prehospital",
+    "prehospital large vessel occlusion screen",
+    "prehospital lvo screens",
+    "stroke",
+    "thrombectomy",
+    "tia"
+   ]
   },
   {
    "id": "fasted",
@@ -551,6 +1151,20 @@
    "category": "stroke",
    "summary": "Under review",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "cerebrovascular",
+    "ems",
+    "ischaemic",
+    "ischemic",
+    "large vessel occlusion",
+    "lvo",
+    "prehospital",
+    "prehospital lvo screens",
+    "stroke",
+    "thrombectomy",
+    "tia"
+   ],
    "reviewCategory": "Verification",
    "reviewReason": "Published tools define the denial/neglect item differently; requires primary-source review."
   },
@@ -567,7 +1181,27 @@
     "spine metastases",
     "prognosis"
    ],
-   "version": "Revised Tokuhashi (Tokuhashi et al. 2005)"
+   "version": "Revised Tokuhashi (Tokuhashi et al. 2005)",
+   "specialties": [
+    "Neurosurgery",
+    "Spine Surgery",
+    "Oncology",
+    "Radiation Oncology"
+   ],
+   "keywords": [
+    "cancer",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "spinal metastases",
+    "spinal metastasis",
+    "spinal metastasis prognosis",
+    "spine tumor",
+    "spine tumour",
+    "tumor",
+    "tumour"
+   ]
   },
   {
    "id": "joa",
@@ -576,6 +1210,19 @@
    "category": "spine",
    "summary": "Under review",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "cervical",
+    "cervical myelopathy",
+    "cervical spondylosis",
+    "dcm",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord"
+   ],
    "reviewCategory": "Version",
    "reviewReason": "Several JOA versions exist (1975, 1994 revision; related JOACMEQ questionnaire). A single version must be selected and verified."
   },
@@ -586,6 +1233,18 @@
    "category": "oncology",
    "summary": "Under review",
    "status": "review",
+   "specialties": [],
+   "keywords": [
+    "brain metastases",
+    "cancer",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "spinal metastases",
+    "tumor",
+    "tumour"
+   ],
    "reviewCategory": "Version",
    "reviewReason": "Graded Prognostic Assessment has multiple disease-specific versions that are updated frequently; requires dedicated review."
   }

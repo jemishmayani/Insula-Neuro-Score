@@ -20,6 +20,10 @@
   {
    "id": "rtokuhashi",
    "relation": "Uses KPS"
+  },
+  {
+   "id": "sins",
+   "relation": "Spinal metastasis stability"
   }
  ],
  "id": "kps",

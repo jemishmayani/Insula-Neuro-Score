@@ -16,20 +16,20 @@
  ],
  "relatedScores": [
   {
-   "id": "tomita",
-   "relation": "Alternative prognostic score"
-  },
-  {
    "id": "sins",
    "relation": "Mechanical stability"
   },
   {
+   "id": "tomita",
+   "relation": "Alternative prognostic score"
+  },
+  {
    "id": "kps",
-   "relation": "Input"
+   "relation": "Input: general condition"
   },
   {
    "id": "frankel",
-   "relation": "Input"
+   "relation": "Input: palsy"
   }
  ],
  "id": "rtokuhashi",

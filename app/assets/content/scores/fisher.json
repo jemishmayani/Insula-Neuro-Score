@@ -16,10 +16,14 @@
  "relatedScores": [
   {
    "id": "mfisher",
-   "relation": "Modified scale"
+   "relation": "Modified version"
   },
   {
    "id": "wfns",
+   "relation": "Clinical grade"
+  },
+  {
+   "id": "hunthess",
    "relation": "Clinical grade"
   }
  ],

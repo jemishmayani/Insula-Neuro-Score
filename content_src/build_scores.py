@@ -94,7 +94,7 @@ scores.append(base(
   whatItDoesNotTellYou=["The cause of impaired consciousness.", "Whether a focal, brainstem or structural lesion is present.", "The need for any specific intervention.", "An individual patient's prognosis on its own."],
   commonErrors=["Scoring 1 for a component that could not be tested (record NT).", "Reporting a total when any component is NT.", "Recording the worst instead of the best motor response.",
                 "Testing motor response in the legs (spinal reflexes can mislead).", "Applying physical pressure before checking the response to sound.", "Scoring 'localising' when the hand does not cross the clavicle."],
-  relatedScores=[{"id": "gcsp", "relation": "GCS with pupil reactivity"}, {"id": "four", "relation": "No verbal component"}, {"id": "wfns", "relation": "SAH grade using GCS"}],
+  relatedScores=[{"id": "gcsp", "relation": "GCS with pupil reactivity"}, {"id": "four", "relation": "No verbal component"}, {"id": "gose", "relation": "Outcome after brain injury"}, {"id": "wfns", "relation": "SAH grade using GCS"}],
   guideSections={"what": "A scale describing level of consciousness from three components: eye opening (1–4), verbal response (1–5) and best motor response (1–6). The sum ranges 3–15 when all components are testable.",
     "whenToUse": "Initial and serial assessment of consciousness, handover, trauma triage, and as an input to other scores (WFNS, ICH Score, GCS-Pupils).",
     "howToPerform": "Use the structured approach. Check for factors that interfere with each response (e.g. intubation, swelling, paralysis). Observe for spontaneous behaviour. Stimulate in sequence: spoken or shouted request, then physical pressure (fingertip, trapezius or supraorbital). Rate the best response for each component. Record NT for a component that cannot be tested. Report E, V and M, and the total only when all three are testable.",
@@ -363,7 +363,7 @@ scores.append(base(
     {"factor": "Pain from other causes", "effect": "Non-lesional pain can be mislabelled as mechanical."}],
   whatItDoesNotTellYou=["Whether neural compression or deficit is present.", "Tumour radiosensitivity, systemic disease or prognosis.", "Which treatment is appropriate."],
   commonErrors=["Labelling non-mechanical pain as mechanical.", "Using the wrong junctional boundaries (occiput–C2, C7–T2, T11–L1, L5–S1).", "Treating a score of 7 or more as an indication for surgery rather than for consultation.", "Combining several levels into one score."],
-  relatedScores=[{"id": "tokuhashi", "relation": "Prognosis in spinal metastasis"}, {"id": "tomita", "relation": "Prognosis in spinal metastasis"}, {"id": "kps", "relation": "Performance status"}],
+  relatedScores=[{"id": "rtokuhashi", "relation": "Prognosis in spinal metastasis"}, {"id": "tomita", "relation": "Prognosis in spinal metastasis"}, {"id": "kps", "relation": "Performance status"}],
   guideSections={"what": "A six-component classification of tumour-related spinal instability: location, pain, bone lesion, alignment, vertebral body collapse and posterolateral involvement. Totals range 0–18 in three stability categories.",
     "whenToUse": "Communicating instability between oncology, radiation oncology, radiology and spine surgery, and identifying patients for surgical consultation.",
     "howToPerform": "For the affected level, take the history (mechanical pain) and review CT/MRI for the five imaging components. Score each component and sum. Score each involved level separately.",
@@ -409,6 +409,9 @@ if __name__ == "__main__":
     sys.path.insert(0, HERE)
     import library
     scores += library.build(scores[0]["inputDefinitions"])
+    import related
+    for sc in scores:
+        if sc["id"] in related.RELATED: sc["relatedScores"] = [{"id": i, "relation": r} for i, r in related.RELATED[sc["id"]]]
     os.makedirs(os.path.join(OUT, "scores"), exist_ok=True); os.makedirs(os.path.join(OUT, "dev"), exist_ok=True)
     for f in os.listdir(os.path.join(OUT, "scores")): os.remove(os.path.join(OUT, "scores", f))
     for s in scores:
@@ -437,6 +440,23 @@ if __name__ == "__main__":
             if not c.get("summary"): c["summary"] = "Under review"
         else:
             c["status"] = "placeholder"
+    # ---- Phase 7: clusters + search keywords (specialty, category, keywords, cluster titles)
+    import related
+    ids = {c["id"] for c in cat["scores"]}
+    for cl in related.CLUSTERS:
+        missing = [m for m in cl["members"] if m not in ids]
+        assert not missing, (cl["id"], missing)
+    json.dump({"clusters": related.CLUSTERS}, open(os.path.join(OUT, "related.json"), "w"), ensure_ascii=False, indent=1)
+    catname = {c["id"]: c["name"] for c in cat["categories"]}
+    for c in cat["scores"]:
+        s = impl.get(c["id"])
+        c["specialties"] = s["specialties"] if s else []
+        kw = set(related.CATEGORY_KEYWORDS.get(c["category"], [])) | {c["category"], catname.get(c["category"], "").lower()}
+        if s: kw |= {s["subcategory"].lower()}
+        kw |= set(related.EXTRA_KEYWORDS.get(c["id"], []))
+        for cl in related.CLUSTERS:
+            if c["id"] in cl["members"]: kw |= {cl["title"].lower()} | set(cl["keywords"])
+        c["keywords"] = sorted(k for k in kw if k)
     cat["contentVersion"] = library.CV
     cat["note"] = "Catalogue. 'implemented' scores have content files; 'review' entries record why a listed score is not yet implemented; 'placeholder' entries contain no scoring criteria."
     json.dump(cat, open(cat_path, "w"), ensure_ascii=False, indent=1)

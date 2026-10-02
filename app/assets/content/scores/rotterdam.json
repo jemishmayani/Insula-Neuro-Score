@@ -16,11 +16,19 @@
  "relatedScores": [
   {
    "id": "marshall",
-   "relation": "Alternative CT classification"
+   "relation": "CT classification"
   },
   {
    "id": "gcs",
    "relation": "Clinical severity"
+  },
+  {
+   "id": "gcsp",
+   "relation": "Severity with pupils"
+  },
+  {
+   "id": "gose",
+   "relation": "Outcome after TBI"
   }
  ],
  "id": "rotterdam",

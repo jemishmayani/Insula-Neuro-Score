@@ -16,7 +16,11 @@
  "relatedScores": [
   {
    "id": "ich",
-   "relation": "Severity grade"
+   "relation": "Severity and mortality grade"
+  },
+  {
+   "id": "mrs",
+   "relation": "Functional outcome scale"
   },
   {
    "id": "gcs",

@@ -1,0 +1,215 @@
+{
+ "clusters": [
+  {
+   "id": "consciousness",
+   "title": "Level of consciousness",
+   "keywords": [
+    "coma",
+    "consciousness",
+    "loc"
+   ],
+   "members": [
+    "gcs",
+    "gcsp",
+    "four",
+    "gose",
+    "gos"
+   ],
+   "description": "Bedside measures of responsiveness and their outcome counterparts."
+  },
+  {
+   "id": "sah",
+   "title": "SAH grading",
+   "keywords": [
+    "sah",
+    "subarachnoid",
+    "aneurysm",
+    "vasospasm"
+   ],
+   "members": [
+    "hunthess",
+    "wfns",
+    "fisher",
+    "mfisher"
+   ],
+   "description": "Clinical grades (Hunt & Hess, WFNS) and CT grades (Fisher, Modified Fisher) are usually reported together."
+  },
+  {
+   "id": "spinal-mets",
+   "title": "Spinal metastases",
+   "keywords": [
+    "spinal metastasis",
+    "metastases",
+    "spine tumour",
+    "spine tumor",
+    "cancer"
+   ],
+   "members": [
+    "sins",
+    "rtokuhashi",
+    "tomita",
+    "kps",
+    "ecog"
+   ],
+   "description": "Stability (SINS), prognosis (Tokuhashi, Tomita) and performance status (KPS, ECOG) inform multidisciplinary decisions together."
+  },
+  {
+   "id": "acute-stroke",
+   "title": "Acute stroke assessment",
+   "keywords": [
+    "stroke",
+    "cva",
+    "ischaemic",
+    "ischemic"
+   ],
+   "members": [
+    "nihss",
+    "aspects",
+    "pcaspects",
+    "mrs"
+   ],
+   "description": "Clinical deficit (NIHSS), early CT change (ASPECTS) and pre-morbid / outcome function (mRS)."
+  },
+  {
+   "id": "lvo",
+   "title": "Prehospital LVO screens",
+   "keywords": [
+    "lvo",
+    "large vessel occlusion",
+    "prehospital",
+    "ems"
+   ],
+   "members": [
+    "race",
+    "lams",
+    "fasted",
+    "nihss"
+   ],
+   "description": "Brief scales to estimate large vessel occlusion likelihood before imaging."
+  },
+  {
+   "id": "tia",
+   "title": "Transient ischaemic attack",
+   "keywords": [
+    "tia",
+    "transient ischemic attack"
+   ],
+   "members": [
+    "abcd2",
+    "nihss"
+   ],
+   "description": "Early risk after TIA and assessment of any persisting deficit."
+  },
+  {
+   "id": "ich",
+   "title": "Intracerebral haemorrhage",
+   "keywords": [
+    "ich",
+    "intracerebral hemorrhage",
+    "haemorrhage",
+    "hemorrhage",
+    "bleed"
+   ],
+   "members": [
+    "ich",
+    "func",
+    "graeb",
+    "mgraeb",
+    "gcs"
+   ],
+   "description": "Severity (ICH Score), expected function (FUNC) and ventricular blood (Graeb, under review)."
+  },
+  {
+   "id": "tbi",
+   "title": "Traumatic brain injury",
+   "keywords": [
+    "tbi",
+    "head injury",
+    "trauma"
+   ],
+   "members": [
+    "gcs",
+    "gcsp",
+    "marshall",
+    "rotterdam"
+   ],
+   "description": "Clinical severity with CT classification."
+  },
+  {
+   "id": "trauma-severity",
+   "title": "Trauma severity",
+   "keywords": [
+    "trauma",
+    "polytrauma",
+    "injury"
+   ],
+   "members": [
+    "rts",
+    "iss",
+    "triss"
+   ],
+   "description": "Physiological (RTS) and anatomical (ISS) severity, combined in TRISS (under review)."
+  },
+  {
+   "id": "outcome",
+   "title": "Functional outcome",
+   "keywords": [
+    "outcome",
+    "disability",
+    "function"
+   ],
+   "members": [
+    "mrs",
+    "gos",
+    "gose"
+   ],
+   "description": "Global outcome scales used at follow-up."
+  },
+  {
+   "id": "sci",
+   "title": "Spinal cord injury",
+   "keywords": [
+    "sci",
+    "spinal cord injury",
+    "paraplegia",
+    "tetraplegia"
+   ],
+   "members": [
+    "frankel",
+    "ais"
+   ],
+   "description": "Frankel grade and the current ASIA/ISNCSCI standard (under review)."
+  },
+  {
+   "id": "myelopathy",
+   "title": "Cervical myelopathy",
+   "keywords": [
+    "myelopathy",
+    "dcm",
+    "cervical spondylosis"
+   ],
+   "members": [
+    "nurick",
+    "mjoa",
+    "joa"
+   ],
+   "description": "Walking-based (Nurick) and broader functional scores (mJOA, JOA; under review)."
+  },
+  {
+   "id": "icu",
+   "title": "Neurocritical care",
+   "keywords": [
+    "icu",
+    "sedation",
+    "critical care"
+   ],
+   "members": [
+    "rass",
+    "four",
+    "sofa",
+    "gcs"
+   ],
+   "description": "Arousal, coma and organ-dysfunction measures used in the ICU."
+  }
+ ]
+}

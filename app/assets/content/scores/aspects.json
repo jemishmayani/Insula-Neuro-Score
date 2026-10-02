@@ -21,7 +21,11 @@
   },
   {
    "id": "pcaspects",
-   "relation": "Other circulation"
+   "relation": "Posterior circulation equivalent"
+  },
+  {
+   "id": "mrs",
+   "relation": "Functional outcome"
   }
  ],
  "id": "aspects",

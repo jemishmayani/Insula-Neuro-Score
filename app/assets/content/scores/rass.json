@@ -18,6 +18,14 @@
   {
    "id": "gcs",
    "relation": "Level of consciousness"
+  },
+  {
+   "id": "four",
+   "relation": "Coma scale (under review)"
+  },
+  {
+   "id": "sofa",
+   "relation": "Organ dysfunction (under review)"
   }
  ],
  "id": "rass",

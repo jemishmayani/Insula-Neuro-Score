@@ -19,8 +19,12 @@
    "relation": "Current standard (under review)"
   },
   {
+   "id": "nurick",
+   "relation": "Myelopathy grade"
+  },
+  {
    "id": "rtokuhashi",
-   "relation": "Uses Frankel for palsy"
+   "relation": "Uses Frankel grade"
   }
  ],
  "id": "frankel",

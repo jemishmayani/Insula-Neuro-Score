@@ -16,12 +16,16 @@
  ],
  "relatedScores": [
   {
+   "id": "aspects",
+   "relation": "Anterior circulation equivalent"
+  },
+  {
    "id": "nihss",
    "relation": "Clinical deficit"
   },
   {
-   "id": "aspects",
-   "relation": "Other circulation"
+   "id": "mrs",
+   "relation": "Functional outcome"
   }
  ],
  "id": "pcaspects",

@@ -15,11 +15,19 @@
  "relatedScores": [
   {
    "id": "wfns",
-   "relation": "GCS-based SAH grade"
+   "relation": "GCS-based clinical grade"
   },
   {
    "id": "mfisher",
    "relation": "CT grade"
+  },
+  {
+   "id": "fisher",
+   "relation": "Original CT grade"
+  },
+  {
+   "id": "gcs",
+   "relation": "Level of consciousness"
   }
  ],
  "id": "hunthess",

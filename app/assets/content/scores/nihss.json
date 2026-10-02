@@ -805,16 +805,28 @@
  ],
  "relatedScores": [
   {
-   "id": "mrs",
-   "relation": "Functional outcome"
-  },
-  {
    "id": "aspects",
    "relation": "Early ischaemic change on CT"
   },
   {
-   "id": "gcs",
-   "relation": "Level of consciousness"
+   "id": "mrs",
+   "relation": "Functional outcome"
+  },
+  {
+   "id": "pcaspects",
+   "relation": "Posterior circulation CT"
+  },
+  {
+   "id": "race",
+   "relation": "Prehospital LVO screen"
+  },
+  {
+   "id": "lams",
+   "relation": "Prehospital motor scale"
+  },
+  {
+   "id": "abcd2",
+   "relation": "Risk after TIA"
   }
  ],
  "guideSections": {

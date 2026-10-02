@@ -18,6 +18,10 @@
    "relation": "Extended 8-category version"
   },
   {
+   "id": "gcs",
+   "relation": "Acute level of consciousness"
+  },
+  {
    "id": "mrs",
    "relation": "Global disability scale"
   }

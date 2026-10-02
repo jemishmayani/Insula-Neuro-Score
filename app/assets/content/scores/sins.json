@@ -368,16 +368,24 @@
  ],
  "relatedScores": [
   {
-   "id": "tokuhashi",
-   "relation": "Prognosis in spinal metastasis"
+   "id": "rtokuhashi",
+   "relation": "Prognosis in spinal metastases"
   },
   {
    "id": "tomita",
-   "relation": "Prognosis in spinal metastasis"
+   "relation": "Prognosis in spinal metastases"
   },
   {
    "id": "kps",
    "relation": "Performance status"
+  },
+  {
+   "id": "ecog",
+   "relation": "Performance status"
+  },
+  {
+   "id": "frankel",
+   "relation": "Neurological status"
   }
  ],
  "guideSections": {

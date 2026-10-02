@@ -16,11 +16,15 @@
  "relatedScores": [
   {
    "id": "hunthess",
-   "relation": "Clinical grade"
+   "relation": "Alternative clinical grade"
   },
   {
    "id": "mfisher",
    "relation": "CT grade"
+  },
+  {
+   "id": "fisher",
+   "relation": "Original CT grade"
   },
   {
    "id": "gcs",

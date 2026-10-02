@@ -30,6 +30,14 @@
   {
    "id": "gcs",
    "relation": "Clinical severity"
+  },
+  {
+   "id": "gcsp",
+   "relation": "Severity with pupils"
+  },
+  {
+   "id": "iss",
+   "relation": "Anatomical injury severity"
   }
  ],
  "id": "marshall",

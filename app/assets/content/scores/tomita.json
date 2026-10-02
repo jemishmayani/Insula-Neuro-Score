@@ -14,12 +14,16 @@
  ],
  "relatedScores": [
   {
+   "id": "sins",
+   "relation": "Mechanical stability"
+  },
+  {
    "id": "rtokuhashi",
    "relation": "Alternative prognostic score"
   },
   {
-   "id": "sins",
-   "relation": "Mechanical stability"
+   "id": "kps",
+   "relation": "Performance status"
   }
  ],
  "id": "tomita",

@@ -16,6 +16,14 @@
   {
    "id": "kps",
    "relation": "Alternative performance scale"
+  },
+  {
+   "id": "rtokuhashi",
+   "relation": "Spinal metastasis prognosis"
+  },
+  {
+   "id": "tomita",
+   "relation": "Spinal metastasis prognosis"
   }
  ],
  "id": "ecog",

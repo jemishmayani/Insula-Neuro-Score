@@ -22,6 +22,14 @@
   {
    "id": "gcs",
    "relation": "Input"
+  },
+  {
+   "id": "mrs",
+   "relation": "Functional outcome scale"
+  },
+  {
+   "id": "graeb",
+   "relation": "IVH burden (under review)"
   }
  ],
  "id": "ich",

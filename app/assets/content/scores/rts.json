@@ -24,6 +24,10 @@
    "relation": "Anatomical severity"
   },
   {
+   "id": "triss",
+   "relation": "Combined survival model (under review)"
+  },
+  {
    "id": "gcs",
    "relation": "Input"
   }

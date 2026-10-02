@@ -217,60 +217,113 @@
 
   /* ---------------- guide (renders model data only) ---------------- */
   var METHOD_TEXT = { sum: "The result is the sum of the item points.", select: "The result is the single level selected.", expression: "The result is derived from the item points using the published formula." };
-  var NT_TEXT = { block: "If any item is not testable, a total is not reported; the testable components are shown instead.",
+  var NT_TEXT = { block: "If any item is not testable, no total is reported; the testable components are shown instead.",
     exclude: "Items marked untestable contribute no points and are flagged; the total may underestimate the true value." };
-  function guideHTML(score, links, calcHref) {
-    var g = score.guideSections || {}, cm = score.calculationMethod;
-    var GI = window.InsulaEngine.insights.forGuide(score);
-    var gsec = function (type, keepTitle) { var sec = GI.filter(function (x) { return x.type === type; })[0]; return sec && sec.items.length ? UI.InsightSection({ section: sec, hideTitle: !keepTitle }) : '<p class="lede">None listed.</p>'; };
-    var errorsList = '<ul class="insight-list">' + score.commonErrors.map(function (t) { return UI.InsightCard({ type: "warning", item: { text: t } }); }).join("") + "</ul>";
+  /** The 14 Guide sections, in order. `id` is a stable anchor (g-<id>). */
+  var GUIDE = [["overview", "Overview"], ["purpose", "Purpose"], ["population", "Intended population"], ["when", "When to use"], ["calculation", "Calculation"],
+    ["interpretation", "Interpretation"], ["context", "Clinical context"], ["limitations", "Limitations"], ["confounders", "Confounders"], ["mistakes", "Common mistakes"],
+    ["boundaries", "What it does not tell you"], ["related", "Related scores"], ["version", "Version"], ["sources", "Sources"]];
+  function sentences(t) { return String(t || "").split(/(?<=[.;])\s+(?=[A-Z0-9])/).map(function (x) { return x.trim(); }).filter(Boolean); }
+  function infoBox(title, html, tone) { return '<div class="g-box tone-' + (tone || "info") + '">' + (title ? '<b class="g-box-title">' + esc(title) + "</b>" : "") + html + "</div>"; }
+  function factTable(rows) {
+    return '<table class="g-facts"><tbody>' + rows.filter(function (r) { return r[1]; }).map(function (r) { return '<tr><th scope="row">' + esc(r[0]) + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</tbody></table>";
+  }
+
+  /** guideHTML(score, links, calcHref, ctx) — ctx: { clusters: [...], entry: id → catalogue entry } */
+  function guideHTML(score, links, calcHref, ctx) {
+    ctx = ctx || {}; var entry = ctx.entry || function () { return null; };
+    var g = score.guideSections || {}, cm = score.calculationMethod, I = global.InsulaEngine.insights;
+    var GI = I.forGuide(score), pres = I.presentation(score);
+    var sec = function (t) { return GI.filter(function (x) { return x.type === t; })[0]; };
+    var cards = function (t) { var x = sec(t); return x && x.items.length ? UI.InsightSection({ section: x, hideTitle: true }) : '<p class="lede">None listed.</p>'; };
+    var notice = score.calculatorNotice ? (score.calculatorNotice.tone === "warning" ? UI.WarningBanner : UI.InfoBanner)({ title: score.calculatorNotice.title, message: score.calculatorNotice.message }) : "";
+    var noticeKey = score.calculatorNotice ? score.calculatorNotice.title.toLowerCase().slice(0, 30) : null;
+    var majors = sec("limitation").items.filter(function (i) { return i.importance === "major" && !(noticeKey && i.text.toLowerCase().indexOf(noticeKey) === 0); });
+    var allLims = sec("limitation").items.length;
+
+    /* 1 Overview: highlight box, at-a-glance table, key warnings (limitations surfaced at the top) */
+    var overview = infoBox(null, "<p>" + esc(g.what) + "</p>", "primary") +
+      factTable([["Result type", pres ? esc(pres.typeLabel) : ""], ["Range", cm.range.min + "–" + cm.range.max], ["Components", score.components.length + " (" + score.inputDefinitions.length + " input" + (score.inputDefinitions.length === 1 ? "" : "s") + ")"],
+                 ["Version", esc(score.version.label)], ["Category", esc(score.subcategory)], ["Review", /pending/i.test(score.reviewStatus) ? "Pending independent clinician review" : esc(score.reviewStatus)]]) +
+      '<div class="guide-warnings" data-block="key-warnings"><h4 class="sub-h">' + UI.icon("warning") + " Key warnings and limitations</h4>" + (notice || "") +
+      (majors.length ? '<ul class="insight-list">' + majors.map(function (i) { return UI.InsightCard({ type: "limitation", item: { text: i.text, importance: "major" } }); }).join("") + "</ul>" : "") +
+      '<a class="g-jump" href="#" data-jump="g-limitations">See all ' + allLims + " limitation" + (allLims === 1 ? "" : "s") + " →</a></div>";
+
+    /* 4 When to use: bullet points */
+    var whenList = sentences(g.whenToUse);
+    var when = whenList.length > 1 ? '<ul class="g-points">' + whenList.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "<p>" + esc(g.whenToUse) + "</p>";
+
+    /* 5 Calculation: numbered steps, method box, component tables */
+    var steps = sentences(g.howToPerform);
     var comps = score.components.map(function (c) {
+      var defs = c.inputs.map(function (id) { return score.inputDefinitions.filter(function (x) { return x.id === id; })[0]; });
+      var plain = defs.length > 1 && defs.every(function (d) { return !d.options && !d.pointBands && d.min != null; });
+      if (plain) return '<div class="guide-comp"><h4>' + esc(c.label) + '</h4><div class="table-scroll"><table class="breakdown"><thead><tr><th scope="col">Input</th><th scope="col" class="pts">Range</th></tr></thead><tbody>' +
+        defs.map(function (d) { return "<tr><td>" + esc(d.label) + (d.help ? '<br><span class="choice-detail">' + esc(d.help) + "</span>" : "") + '</td><td class="pts">' + d.min + "–" + d.max + (d.unit ? " " + esc(d.unit) : "") + "</td></tr>"; }).join("") +
+        "</tbody></table></div></div>";
       return '<div class="guide-comp"><h4>' + esc(c.label) + "</h4>" + c.inputs.map(function (id) {
         var d = score.inputDefinitions.filter(function (x) { return x.id === id; })[0];
-        var body = d.options ? '<table class="breakdown"><tbody>' + d.options.map(function (o) {
-          return "<tr><td>" + esc(o.label) + (o.detail ? '<br><span class="choice-detail">' + esc(o.detail) + "</span>" : "") + '</td><td class="pts">' + esc(o.code != null ? o.code : o.points) + "</td></tr>"; }).join("") +
-          (d.notTestable ? '<tr><td><i>' + esc(d.notTestable.label) + "</i>" + (d.notTestable.reasons ? '<br><span class="choice-detail">Allowed for: ' + esc(d.notTestable.reasons.join(", ")) + "</span>" : "") + '</td><td class="pts">' + esc(d.notTestable.code || "NT") + "</td></tr>" : "") + "</tbody></table>"
-          : '<p class="lede">' + esc(d.type) + " " + rangeText(d, d.unit) + "</p>";
-        return (c.inputs.length > 1 ? '<p class="guide-item">' + esc(d.label) + "</p>" : "") + (d.help ? '<p class="field-help">' + esc(d.help) + "</p>" : "") + body;
+        var rows;
+        if (d.options) rows = d.options.map(function (o) {
+          return "<tr><td>" + esc(o.label) + (o.detail ? '<br><span class="choice-detail">' + esc(o.detail) + "</span>" : "") + '</td><td class="pts">' + esc(o.exclusive ? "—" : (o.code != null ? o.code : o.points)) + "</td></tr>"; }).join("") +
+          (d.notTestable ? '<tr class="bd-nt"><td><i>' + esc(d.notTestable.label) + "</i>" + (d.notTestable.reasons ? '<br><span class="choice-detail">Allowed for: ' + esc(d.notTestable.reasons.join(", ")) + "</span>" : "") + '</td><td class="pts">' + esc(d.notTestable.code || "NT") + "</td></tr>" : "");
+        else if (d.pointBands) rows = d.pointBands.map(function (bd) { return "<tr><td>" + (bd.min == null ? "≤ " + bd.max : bd.max == null ? "≥ " + bd.min : bd.min === bd.max ? bd.min : bd.min + "–" + bd.max) + (d.unit ? " " + esc(d.unit) : "") + '</td><td class="pts">' + bd.points + "</td></tr>"; }).join("");
+        else rows = "<tr><td>Whole number " + d.min + "–" + d.max + (d.unit ? " " + esc(d.unit) : "") + '</td><td class="pts">value</td></tr>';
+        return (c.inputs.length > 1 ? '<p class="guide-item">' + esc(d.label) + "</p>" : "") + (d.help ? '<p class="field-help">' + esc(d.help) + "</p>" : "") +
+          '<div class="table-scroll"><table class="breakdown"><thead><tr><th scope="col">' + (d.type === "multi" ? "Select all that apply" : "Option") + '</th><th scope="col" class="pts">Points</th></tr></thead><tbody>' + rows + "</tbody></table></div>";
       }).join("") + "</div>";
     }).join("");
-    var interp = '<ul class="insight-list">' + score.resultStates.map(function (st) { return UI.StateCard({ tone: st.tone, range: st.range, label: st.label.replace(/\{[^}]+\}/g, "").trim() || UI.TONE_LABEL[st.tone], summary: st.summary, detail: st.detail }); }).join("") + "</ul>";
-    var noticeKey = score.calculatorNotice ? score.calculatorNotice.title.toLowerCase().slice(0, 30) : null;
-    var majorLims = GI.filter(function (x) { return x.type === "limitation"; })[0].items.filter(function (i) {
-      return i.importance === "major" && !(noticeKey && i.text.toLowerCase().indexOf(noticeKey) === 0);   // don't repeat the notice
-    });
-    var notice = score.calculatorNotice ? (score.calculatorNotice.tone === "warning" ? UI.WarningBanner : UI.InfoBanner)({ title: score.calculatorNotice.title, message: score.calculatorNotice.message }) : "";
-    var pres = score.resultPresentation;
-    var secs = [
-      ["What is it?", "<p>" + esc(g.what) + "</p>" + '<div class="guide-warnings" data-block="key-warnings">' + (notice || "") +
-        (majorLims.length ? '<ul class="insight-list">' + majorLims.map(function (i) { return UI.InsightCard({ type: "warning", item: { text: i.text, importance: "major" } }); }).join("") + "</ul>" : "") + "</div>"],
-      ["Purpose", "<p>" + esc(score.purpose) + "</p>"],
-      ["Intended population", "<p>" + esc(score.intendedPopulation) + "</p>"],
-      ["When to use", "<p>" + esc(g.whenToUse) + "</p>"],
-      ["How to perform / calculate", "<p>" + esc(g.howToPerform) + "</p><p>" + esc(METHOD_TEXT[cm.type]) + " Range " + cm.range.min + "–" + cm.range.max + ".</p>" +
-        (cm.formula ? "<p>Components are reported individually before the total.</p>" : "") +
-        (score.inputDefinitions.some(function (d) { return d.notTestable; }) ? "<p>" + esc(NT_TEXT[cm.notTestablePolicy || "block"]) + "</p>" : "")],
-      ["Scoring components", comps],
-      ["Interpretation", (pres ? UI.InsightSection({ section: { type: "interpretation", title: "Result type", question: "", items: [{ title: (window.InsulaEngine.insights.presentation(score) || {}).typeLabel, text: (window.InsulaEngine.insights.presentation(score) || {}).describes }] } }) : "") +
-        '<h4 class="sub-h">Result states</h4>' + interp],
-      ["Clinical context", "<p>" + esc(g.clinicalContext) + "</p>" + gsec("context", true) + gsec("consideration", true)],
-      ["Limitations", gsec("limitation")],
-      ["Confounders", gsec("confounder")],
-      ["Common mistakes", errorsList],
-      ["What the score does not tell you", gsec("boundary")],
-      ["Related scores", '<div class="chip-row">' + score.relatedScores.map(function (x) { var l = links(x.id, "guide"); return l ? '<a class="chip" href="' + l.href + '" data-nav>' + esc(l.label) + ' <span class="n">' + esc(x.relation) + "</span></a>" : ""; }).join("") + "</div>"],
-      ["Version", '<dl class="vinfo"><dt>Version</dt><dd>' + esc(score.version.label) + "</dd><dt>Details</dt><dd>" + esc(score.version.detail) + "</dd><dt>Category</dt><dd>" + esc(score.subcategory) +
-        "</dd><dt>Specialties</dt><dd>" + esc(score.specialties.join(", ")) + "</dd><dt>Content</dt><dd>v" + esc(score.contentVersion) + "</dd><dt>Last reviewed</dt><dd>" + esc(score.lastReviewed) +
-        "</dd><dt>Review status</dt><dd>" + esc(score.reviewStatus) + "</dd>" + (score.licensing ? "<dt>Licensing</dt><dd>" + esc(score.licensing.status) + ". " + esc(score.licensing.note) + "</dd>" : "") + "</dl>"],
-      ["Sources", '<ol class="sources">' + score.sources.map(function (s) {
-        var href = s.doi ? "https://doi.org/" + s.doi : s.url; return "<li>" + esc(s.citation) + (href ? ' <a href="' + esc(href) + '" data-ext>' + esc(s.doi ? "doi:" + s.doi : "Source") + "</a>" : "") + "</li>"; }).join("") + "</ol>"]
-    ];
-    var toc = '<nav class="toc" aria-label="Guide sections">' + secs.map(function (s, i) { return '<a href="#" data-jump="g' + (i + 1) + '">' + (i + 1) + ". " + esc(s[0].split(" / ")[0]) + "</a>"; }).join("") + "</nav>";
-    return '<div class="section">' + UI.PrimaryButton({ label: "Calculate this score →", icon: "calculate", href: calcHref, replace: true, block: true }) + "</div>" +
-      UI.Section({ id: "contents", title: "Contents", body: toc }) + '<div class="section">' +
-      secs.map(function (s, i) { return UI.SectionCard({ id: "g" + (i + 1), number: i + 1, title: s[0], body: s[1] }); }).join("") + "</div>" +
-      '<div class="section">' + UI.PrimaryButton({ label: "Calculate this score →", icon: "calculate", href: calcHref, replace: true, block: true }) + "</div>";
+    var calculation = (steps.length ? '<ol class="g-steps">' + steps.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ol>" : "") +
+      infoBox("Method", "<p>" + esc(METHOD_TEXT[cm.type]) + " Range " + cm.range.min + "–" + cm.range.max + "." + (cm.formula ? " Components are reported individually alongside the result." : "") + "</p>" +
+        (score.inputDefinitions.some(function (d) { return d.notTestable; }) ? "<p>" + esc(NT_TEXT[cm.notTestablePolicy || "block"]) + "</p>" : ""), "info") +
+      '<h4 class="sub-h">Scoring components</h4>' + comps;
+
+    /* 6 Interpretation: result type card + state cards */
+    var interp = (pres ? UI.InsightSection({ section: { type: "interpretation", title: "Result type", question: "", items: [{ title: pres.typeLabel, text: pres.describes }] }, hideTitle: true }) : "") +
+      '<h4 class="sub-h">Result states</h4><ul class="insight-list">' + score.resultStates.map(function (st) {
+        return UI.StateCard({ tone: st.tone, range: st.range, label: st.label.replace(/\{[^}]+\}/g, "").trim() || UI.TONE_LABEL[st.tone], summary: st.summary, detail: st.detail }); }).join("") + "</ul>";
+
+    /* 7 Clinical context */
+    var context = (g.clinicalContext ? infoBox(null, "<p>" + esc(g.clinicalContext) + "</p>", "primary") : "") +
+      '<h4 class="sub-h">What it helps describe</h4>' + cards("context") + '<h4 class="sub-h">Important considerations</h4>' + cards("consideration");
+
+    /* 12 Related scores: own list with relation + clinical clusters */
+    var relRow = function (id, relation, current) {
+      var e = entry(id); if (!e) return "";
+      var gl = links(id, "guide"), cl = e.status === "implemented" ? links(id, "calculate") : null;
+      var badge = e.status === "implemented" ? "" : UI.StatusBadge({ tone: e.status === "review" ? "warning" : "neutral", label: e.status === "review" ? "Under review" : "Placeholder", icon: false });
+      return '<li class="score-card related-row' + (current ? " is-current" : "") + '" data-related="' + esc(id) + '"><a class="open" href="' + gl.href + '" data-nav><span class="row-icon" aria-hidden="true">' + UI.icon("guide") + '</span><span class="text"><span class="title">' + esc(e.abbreviation) + " " + badge + '</span><span class="sub">' + esc(relation || e.name) + "</span></span></a>" +
+        (cl ? '<a class="alt-view" href="' + cl.href + '" data-nav aria-label="Open ' + esc(e.abbreviation) + ' calculator">' + UI.icon("calculate") + '<span aria-hidden="true">Calculate</span></a>' : "") + "</li>";
+    };
+    var own = score.relatedScores.map(function (r) { return relRow(r.id, r.relation); }).filter(Boolean);
+    var groups = (ctx.clusters || []).filter(function (c) { return c.members.indexOf(score.id) >= 0; });
+    var related = (own.length ? '<h4 class="sub-h">Directly related</h4><ul class="card-list">' + own.join("") + "</ul>" : "") +
+      groups.map(function (c) {
+        var shownIds = score.relatedScores.map(function (r) { return r.id; });
+        var rest = c.members.filter(function (m) { return m !== score.id && shownIds.indexOf(m) < 0; });
+        var members = rest.map(function (m) { return relRow(m, null); }).filter(Boolean);
+        return '<div class="g-cluster" data-cluster="' + esc(c.id) + '"><h4 class="sub-h">' + UI.icon("compass") + " " + esc(c.title) + '</h4><p class="lede">' + esc(c.description) + "</p>" +
+          (members.length ? '<ul class="card-list">' + members.join("") + "</ul>" : '<p class="lede">All other scores in this group are listed above.</p>') + "</div>";
+      }).join("");
+
+    var version = factTable([["Version", esc(score.version.label)], ["Details", esc(score.version.detail)], ["Specialties", esc(score.specialties.join(", "))], ["Content", "v" + esc(score.contentVersion)],
+      ["Last reviewed", esc(score.lastReviewed)], ["Review status", esc(score.reviewStatus)], ["Licensing", score.licensing ? esc(score.licensing.status) + ". " + esc(score.licensing.note) : ""]]);
+    var sources = '<ol class="sources">' + score.sources.map(function (src) {
+      var href = src.doi ? "https://doi.org/" + src.doi : src.url; return "<li>" + esc(src.citation) + (href ? ' <a href="' + esc(href) + '" data-ext>' + esc(src.doi ? "doi:" + src.doi : "Source") + "</a>" : "") + "</li>"; }).join("") + "</ol>";
+
+    var body = { overview: overview, purpose: infoBox(null, "<p>" + esc(score.purpose) + "</p>", "info"), population: "<p>" + esc(score.intendedPopulation) + "</p>", when: when,
+      calculation: calculation, interpretation: interp, context: context, limitations: cards("limitation"), confounders: cards("confounder"),
+      mistakes: '<ul class="insight-list">' + score.commonErrors.map(function (t) { return UI.InsightCard({ type: "warning", item: { text: t } }); }).join("") + "</ul>",
+      boundaries: cards("boundary"), related: related || '<p class="lede">None listed.</p>', version: version, sources: sources };
+    var toc = '<nav class="toc" aria-label="Guide sections">' + GUIDE.map(function (x, i) {
+      return '<a href="#" data-jump="g-' + x[0] + '"' + (x[0] === "limitations" ? ' class="toc-warn"' : "") + ">" + (i + 1) + ". " + esc(x[1]) + "</a>"; }).join("") + "</nav>";
+    return '<div class="guide-nav top" data-block="guide-nav-top">' + UI.PrimaryButton({ label: "Calculate", icon: "calculate", href: calcHref, replace: true }) +
+        '<a class="g-jump" href="#" data-jump="g-related">Related scores →</a></div>' +
+      UI.Section({ id: "contents", title: "Contents", body: toc }) + '<div class="section guide-body">' +
+      GUIDE.map(function (x, i) { return UI.SectionCard({ id: "g-" + x[0], number: i + 1, title: x[1], body: body[x[0]] }); }).join("") + "</div>" +
+      '<div class="section guide-nav bottom" data-block="guide-nav-bottom">' + UI.PrimaryButton({ label: "Calculate this score", icon: "calculate", href: calcHref, replace: true, block: true }) + "</div>";
   }
+  guideHTML.SECTIONS = GUIDE;
 
   global.Calculator = { mount: mount, guideHTML: guideHTML };
 })(window);

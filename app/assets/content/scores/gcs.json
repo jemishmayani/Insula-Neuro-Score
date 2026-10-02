@@ -416,15 +416,23 @@
  "relatedScores": [
   {
    "id": "gcsp",
-   "relation": "GCS with pupil reactivity"
+   "relation": "Adds pupil reactivity"
   },
   {
    "id": "four",
-   "relation": "No verbal component"
+   "relation": "Coma scale without a verbal component"
+  },
+  {
+   "id": "gose",
+   "relation": "Outcome after brain injury"
   },
   {
    "id": "wfns",
-   "relation": "SAH grade using GCS"
+   "relation": "SAH grade built on GCS"
+  },
+  {
+   "id": "rass",
+   "relation": "Arousal and sedation in ICU"
   }
  ],
  "guideSections": {

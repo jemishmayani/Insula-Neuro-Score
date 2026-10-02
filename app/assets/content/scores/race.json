@@ -17,11 +17,19 @@
  "relatedScores": [
   {
    "id": "lams",
-   "relation": "Prehospital LVO scale"
+   "relation": "Prehospital motor scale"
+  },
+  {
+   "id": "fasted",
+   "relation": "Prehospital LVO scale (under review)"
   },
   {
    "id": "nihss",
    "relation": "Full stroke scale"
+  },
+  {
+   "id": "aspects",
+   "relation": "CT extent"
   }
  ],
  "id": "race",

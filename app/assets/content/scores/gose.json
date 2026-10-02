@@ -18,6 +18,14 @@
    "relation": "Original 5-category scale"
   },
   {
+   "id": "gcs",
+   "relation": "Acute level of consciousness"
+  },
+  {
+   "id": "gcsp",
+   "relation": "Acute severity with pupils"
+  },
+  {
    "id": "mrs",
    "relation": "Global disability scale"
   }

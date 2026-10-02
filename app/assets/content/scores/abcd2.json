@@ -16,7 +16,11 @@
  "relatedScores": [
   {
    "id": "nihss",
-   "relation": "Stroke deficit"
+   "relation": "Neurological deficit"
+  },
+  {
+   "id": "mrs",
+   "relation": "Functional status"
   }
  ],
  "id": "abcd2",

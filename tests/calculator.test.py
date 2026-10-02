@@ -45,11 +45,11 @@ async def main():
 
             # answers survive Calculate → Guide → Calculate
             await pick(pg, "e", "3")
-            await pg.click(".segmented >> text=Guide"); await pg.wait_for_selector("#g15")
+            await pg.click(".segmented >> text=Guide"); await pg.wait_for_selector("#g-sources")
             titles = await pg.locator(".section-card > h3").all_inner_texts()
-            check("GCS guide: 15 sections in Phase 3 order", [t.split("\n")[-1].strip() for t in titles] == ["What is it?", "Purpose", "Intended population", "When to use", "How to perform / calculate", "Scoring components", "Interpretation", "Clinical context", "Limitations", "Confounders", "Common mistakes", "What the score does not tell you", "Related scores", "Version", "Sources"], str(titles[:6]))
-            check("guide interpretation lists all states as state cards", await pg.locator("#g7 .state-card").count() == 4)
-            check("guide shows version + review status", "Pending" in await pg.locator("#g14").inner_text() or "pending" in await pg.locator("#g14").inner_text())
+            check("GCS guide: 14 sections in Phase 7 order", [t.split("\n")[-1].strip() for t in titles] == ["Overview", "Purpose", "Intended population", "When to use", "Calculation", "Interpretation", "Clinical context", "Limitations", "Confounders", "Common mistakes", "What it does not tell you", "Related scores", "Version", "Sources"], str(titles[:6]))
+            check("guide interpretation lists all states as state cards", await pg.locator("#g-interpretation .state-card").count() == 4)
+            check("guide shows version + review status", "Pending" in await pg.locator("#g-version").inner_text() or "pending" in await pg.locator("#g-version").inner_text())
             await pg.screenshot(path=f"{SHOTS}/p3_gcs_guide.png")
             await pg.click(".btn-primary >> nth=0"); await pg.wait_for_selector(".field")
             check("answers kept in session", await pg.locator('.field[data-field="e"] .choice.is-on').count() == 1)
@@ -140,13 +140,13 @@ async def main():
             # ---- Guide <-> Calculate for all four ----
             for sid in ["gcs", "nihss", "mrs", "sins"]:
                 await pg.goto(U + f"#/calculate/s/{sid}"); await pg.wait_for_selector(".field")
-                await pg.click('.segmented a:has-text("Guide")'); await pg.wait_for_selector("#g15")
-                ok1 = await pg.evaluate("location.hash") == f"#/guide/s/{sid}" and await pg.locator(".section-card").count() == 15
+                await pg.click('.segmented a:has-text("Guide")'); await pg.wait_for_selector("#g-sources")
+                ok1 = await pg.evaluate("location.hash") == f"#/guide/s/{sid}" and await pg.locator(".section-card").count() == 14
                 await pg.click(".btn-primary:has-text('Calculate this score') >> nth=0"); await pg.wait_for_selector(".field")
                 ok2 = await pg.evaluate("location.hash") == f"#/calculate/s/{sid}"
-                await pg.goto(U + f"#/guide/s/{sid}"); await pg.wait_for_selector("#g15")
-                srcs = await pg.locator("#g15 li").count()
-                check(f"{sid}: Calculate → Guide → Calculate, 15 sections, {srcs} sources", ok1 and ok2 and srcs >= 2)
+                await pg.goto(U + f"#/guide/s/{sid}"); await pg.wait_for_selector("#g-sources")
+                srcs = await pg.locator("#g-sources li").count()
+                check(f"{sid}: Calculate → Guide → Calculate, 14 sections, {srcs} sources", ok1 and ok2 and srcs >= 2)
                 r = await pg.evaluate("window.handleBack()"); await pg.wait_for_timeout(150)
                 check(f"{sid}: back from guide leaves the score (toggle adds no history)", "/s/" not in await pg.evaluate("location.hash"))
 
@@ -171,7 +171,7 @@ async def main():
                 barvis = await sp.locator(".result-bar").is_visible()
                 check(f"small phone 320px: {sid} completes, no overflow, result bar visible", over and barvis and (await state(sp))["tone"] != "tone-incomplete")
                 await sp.screenshot(path=f"{SHOTS}/p3_small_{sid}.png")
-                await sp.goto(U + f"#/guide/s/{sid}"); await sp.wait_for_selector("#g15")
+                await sp.goto(U + f"#/guide/s/{sid}"); await sp.wait_for_selector("#g-sources")
                 check(f"small phone 320px: {sid} guide no overflow", await sp.evaluate("document.documentElement.scrollWidth <= window.innerWidth"))
 
             # ---- Phase 4: clinical insight presentation, all four scores ----
@@ -215,13 +215,13 @@ async def main():
             await pg.screenshot(path=f"{SHOTS}/p4_nihss0.png")
             # Guide semantic cards
             for sid in ["gcs", "nihss", "mrs", "sins"]:
-                await pg.goto(U + f"#/guide/s/{sid}"); await pg.wait_for_selector("#g15")
-                kw = await pg.locator("#g1 [data-block=key-warnings] .banner, #g1 [data-block=key-warnings] .insight-card").count()
-                major = await pg.locator("#g9 .insight-card.is-major").count()
-                conf = await pg.locator("#g10 .insight-card[data-type=confounder] b").count()
-                bnd = await pg.locator("#g12 .insight-card[data-type=boundary]").count()
-                ctx = await pg.locator("#g8 .insight-card[data-type=context]").count()
-                mistakes = await pg.locator("#g11 .insight-card[data-type=warning]").count()
+                await pg.goto(U + f"#/guide/s/{sid}"); await pg.wait_for_selector("#g-sources")
+                kw = await pg.locator("#g-overview [data-block=key-warnings] .banner, #g-overview [data-block=key-warnings] .insight-card").count()
+                major = await pg.locator("#g-limitations .insight-card.is-major").count()
+                conf = await pg.locator("#g-confounders .insight-card[data-type=confounder] b").count()
+                bnd = await pg.locator("#g-boundaries .insight-card[data-type=boundary]").count()
+                ctx = await pg.locator("#g-context .insight-card[data-type=context]").count()
+                mistakes = await pg.locator("#g-mistakes .insight-card[data-type=warning]").count()
                 check(f"{sid} guide: warning cards ({kw}), highlighted major limitations ({major}), confounder cards ({conf}), context ({ctx}), does-not-tell-you ({bnd}), mistakes ({mistakes})",
                       kw >= 2 and major >= 1 and conf >= 3 and bnd >= 3 and ctx >= 3 and mistakes >= 3)
                 await pg.screenshot(path=f"{SHOTS}/p4_guide_{sid}.png", full_page=True)
@@ -237,7 +237,7 @@ async def main():
             for sid in ["gcs", "nihss", "mrs"]:
                 await tp.goto(U + f"#/calculate/s/{sid}"); await tp.wait_for_selector(".field")
                 check(f"tablet: {sid} two-pane, no overflow", await tp.evaluate("document.querySelector('.aside').getBoundingClientRect().left > document.querySelector('.calc-inputs').getBoundingClientRect().right && document.documentElement.scrollWidth <= innerWidth"))
-            await tp.goto(U + "#/guide/s/nihss"); await tp.wait_for_selector("#g15"); await tp.screenshot(path=f"{SHOTS}/p3_tablet_nihss_guide.png")
+            await tp.goto(U + "#/guide/s/nihss"); await tp.wait_for_selector("#g-sources"); await tp.screenshot(path=f"{SHOTS}/p3_tablet_nihss_guide.png")
             check("no JS errors", not errs, errs[:3])
             await b.close()
     finally: srv.terminate()

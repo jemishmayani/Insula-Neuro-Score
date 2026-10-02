@@ -20,6 +20,10 @@
    "relation": "Prehospital LVO scale"
   },
   {
+   "id": "fasted",
+   "relation": "Prehospital LVO scale (under review)"
+  },
+  {
    "id": "nihss",
    "relation": "Full stroke scale"
   }

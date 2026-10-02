@@ -16,7 +16,11 @@
  "relatedScores": [
   {
    "id": "mjoa",
-   "relation": "Broader myelopathy score (under review)"
+   "relation": "Myelopathy score (under review)"
+  },
+  {
+   "id": "frankel",
+   "relation": "Spinal cord injury grade"
   }
  ],
  "id": "nurick",

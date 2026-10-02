@@ -25,6 +25,14 @@
   {
    "id": "four",
    "relation": "Includes brainstem reflexes"
+  },
+  {
+   "id": "gose",
+   "relation": "Outcome after brain injury"
+  },
+  {
+   "id": "rotterdam",
+   "relation": "CT prognostic score in TBI"
   }
  ],
  "id": "gcsp",

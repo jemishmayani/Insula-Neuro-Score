@@ -280,11 +280,19 @@
  "relatedScores": [
   {
    "id": "nihss",
-   "relation": "Neurological deficit"
+   "relation": "Acute neurological deficit"
+  },
+  {
+   "id": "aspects",
+   "relation": "Early ischaemic change on CT"
   },
   {
    "id": "gose",
    "relation": "Outcome after brain injury"
+  },
+  {
+   "id": "func",
+   "relation": "Functional outcome after ICH"
   }
  ],
  "guideSections": {

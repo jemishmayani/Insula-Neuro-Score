@@ -4,9 +4,9 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: Phase 6, score library (v0.7.0)
+## Status: Phase 7, Guide experience (v0.8.0)
 
-**29 scores implemented**, each verified against cited sources; **12 under review**, with the reason recorded (licensing, version or verification). See [docs/CONTENT-AUDIT.md](docs/CONTENT-AUDIT.md). Each was verified against its authoritative source. Results and guides are built by the structured clinical insight engine. Library expansion: [docs/PHASE-6.md](docs/PHASE-6.md). Personalized Home: [docs/PHASE-5.md](docs/PHASE-5.md). See [docs/PHASE-4.md](docs/PHASE-4.md), [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
+**29 scores implemented**, each verified against cited sources; **12 under review**, with the reason recorded (licensing, version or verification). See [docs/CONTENT-AUDIT.md](docs/CONTENT-AUDIT.md). Each was verified against its authoritative source. Results and guides are built by the structured clinical insight engine. Guide experience: [docs/PHASE-7.md](docs/PHASE-7.md). Library expansion: [docs/PHASE-6.md](docs/PHASE-6.md). Personalized Home: [docs/PHASE-5.md](docs/PHASE-5.md). See [docs/PHASE-4.md](docs/PHASE-4.md), [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
 
 ## Repository layout
 
@@ -32,7 +32,7 @@ tests/engine/             engine unit tests + per-score fixtures (node --test)
 tests/calculator.test.py  calculator UI tests (Playwright)
 tests/home.test.py        personalization + performance tests (Playwright)
 tests/shell.test.py       shell regression tests (Playwright)
-content_src/              score content source
+content_src/              score content source (library.py, related.py clusters)
 brand/                    app icon sources (SVG). Current logo: Insula_Neuro_Score_Full_Better.svg
 docs/                     architecture and phase reports
 ```
@@ -50,6 +50,7 @@ python3 tests/calculator.test.py        # calculator UI tests
 python3 tests/shell.test.py             # shell regression
 python3 tests/home.test.py              # personalization + performance
 python3 tests/library.test.py           # every calculator and guide in the UI
+python3 tests/guide.test.py             # guide structure, navigation, all related links, search
 python3 tools/content_audit.py          # regenerate docs/CONTENT-AUDIT.md
 cd app && KEYSTORE=/path/to/release.keystore KS_PASS=... ./build.sh
 ```
