@@ -29,7 +29,7 @@ async def main():
             b = await p.chromium.launch(); pg = await (await b.new_context(viewport={"width": 412, "height": 915}, device_scale_factor=2)).new_page()
             errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
             await pg.goto(U); await pg.wait_for_selector(".bottomnav")
-            check(f"catalogue: {len(IMPL)} implemented, {len(REVIEW)} under review, 0 placeholders", len(IMPL) >= 29 and not [s for s in CAT["scores"] if s["status"] == "placeholder"])
+            check(f"catalogue: {len(IMPL)} implemented, {len(REVIEW)} under review, 0 placeholders", {s["id"] for s in IMPL} == {f[:-5] for f in os.listdir(os.path.join(ROOT, "content", "scores"))} and not [s for s in CAT["scores"] if s["status"] == "placeholder"])
             for s in IMPL:
                 sid = s["id"]
                 await pg.goto(U + f"#/calculate/s/{sid}"); await pg.wait_for_selector(".field")

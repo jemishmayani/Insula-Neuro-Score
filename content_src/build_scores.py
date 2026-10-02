@@ -409,6 +409,7 @@ if __name__ == "__main__":
     sys.path.insert(0, HERE)
     import library
     scores += library.build(scores[0]["inputDefinitions"])
+    scores = [x for x in scores if x["id"] not in library.UNDER_REVIEW]   # verified but held back (e.g. licensing review)
     import related
     for sc in scores:
         if sc["id"] in related.RELATED: sc["relatedScores"] = [{"id": i, "relation": r} for i, r in related.RELATED[sc["id"]]]

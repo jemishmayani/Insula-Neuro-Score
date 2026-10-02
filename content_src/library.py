@@ -61,7 +61,7 @@ def build(gcs_inputs):
                            "formula": "{e_code} + {v_code} + {m_code} − PRS {prs}", "display": "{total}", "share": "GCS-P {total} (GCS {gcs_total}, PRS {prs})"},
         notTestable={"label": "GCS-P not reported", "summary": "A GCS component or the pupil response is not testable, so GCS-P is not reported.", "display": "No total", "share": "GCS-P not reported (component not testable)"},
         interpretationRules=[{"when": "total == 15", "state": "none"}, {"when": "total >= 9", "state": "above"}, {"state": "severe"}],
-        resultStates=[st("severe", "high", "Severe range", "GCS-P in the severe range (1–8).", "1–8",
+        resultStates=[st("severe", "high", "Severe range", "GCS-P 1–8. The original publication defines no severity bands; this grouping mirrors the GCS severe range and is used in secondary sources.", "1–8",
                          "Correlate with airway, respiratory, neurological and systemic assessment, according to the clinical situation and local protocol.", 1, 8),
                       st("above", "informational", "Above the severe range", "Lower values indicate more severe injury.", "9–14", "Interpret with the components, pupil findings and imaging.", 9, 14),
                       st("none", "favorable", "No impairment measured", "No impairment measured by GCS-P at this assessment.", "15", "Describes consciousness and pupil reactivity only; it does not exclude intracranial injury.", 15, 15)],
@@ -284,7 +284,7 @@ def build(gcs_inputs):
     # ================================================================ ICH
     L.append(score(id="ich", name="ICH Score", abbreviation="ICH Score", aliases=["intracerebral haemorrhage", "intracerebral hemorrhage", "hemphill"],
         category="ich", subcategory="Severity at presentation", specialties=["Stroke", "Neurocritical Care", "Neurosurgery"],
-        version={"label": "ICH Score (Hemphill et al. 2001)", "detail": "Five components, 0–6. Mortality figures are observed 30-day mortality in the derivation cohort (n = 152)."},
+        version={"label": "ICH Score (Hemphill et al. 2001)", "detail": "Five components, 0–6. Mortality figures are observed 30-day mortality in the derivation cohort."},
         purpose="Standardised grading of spontaneous intracerebral haemorrhage severity at presentation.", intendedPopulation="Adults with spontaneous intracerebral haemorrhage, at presentation.",
         resultPresentation={"type": "prognostic-category", "typeLabel": "Severity grade (derivation mortality)", "meter": False},
         calculatorNotice={"tone": "warning", "title": "Severity grade, not an individual prognosis", "message": "Mortality figures come from a 2001 cohort with frequent early care limitation. Decisions about goals of care should not rest on this score alone."},
@@ -354,7 +354,7 @@ def build(gcs_inputs):
         resultPresentation={"type": "classification", "typeLabel": "Clinical grade", "meter": True},
         inputDefinitions=[single("grade", "Clinical presentation", "Clinical grade", [
                               o(1, "Asymptomatic, or minimal headache and slight neck stiffness", 1, "I"), o(2, "Moderate to severe headache, neck stiffness; no deficit other than cranial nerve palsy", 2, "II"),
-                              o(3, "Drowsiness, confusion, or mild focal deficit", 3, "III"), o(4, "Stupor, moderate to severe hemiparesis; possible early decerebrate rigidity", 4, "IV"),
+                              o(3, "Drowsiness, confusion, or mild focal deficit", 3, "III"), o(4, "Stupor, moderate to severe hemiparesis; possible early decerebrate rigidity and vegetative disturbances", 4, "IV"),
                               o(5, "Deep coma, decerebrate rigidity, moribund appearance", 5, "V")]),
                           yn("mod", "Serious systemic disease or severe arteriographic vasospasm", "Modifier", help="Original examples: hypertension, diabetes, severe arteriosclerosis, chronic pulmonary disease.")],
         calculationMethod={"type": "expression", "expression": "min(5, grade + mod)", "range": {"min": 1, "max": 5}, "display": "Grade {roman(total)}", "share": "Hunt & Hess Grade {roman(total)}"},
@@ -693,14 +693,14 @@ def build(gcs_inputs):
         guideSections={"what": "A six-grade (0–5) performance scale.", "whenToUse": "Describing functional performance in oncology.",
             "howToPerform": "Select the grade that best matches current function.", "clinicalContext": "One input to oncology decisions."},
         sources=[{"citation": "Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol. 1982;5(6):649-655."}],
-        licensing={"status": "Published scale (ECOG-ACRIN)", "note": "Original wording paraphrased; no reproduction restrictions identified."}))
+        licensing={"status": "Public domain (ECOG-ACRIN)", "note": "ECOG-ACRIN publishes the scale for public use; wording paraphrased."}))
 
     L.append(score(id="rtokuhashi", name="Revised Tokuhashi Score", abbreviation="Revised Tokuhashi", aliases=["tokuhashi", "spinal metastasis", "spine metastases", "prognosis"],
         category="oncology", subcategory="Spinal metastasis prognosis", specialties=["Neurosurgery", "Spine Surgery", "Oncology", "Radiation Oncology"],
         version={"label": "Revised Tokuhashi (Tokuhashi et al. 2005)", "detail": "Six parameters, 0–15; prognostic groups 0–8 (<6 months), 9–11 (≥6 months), 12–15 (≥1 year). The original 1990 version (0–12) is different and not implemented."},
         purpose="Preoperative prognostic estimate for patients with metastatic spine tumours.", intendedPopulation="Adults with spinal metastases.",
         resultPresentation={"type": "prognostic-category", "typeLabel": "Predicted survival group", "meter": True},
-        calculatorNotice={"tone": "warning", "title": "Group-level estimate", "message": "Developed in the authors' surgical series; modern systemic therapies have changed survival for some primaries. Not a treatment decision."},
+        calculatorNotice={"tone": "warning", "title": "Group-level estimate", "message": "Developed in the authors' surgical series; modern systemic therapies have changed survival for some primaries. Not a treatment decision. Pending source verification: published tables differ for the vertebral-body metastasis item (≥3/2/1 versus ≥3/1–2/0)."},
         inputDefinitions=[single("kps", "General condition (KPS)", "General condition", [o(0, "Poor (KPS 10–40)", 0), o(1, "Moderate (KPS 50–70)", 1), o(2, "Good (KPS 80–100)", 2)]),
                           single("extra", "Extraspinal bone metastasis foci", "Extraspinal foci", [o(0, "3 or more", 0), o(1, "1–2", 1), o(2, "None", 2)]),
                           single("vert", "Metastases in the vertebral body", "Vertebral metastases", [o(0, "3 or more", 0), o(1, "2", 1), o(2, "1", 2)]),
@@ -788,6 +788,7 @@ def build(gcs_inputs):
 
 # Scores listed in the Phase 6 brief that are NOT implemented, with the reason (shown in the app and the audit).
 UNDER_REVIEW = {
+    "rass": ("Licensing", "Virginia Commonwealth University lists RASS as a licensable technology; terms for use in a commercial app must be confirmed. Content is verified and ready to reinstate after licensing review."),
     "four": ("Licensing", "The published FOUR score figure is © Mayo Foundation; permission to be confirmed before reproducing the instrument."),
     "ais": ("Licensing / version", "ISNCSCI and the AIS worksheet are maintained by ASIA/ISCoS with reproduction terms and periodic revisions (current 2019 revision); requires licensing and version review."),
     "mjoa": ("Licensing / verification", "Published reproductions carry permission statements, and descriptor wording differs between sources; requires licensing and source review."),

@@ -313,7 +313,7 @@
    "id": "severe",
    "tone": "high",
    "label": "Severe range",
-   "summary": "GCS-P in the severe range (1–8).",
+   "summary": "GCS-P 1–8. The original publication defines no severity bands; this grouping mirrors the GCS severe range and is used in secondary sources.",
    "range": "1–8",
    "detail": "Correlate with airway, respiratory, neurological and systemic assessment, according to the clinical situation and local protocol.",
    "min": 1,

@@ -1001,7 +1001,7 @@
    "name": "Richmond Agitation–Sedation Scale",
    "category": "neurocritical",
    "summary": "Agitation and sedation level",
-   "status": "implemented",
+   "status": "review",
    "aliases": [
     "sedation",
     "agitation",
@@ -1009,19 +1009,17 @@
     "icu"
    ],
    "version": "RASS (Sessler et al. 2002)",
-   "specialties": [
-    "Neurocritical Care",
-    "Critical Care"
-   ],
+   "specialties": [],
    "keywords": [
     "critical care",
     "icu",
     "intensive care",
     "neurocritical",
     "neurocritical care",
-    "sedation",
-    "sedation and agitation"
-   ]
+    "sedation"
+   ],
+   "reviewCategory": "Licensing",
+   "reviewReason": "Virginia Commonwealth University lists RASS as a licensable technology; terms for use in a commercial app must be confirmed. Content is verified and ready to reinstate after licensing review."
   },
   {
    "id": "sofa",

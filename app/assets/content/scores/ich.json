@@ -44,7 +44,7 @@
  ],
  "version": {
   "label": "ICH Score (Hemphill et al. 2001)",
-  "detail": "Five components, 0–6. Mortality figures are observed 30-day mortality in the derivation cohort (n = 152)."
+  "detail": "Five components, 0–6. Mortality figures are observed 30-day mortality in the derivation cohort."
  },
  "purpose": "Standardised grading of spontaneous intracerebral haemorrhage severity at presentation.",
  "intendedPopulation": "Adults with spontaneous intracerebral haemorrhage, at presentation.",

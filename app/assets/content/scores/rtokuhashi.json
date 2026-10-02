@@ -57,7 +57,7 @@
  "calculatorNotice": {
   "tone": "warning",
   "title": "Group-level estimate",
-  "message": "Developed in the authors' surgical series; modern systemic therapies have changed survival for some primaries. Not a treatment decision."
+  "message": "Developed in the authors' surgical series; modern systemic therapies have changed survival for some primaries. Not a treatment decision. Pending source verification: published tables differ for the vertebral-body metastasis item (≥3/2/1 versus ≥3/1–2/0)."
  },
  "inputDefinitions": [
   {
