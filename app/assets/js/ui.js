@@ -42,6 +42,11 @@
     error: '<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>',
     inbox: '<path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 2h6l1-2h5"/>',
     reset: '<path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/>',
+    compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+    bulb: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3z"/>',
+    filter: '<path d="M3 5h18l-7 8v5l-4 2v-7z"/>',
+    boundary: '<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
     copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
     share: '<circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/>',
     /* category glyphs */
@@ -56,6 +61,7 @@
     icu: '<path d="M3 12h4l2-5 4 10 2-5h6"/>'
   };
   var STATE_ICON = {
+    favorable: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>',
     normal: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>',
     success: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>',
     low: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>',
@@ -76,7 +82,7 @@
   function icon(name, cls) { return svg(P[name] || STATE_ICON[name] || P.info, cls); }
   function stateIcon(tone) { return svg(STATE_ICON[tone] || STATE_ICON.info); }
 
-  var TONE_LABEL = { normal: "Normal / low concern", low: "Low concern", mild: "Mild", moderate: "Moderate", high: "High concern",
+  var TONE_LABEL = { favorable: "Favorable", normal: "Favorable", low: "Low concern", mild: "Mild", moderate: "Moderate", high: "High concern",
     critical: "Very high concern", info: "Informational", informational: "Informational", "not-interpretable": "Not interpretable", incomplete: "Incomplete", success: "Success", warning: "Warning",
     concern: "High concern", error: "Error", neutral: "Neutral", primary: "Primary" };
 
@@ -148,6 +154,47 @@
     var desc = o.value == null ? o.label + ": not yet calculated" : o.label + " " + o.value + " on a scale of " + o.min + " to " + o.max + (active ? ", band " + active.label : "");
     return '<div class="meter" role="img" aria-label="' + esc(desc) + '"><div class="meter-track">' + segs + "</div>" +
       (pos == null ? "" : '<span class="meter-marker" style="left:' + pos.toFixed(3) + '%" aria-hidden="true"></span>') + "</div>";
+  }
+
+  /* ---------------- Insight cards ---------------- */
+  var INSIGHT_TYPES = {
+    interpretation: { icon: "target", tone: "primary", label: "Interpretation" },
+    context: { icon: "compass", tone: "primary", label: "Clinical context" },
+    consideration: { icon: "bulb", tone: "info", label: "Consideration" },
+    limitation: { icon: "warning", tone: "warning", label: "Limitation" },
+    confounder: { icon: "filter", tone: "neutral", label: "Confounder" },
+    boundary: { icon: "boundary", tone: "neutral", label: "Does not tell you" },
+    warning: { icon: "warning", tone: "warning", label: "Warning" }
+  };
+  /** InsightCard({type, item:{text, factor, effect, importance, contextual, conditional, title}}) — icon + type label + text; colour is never the only signal. */
+  function InsightCard(o) {
+    var t = INSIGHT_TYPES[o.type] || INSIGHT_TYPES.consideration, it = o.item, major = it.importance === "major";
+    var tone = major && (o.type === "limitation" || o.type === "confounder" || o.type === "boundary") ? "warning" : t.tone;
+    var tags = (major ? '<span class="ins-tag tag-major">' + icon("warning") + "Important</span>" : "") +
+      (it.contextual ? '<span class="ins-tag tag-ctx">' + icon("target") + "Applies to this result</span>" : "") +
+      (it.conditional ? '<span class="ins-tag">When applicable</span>' : "");
+    var body = it.factor ? '<p class="ins-text"><b>' + esc(it.factor) + "</b>" + (it.effect ? " — " + esc(it.effect) : "") + "</p>" : '<p class="ins-text">' + esc(it.text) + "</p>";
+    return '<li class="insight-card tone-' + tone + (major ? " is-major" : "") + (it.contextual ? " is-contextual" : "") + '" data-type="' + esc(o.type) + '">' +
+      '<span class="ins-icon" aria-hidden="true">' + icon(t.icon) + '</span><div class="ins-body"><span class="ins-type">' + esc(t.label) + "</span>" +
+      (it.title ? '<b class="ins-title">' + esc(it.title) + "</b>" : "") + body + (tags ? '<div class="ins-tags">' + tags + "</div>" : "") + "</div></li>";
+  }
+  /** InsightSection({section:{type,title,question,items}, collapseAfter}) — prioritised items first, the rest behind a disclosure. */
+  function InsightSection(o) {
+    var sec = o.section; if (!sec.items.length) return "";
+    var pri = sec.items.filter(function (i) { return i.contextual || i.importance === "major"; });
+    var shown = o.collapseAfter == null ? sec.items : (pri.length ? pri : sec.items.slice(0, o.collapseAfter));
+    var rest = sec.items.filter(function (i) { return shown.indexOf(i) < 0; });
+    var card = function (i) { return InsightCard({ type: sec.type, item: i }); };
+    return '<section class="insight-section" data-section="' + esc(sec.type) + '" aria-label="' + esc(sec.title) + '">' + (o.hideTitle ? "" : '<h3 class="result-h">' + esc(sec.title) +
+      (o.showQuestion ? ' <span class="ins-q">' + esc(sec.question) + "</span>" : "") + "</h3>") +
+      '<ul class="insight-list">' + shown.map(card).join("") + "</ul>" +
+      (rest.length ? '<details class="ins-more"><summary>Show ' + rest.length + " more</summary><ul class=\"insight-list\">" + rest.map(card).join("") + "</ul></details>" : "") + "</section>";
+  }
+  /** StateCard — one result state as used in guides (icon + label + range + explanation). */
+  function StateCard(st) {
+    return '<li class="state-card tone-' + esc(st.tone) + '"><span class="ins-icon" aria-hidden="true">' + stateIcon(st.tone) + '</span><div class="ins-body">' +
+      '<span class="ins-type">' + esc(TONE_LABEL[st.tone] || st.tone) + (st.range ? " · " + esc(st.range) : "") + '</span><b class="ins-title">' + esc(st.label) + "</b>" +
+      '<p class="ins-text">' + esc(st.summary) + "</p>" + (st.detail ? '<p class="ins-text ins-detail">' + esc(st.detail) + "</p>" : "") + "</div></li>";
   }
 
   /** ResultCard({tone, value, meta, summary, detail, label, typeLabel, formula, meter}) */
@@ -229,7 +276,7 @@
 
   global.UI = { esc: esc, icon: icon, stateIcon: stateIcon, TONE_LABEL: TONE_LABEL,
     AppBar: AppBar, IconButton: IconButton, BottomNavigation: BottomNavigation, SearchBar: SearchBar, StatusBadge: StatusBadge,
-    ScoreCard: ScoreCard, CardList: CardList, ScaleMeter: ScaleMeter, CategoryCard: CategoryCard, ResultCard: ResultCard, SectionCard: SectionCard,
+    ScoreCard: ScoreCard, CardList: CardList, ScaleMeter: ScaleMeter, InsightCard: InsightCard, InsightSection: InsightSection, StateCard: StateCard, INSIGHT_TYPES: INSIGHT_TYPES, CategoryCard: CategoryCard, ResultCard: ResultCard, SectionCard: SectionCard,
     PrimaryButton: PrimaryButton, SecondaryButton: SecondaryButton, Toggle: Toggle, Segmented: Segmented,
     EmptyState: EmptyState, InfoBanner: InfoBanner, WarningBanner: WarningBanner, ErrorState: ErrorState, LoadingState: LoadingState, Section: Section };
 })(window);

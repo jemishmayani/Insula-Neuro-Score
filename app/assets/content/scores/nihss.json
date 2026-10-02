@@ -689,11 +689,11 @@
  "resultStates": [
   {
    "id": "zero",
-   "tone": "normal",
-   "label": "No deficit on NIHSS items",
+   "tone": "favorable",
+   "label": "No measurable deficit",
    "range": "0",
-   "summary": "No deficit measured on the 15 NIHSS items at this assessment.",
-   "detail": "A score of 0 does not exclude stroke; deficits outside the scale are not captured."
+   "summary": "No measurable deficit on the NIHSS at the time of assessment.",
+   "detail": "This does not exclude stroke: deficits outside the scale's 15 items are not captured."
   },
   {
    "id": "scored",
@@ -704,9 +704,26 @@
    "detail": "NINDS defines no severity categories, and bands used in studies differ. Interpret the item profile and trend with imaging and the full examination."
   }
  ],
+ "clinicalContext": [
+  {
+   "text": "Quantifies 15 selected neurological deficits after stroke.",
+   "importance": "major"
+  },
+  {
+   "text": "Used for serial monitoring; change between assessments by trained examiners is often more informative than one value."
+  },
+  {
+   "text": "Provides a common language between emergency, stroke and research teams."
+  }
+ ],
  "clinicalInsights": [
   {
-   "text": "Report the total with the item breakdown. Serial scores by trained examiners are more informative than a single value."
+   "text": "Report the total with the item breakdown; the same total can reflect very different deficits."
+  },
+  {
+   "when": "total == 0 && nt_count == 0",
+   "importance": "major",
+   "text": "Deficits outside the scale, such as gait or truncal ataxia, vertigo, nystagmus or dysphagia, can be present with a score of 0."
   },
   {
    "when": "item_9 >= 1 || item_1b >= 1 || item_1c >= 1",
@@ -717,36 +734,60 @@
    "text": "Inattention or extinction is present. Neglect may be under-weighted relative to its functional impact."
   },
   {
-   "when": "total <= 4",
-   "text": "Low scores can accompany disabling deficits, particularly in posterior circulation stroke (e.g. gait ataxia, vertigo, dysphagia)."
+   "when": "total >= 1 && total <= 4",
+   "text": "Low scores can accompany disabling deficits, particularly in posterior circulation stroke."
   }
  ],
  "limitations": [
-  "Not a complete neurological examination: gait and truncal ataxia, vertigo, nystagmus, dysphagia, isolated distal hand weakness and cognition are not scored.",
-  "Under-represents posterior circulation stroke; a score of 0 does not exclude stroke.",
+  {
+   "importance": "major",
+   "text": "Not a complete neurological examination: gait and truncal ataxia, vertigo, nystagmus, dysphagia, isolated distal hand weakness and cognition are not scored."
+  },
+  {
+   "importance": "major",
+   "text": "Under-represents posterior circulation stroke; a score of 0 does not exclude stroke."
+  },
   "Language-weighted: right-hemisphere strokes may score lower than left-hemisphere strokes of similar size.",
   "The total does not show which deficits are disabling for this patient.",
-  "Reliability depends on trained, certified examiners following item rules.",
+  "Reliability depends on trained, certified examiners following the item rules.",
   {
+   "on": "always",
    "when": "nt_count > 0",
-   "text": "{nt_count} item(s) untestable and contributing no points: the total may underestimate the deficit."
+   "importance": "major",
+   "text": "{nt_count} item(s) untestable and contributing no points: the total may underestimate the deficit.",
+   "guideText": "Untestable (UN) items contribute no points, so the total may underestimate the deficit."
   }
  ],
  "confounders": [
-  "Sedation or intubation",
-  "Pre-existing neurological deficits",
-  "Aphasia affecting comprehension of commands",
-  "Visual or hearing impairment",
-  "Amputation or joint fusion",
-  "Seizure or post-ictal state",
-  "Hypoglycaemia and other stroke mimics"
- ],
- "commonErrors": [
-  "Coaching the patient, or scoring a later rather than the first attempt (1b, 1c).",
-  "Going back to change earlier item scores.",
-  "Scoring ataxia that is explained by weakness or paralysis.",
-  "Using UN for reasons the instrument does not allow (only amputation or joint fusion for limbs; intubation or physical barrier for dysarthria).",
-  "Scoring a pre-existing deficit as new without documenting it."
+  {
+   "factor": "Sedation or intubation",
+   "effect": "Limits consciousness, language and dysarthria items.",
+   "importance": "major"
+  },
+  {
+   "factor": "Pre-existing deficits",
+   "effect": "Old deficits are scored unless documented separately."
+  },
+  {
+   "factor": "Aphasia",
+   "effect": "Affects comprehension of commands and questions (items 1b, 1c)."
+  },
+  {
+   "factor": "Visual or hearing impairment",
+   "effect": "Can affect visual field, command and language items."
+  },
+  {
+   "factor": "Amputation or joint fusion",
+   "effect": "Motor or ataxia items recorded as UN."
+  },
+  {
+   "factor": "Seizure or post-ictal state",
+   "effect": "Can produce transient deficits."
+  },
+  {
+   "factor": "Hypoglycaemia and other stroke mimics",
+   "effect": "Can produce scorable deficits without stroke."
+  }
  ],
  "whatItDoesNotTellYou": [
   "Whether the deficit is caused by stroke or a mimic.",
@@ -754,6 +795,13 @@
   "Eligibility for any specific treatment.",
   "The full neurological picture, including posterior circulation signs and cognition.",
   "Functional outcome (see mRS)."
+ ],
+ "commonErrors": [
+  "Coaching the patient, or scoring a later rather than the first attempt (1b, 1c).",
+  "Going back to change earlier item scores.",
+  "Scoring ataxia that is explained by weakness or paralysis.",
+  "Using UN for reasons the instrument does not allow (only amputation or joint fusion for limbs; intubation or physical barrier for dysarthria).",
+  "Scoring a pre-existing deficit as new without documenting it."
  ],
  "relatedScores": [
   {

@@ -123,7 +123,7 @@
 :root[data-theme="dark"][data-contrast="high"]  { --color-primary-text: #8FEAF0; --color-border-strong: #7E959D; }
 
 /* ---- Result / status state mapping (consumed by StatusBadge, ResultCard) ---- */
-.tone-normal, .tone-success { --tone: var(--color-success); --tone-container: var(--color-success-container); }
+.tone-favorable, .tone-normal, .tone-success { --tone: var(--color-success); --tone-container: var(--color-success-container); }
 .tone-low                   { --tone: var(--color-success); --tone-container: var(--color-success-container); }
 .tone-mild, .tone-warning   { --tone: var(--color-warning); --tone-container: var(--color-warning-container); }
 .tone-moderate              { --tone: var(--color-moderate); --tone-container: var(--color-moderate-container); }

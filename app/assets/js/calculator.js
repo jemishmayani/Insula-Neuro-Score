@@ -80,32 +80,39 @@
     var l = String(r.state.label || ""), d = String(r.display);
     return l && d !== "–" && l.indexOf(d) >= 0 && l.replace(d, "").replace(/[^A-Za-z]/g, "").length <= 6 ? UI.TONE_LABEL[r.state.tone] : l;
   }
+  /* Result order: Score → Breakdown → Interpretation → Context → Considerations → Limitations → Confounders → Boundaries → Related */
   function resultHTML(score, r, links) {
-    var tone = r.state.tone;
-    var pres = r.presentation || {};
+    var tone = r.state.tone, pres = r.presentation || {};
     var meter = r.bands ? UI.ScaleMeter({ min: r.range.min, max: r.range.max, value: r.status === "complete" ? r.total : null, bands: r.bands, label: score.abbreviation }) : "";
     var h = UI.ResultCard({ tone: tone, label: stateLabel(r), value: r.display, typeLabel: pres.typeLabel,
       formula: r.formula, formulaJoin: r.formula && r.status === "complete" ? "=" : null,
-      meta: score.abbreviation + " · range " + r.range.min + "–" + r.range.max, summary: r.state.summary, detail: r.state.detail, meter: meter });
-    if (r.warnings.length) h += '<div class="result-block">' + r.warnings.map(function (w) { return UI.WarningBanner({ title: "Check", message: w.message }); }).join("") + "</div>";
-    h += '<div class="result-block"><h3 class="result-h">Breakdown</h3><table class="breakdown"><tbody>' + r.breakdown.map(function (c) {
+      meta: UI.TONE_LABEL[tone] + " · " + score.abbreviation + " range " + r.range.min + "–" + r.range.max, summary: r.state.summary, meter: meter });
+    if (r.warnings.length) h += '<div class="result-block" data-block="warnings">' + r.warnings.map(function (w) { return UI.WarningBanner({ title: "Check", message: w.message }); }).join("") + "</div>";
+    // Breakdown
+    h += '<div class="result-block" data-block="breakdown"><h3 class="result-h">Breakdown</h3><table class="breakdown"><tbody>' + r.breakdown.map(function (c) {
       var rows = c.items.map(function (it) {
         return '<tr class="bd-' + it.status + '"><th scope="row">' + esc(it.short) + "</th><td>" + esc(it.display) + (it.reason ? " (" + esc(it.reason) + ")" : "") +
           '</td><td class="pts">' + esc(it.status === "ok" ? (it.code != null ? it.code : it.points) : it.status === "nt" ? it.code : "–") + "</td></tr>";
       }).join("");
       var head = c.items.length > 1 ? '<tr class="bd-group"><th scope="rowgroup" colspan="2">' + esc(c.label) + '</th><td class="pts">' + (c.subtotal == null ? "–" : c.subtotal) + "</td></tr>" : "";
       return head + rows;
-    }).join("") + '<tr class="bd-total"><th scope="row">Result</th><td>' + esc(r.state.label) + '</td><td class="pts">' + esc(r.display) + "</td></tr></tbody></table></div>";
-    if (r.insights.length) h += '<div class="result-block"><h3 class="result-h">Clinical insight</h3><ul class="notes">' + r.insights.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div>";
-    if (r.limitations.length) h += '<div class="result-block"><h3 class="result-h">Limitations</h3><ul class="notes notes-muted">' + r.limitations.slice(0, 4).map(function (l) {
-      return "<li" + (l.contextual ? ' class="contextual"' : "") + ">" + (l.contextual ? "<b>" + esc(l.text) + "</b>" : esc(l.text)) + "</li>"; }).join("") + "</ul></div>";
-    if (r.related.length) h += '<div class="result-block"><h3 class="result-h">Related scores</h3><div class="chip-row">' + r.related.map(function (x) {
+    }).join("") + '<tr class="bd-total"><th scope="row">Result</th><td>' + esc(r.state.label) + '</td><td class="pts">' + esc(r.formula && r.status !== "complete" ? r.formula.replace(/ \+ /g, " ") : r.display) + "</td></tr></tbody></table></div>";
+    // Interpretation
+    var interpItems = [];
+    if (r.state.detail) interpItems.push({ text: r.state.detail, importance: tone === "high" || tone === "critical" ? "major" : "standard" });
+    if (pres.describes) interpItems.push({ title: "Result type: " + pres.typeLabel, text: pres.describes });
+    if (interpItems.length) h += '<div class="result-block" data-block="interpretation">' + UI.InsightSection({ section: { type: "interpretation", title: "Interpretation", question: "What does the result represent?", items: interpItems } }) + "</div>";
+    // Insight sections (same structured content as the guide)
+    (r.insightSet ? r.insightSet.sections : []).forEach(function (sec) {
+      h += '<div class="result-block" data-block="' + sec.type + '">' + UI.InsightSection({ section: sec, collapseAfter: 2 }) + "</div>";
+    });
+    if (r.related.length) h += '<div class="result-block" data-block="related"><h3 class="result-h">Related scores</h3><div class="chip-row">' + r.related.map(function (x) {
       var l = links(x.id); return l ? '<a class="chip" href="' + l.href + '" data-nav>' + esc(l.label) + ' <span class="n">' + esc(x.relation) + "</span></a>" : ""; }).join("") + "</div></div>";
     var canShare = r.status === "complete" || r.status === "not-interpretable";
     h += '<div class="result-block btn-row">' + UI.SecondaryButton({ label: "Reset", icon: "reset", act: "calc-reset" }) +
       UI.SecondaryButton({ label: "Copy result", icon: "copy", act: "calc-copy", disabled: !canShare }) +
       UI.SecondaryButton({ label: "Share", icon: "share", act: "calc-share", disabled: !canShare }) + "</div>";
-    h += '<p class="fineprint">' + esc(score.version.label) + " · content v" + esc(score.contentVersion) + ". Supports, and does not replace, clinical judgement.</p>";
+    h += '<p class="fineprint">' + esc(score.version.label) + " · content v" + esc(score.contentVersion) + ". Calculation and reference support; it does not diagnose or recommend treatment.</p>";
     return h;
   }
   function shareText(score, r) {
@@ -213,7 +220,9 @@
     exclude: "Items marked untestable contribute no points and are flagged; the total may underestimate the true value." };
   function guideHTML(score, links, calcHref) {
     var g = score.guideSections || {}, cm = score.calculationMethod;
-    var list = function (arr) { var a = (arr || []).filter(function (x) { return typeof x === "string"; }); return a.length ? '<ul class="notes notes-muted">' + a.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : '<p class="lede">None listed.</p>'; };
+    var GI = window.InsulaEngine.insights.forGuide(score);
+    var gsec = function (type, keepTitle) { var sec = GI.filter(function (x) { return x.type === type; })[0]; return sec && sec.items.length ? UI.InsightSection({ section: sec, hideTitle: !keepTitle }) : '<p class="lede">None listed.</p>'; };
+    var errorsList = '<ul class="insight-list">' + score.commonErrors.map(function (t) { return UI.InsightCard({ type: "warning", item: { text: t } }); }).join("") + "</ul>";
     var comps = score.components.map(function (c) {
       return '<div class="guide-comp"><h4>' + esc(c.label) + "</h4>" + c.inputs.map(function (id) {
         var d = score.inputDefinitions.filter(function (x) { return x.id === id; })[0];
@@ -224,12 +233,16 @@
         return (c.inputs.length > 1 ? '<p class="guide-item">' + esc(d.label) + "</p>" : "") + (d.help ? '<p class="field-help">' + esc(d.help) + "</p>" : "") + body;
       }).join("") + "</div>";
     }).join("");
-    var interp = '<table class="breakdown"><tbody>' + score.resultStates.map(function (s) {
-      return '<tr class="tone-' + esc(s.tone) + '"><th scope="row" class="tone-cell">' + UI.stateIcon(s.tone) + " " + esc(s.range || "") + "</th><td><b>" + esc(s.label.replace(/\{[^}]+\}/g, "")) + ".</b> " + esc(s.summary) + "</td></tr>"; }).join("") + "</tbody></table>";
+    var interp = '<ul class="insight-list">' + score.resultStates.map(function (st) { return UI.StateCard({ tone: st.tone, range: st.range, label: st.label.replace(/\{[^}]+\}/g, "").trim() || UI.TONE_LABEL[st.tone], summary: st.summary, detail: st.detail }); }).join("") + "</ul>";
+    var noticeKey = score.calculatorNotice ? score.calculatorNotice.title.toLowerCase().slice(0, 30) : null;
+    var majorLims = GI.filter(function (x) { return x.type === "limitation"; })[0].items.filter(function (i) {
+      return i.importance === "major" && !(noticeKey && i.text.toLowerCase().indexOf(noticeKey) === 0);   // don't repeat the notice
+    });
     var notice = score.calculatorNotice ? (score.calculatorNotice.tone === "warning" ? UI.WarningBanner : UI.InfoBanner)({ title: score.calculatorNotice.title, message: score.calculatorNotice.message }) : "";
     var pres = score.resultPresentation;
     var secs = [
-      ["What is it?", "<p>" + esc(g.what) + "</p>" + (notice ? '<div style="margin-top:var(--space-3)">' + notice + "</div>" : "")],
+      ["What is it?", "<p>" + esc(g.what) + "</p>" + '<div class="guide-warnings" data-block="key-warnings">' + (notice || "") +
+        (majorLims.length ? '<ul class="insight-list">' + majorLims.map(function (i) { return UI.InsightCard({ type: "warning", item: { text: i.text, importance: "major" } }); }).join("") + "</ul>" : "") + "</div>"],
       ["Purpose", "<p>" + esc(score.purpose) + "</p>"],
       ["Intended population", "<p>" + esc(score.intendedPopulation) + "</p>"],
       ["When to use", "<p>" + esc(g.whenToUse) + "</p>"],
@@ -237,12 +250,13 @@
         (cm.formula ? "<p>Components are reported individually before the total.</p>" : "") +
         (score.inputDefinitions.some(function (d) { return d.notTestable; }) ? "<p>" + esc(NT_TEXT[cm.notTestablePolicy || "block"]) + "</p>" : "")],
       ["Scoring components", comps],
-      ["Interpretation", (pres ? '<p class="lede" style="margin:0 0 var(--space-2)">Result type: ' + esc(pres.typeLabel) + "</p>" : "") + interp],
-      ["Clinical context", "<p>" + esc(g.clinicalContext) + "</p>" + list(score.clinicalInsights.map(function (i) { return /\{/.test(i.text) ? null : i.text; }).filter(Boolean))],
-      ["Limitations", list(score.limitations)],
-      ["Confounders", list(score.confounders)],
-      ["Common mistakes", list(score.commonErrors)],
-      ["What the score does not tell you", list(score.whatItDoesNotTellYou)],
+      ["Interpretation", (pres ? UI.InsightSection({ section: { type: "interpretation", title: "Result type", question: "", items: [{ title: (window.InsulaEngine.insights.presentation(score) || {}).typeLabel, text: (window.InsulaEngine.insights.presentation(score) || {}).describes }] } }) : "") +
+        '<h4 class="sub-h">Result states</h4>' + interp],
+      ["Clinical context", "<p>" + esc(g.clinicalContext) + "</p>" + gsec("context", true) + gsec("consideration", true)],
+      ["Limitations", gsec("limitation")],
+      ["Confounders", gsec("confounder")],
+      ["Common mistakes", errorsList],
+      ["What the score does not tell you", gsec("boundary")],
       ["Related scores", '<div class="chip-row">' + score.relatedScores.map(function (x) { var l = links(x.id, "guide"); return l ? '<a class="chip" href="' + l.href + '" data-nav>' + esc(l.label) + ' <span class="n">' + esc(x.relation) + "</span></a>" : ""; }).join("") + "</div>"],
       ["Version", '<dl class="vinfo"><dt>Version</dt><dd>' + esc(score.version.label) + "</dd><dt>Details</dt><dd>" + esc(score.version.detail) + "</dd><dt>Category</dt><dd>" + esc(score.subcategory) +
         "</dd><dt>Specialties</dt><dd>" + esc(score.specialties.join(", ")) + "</dd><dt>Content</dt><dd>v" + esc(score.contentVersion) + "</dd><dt>Last reviewed</dt><dd>" + esc(score.lastReviewed) +

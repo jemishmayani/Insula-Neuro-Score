@@ -97,3 +97,17 @@ The app validates each score again at load time and refuses to run an invalid on
 2. Add it to `content_src/build_scores.py` (or write the JSON directly).
 3. Add `tests/engine/fixtures/<id>.fixture.json` covering minimum, maximum, intermediate, every threshold boundary, invalid input, missing input and not-testable input. A test fails if any implemented score has no fixture.
 4. Run `node --test tests/engine/*.test.js`. No UI changes are required.
+
+## Insight content (Phase 4)
+| Field | Insight type | Item shape |
+|---|---|---|
+| `clinicalContext[]` | context | `{text, importance?}` |
+| `clinicalInsights[]` | consideration | `{text, importance?, when?, on?}` |
+| `limitations[]` | limitation | string or `{text, importance?, when?, on?, guideText?}` |
+| `confounders[]` | confounder | string or `{factor, effect, importance?}` |
+| `whatItDoesNotTellYou[]` | boundary | string or `{text}` |
+
+- `importance`: `major` or `standard`.
+- `on`: `always`, `result` (complete results only) or `notTestable`.
+- Templated text (e.g. `{nt_count}`) must be conditional, and needs `guideText` to appear in the Guide.
+- `resultPresentation.type` constrains which tones a score's states may use (see `PRESENTATIONS` in `insights.js`).

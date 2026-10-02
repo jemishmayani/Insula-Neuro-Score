@@ -30,7 +30,7 @@
  "purpose": "Classification of tumour-related spinal instability, to standardise communication and support referral for specialist assessment.",
  "intendedPopulation": "Adults with primary or metastatic neoplastic involvement of the spine, scored per affected level using clinical history and CT/MRI.",
  "resultPresentation": {
-  "type": "stability-category",
+  "type": "stability",
   "typeLabel": "Stability category",
   "meter": true
  },
@@ -264,12 +264,13 @@
  "resultStates": [
   {
    "id": "stable",
-   "tone": "low",
+   "tone": "favorable",
    "min": 0,
    "max": 6,
    "label": "Stable",
    "range": "0–6",
-   "summary": "Stability category: stable (0–6)."
+   "summary": "Stability category: stable (0–6) at this assessment.",
+   "detail": "Classifies mechanical stability only; neurological status and oncological factors are assessed separately."
   },
   {
    "id": "potential",
@@ -292,42 +293,78 @@
    "detail": "The SINS authors considered scores of 7–18 to warrant surgical consultation. Management depends on neurology, histology, systemic disease, prognosis and patient goals."
   }
  ],
+ "clinicalContext": [
+  {
+   "text": "Classifies tumour-related mechanical instability at one spinal level.",
+   "importance": "major"
+  },
+  {
+   "text": "Provides a shared language between oncology, radiation oncology, radiology and spine surgery."
+  },
+  {
+   "text": "In the original publication, scores of 7–18 identified patients considered to warrant surgical consultation."
+  }
+ ],
  "clinicalInsights": [
   {
-   "text": "SINS addresses mechanical stability only. Neurological compression, tumour histology and prognosis are assessed separately."
+   "text": "SINS addresses mechanical stability only. Neurological compression, tumour histology, systemic disease and prognosis are assessed separately."
   },
   {
    "when": "total >= 7 && total <= 12",
+   "importance": "major",
    "text": "Intermediate scores show the most inter-observer variation. Reviewing the components helps multidisciplinary discussion."
   },
   {
    "when": "pain == 3",
    "text": "Mechanical pain is a clinical finding; confirm it from the history, not imaging alone."
+  },
+  {
+   "when": "total <= 6",
+   "text": "A stable category describes mechanical stability only; other indications for specialist input are assessed separately."
   }
  ],
  "limitations": [
-  "Designed for neoplastic disease, not trauma, infection or degenerative disease.",
+  {
+   "importance": "major",
+   "text": "Not a standalone surgical decision tool."
+  },
+  {
+   "importance": "major",
+   "text": "Designed for neoplastic disease, not trauma, infection or degenerative disease."
+  },
   "Agreement between raters is lowest in the 7–12 range.",
   "Scored per level; multi-level disease needs level-by-level assessment.",
-  "Does not include neurological status, histology or prognosis.",
-  "Not a standalone surgical decision tool."
+  "Does not include neurological status, histology or prognosis."
  ],
  "confounders": [
-  "Prior surgery or instrumentation",
-  "Osteoporotic fracture at the same level",
-  "Imaging modality, quality and patient position",
-  "Pain from causes other than the lesion"
+  {
+   "factor": "Prior surgery or instrumentation",
+   "effect": "Alters alignment, collapse and posterolateral assessment.",
+   "importance": "major"
+  },
+  {
+   "factor": "Osteoporotic fracture at the same level",
+   "effect": "Collapse may not be tumour-related."
+  },
+  {
+   "factor": "Imaging modality, quality and position",
+   "effect": "Supine imaging can under-show deformity or translation."
+  },
+  {
+   "factor": "Pain from other causes",
+   "effect": "Non-lesional pain can be mislabelled as mechanical."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Whether neural compression or deficit is present.",
+  "Tumour radiosensitivity, systemic disease or prognosis.",
+  "Which treatment is appropriate."
  ],
  "commonErrors": [
   "Labelling non-mechanical pain as mechanical.",
   "Using the wrong junctional boundaries (occiput–C2, C7–T2, T11–L1, L5–S1).",
   "Treating a score of 7 or more as an indication for surgery rather than for consultation.",
   "Combining several levels into one score."
- ],
- "whatItDoesNotTellYou": [
-  "Whether neural compression or deficit is present.",
-  "Tumour radiosensitivity, systemic disease or prognosis.",
-  "Which treatment is appropriate."
  ],
  "relatedScores": [
   {

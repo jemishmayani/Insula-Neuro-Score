@@ -56,7 +56,7 @@
    "expect": {
     "total": 0,
     "state": "stable",
-    "tone": "low"
+    "tone": "favorable"
    },
    "verification": {
     "method": "manual",

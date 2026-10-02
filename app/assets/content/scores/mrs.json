@@ -147,12 +147,13 @@
  "resultStates": [
   {
    "id": "g0",
-   "tone": "normal",
+   "tone": "favorable",
    "min": 0,
    "max": 0,
    "label": "No symptoms",
    "range": "0",
-   "summary": "Functional status: no symptoms at all."
+   "summary": "Functional status: no symptoms at all at this assessment.",
+   "detail": "Describes function at this timepoint, not the underlying condition."
   },
   {
    "id": "g1",
@@ -209,40 +210,72 @@
    "summary": "Outcome: dead."
   }
  ],
+ "clinicalContext": [
+  {
+   "text": "Describes global disability and dependence in daily activities, from all causes.",
+   "importance": "major"
+  },
+  {
+   "text": "Used to document pre-morbid function, discharge status and follow-up outcomes."
+  },
+  {
+   "text": "A common outcome in stroke trials, analysed either across all grades or split at a defined cut-off."
+  }
+ ],
  "clinicalInsights": [
   {
-   "text": "Record the timepoint and source (pre-morbid, discharge, follow-up; patient, carer, or records). Pre-morbid mRS changes how later grades are read."
+   "text": "Record the timepoint and source (pre-morbid, discharge, follow-up; patient, carer or records). Pre-morbid mRS changes how later grades are read."
   },
   {
    "text": "'Favourable outcome' cut-offs differ between studies (0–1, 0–2, or full ordinal shift). State the definition when comparing results."
   },
   {
    "when": "total >= 1 && total <= 3",
-   "text": "Grades 1–3 have the most inter-rater disagreement; structured interviews improve reliability."
+   "text": "Grades 1–3 have the most inter-rater disagreement; a structured interview improves reliability."
+  },
+  {
+   "when": "total == 0",
+   "text": "Grade 0 describes function at this assessment; it does not describe the underlying neurological condition."
   }
  ],
  "limitations": [
-  "Measures global disability, not neurological severity or a specific deficit.",
+  {
+   "importance": "major",
+   "text": "Measures global disability, not neurological severity or a specific deficit."
+  },
   "Moderate inter-rater reliability without a structured assessment.",
   "Weighted toward mobility and self-care; cognition, mood and communication may be under-represented.",
   "Reflects disability from all causes, including non-neurological comorbidity."
  ],
  "confounders": [
-  "Pre-morbid disability",
-  "Non-neurological comorbidity",
-  "Proxy versus patient report",
-  "Timing of assessment"
+  {
+   "factor": "Pre-morbid disability",
+   "effect": "Existing dependence is included unless pre-morbid mRS is recorded.",
+   "importance": "major"
+  },
+  {
+   "factor": "Non-neurological comorbidity",
+   "effect": "Cardiac, respiratory or orthopaedic limits raise the grade."
+  },
+  {
+   "factor": "Proxy versus patient report",
+   "effect": "Different informants may give different grades."
+  },
+  {
+   "factor": "Timing of assessment",
+   "effect": "Function changes during recovery; grades are timepoint-specific."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The neurological deficit or its severity (see NIHSS).",
+  "Which impairment causes the disability.",
+  "Quality of life or rehabilitation potential."
  ],
  "commonErrors": [
   "Treating mRS as a measure of neurological severity.",
   "Not recording the pre-morbid mRS.",
   "Grading from mobility alone.",
   "Assigning 0 when minor symptoms persist (grade 1)."
- ],
- "whatItDoesNotTellYou": [
-  "The neurological deficit or its severity (see NIHSS).",
-  "Which impairment causes the disability.",
-  "Quality of life or rehabilitation potential."
  ],
  "relatedScores": [
   {

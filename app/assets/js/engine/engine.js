@@ -11,18 +11,18 @@
                                9 related scores
    ========================================================================= */
 (function (root, factory) {
-  if (typeof module === "object" && module.exports) module.exports = factory(require("./expr.js"), require("./inputs.js"));
-  else { root.InsulaEngine = root.InsulaEngine || {}; root.InsulaEngine.engine = factory(root.InsulaEngine.expr, root.InsulaEngine.inputs); }
-})(typeof self !== "undefined" ? self : this, function (X, Inputs) {
+  if (typeof module === "object" && module.exports) module.exports = factory(require("./expr.js"), require("./inputs.js"), require("./insights.js"));
+  else { root.InsulaEngine = root.InsulaEngine || {}; root.InsulaEngine.engine = factory(root.InsulaEngine.expr, root.InsulaEngine.inputs, root.InsulaEngine.insights); }
+})(typeof self !== "undefined" ? self : this, function (X, Inputs, Insights) {
   "use strict";
 
-  var TONES = ["normal", "low", "mild", "moderate", "high", "critical", "informational", "incomplete", "not-interpretable"];
+  var TONES = ["favorable", "low", "mild", "moderate", "high", "critical", "informational", "incomplete", "not-interpretable"];
   var METHODS = ["sum", "expression", "select"];
-  var PRESENTATIONS = ["severity", "deficit", "functional-status", "stability-category", "classification", "informational"];
+  var PRESENTATIONS = Object.keys(Insights.PRESENTATIONS);
   var NT_POLICIES = ["block", "exclude"];
   var REQUIRED = ["id", "name", "abbreviation", "category", "subcategory", "specialties", "version", "purpose", "intendedPopulation",
     "components", "inputDefinitions", "scoringRules", "calculationMethod", "interpretationRules", "resultStates", "clinicalInsights",
-    "limitations", "confounders", "commonErrors", "whatItDoesNotTellYou", "relatedScores", "guideSections", "sources", "lastReviewed"];
+    "clinicalContext", "limitations", "confounders", "commonErrors", "whatItDoesNotTellYou", "relatedScores", "guideSections", "sources", "lastReviewed"];
   var RESERVED = ["total", "nt_count", "missing_count", "answered_count"];
 
   /* ---------------------------------------------------------------------
@@ -95,14 +95,14 @@
       checkExpr(r.when, "consistencyRules[" + i + "]");
       if (["warning", "error"].indexOf(r.severity) < 0) e.push("consistencyRules[" + i + "] severity must be warning or error");
     });
-    s.clinicalInsights.forEach(function (r, i) { if (r.when) checkExpr(r.when, "clinicalInsights[" + i + "]"); if (!r.text) e.push("clinicalInsights[" + i + "] needs text"); });
-    s.limitations.forEach(function (r, i) { if (typeof r === "object" && r.when) checkExpr(r.when, "limitations[" + i + "]"); });
+    if (!Array.isArray(s.clinicalContext)) e.push("missing field: clinicalContext");
+    Insights.validate(s, checkExpr).forEach(function (m) { e.push(m); });
     s.relatedScores.forEach(function (r) { if (!r.id) e.push("related score needs id"); });
     if (cm.formula) (cm.formula.match(/\{([^{}]+)\}/g) || []).forEach(function (m) { checkExpr(m.slice(1, -1), "calculationMethod.formula"); });
     var rp = s.resultPresentation;
+    if (!rp) e.push("missing field: resultPresentation");
     if (rp) {
       if (PRESENTATIONS.indexOf(rp.type) < 0) e.push("resultPresentation.type must be one of " + PRESENTATIONS.join(", "));
-      if (!rp.typeLabel) e.push("resultPresentation.typeLabel is required");
       if (rp.meter) s.resultStates.forEach(function (st) {
         if (st.min == null || st.max == null) e.push("meter requires numeric min/max on state " + st.id);
         else if (st.min > st.max || st.min < cm.range.min || st.max > cm.range.max) e.push("state " + st.id + " min/max outside range");
@@ -123,8 +123,8 @@
       total: null, display: "–", range: cm.range, values: {},
       state: null, interpretation: null, breakdown: [],
       errors: [], warnings: [], missing: [], notTestable: [],
-      insights: [], limitations: [], related: [], shareText: "",
-      formula: null, presentation: score.resultPresentation || null, bands: null
+      insights: [], limitations: [], insightSet: null, notice: score.calculatorNotice || null, related: [], shareText: "",
+      formula: null, presentation: Insights.presentation(score), bands: null
     };
     if (score.resultPresentation && score.resultPresentation.meter) R.bands = score.resultStates.map(function (st) { return { id: st.id, min: st.min, max: st.max, tone: st.tone, label: st.label }; });
 
@@ -158,9 +158,7 @@
       vars[c.id] = subtotal;
     });
 
-    R.insights = pickInsights(score, vars, "always");
     R.related = score.relatedScores.slice();
-    R.limitations = pickLimitations(score, vars, false);
 
     if (R.errors.length) { R.status = "invalid"; return finish(score, R, vars, stateOf("invalid", "Check entries", R.errors.length + " entr" + (R.errors.length === 1 ? "y needs" : "ies need") + " correcting.")); }
     if (R.missing.length) {
@@ -173,8 +171,7 @@
       R.status = "not-interpretable";
       R.display = nt.display ? X.template(nt.display, vars) : "–";
       if (cm.formula) R.formula = X.template(cm.formula, vars);
-      R.insights = R.insights.concat(pickInsights(score, vars, "notTestable"));
-      R.limitations = pickLimitations(score, vars, true);
+      setInsights(score, R, vars, "notTestable");
       R.shareText = nt.share ? X.template(nt.share, vars) : score.abbreviation + " not reported (item not testable)";
       return finish(score, R, vars, { id: "not-testable", tone: "not-interpretable", label: nt.label || "Not interpretable as a total",
         summary: nt.summary || "One or more items could not be tested, so a total is not reported.", detail: nt.detail || null });
@@ -213,14 +210,22 @@
     if (R.notTestable.length && excludeNT) R.warnings.push({ message: R.notTestable.length + " item" + (R.notTestable.length === 1 ? " was" : "s were") + " untestable and contributed no points. The total may underestimate the deficit.", inputs: R.notTestable.slice() });
 
     /* 7–8. Contextual insight and limitations */
-    R.insights = R.insights.concat(pickInsights(score, vars, "result"));
-    R.limitations = pickLimitations(score, vars, true);
-    R.shareText = X.template(cm.share || score.abbreviation + " {total}", vars) + (st.label ? " — " + st.label : "") +
+    setInsights(score, R, vars, "result");
+    var stLabel = st.label ? X.template(st.label, vars) : "";
+    var shareMain = X.template(cm.share || score.abbreviation + " {total}", vars);
+    R.shareText = shareMain + (stLabel && stLabel !== shareMain ? " — " + stLabel : "") +
       (R.notTestable.length ? " (untestable: " + R.notTestable.map(function (id) { return def(score, id).short || id; }).join(", ") + ")" : "");
     return finish(score, R, vars, st);
   }
 
+  function setInsights(score, R, vars, mode) {
+    R.insightSet = Insights.build(score, vars, mode);
+    var sec = function (t) { return R.insightSet.sections.filter(function (x) { return x.type === t; })[0].items; };
+    R.insights = sec("consideration").map(function (i) { return i.text; });
+    R.limitations = sec("limitation").map(function (i) { return { text: i.text, contextual: !!i.contextual, importance: i.importance }; });
+  }
   function finish(score, R, vars, st) {
+    if (!R.insightSet) setInsights(score, R, vars, "pending");
     /* 6. Interpretation */
     var filled = { id: st.id, tone: st.tone, label: X.template(st.label, vars), range: st.range || null, min: st.min == null ? null : st.min, max: st.max == null ? null : st.max,
       summary: st.summary ? X.template(st.summary, vars) : "", detail: st.detail ? X.template(st.detail, vars) : null };
@@ -231,27 +236,10 @@
   function stateOf(kind, label, summary) { return { id: kind, tone: "incomplete", label: label, summary: summary }; }
   function stateById(score, id) { for (var i = 0; i < score.resultStates.length; i++) if (score.resultStates[i].id === id) return score.resultStates[i]; return null; }
   function def(score, id) { for (var i = 0; i < score.inputDefinitions.length; i++) if (score.inputDefinitions[i].id === id) return score.inputDefinitions[i]; return null; }
-  function pickInsights(score, vars, when) {
-    return score.clinicalInsights.filter(function (r) {
-      var on = r.on || (r.when ? "result" : "always");
-      if (on !== when) return false;
-      try { return !r.when || !!X.evaluate(r.when, vars); } catch (e) { return false; }
-    }).map(function (r) { return X.template(r.text, vars); });
-  }
-  function pickLimitations(score, vars, evaluateConditional) {
-    var ctx = [], stat = [];
-    score.limitations.forEach(function (l) {
-      if (typeof l === "string") stat.push({ text: l, contextual: false });
-      else if (evaluateConditional && l.when) { try { if (X.evaluate(l.when, vars)) ctx.push({ text: X.template(l.text, vars), contextual: true }); } catch (e) {} }
-      else if (!l.when) stat.push({ text: l.text, contextual: false });
-    });
-    return ctx.concat(stat);
-  }
-
   /** Blank answer set; inputs with a `default` are pre-filled. */
   function initialAnswers(score) {
     var a = {}; score.inputDefinitions.forEach(function (d) { if (d.default !== undefined) a[d.id] = d.default; }); return a;
   }
 
-  return { calculate: calculate, validateScore: validateScore, initialAnswers: initialAnswers, TONES: TONES, METHODS: METHODS, PRESENTATIONS: PRESENTATIONS, INPUT_TYPES: Inputs.TYPES };
+  return { insights: Insights, calculate: calculate, validateScore: validateScore, initialAnswers: initialAnswers, TONES: TONES, METHODS: METHODS, PRESENTATIONS: PRESENTATIONS, INPUT_TYPES: Inputs.TYPES };
 });

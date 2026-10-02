@@ -11,7 +11,7 @@ test("result model has all pipeline outputs", () => {
 });
 test("all input types flow through to a total", () => {
   const r = Engine.calculate(demo(), { single: "a", dropdown: "x", yes_no: "no", multi: ["none"], integer: 0, decimal: 0, temperature: { value: 97, unit: "F" } });
-  assert.equal(r.status, "complete"); assert.equal(r.total, 0, "optional number may be blank"); assert.equal(r.state.tone, "normal");
+  assert.equal(r.status, "complete"); assert.equal(r.total, 0, "optional number may be blank"); assert.equal(r.state.tone, "favorable");
 });
 test("every result state tone reachable in demo", () => {
   const tones = new Set();
@@ -39,10 +39,10 @@ test("block policy: not-testable → not-interpretable, no total", () => {
 });
 test("exclude policy: not-testable scored 0, flagged, contextual limitation first", () => {
   const s = clone(demo()); s.calculationMethod.notTestablePolicy = "exclude";
-  s.limitations.push({ when: "nt_count > 0", text: "{nt_count} untestable" });
+  s.limitations.push({ on: "always", when: "nt_count > 0", text: "{nt_count} untestable" });
   const r = Engine.calculate(s, { ...DEMO_FULL, single: { nt: true } });
   assert.equal(r.status, "complete"); assert.equal(r.total, 11); assert.equal(r.warnings.length, 1);
-  assert.deepEqual(r.limitations[0], { text: "1 untestable", contextual: true });
+  assert.equal(r.limitations[0].text, "1 untestable"); assert.equal(r.limitations[0].contextual, true);
 });
 test("result outside declared range is a calculation error, not a result", () => {
   const s = clone(demo()); s.calculationMethod.type = "expression"; s.calculationMethod.expression = "total_not_defined_yet + 99";
@@ -81,13 +81,13 @@ test("result presentation and meter bands come from score data", () => {
   const m = Engine.calculate(load("mrs"), { grade: "3" });
   assert.equal(m.presentation.type, "functional-status"); assert.equal(m.bands.length, 7);
   const s = Engine.calculate(load("sins"), { location: "3", pain: "3", lesion: "0", alignment: "0", collapse: "1", posterolateral: "0" });
-  assert.equal(s.presentation.type, "stability-category"); assert.deepEqual(s.bands.map((b) => [b.min, b.max]), [[0, 6], [7, 12], [13, 18]]);
+  assert.equal(s.presentation.type, "stability"); assert.deepEqual(s.bands.map((b) => [b.min, b.max]), [[0, 6], [7, 12], [13, 18]]);
   assert.equal(Engine.calculate(load("nihss"), {}).bands, null, "NIHSS has no bands");
   assert.equal(Engine.calculate(load("gcs"), { e: "2", v: "3", m: "5" }).presentation.type, "severity");
 });
 test("each score uses its own semantic result type (no shared colour rule)", () => {
   const types = ["gcs", "nihss", "mrs", "sins"].map((id) => load(id).resultPresentation.type);
-  assert.deepEqual(types, ["severity", "deficit", "functional-status", "stability-category"]);
+  assert.deepEqual(types, ["severity", "deficit", "functional-status", "stability"]);
   assert.ok(load("mrs").resultStates.filter((s) => s.id !== "g0").every((s) => s.tone === "informational"), "mRS grades are not severity-coloured");
 });
 test("validator checks presentation, meter bands and notices", () => {

@@ -17,6 +17,15 @@
   "label": "Non-clinical demo",
   "detail": "Exercises every engine input type. Not a clinical score."
  },
+ "resultPresentation": {
+  "type": "severity",
+  "typeLabel": "Demo"
+ },
+ "clinicalContext": [
+  {
+   "text": "Demonstration only."
+  }
+ ],
  "purpose": "Demonstrates every input control and result state. Not for clinical use.",
  "intendedPopulation": "Not applicable.",
  "components": [
@@ -269,7 +278,7 @@
  "resultStates": [
   {
    "id": "s0",
-   "tone": "normal",
+   "tone": "favorable",
    "label": "Normal tone",
    "summary": "Demo state."
   },

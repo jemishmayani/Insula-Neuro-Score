@@ -38,7 +38,7 @@ async def main():
             check("NT insight suggests FOUR", await pg.locator("#result >> text=FOUR score").count() >= 1)
             await pg.click("#result >> text=Result"); await pg.screenshot(path=f"{SHOTS}/p3_gcs_nt.png")
             await pick(pg, "e", "4"); await pick(pg, "v", "5"); await pick(pg, "m", "6")
-            s = await state(pg); check("GCS 15 → normal", s["tone"] == "tone-normal" and s["value"] == "15")
+            s = await state(pg); check("GCS 15 → normal", s["tone"] == "tone-favorable" and s["value"] == "15")
             check("related scores link", await pg.locator("#result .chip:has-text('GCS-P')").count() == 1)
             await pg.click("[data-act=calc-reset]"); s = await state(pg)
             check("reset clears answers", s["tone"] == "tone-incomplete" and await pg.locator(".choice.is-on").count() == 0)
@@ -46,9 +46,9 @@ async def main():
             # answers survive Calculate → Guide → Calculate
             await pick(pg, "e", "3")
             await pg.click(".segmented >> text=Guide"); await pg.wait_for_selector("#g15")
-            titles = await pg.locator(".section-card h3").all_inner_texts()
+            titles = await pg.locator(".section-card > h3").all_inner_texts()
             check("GCS guide: 15 sections in Phase 3 order", [t.split("\n")[-1].strip() for t in titles] == ["What is it?", "Purpose", "Intended population", "When to use", "How to perform / calculate", "Scoring components", "Interpretation", "Clinical context", "Limitations", "Confounders", "Common mistakes", "What the score does not tell you", "Related scores", "Version", "Sources"], str(titles[:6]))
-            check("guide interpretation lists all states", await pg.locator("#g7 tr").count() == 4)
+            check("guide interpretation lists all states as state cards", await pg.locator("#g7 .state-card").count() == 4)
             check("guide shows version + review status", "Pending" in await pg.locator("#g14").inner_text() or "pending" in await pg.locator("#g14").inner_text())
             await pg.screenshot(path=f"{SHOTS}/p3_gcs_guide.png")
             await pg.click(".btn-primary >> nth=0"); await pg.wait_for_selector(".field")
@@ -65,7 +65,7 @@ async def main():
             check("NIHSS has no severity meter (no official bands)", await pg.locator("#result .meter").count() == 0)
             check("NIHSS UN not offered for item 11", await pg.locator('.field[data-field="item_11"] input[value="__nt"]').count() == 0)
             for item in ["1a", "1b", "1c", "2", "3", "4", "5a", "5b", "6a", "6b", "7", "8", "9", "10", "11"]: await pick(pg, "item_" + item, "0")
-            s = await state(pg); check("NIHSS 0 → no deficit measured", s["value"] == "0" and s["tone"] == "tone-normal", str(s))
+            s = await state(pg); check("NIHSS 0 → no deficit measured", s["value"] == "0" and s["tone"] == "tone-favorable", str(s))
             await pick(pg, "item_5b", "3"); await pick(pg, "item_9", "2"); await pick(pg, "item_4", "2")
             s = await state(pg); check("NIHSS 7 → informational (label not duplicated)", s == {"tone": "tone-informational", "value": "7", "label": "Informational"}, str(s))
             check("NIHSS result type = measured stroke deficit", (await card(pg))["type"] == "Measured stroke deficit")
@@ -90,7 +90,7 @@ async def main():
             # ---- mRS ----
             await pg.goto(U + "#/calculate/s/mrs"); await pg.wait_for_selector(".field")
             check("mRS notice: functional outcome scale", await pg.locator(".calc-notice >> text=Functional outcome scale").count() == 1)
-            for g, tone in [("0", "tone-normal"), ("3", "tone-informational"), ("5", "tone-informational"), ("6", "tone-informational")]:
+            for g, tone in [("0", "tone-favorable"), ("3", "tone-informational"), ("5", "tone-informational"), ("6", "tone-informational")]:
                 await pick(pg, "grade", g); s = await state(pg); c = await card(pg)
                 check(f"mRS {g} → functional status ({tone}), meter at {g}", s["tone"] == tone and s["value"] == f"mRS {g}" and c["type"] == "Functional status" and c["meter"] == g, str(s) + str(c))
             tone_color = await pg.evaluate("getComputedStyle(document.querySelector('#result .result-card')).getPropertyValue('--tone').trim()")
@@ -105,8 +105,8 @@ async def main():
             s = await state(pg); check("SINS 7 → potentially unstable (boundary)", s == {"tone": "tone-moderate", "value": "7", "label": "Potentially unstable"}, str(s))
             c = await card(pg); check("SINS result type = stability category, meter 7–12", c["type"] == "Stability category" and c["meter"] == "7–12", str(c))
             check("SINS notice: not a surgical decision", await pg.locator(".calc-notice >> text=not a surgical decision").count() == 1)
-            check("SINS 7: referral threshold, not decision to operate", "not a decision to operate" in await pg.locator("#result .result-card").inner_text())
-            await pick(pg, "collapse", "0"); s = await state(pg); check("SINS 6 → stable (boundary)", s["label"] == "Stable" and s["tone"] == "tone-low")
+            check("SINS 7: referral threshold, not decision to operate (Interpretation)", "not a decision to operate" in await pg.locator("#result [data-block=interpretation]").inner_text())
+            await pick(pg, "collapse", "0"); s = await state(pg); check("SINS 6 → stable (boundary), favourable", s["label"] == "Stable" and s["tone"] == "tone-favorable")
             await pick(pg, "alignment", "4"); await pick(pg, "lesion", "2"); await pick(pg, "collapse", "1")
             s = await state(pg); check("SINS 13 → unstable (boundary)", s["label"] == "Unstable" and s["tone"] == "tone-high" and s["value"] == "13")
             await pg.click("#result >> text=Result"); await pg.screenshot(path=f"{SHOTS}/p3_sins13.png")
@@ -173,6 +173,58 @@ async def main():
                 await sp.screenshot(path=f"{SHOTS}/p3_small_{sid}.png")
                 await sp.goto(U + f"#/guide/s/{sid}"); await sp.wait_for_selector("#g15")
                 check(f"small phone 320px: {sid} guide no overflow", await sp.evaluate("document.documentElement.scrollWidth <= window.innerWidth"))
+
+            # ---- Phase 4: clinical insight presentation, all four scores ----
+            ORDER = ["breakdown", "interpretation", "context", "consideration", "limitation", "confounder", "boundary", "related"]
+            scenarios = {
+              "gcs": [("e","1"),("v","2"),("m","3")],
+              "nihss": [("item_" + k, "0") for k in ["1a","1b","1c","2","3","4","5a","5b","6a","6b","7","8","9","10","11"]],
+              "mrs": [("grade","3")],
+              "sins": [("location","3"),("pain","3"),("lesion","2"),("alignment","0"),("collapse","1"),("posterolateral","0")]}
+            for sid, fill in scenarios.items():
+                await pg.goto(U + f"#/calculate/s/{sid}"); await pg.wait_for_selector(".field")
+                for i, v in fill: await pick(pg, i, v)
+                blocks = await pg.evaluate("[...document.querySelectorAll('#result [data-block]')].map(b => b.dataset.block).filter(b => b !== 'warnings')")
+                card_first = await pg.evaluate("document.querySelector('#result').firstElementChild.classList.contains('result-card')")
+                check(f"{sid}: result order Score → Breakdown → Interpretation → Context → … → Related", card_first and blocks == ORDER, str(blocks))
+                cards = await pg.evaluate("[...document.querySelectorAll('#result .insight-card')].map(c => ({icon: !!c.querySelector('.ins-icon svg'), label: c.querySelector('.ins-type').textContent.trim(), text: c.querySelector('.ins-text').textContent.trim()}))")
+                check(f"{sid}: every insight card has icon + type label + text ({len(cards)} cards)", len(cards) >= 8 and all(c["icon"] and c["label"] and c["text"] for c in cards))
+                tone_lbl = await pg.locator("#result .result-card .meta").inner_text()
+                check(f"{sid}: result tone stated in words, not only colour", any(w in tone_lbl for w in ["Favorable", "Low concern", "Mild", "Moderate", "High concern", "Very high concern", "Informational"]), tone_lbl)
+                if await pg.locator("#result .ins-more summary").count():
+                    before = await pg.locator("#result .insight-card:visible").count()
+                    await pg.locator("#result .ins-more summary").first.click()
+                    check(f"{sid}: 'Show more' reveals further cards", await pg.locator("#result .insight-card:visible").count() > before)
+                await pg.click("#result >> text=Breakdown"); await pg.screenshot(path=f"{SHOTS}/p4_{sid}_insights.png", full_page=False)
+            # specific language
+            await pg.goto(U + "#/calculate/s/gcs"); await pg.wait_for_selector(".field")
+            for i, v in scenarios["gcs"]: await pick(pg, i, v)
+            res = await pg.locator("#result").inner_text()
+            check("GCS severe: high concern, 'Correlate with airway, respiratory, neurological and systemic assessment'", "High concern" in res and "Correlate with airway, respiratory, neurological and systemic assessment" in res)
+            import re as _re
+            DIRECT = [r"\bintubate\b", r"\badminister\b", r"\bshould be (intubated|treated|ventilated)\b", r"\brecommend(s|ed)? (intubation|surgery)\b", r"\brequires (intubation|surgery)\b"]
+            check("GCS severe: no treatment directive", not any(_re.search(p, res, _re.I) for p in DIRECT))
+            check("GCS M3: contextual insight tagged 'Applies to this result'", await pg.locator("#result .insight-card.is-contextual:has-text('motor response')").count() == 1 and await pg.locator("#result .ins-tag:has-text('Applies to this result')").count() >= 1)
+            await pg.goto(U + "#/calculate/s/nihss"); await pg.wait_for_selector(".field")
+            for i, v in scenarios["nihss"]: await pick(pg, i, v)
+            res = await pg.locator("#result").inner_text()
+            check("NIHSS 0: 'No measurable deficit on the NIHSS at the time of assessment.'", "No measurable deficit on the NIHSS at the time of assessment." in res)
+            check("NIHSS 0: never 'normal' for the patient", "patient is normal" not in res.lower() and "is normal" not in res.lower())
+            check("NIHSS 0: favourable tone with caution (does not exclude stroke)", (await state(pg))["tone"] == "tone-favorable" and "does not exclude stroke" in res)
+            check("NIHSS 0: major contextual consideration about deficits outside the scale", await pg.locator("#result .insight-card.is-major.is-contextual:has-text('score of 0')").count() == 1)
+            await pg.screenshot(path=f"{SHOTS}/p4_nihss0.png")
+            # Guide semantic cards
+            for sid in ["gcs", "nihss", "mrs", "sins"]:
+                await pg.goto(U + f"#/guide/s/{sid}"); await pg.wait_for_selector("#g15")
+                kw = await pg.locator("#g1 [data-block=key-warnings] .banner, #g1 [data-block=key-warnings] .insight-card").count()
+                major = await pg.locator("#g9 .insight-card.is-major").count()
+                conf = await pg.locator("#g10 .insight-card[data-type=confounder] b").count()
+                bnd = await pg.locator("#g12 .insight-card[data-type=boundary]").count()
+                ctx = await pg.locator("#g8 .insight-card[data-type=context]").count()
+                mistakes = await pg.locator("#g11 .insight-card[data-type=warning]").count()
+                check(f"{sid} guide: warning cards ({kw}), highlighted major limitations ({major}), confounder cards ({conf}), context ({ctx}), does-not-tell-you ({bnd}), mistakes ({mistakes})",
+                      kw >= 2 and major >= 1 and conf >= 3 and bnd >= 3 and ctx >= 3 and mistakes >= 3)
+                await pg.screenshot(path=f"{SHOTS}/p4_guide_{sid}.png", full_page=True)
 
             # ---- dark + tablet ----
             await pg.evaluate("localStorage.setItem('ins.store.v2', JSON.stringify(Object.assign(JSON.parse(localStorage.getItem('ins.store.v2')||'{}'), {theme:'dark'})))")

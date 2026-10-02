@@ -4,9 +4,9 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: Phase 3, first four scores (v0.4.0)
+## Status: Phase 4, clinical insight engine (v0.5.0)
 
-The data-driven score engine is complete. Four scores are implemented: **GCS, NIHSS, mRS and SINS**. All other catalogue entries are placeholders. Each was verified against its authoritative source. See [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
+The data-driven score engine is complete. Four scores are implemented: **GCS, NIHSS, mRS and SINS**. All other catalogue entries are placeholders. Each was verified against its authoritative source. Results and guides are built by the structured clinical insight engine. See [docs/PHASE-4.md](docs/PHASE-4.md), [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
 
 ## Repository layout
 
@@ -21,7 +21,7 @@ app/
     css/components.css    component and layout styles (tokens only)
     js/ui.js              design-system components
     js/store.js           versioned local persistence (+ migration from v0.1.0)
-    js/engine/            score engine (expr.js, inputs.js, engine.js); pure, also runs in Node
+    js/engine/            score engine (expr.js, inputs.js, insights.js, engine.js); pure, also runs in Node
     js/calculator.js      renders inputs from definitions and the engine's result model
     js/app.js             router and screens
     content/scores/       implemented scores (generated from content_src/)

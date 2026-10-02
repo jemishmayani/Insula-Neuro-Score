@@ -266,7 +266,7 @@
    "label": "Severe impairment",
    "range": "3–8",
    "summary": "Severe impairment of consciousness (GCS 3–8).",
-   "detail": "Assess airway, ventilation, oxygenation, neurological status and reversible causes according to the clinical situation and local protocol."
+   "detail": "Correlate with airway, respiratory, neurological and systemic assessment, according to the clinical situation and local protocol."
   },
   {
    "id": "moderate",
@@ -290,7 +290,7 @@
   },
   {
    "id": "none",
-   "tone": "normal",
+   "tone": "favorable",
    "min": 15,
    "max": 15,
    "label": "No impairment measured",
@@ -299,12 +299,25 @@
    "detail": "A GCS of 15 does not exclude intracranial pathology, focal deficits or later deterioration."
   }
  ],
+ "clinicalContext": [
+  {
+   "text": "Describes level of consciousness from the best eye, verbal and motor responses at one point in time.",
+   "importance": "major"
+  },
+  {
+   "text": "Most informative as a trend: serial assessments with the same structured method show improvement or deterioration."
+  },
+  {
+   "text": "Provides a shared language for handover and an input to other scores (e.g. WFNS, GCS-Pupils)."
+  }
+ ],
  "clinicalInsights": [
   {
-   "text": "Report as E, V and M with the total, e.g. E2 V3 M5 = 10. Different combinations give the same total but mean different things."
+   "text": "Report E, V and M with the total; the same total can arise from different combinations of responses."
   },
   {
    "when": "m <= 3",
+   "importance": "major",
    "text": "The motor response is the component most closely related to outcome. Abnormal flexion, extension or no response warrants close attention to the trajectory."
   },
   {
@@ -312,30 +325,85 @@
    "text": "Low total with a relatively preserved motor response: the components describe this patient better than the total."
   },
   {
+   "when": "total == 15",
+   "text": "A GCS of 15 does not exclude intracranial pathology, focal deficits or later deterioration; correlate with history, focal examination and other findings."
+  },
+  {
    "on": "notTestable",
    "when": "v_nt",
-   "text": "With verbal response non-testable (e.g. intubated), consider the FOUR score, which has no verbal component and includes brainstem reflexes and respiration."
+   "importance": "major",
+   "text": "Verbal response is non-testable. The FOUR score has no verbal component and adds brainstem reflexes and respiration."
+  },
+  {
+   "on": "notTestable",
+   "when": "e_nt",
+   "text": "Eye opening is non-testable. Verbal and motor responses still describe responsiveness."
   }
  ],
  "limitations": [
-  "The 3–8 / 9–12 / 13–15 categories derive from traumatic brain injury.",
-  "Verbal response cannot be assessed when intubated or with severe aphasia.",
-  "Does not assess pupils, brainstem reflexes or lateralising signs.",
-  "Agreement between raters is lower in the intermediate range and without structured assessment.",
   {
+   "importance": "major",
+   "text": "Does not assess pupils, brainstem reflexes or lateralising signs."
+  },
+  {
+   "importance": "major",
+   "text": "Verbal response cannot be assessed when intubated or with severe aphasia."
+  },
+  "The 3–8 / 9–12 / 13–15 categories derive from traumatic brain injury.",
+  "Agreement between raters is lower in the intermediate range and without the structured approach.",
+  {
+   "on": "always",
    "when": "nt_count > 0",
-   "text": "{nt_count} component(s) non-testable: no total can be reported."
+   "importance": "major",
+   "text": "{nt_count} component(s) non-testable: no total can be reported.",
+   "guideText": "When any component is non-testable, no total can be reported."
   }
  ],
  "confounders": [
-  "Sedative or paralysing drugs",
-  "Intoxication",
-  "Hypoxia, hypotension or hypoglycaemia",
-  "Post-ictal state",
-  "Hypothermia",
-  "Language barrier, deafness or aphasia",
-  "Spinal cord or limb injury",
-  "Periorbital swelling"
+  {
+   "factor": "Sedative or paralysing drugs",
+   "effect": "Can lower E, V and M independently of brain injury.",
+   "importance": "major"
+  },
+  {
+   "factor": "Intubation or tracheostomy",
+   "effect": "Prevents verbal assessment; record V as NT.",
+   "importance": "major"
+  },
+  {
+   "factor": "Intoxication",
+   "effect": "Alcohol or drugs can depress responses."
+  },
+  {
+   "factor": "Hypoxia, hypotension or hypoglycaemia",
+   "effect": "Reversible physiological causes can lower the score."
+  },
+  {
+   "factor": "Post-ictal state",
+   "effect": "Responses can be temporarily depressed after a seizure."
+  },
+  {
+   "factor": "Hypothermia",
+   "effect": "Can depress responsiveness."
+  },
+  {
+   "factor": "Periorbital swelling",
+   "effect": "Can prevent eye opening; record E as NT."
+  },
+  {
+   "factor": "Language barrier, deafness or aphasia",
+   "effect": "Can lower V or responses to command without reduced consciousness."
+  },
+  {
+   "factor": "Spinal cord or limb injury",
+   "effect": "Can limit motor response; record M as NT if paralysed."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause of impaired consciousness.",
+  "Whether a focal, brainstem or structural lesion is present.",
+  "The need for any specific intervention.",
+  "An individual patient's prognosis on its own."
  ],
  "commonErrors": [
   "Scoring 1 for a component that could not be tested (record NT).",
@@ -344,12 +412,6 @@
   "Testing motor response in the legs (spinal reflexes can mislead).",
   "Applying physical pressure before checking the response to sound.",
   "Scoring 'localising' when the hand does not cross the clavicle."
- ],
- "whatItDoesNotTellYou": [
-  "The cause of impaired consciousness.",
-  "Whether a focal or brainstem lesion is present.",
-  "The need for any specific intervention.",
-  "Prognosis on its own."
  ],
  "relatedScores": [
   {
