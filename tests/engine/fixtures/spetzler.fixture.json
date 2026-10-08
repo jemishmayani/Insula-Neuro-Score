@@ -1,0 +1,78 @@
+{
+ "scoreId": "spetzler",
+ "cases": [
+  {
+   "name": "small non-eloquent superficial",
+   "answers": {
+    "size": "small",
+    "eloq": "no",
+    "vein": "sup"
+   },
+   "expect": {
+    "total": 1,
+    "display": "Grade I",
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+0+0 = I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "small eloquent deep",
+   "answers": {
+    "size": "small",
+    "eloq": "yes",
+    "vein": "deep"
+   },
+   "expect": {
+    "total": 3,
+    "display": "Grade III",
+    "state": "mid",
+    "insightsContains": "heterogeneous"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1+1 = III",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "medium eloquent deep",
+   "answers": {
+    "size": "medium",
+    "eloq": "yes",
+    "vein": "deep"
+   },
+   "expect": {
+    "total": 4,
+    "display": "Grade IV",
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+1+1 = IV",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "large eloquent deep",
+   "answers": {
+    "size": "large",
+    "eloq": "yes",
+    "vein": "deep"
+   },
+   "expect": {
+    "total": 5,
+    "display": "Grade V",
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3+1+1 = V",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

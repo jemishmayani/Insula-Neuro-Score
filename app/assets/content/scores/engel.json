@@ -1,0 +1,282 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "engel",
+  "epilepsy surgery outcome",
+  "seizure outcome",
+  "seizure freedom"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Reporting a class without the follow-up duration.",
+  "Mixing Engel and ILAE classes in one outcome measure."
+ ],
+ "relatedScores": [
+  {
+   "id": "ilae",
+   "relation": "Alternative outcome classification"
+  },
+  {
+   "id": "mrs",
+   "relation": "Functional status"
+  }
+ ],
+ "id": "engel",
+ "name": "Engel Epilepsy Surgery Outcome Classification",
+ "abbreviation": "Engel",
+ "subcategory": "Epilepsy surgery",
+ "specialties": [
+  "Neurosurgery",
+  "Neurology",
+  "Epileptology"
+ ],
+ "version": {
+  "label": "Engel classification (Engel et al. 1993), classes I–IV with subclasses",
+  "detail": "Class I free of disabling seizures; II rare disabling seizures; III worthwhile improvement; IV no worthwhile improvement. The ILAE outcome classification (2001) is a different system and is not combined."
+ },
+ "purpose": "Classifies seizure outcome after epilepsy surgery.",
+ "intendedPopulation": "Patients after epilepsy surgery, usually assessed at least 1–2 years after surgery.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Seizure outcome class",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "State the follow-up period",
+  "message": "Engel class depends on the period assessed. Report the follow-up duration with the class."
+ },
+ "inputDefinitions": [
+  {
+   "id": "cls",
+   "type": "single",
+   "label": "Outcome subclass",
+   "short": "Class",
+   "options": [
+    {
+     "value": "1",
+     "label": "IA: Completely seizure free since surgery",
+     "points": 1,
+     "code": "IA"
+    },
+    {
+     "value": "2",
+     "label": "IB: Non-disabling simple partial seizures only since surgery",
+     "points": 2,
+     "code": "IB"
+    },
+    {
+     "value": "3",
+     "label": "IC: Some disabling seizures after surgery, but free of disabling seizures for at least 2 years",
+     "points": 3,
+     "code": "IC"
+    },
+    {
+     "value": "4",
+     "label": "ID: Generalised convulsions with antiepileptic drug discontinuation only",
+     "points": 4,
+     "code": "ID"
+    },
+    {
+     "value": "5",
+     "label": "IIA: Initially free of disabling seizures, but has rare seizures now",
+     "points": 5,
+     "code": "IIA"
+    },
+    {
+     "value": "6",
+     "label": "IIB: Rare disabling seizures since surgery",
+     "points": 6,
+     "code": "IIB"
+    },
+    {
+     "value": "7",
+     "label": "IIC: More than rare disabling seizures after surgery, but rare seizures for at least 2 years",
+     "points": 7,
+     "code": "IIC"
+    },
+    {
+     "value": "8",
+     "label": "IID: Nocturnal seizures only",
+     "points": 8,
+     "code": "IID"
+    },
+    {
+     "value": "9",
+     "label": "IIIA: Worthwhile seizure reduction",
+     "points": 9,
+     "code": "IIIA"
+    },
+    {
+     "value": "10",
+     "label": "IIIB: Prolonged seizure-free intervals amounting to more than half of the follow-up period, but not less than 2 years",
+     "points": 10,
+     "code": "IIIB"
+    },
+    {
+     "value": "11",
+     "label": "IVA: Significant seizure reduction",
+     "points": 11,
+     "code": "IVA"
+    },
+    {
+     "value": "12",
+     "label": "IVB: No appreciable change",
+     "points": 12,
+     "code": "IVB"
+    },
+    {
+     "value": "13",
+     "label": "IVC: Seizures worse",
+     "points": 13,
+     "code": "IVC"
+    }
+   ]
+  },
+  {
+   "id": "fu",
+   "type": "integer",
+   "label": "Follow-up since surgery (years, optional)",
+   "short": "Follow-up",
+   "unit": "years",
+   "min": 1,
+   "max": 50,
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_cls",
+   "label": "Outcome",
+   "inputs": [
+    "cls"
+   ]
+  },
+  {
+   "id": "c_fu",
+   "label": "Follow-up",
+   "inputs": [
+    "fu"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "cls",
+  "range": {
+   "min": 1,
+   "max": 13
+  },
+  "display": "Engel {cls_code}",
+  "share": "Engel class {cls_code}{isnull(fu) ? '' : ' at ' + fu + ' year' + (fu == 1 ? '' : 's')}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 4",
+   "state": "c1"
+  },
+  {
+   "when": "total <= 8",
+   "state": "c2"
+  },
+  {
+   "when": "total <= 10",
+   "state": "c3"
+  },
+  {
+   "state": "c4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "c1",
+   "tone": "favorable",
+   "label": "Class I: free of disabling seizures",
+   "summary": "Engel {cls_code}: free of disabling seizures at this assessment.",
+   "range": "IA–ID",
+   "detail": "Outcome can change with longer follow-up; report the follow-up duration and medication status."
+  },
+  {
+   "id": "c2",
+   "tone": "low",
+   "label": "Class II: rare disabling seizures",
+   "summary": "Engel {cls_code}: rare disabling seizures ('almost seizure free').",
+   "range": "IIA–IID"
+  },
+  {
+   "id": "c3",
+   "tone": "moderate",
+   "label": "Class III: worthwhile improvement",
+   "summary": "Engel {cls_code}: worthwhile improvement.",
+   "range": "IIIA–IIIB"
+  },
+  {
+   "id": "c4",
+   "tone": "high",
+   "label": "Class IV: no worthwhile improvement",
+   "summary": "Engel {cls_code}: no worthwhile improvement.",
+   "range": "IVA–IVC",
+   "detail": "Assess seizure type, frequency and medication according to the clinical situation; the class does not by itself direct further treatment."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The most widely reported seizure outcome classification after epilepsy surgery.",
+   "importance": "major"
+  },
+  {
+   "text": "Terms such as 'disabling', 'rare' and 'worthwhile' are not defined numerically."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Report the follow-up duration and whether antiseizure medication has changed."
+  },
+  {
+   "text": "The ILAE classification uses seizure days relative to baseline and is assessed yearly; it can be reported alongside Engel."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Key terms ('disabling', 'rare', 'worthwhile') are subjective, which lowers agreement between centres."
+  },
+  "Does not capture quality of life, cognition or medication burden.",
+  "Outcome can change with longer follow-up."
+ ],
+ "confounders": [
+  {
+   "factor": "Medication changes",
+   "effect": "Withdrawal can provoke seizures; continued medication can mask outcome."
+  },
+  {
+   "factor": "Incomplete seizure diaries",
+   "effect": "Lead to misclassification."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Quality of life or psychosocial outcome.",
+  "Cognitive or neurological side effects of surgery.",
+  "Future seizure outcome."
+ ],
+ "guideSections": {
+  "what": "Four outcome classes after epilepsy surgery (I–IV), each with subclasses.",
+  "whenToUse": "Reporting seizure outcome after resective or other epilepsy surgery.",
+  "howToPerform": "Review the seizure history since surgery, including seizure type, frequency, the most recent 2 years and medication changes. Choose the subclass that fits and record the follow-up duration.",
+  "clinicalContext": "An outcome classification; consider quality of life, cognition and medication alongside it."
+ },
+ "sources": [
+  {
+   "citation": "Engel J Jr, Van Ness PC, Rasmussen TB, Ojemann LM. Outcome with respect to epileptic seizures. In: Engel J Jr, ed. Surgical Treatment of the Epilepsies. 2nd ed. New York: Raven Press; 1993:609-621."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "Class definitions are paraphrased; the book chapter is not reproduced."
+ },
+ "category": "exam"
+}

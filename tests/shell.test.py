@@ -69,15 +69,15 @@ async def main():
             check("bottom nav has Home|Calculate|Guide", [t.strip() for t in await pg.locator(".bottomnav a").all_inner_texts()] == ["Home", "Calculate", "Guide"])
 
             # search
-            await pg.fill("#search", "sedat"); await pg.wait_for_timeout(50)
-            check("search by topic (sedation→RASS)", await pg.locator("#search-results >> text=RASS").count() >= 1)
+            await pg.fill("#search", "spastic"); await pg.wait_for_timeout(50)
+            check("search by topic (spasticity→MAS)", await pg.locator("#search-results >> text=MAS").count() >= 1)
             await pg.fill("#search", "wfns"); check("search exact abbreviation first", (await pg.locator("#search-results .score-card .title").first.inner_text()).startswith("WFNS"))
             await pg.fill("#search", "qqqq"); check("search no-results EmptyState", await pg.locator("#search-results .empty-state").count() == 1)
             await pg.click("[data-act=clear-search]"); check("clear search restores page", await pg.locator("#page-body").is_visible())
 
             # ---- navigation & back stack ----
             await pg.click(".bottomnav >> text=Calculate"); await pg.wait_for_selector(".category-grid")
-            check("Calculate shows category cards", await pg.locator(".category-card").count() == 9)
+            check("Calculate shows category cards", await pg.locator(".category-card").count() == 10)   # v0.10: + Neurosurgical Examination & Grades
             await pg.screenshot(path=f"{SHOTS}/02_calculate.png")
             await pg.click(".category-card:has-text('Subarachnoid')"); await pg.wait_for_selector(".score-card")
             check("category → score list", await hashof(pg) == "#/calculate/c/sah" and await pg.locator(".score-card").count() == 4)
@@ -200,10 +200,10 @@ async def main():
             check("System theme reacts to device change", await dp.evaluate("document.documentElement.dataset.theme") == "light")
 
             # ---- migration from v0.1.0 ----
-            legacy = json.dumps({"theme": "dark", "startup": "calc", "pinned": ["mrs", "rass"], "favGuides": ["four"], "homeGroups": ["sah"], "hiddenGroups": ["spine"]})
+            legacy = json.dumps({"theme": "dark", "startup": "calc", "pinned": ["mrs", "sofa"], "favGuides": ["gcs"], "homeGroups": ["sah"], "hiddenGroups": ["spine"]})
             mp = await newpage(412, 915, storage={"ins.prefs": legacy})
             st = await mp.evaluate("JSON.parse(localStorage.getItem('ins.store.v3'))")
-            check("migrates v0.1.0 preferences", st["priorityScores"] == ["mrs", "rass"] and st["favoriteGuides"] == ["four"] and st["favorites"] == [] and st["startup"] == "calculate" and st["theme"] == "dark" and st["hiddenGroups"] == ["spine"], str(st))
+            check("migrates v0.1.0 preferences", st["priorityScores"] == ["mrs", "sofa"] and st["favoriteGuides"] == ["gcs"] and st["favorites"] == [] and st["startup"] == "calculate" and st["theme"] == "dark" and st["hiddenGroups"] == ["spine"], str(st))
             check("legacy key removed after migration", await mp.evaluate("localStorage.getItem('ins.prefs')") is None)
             # corrupt storage resilience
             cp = await newpage(412, 915, storage={"ins.store.v3": "{not json"})

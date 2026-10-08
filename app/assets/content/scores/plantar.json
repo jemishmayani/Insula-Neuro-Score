@@ -1,0 +1,253 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "babinski",
+  "babinski sign",
+  "plantar reflex",
+  "extensor plantar",
+  "upgoing toe"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Recording withdrawal as an extensor response.",
+  "Forcing an equivocal response into flexor or extensor.",
+  "Using too strong a stimulus."
+ ],
+ "relatedScores": [
+  {
+   "id": "dtr",
+   "relation": "Reflex grade"
+  },
+  {
+   "id": "clonus",
+   "relation": "Clonus"
+  },
+  {
+   "id": "mrc",
+   "relation": "Muscle power"
+  }
+ ],
+ "id": "plantar",
+ "name": "Plantar Response",
+ "abbreviation": "Plantar",
+ "subcategory": "Reflexes",
+ "specialties": [
+  "Neurology",
+  "Neurosurgery",
+  "Spine Surgery"
+ ],
+ "version": {
+  "label": "Descriptive examination record: flexor, extensor, equivocal or no response",
+  "detail": "Standard descriptive categories. The extensor response (Babinski sign) is upward movement of the great toe from contraction of extensor hallucis longus."
+ },
+ "purpose": "Records the response of the great toe to stimulation of the lateral sole.",
+ "intendedPopulation": "Any patient undergoing neurological examination. An extensor response is expected in infants.",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Examination finding",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Descriptive record",
+  "message": "Record each side separately. An equivocal response is better recorded as equivocal than forced into a category."
+ },
+ "inputDefinitions": [
+  {
+   "id": "finding",
+   "type": "single",
+   "label": "Great toe response",
+   "short": "Response",
+   "options": [
+    {
+     "value": "flexor",
+     "label": "Flexor",
+     "points": 1,
+     "code": "Flexor",
+     "detail": "Great toe flexes (moves down)."
+    },
+    {
+     "value": "extensor",
+     "label": "Extensor",
+     "points": 2,
+     "code": "Extensor",
+     "detail": "Great toe extends (moves up) from contraction of extensor hallucis longus; may include fanning of the other toes."
+    },
+    {
+     "value": "equivocal",
+     "label": "Equivocal",
+     "points": 3,
+     "code": "Equivocal",
+     "detail": "Response cannot be classified confidently, e.g. withdrawal or mixed movement."
+    },
+    {
+     "value": "none",
+     "label": "No response",
+     "points": 4,
+     "code": "No response",
+     "detail": "No toe movement."
+    }
+   ]
+  },
+  {
+   "id": "side",
+   "type": "single",
+   "label": "Side (optional)",
+   "short": "Side",
+   "options": [
+    {
+     "value": "left",
+     "label": "Left",
+     "points": 0,
+     "code": "L"
+    },
+    {
+     "value": "right",
+     "label": "Right",
+     "points": 0,
+     "code": "R"
+    }
+   ],
+   "help": "Recorded for the share text only; it does not change the grade.",
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_finding",
+   "label": "Response",
+   "inputs": [
+    "finding"
+   ]
+  },
+  {
+   "id": "c_side",
+   "label": "Side",
+   "inputs": [
+    "side"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "finding",
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "display": "{finding_code}",
+  "share": "Plantar response: {finding_code}{isnull(side_code) ? '' : ' (' + side_code + ')'}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "flexor"
+  },
+  {
+   "when": "total == 2",
+   "state": "extensor"
+  },
+  {
+   "when": "total == 3",
+   "state": "equivocal"
+  },
+  {
+   "state": "none"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "flexor",
+   "tone": "favorable",
+   "label": "Flexor response",
+   "summary": "Flexor plantar response at this assessment: the normal finding after infancy.",
+   "detail": "A flexor response does not exclude an upper motor neuron lesion."
+  },
+  {
+   "id": "extensor",
+   "tone": "moderate",
+   "label": "Extensor response (Babinski sign)",
+   "summary": "Extensor plantar response.",
+   "detail": "After infancy this indicates dysfunction of the corticospinal pathway; correlate with tone, reflexes and power."
+  },
+  {
+   "id": "equivocal",
+   "tone": "informational",
+   "label": "Equivocal",
+   "summary": "Response could not be classified confidently.",
+   "detail": "Consider repeating, or using alternative stimuli, and interpret with other signs."
+  },
+  {
+   "id": "none",
+   "tone": "informational",
+   "label": "No response",
+   "summary": "No movement of the great toe.",
+   "detail": "Can occur with severe weakness, sensory loss or local foot problems."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "An extensor response is one of the most reliable signs of corticospinal tract dysfunction after infancy.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "finding_value == 'extensor'",
+   "importance": "major",
+   "text": "Extensor plantar response: look for associated upper motor neuron signs (hyperreflexia, clonus, spasticity)."
+  },
+  {
+   "text": "Compare both sides; a unilateral extensor response is particularly informative."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Inter-observer agreement is only moderate, particularly for equivocal responses."
+  },
+  "Withdrawal movements can be mistaken for an extensor response.",
+  "Normal in infants."
+ ],
+ "confounders": [
+  {
+   "factor": "Withdrawal response",
+   "effect": "Can mimic an extensor response."
+  },
+  {
+   "factor": "Foot deformity or great-toe weakness",
+   "effect": "Can prevent a visible response."
+  },
+  {
+   "factor": "Ticklish or anxious patient",
+   "effect": "Leads to withdrawal."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The level or cause of the lesion.",
+  "The severity of motor impairment."
+ ],
+ "guideSections": {
+  "what": "A record of the great-toe response to stimulation of the lateral sole: flexor (normal after infancy), extensor (Babinski sign), equivocal, or no response.",
+  "whenToUse": "Every neurological examination where an upper motor neuron lesion is possible.",
+  "howToPerform": "With the patient relaxed, stroke the lateral border of the sole from heel towards the little toe, then across the ball of the foot, using a blunt object. Watch the first movement of the great toe. Test both sides.",
+  "clinicalContext": "Interpret with reflexes, tone, clonus and power."
+ },
+ "sources": [
+  {
+   "citation": "van Gijn J. The Babinski reflex. Postgrad Med J. 1995;71(841):645-648."
+  },
+  {
+   "citation": "van Gijn J. The Babinski Sign: A Centenary. Utrecht: Universiteit Utrecht; 1996."
+  }
+ ],
+ "licensing": {
+  "status": "Descriptive terms",
+  "note": "No instrument is reproduced."
+ },
+ "category": "exam"
+}

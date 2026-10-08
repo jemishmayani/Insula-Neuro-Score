@@ -1,0 +1,53 @@
+{
+ "scoreId": "borden",
+ "cases": [
+  {
+   "name": "type I",
+   "answers": {
+    "type": "1"
+   },
+   "expect": {
+    "display": "Type I",
+    "state": "t1",
+    "tone": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type IIb",
+   "answers": {
+    "type": "2",
+    "sub": "b"
+   },
+   "expect": {
+    "display": "Type IIb",
+    "state": "t2"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "II with subtype b",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type III",
+   "answers": {
+    "type": "3"
+   },
+   "expect": {
+    "display": "Type III",
+    "state": "t3",
+    "insightsContains": "Cognard"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -16,10 +16,6 @@
  ],
  "relatedScores": [
   {
-   "id": "dsgpa",
-   "relation": "Disease-specific versions (under review)"
-  },
-  {
    "id": "kps",
    "relation": "Input: performance status"
   },

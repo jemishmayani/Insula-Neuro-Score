@@ -1,0 +1,315 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "mrc",
+  "muscle power",
+  "muscle strength",
+  "power grade",
+  "oxford scale",
+  "manual muscle testing"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Grading a muscle without stating which muscle or movement was tested.",
+  "Calling partial-range movement against gravity grade 3 (grade 3 requires the full range).",
+  "Averaging MRC grades across muscles as if they were measurements."
+ ],
+ "relatedScores": [
+  {
+   "id": "mrcss",
+   "relation": "Sum of 12 movements"
+  },
+  {
+   "id": "dtr",
+   "relation": "Reflex grade"
+  },
+  {
+   "id": "mas",
+   "relation": "Tone"
+  },
+  {
+   "id": "plantar",
+   "relation": "Upper motor neuron sign"
+  }
+ ],
+ "id": "mrc",
+ "name": "MRC Muscle Power Scale",
+ "abbreviation": "MRC power",
+ "subcategory": "Motor",
+ "specialties": [
+  "Neurosurgery",
+  "Neurology",
+  "Spine Surgery",
+  "Rehabilitation"
+ ],
+ "version": {
+  "label": "Medical Research Council scale, grades 0–5",
+  "detail": "Grades as published in the MRC 'Aids to the investigation of peripheral nerve injuries' (1943; reprinted 1976) and its successor, 'Aids to the Examination of the Peripheral Nervous System'. The booklet notes that grades 4−, 4 and 4+ may be used for slight, moderate and strong resistance; these subdivisions are not offered here."
+ },
+ "purpose": "Records the strength of one muscle or muscle group on a six-point ordinal scale.",
+ "intendedPopulation": "Patients able to cooperate with voluntary muscle testing; any neurological or neuromuscular condition.",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Muscle power grade",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Examination grade",
+  "message": "Grade one muscle or movement at a time and name it in your notes. The grade describes what was found; it is not a prognosis."
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Power grade",
+   "short": "MRC",
+   "options": [
+    {
+     "value": "5",
+     "label": "Normal power",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "Active movement against gravity and resistance",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "Active movement against gravity",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "Active movement with gravity eliminated",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "Flicker or trace of contraction",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "No contraction",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "help": "Test against gravity first; if the movement is complete, add resistance. If not, test with gravity eliminated."
+  },
+  {
+   "id": "side",
+   "type": "single",
+   "label": "Side (optional)",
+   "short": "Side",
+   "options": [
+    {
+     "value": "left",
+     "label": "Left",
+     "points": 0,
+     "code": "L"
+    },
+    {
+     "value": "right",
+     "label": "Right",
+     "points": 0,
+     "code": "R"
+    }
+   ],
+   "help": "Recorded for the share text only; it does not change the grade.",
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Power grade",
+   "inputs": [
+    "grade"
+   ]
+  },
+  {
+   "id": "c_side",
+   "label": "Side",
+   "inputs": [
+    "side"
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "display": "{total}/5",
+  "share": "MRC power {total}/5{isnull(side_code) ? '' : ' (' + side_code + ')'}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "g0"
+  },
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g5",
+   "tone": "favorable",
+   "label": "Grade 5: normal power",
+   "summary": "Normal power on this test at this assessment.",
+   "range": "5",
+   "detail": "A grade of 5 does not exclude subtle weakness, fatigability or weakness in other muscles.",
+   "min": 5,
+   "max": 5
+  },
+  {
+   "id": "g4",
+   "tone": "mild",
+   "label": "Grade 4: against gravity and resistance",
+   "summary": "Moves against gravity and some resistance, but less than normal.",
+   "range": "4",
+   "detail": "Grade 4 spans a wide range of strength.",
+   "min": 4,
+   "max": 4
+  },
+  {
+   "id": "g3",
+   "tone": "moderate",
+   "label": "Grade 3: against gravity",
+   "summary": "Moves through the range against gravity, but not against added resistance.",
+   "range": "3",
+   "min": 3,
+   "max": 3
+  },
+  {
+   "id": "g2",
+   "tone": "high",
+   "label": "Grade 2: gravity eliminated",
+   "summary": "Moves only with gravity eliminated.",
+   "range": "2",
+   "min": 2,
+   "max": 2,
+   "detail": "Correlate with the history, the rest of the examination and imaging, according to the clinical situation."
+  },
+  {
+   "id": "g1",
+   "tone": "high",
+   "label": "Grade 1: flicker or trace",
+   "summary": "Visible or palpable contraction without movement of the joint.",
+   "range": "1",
+   "min": 1,
+   "max": 1,
+   "detail": "Correlate with the history, the rest of the examination and imaging, according to the clinical situation."
+  },
+  {
+   "id": "g0",
+   "tone": "high",
+   "label": "Grade 0: no contraction",
+   "summary": "No contraction seen or felt.",
+   "range": "0",
+   "min": 0,
+   "max": 0,
+   "detail": "Correlate with the history, the rest of the examination and imaging, according to the clinical situation."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Describes the strength of one muscle or movement at one examination.",
+   "importance": "major"
+  },
+  {
+   "text": "Most useful as a pattern across muscles (root, nerve, upper motor neuron) and as a trend over time."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Record the muscle or movement, the side and the grade together (e.g. left ankle dorsiflexion 3/5)."
+  },
+  {
+   "when": "total == 4",
+   "text": "Grade 4 covers most of the strength range, so small changes within it are not captured."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Ordinal scale: steps between grades are not equal, so grades should not be averaged as measurements."
+  },
+  "Grade 4 is broad and insensitive to change.",
+  "Depends on effort, pain and understanding.",
+  "Gravity-eliminated positioning is not always practical."
+ ],
+ "confounders": [
+  {
+   "factor": "Pain or guarding",
+   "effect": "Can limit effort and lower the grade."
+  },
+  {
+   "factor": "Poor cooperation, sedation or cognitive impairment",
+   "effect": "Makes voluntary testing unreliable."
+  },
+  {
+   "factor": "Joint contracture or orthopaedic injury",
+   "effect": "Limits range independent of strength."
+  },
+  {
+   "factor": "Examiner technique",
+   "effect": "Position and resistance vary between examiners."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause or level of the lesion.",
+  "Fatigability or endurance.",
+  "Function in daily activities."
+ ],
+ "guideSections": {
+  "what": "A six-point scale (0–5) for the strength of a single muscle or movement.",
+  "whenToUse": "Motor examination in nerve, root, plexus, spinal cord and brain lesions; serial monitoring.",
+  "howToPerform": "Position the limb to test against gravity. If the full range is achieved, apply graded resistance. If not, retest with gravity eliminated, then look and feel for contraction. Record muscle, side and grade.",
+  "clinicalContext": "A bedside examination grade; interpret alongside tone, reflexes, sensation and the distribution of weakness."
+ },
+ "sources": [
+  {
+   "citation": "Medical Research Council. Aids to the investigation of peripheral nerve injuries. War Memorandum No. 7. London: HMSO; 1943 (reprinted 1976)."
+  },
+  {
+   "citation": "Guarantors of Brain. Aids to the Examination of the Peripheral Nervous System. 5th ed. Edinburgh: Saunders Elsevier; 2010."
+  }
+ ],
+ "licensing": {
+  "status": "Grade definitions with attribution",
+  "note": "The MRC/Guarantors of Brain booklet and its illustrations are copyrighted and not reproduced; only the grade definitions are paraphrased."
+ },
+ "category": "exam"
+}

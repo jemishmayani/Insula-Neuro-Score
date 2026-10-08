@@ -43,6 +43,8 @@
                                 describes: "A category assigned from imaging findings." },
     "prognostic-category":    { label: "Prognostic category", tones: ["favorable", "low", "mild", "moderate", "high", "critical", "informational"],
                                 describes: "A group-level association with outcome in the derivation data; not an individual prediction." },
+    "examination-grade":      { label: "Examination grade", tones: ["favorable", "low", "mild", "moderate", "high", "informational"],
+                                describes: "A bedside examination finding recorded on a standard grading scale. It describes what was found, not a prognosis." },
     "informational":          { label: "Informational", tones: ["favorable", "informational"], describes: "Descriptive information." }
   };
 

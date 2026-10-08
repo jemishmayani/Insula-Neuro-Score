@@ -1,0 +1,52 @@
+{
+ "scoreId": "markwalder",
+ "cases": [
+  {
+   "name": "grade 0",
+   "answers": {
+    "grade": "0"
+   },
+   "expect": {
+    "display": "Grade 0",
+    "state": "g0",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 2",
+   "answers": {
+    "grade": "2"
+   },
+   "expect": {
+    "display": "Grade 2",
+    "state": "g2"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 4",
+   "answers": {
+    "grade": "4"
+   },
+   "expect": {
+    "display": "Grade 4",
+    "state": "g4",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

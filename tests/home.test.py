@@ -77,10 +77,10 @@ async def main():
             check("recent calculators newest first, no duplicates", [r["id"] for r in (await store(pg))["recentCalc"]] == ["gcs", "mrs", "sins"])
             await go(pg, "#/calculate/s/gcs", ".field"); await pick(pg, "v", "__nt")
             check("not-testable GCS still counts as a completed use", [r["id"] for r in (await store(pg))["recentCalc"]][0] == "gcs")
-            for sid in ["gcs", "nihss", "mrs", "sins", "wfns", "four", "ich", "marshall", "rotterdam", "kps", "ecog", "rass"]:
+            for sid in ["gcs", "nihss", "mrs", "sins", "wfns", "mrc", "ich", "marshall", "rotterdam", "kps", "ecog", "hb"]:
                 await go(pg, f"#/guide/s/{sid}", ".detail-head")
             rg = (await store(pg))["recentGuide"]
-            check("recent guides capped at 10, newest first", len(rg) == 10 and rg[0]["id"] == "rass" and "gcs" not in [r["id"] for r in rg])
+            check("recent guides capped at 10, newest first", len(rg) == 10 and rg[0]["id"] == "hb" and "gcs" not in [r["id"] for r in rg])
             raw = await pg.evaluate(f"localStorage.getItem('{KEY}')")
             check("history stores ids and times only (no inputs)", all(k not in raw for k in ['"e":', '"answers"', '"location":"', '"grade"']))
             await go(pg, "#/home")

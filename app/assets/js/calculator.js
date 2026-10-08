@@ -333,7 +333,7 @@
     var relRow = function (id, relation, current) {
       var e = entry(id); if (!e) return "";
       var gl = links(id, "guide"), cl = e.status === "implemented" ? links(id, "calculate") : null;
-      var badge = e.status === "implemented" ? "" : UI.StatusBadge({ tone: e.status === "review" ? "warning" : "neutral", label: e.status === "review" ? "Under review" : "Placeholder", icon: false });
+      var badge = e.status === "implemented" ? "" : UI.StatusBadge({ tone: "neutral", label: "Placeholder", icon: false });
       return '<li class="score-card related-row' + (current ? " is-current" : "") + '" data-related="' + esc(id) + '"><a class="open" href="' + gl.href + '" data-nav><span class="row-icon" aria-hidden="true">' + UI.icon("guide") + '</span><span class="text"><span class="title">' + esc(e.abbreviation) + " " + badge + '</span><span class="sub">' + esc(relation || e.name) + "</span></span></a>" +
         (cl ? '<a class="alt-view" href="' + cl.href + '" data-nav aria-label="Open ' + esc(e.abbreviation) + ' calculator">' + UI.icon("calculate") + '<span aria-hidden="true">Calculate</span></a>' : "") + "</li>";
     };

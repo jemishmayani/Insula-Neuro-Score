@@ -1,6 +1,23 @@
 """Curated clinical relationships between scores (contextual links shown in every Guide).
-Kept in one place so relationships can be reviewed together. Ids may point to scores under review."""
+Kept in one place so relationships can be reviewed together. Links to scores not shown in the app are dropped at build time."""
 RELATED = {
+    # Neurosurgical examination & grades (v0.10)
+    "mrc": [("mrcss", "Sum of 12 movements"), ("dtr", "Reflex grade"), ("mas", "Tone"), ("plantar", "Upper motor neuron sign")],
+    "mrcss": [("mrc", "Grade for each movement"), ("sofa", "Organ dysfunction in ICU"), ("dtr", "Reflex grade")],
+    "dtr": [("clonus", "Record clonus"), ("plantar", "Plantar response"), ("mrc", "Muscle power"), ("mas", "Tone")],
+    "clonus": [("dtr", "Reflex grade"), ("plantar", "Plantar response"), ("mas", "Tone"), ("mts", "Velocity-dependent spasticity")],
+    "plantar": [("dtr", "Reflex grade"), ("clonus", "Clonus"), ("mrc", "Muscle power")],
+    "mas": [("mts", "Separates spasticity from contracture"), ("clonus", "Clonus"), ("dtr", "Reflex grade")],
+    "mts": [("mas", "Resistance to passive movement"), ("clonus", "Clonus")],
+    "hb": [("gr", "Hearing in CPA lesions")],
+    "gr": [("hb", "Facial nerve function in CPA lesions")],
+    "spetzler": [("lawtonyoung", "Supplementary grade"), ("borden", "Dural fistula classification"), ("mrs", "Functional outcome")],
+    "lawtonyoung": [("spetzler", "Grade combined with it"), ("mrs", "Functional outcome")],
+    "borden": [("cognard", "More detailed dAVF classification"), ("spetzler", "AVM grade")],
+    "cognard": [("borden", "Simpler dAVF classification"), ("spetzler", "AVM grade")],
+    "markwalder": [("gcs", "Level of consciousness"), ("mrs", "Functional outcome")],
+    "engel": [("ilae", "Alternative outcome classification"), ("mrs", "Functional status")],
+    "ilae": [("engel", "Alternative outcome classification")],
     # Consciousness / outcome
     "gcs": [("gcsp", "Adds pupil reactivity"), ("four", "Coma scale without a verbal component"), ("gose", "Outcome after brain injury"), ("wfns", "SAH grade built on GCS"), ("rass", "Arousal and sedation in ICU")],
     "gcsp": [("gcs", "Underlying scale"), ("four", "Includes brainstem reflexes"), ("gose", "Outcome after brain injury"), ("rotterdam", "CT prognostic score in TBI")],
@@ -12,10 +29,10 @@ RELATED = {
     "aspects": [("nihss", "Clinical deficit"), ("pcaspects", "Posterior circulation equivalent"), ("mrs", "Functional outcome")],
     "pcaspects": [("aspects", "Anterior circulation equivalent"), ("nihss", "Clinical deficit"), ("mrs", "Functional outcome")],
     "abcd2": [("nihss", "Neurological deficit"), ("mrs", "Functional status")],
-    "race": [("lams", "Prehospital motor scale"), ("fasted", "Prehospital LVO scale (under review)"), ("nihss", "Full stroke scale"), ("aspects", "CT extent")],
-    "lams": [("race", "Prehospital LVO scale"), ("fasted", "Prehospital LVO scale (under review)"), ("nihss", "Full stroke scale")],
+    "race": [("lams", "Prehospital motor scale"), ("fasted", "Prehospital LVO scale"), ("nihss", "Full stroke scale"), ("aspects", "CT extent")],
+    "lams": [("race", "Prehospital LVO scale"), ("fasted", "Prehospital LVO scale"), ("nihss", "Full stroke scale")],
     # ICH
-    "ich": [("func", "Functional outcome"), ("gcs", "Input"), ("mrs", "Functional outcome scale"), ("graeb", "IVH burden (under review)")],
+    "ich": [("func", "Functional outcome"), ("gcs", "Input"), ("mrs", "Functional outcome scale"), ("graeb", "IVH burden")],
     "func": [("ich", "Severity and mortality grade"), ("mrs", "Functional outcome scale"), ("gcs", "Input")],
     # SAH
     "hunthess": [("wfns", "GCS-based clinical grade"), ("mfisher", "CT grade"), ("fisher", "Original CT grade"), ("gcs", "Level of consciousness")],
@@ -25,24 +42,24 @@ RELATED = {
     # Trauma
     "marshall": [("rotterdam", "Alternative CT score"), ("gcs", "Clinical severity"), ("gcsp", "Severity with pupils"), ("iss", "Anatomical injury severity")],
     "rotterdam": [("marshall", "CT classification"), ("gcs", "Clinical severity"), ("gcsp", "Severity with pupils"), ("gose", "Outcome after TBI")],
-    "rts": [("iss", "Anatomical severity"), ("triss", "Combined survival model (under review)"), ("gcs", "Input")],
-    "iss": [("rts", "Physiological severity"), ("triss", "Combined survival model (under review)"), ("marshall", "Head CT classification")],
+    "rts": [("iss", "Anatomical severity"), ("triss", "Combined survival model"), ("gcs", "Input")],
+    "iss": [("rts", "Physiological severity"), ("triss", "Combined survival model"), ("marshall", "Head CT classification")],
     # Spine and spinal metastases
     "sins": [("rtokuhashi", "Prognosis in spinal metastases"), ("tomita", "Prognosis in spinal metastases"), ("kps", "Performance status"), ("ecog", "Performance status"), ("frankel", "Neurological status")],
     "rtokuhashi": [("sins", "Mechanical stability"), ("tomita", "Alternative prognostic score"), ("kps", "Input: general condition"), ("frankel", "Input: palsy")],
     "tomita": [("sins", "Mechanical stability"), ("rtokuhashi", "Alternative prognostic score"), ("kps", "Performance status")],
     "kps": [("ecog", "Alternative performance scale"), ("rtokuhashi", "Uses KPS"), ("sins", "Spinal metastasis stability")],
     "ecog": [("kps", "Alternative performance scale"), ("rtokuhashi", "Spinal metastasis prognosis"), ("tomita", "Spinal metastasis prognosis")],
-    "frankel": [("ais", "Current standard (under review)"), ("nurick", "Myelopathy grade"), ("rtokuhashi", "Uses Frankel grade")],
-    "nurick": [("mjoa", "Myelopathy score (under review)"), ("frankel", "Spinal cord injury grade")],
+    "frankel": [("ais", "Current standard"), ("nurick", "Myelopathy grade"), ("rtokuhashi", "Uses Frankel grade")],
+    "nurick": [("mjoa", "Myelopathy score"), ("frankel", "Spinal cord injury grade")],
     # Neurocritical care
     "triss": [("rts", "Physiological component"), ("iss", "Anatomical component"), ("gcs", "Input to RTS")],
-    "sofa": [("sofa2", "Updated version (under review)"), ("gcs", "CNS component"), ("rass", "Sedation level (under review)")],
-    "graeb": [("ich", "ICH severity grade"), ("mgraeb", "Modified version (under review)"), ("mfisher", "SAH CT grade including IVH")],
+    "sofa": [("sofa2", "Updated version"), ("gcs", "CNS component"), ("rass", "Sedation level")],
+    "graeb": [("ich", "ICH severity grade"), ("mgraeb", "Modified version"), ("mfisher", "SAH CT grade including IVH")],
     "fasted": [("race", "Prehospital LVO scale"), ("lams", "Prehospital motor scale"), ("nihss", "Full stroke scale")],
-    "mjoa": [("nurick", "Myelopathy grade"), ("joa", "Original JOA (under review)"), ("frankel", "Spinal cord injury grade")],
-    "gpa": [("dsgpa", "Disease-specific versions (under review)"), ("kps", "Input: performance status"), ("ecog", "Performance status")],
-    "rass": [("gcs", "Level of consciousness"), ("four", "Coma scale (under review)"), ("sofa", "Organ dysfunction")],
+    "mjoa": [("nurick", "Myelopathy grade"), ("joa", "Original JOA"), ("frankel", "Spinal cord injury grade")],
+    "gpa": [("dsgpa", "Disease-specific versions"), ("kps", "Input: performance status"), ("ecog", "Performance status")],
+    "rass": [("gcs", "Level of consciousness"), ("four", "Coma scale"), ("sofa", "Organ dysfunction")],
 }
 # Clinical clusters: restored verbatim from the earlier Phase 7 build output (content/related.json).
 CLUSTERS = [
@@ -163,7 +180,7 @@ CLUSTERS = [
    "mgraeb",
    "gcs"
   ],
-  "description": "Severity (ICH Score), expected function (FUNC) and ventricular blood (Graeb, under review)."
+  "description": "Severity (ICH Score), expected function (FUNC) and ventricular blood (Graeb)."
  },
  {
   "id": "tbi",
@@ -194,7 +211,7 @@ CLUSTERS = [
    "iss",
    "triss"
   ],
-  "description": "Physiological (RTS) and anatomical (ISS) severity, combined in TRISS (under review)."
+  "description": "Physiological (RTS) and anatomical (ISS) severity, combined in TRISS."
  },
  {
   "id": "outcome",
@@ -224,7 +241,7 @@ CLUSTERS = [
    "frankel",
    "ais"
   ],
-  "description": "Frankel grade and the current ASIA/ISNCSCI standard (under review)."
+  "description": "Spinal cord injury grading."
  },
  {
   "id": "myelopathy",
@@ -239,7 +256,7 @@ CLUSTERS = [
    "mjoa",
    "joa"
   ],
-  "description": "Walking-based (Nurick) and broader functional scores (mJOA, JOA; under review)."
+  "description": "Walking-based (Nurick) and broader functional (mJOA) myelopathy scores."
  },
  {
   "id": "icu",
@@ -259,7 +276,21 @@ CLUSTERS = [
  }
 ]
 
+CLUSTERS += [
+ {"id": "motor-reflex", "title": "Motor and reflex examination", "keywords": ["power", "reflexes", "umn", "upper motor neuron"],
+  "members": ["mrc", "mrcss", "dtr", "clonus", "plantar"], "description": "Bedside grades for strength, reflexes and upper motor neuron signs."},
+ {"id": "spasticity", "title": "Spasticity", "keywords": ["spasticity", "tone", "contracture"],
+  "members": ["mas", "mts", "clonus"], "description": "Resistance to passive movement, its velocity-dependent component, and clonus."},
+ {"id": "cpa", "title": "Cerebellopontine angle", "keywords": ["vestibular schwannoma", "acoustic neuroma", "cpa", "facial nerve", "hearing"],
+  "members": ["hb", "gr"], "description": "Facial nerve and hearing grades used before and after CPA surgery or radiosurgery."},
+ {"id": "vascular-malformation", "title": "Vascular malformations", "keywords": ["avm", "davf", "fistula", "arteriovenous"],
+  "members": ["spetzler", "lawtonyoung", "borden", "cognard"], "description": "Brain AVM grades and dural arteriovenous fistula classifications."},
+ {"id": "epilepsy-surgery", "title": "Epilepsy surgery outcome", "keywords": ["epilepsy", "seizure", "epilepsy surgery"],
+  "members": ["engel", "ilae"], "description": "Seizure outcome classifications after epilepsy surgery."},
+]
+
 CATEGORY_KEYWORDS = {
+    "exam": ["examination", "neurological examination", "grade", "grades", "neurosurgery", "neurosurgical"],
     "consciousness": ["coma", "consciousness", "loc", "outcome", "brain injury"],
     "stroke": ["stroke", "tia", "lvo", "ischaemic", "ischemic", "thrombectomy", "cerebrovascular"],
     "ich": ["ich", "intracerebral", "haemorrhage", "hemorrhage", "bleed"],
@@ -270,7 +301,11 @@ CATEGORY_KEYWORDS = {
     "functional": ["outcome", "disability", "function", "functional"],
     "neurocritical": ["icu", "critical care", "intensive care", "sedation"],
 }
-EXTRA_KEYWORDS = {"sins": ["spinal metastases", "spine metastases"], "rtokuhashi": ["spinal metastases"], "tomita": ["spinal metastases"],
+EXTRA_KEYWORDS = {"mrc": ["power", "weakness", "strength"], "mrcss": ["weakness", "icu"], "dtr": ["reflex", "reflexes"], "clonus": ["reflex", "umn"], "plantar": ["reflex", "umn"],
+                  "mas": ["spasticity", "tone"], "mts": ["spasticity", "tone", "contracture"], "hb": ["facial nerve", "facial palsy", "cn vii"], "gr": ["hearing", "vestibular schwannoma", "cpa"],
+                  "spetzler": ["avm"], "lawtonyoung": ["avm"], "borden": ["davf", "fistula"], "cognard": ["davf", "fistula"], "markwalder": ["csdh", "subdural"],
+                  "engel": ["epilepsy", "seizure"], "ilae": ["epilepsy", "seizure"],
+                  "sins": ["spinal metastases", "spine metastases"], "rtokuhashi": ["spinal metastases"], "tomita": ["spinal metastases"],
                   "four": ["coma", "brainstem"], "fasted": ["lvo", "prehospital"], "sofa": ["organ failure", "sepsis"], "sofa2": ["organ failure", "sepsis"], "dsgpa": ["brain metastases"], "triss": ["survival", "trauma"],
                   "ais": ["asia", "isncsci", "spinal cord injury"], "mjoa": ["myelopathy", "dcm"], "joa": ["myelopathy"], "odi": ["back pain", "disability"],
                   "graeb": ["ivh", "intraventricular"], "mgraeb": ["ivh", "intraventricular"], "gpa": ["brain metastases"], "tokuhashi": ["spinal metastases"]}

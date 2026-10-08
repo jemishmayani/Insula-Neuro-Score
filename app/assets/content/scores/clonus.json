@@ -1,0 +1,293 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "ankle clonus",
+  "patellar clonus",
+  "sustained clonus",
+  "upper motor neuron"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [
+  {
+   "when": "finding == 0 && !isnull(beats)",
+   "severity": "warning",
+   "inputs": [
+    "beats"
+   ],
+   "message": "A beat count is recorded but clonus is marked absent."
+  }
+ ],
+ "commonErrors": [
+  "Not maintaining the stretch long enough to judge whether clonus is sustained.",
+  "Recording 'sustained' without a beat count or joint."
+ ],
+ "relatedScores": [
+  {
+   "id": "dtr",
+   "relation": "Reflex grade"
+  },
+  {
+   "id": "plantar",
+   "relation": "Plantar response"
+  },
+  {
+   "id": "mas",
+   "relation": "Tone"
+  },
+  {
+   "id": "mts",
+   "relation": "Velocity-dependent spasticity"
+  }
+ ],
+ "id": "clonus",
+ "name": "Clonus",
+ "abbreviation": "Clonus",
+ "subcategory": "Reflexes",
+ "specialties": [
+  "Neurology",
+  "Neurosurgery",
+  "Spine Surgery"
+ ],
+ "version": {
+  "label": "Descriptive examination record: absent, unsustained or sustained",
+  "detail": "Standard descriptive terms. Published beat-count thresholds for 'sustained' differ (for example, more than 10 beats in one reference), so no beat threshold is applied; the beat count can be recorded."
+ },
+ "purpose": "Records whether clonus is present at a joint and whether it is sustained.",
+ "intendedPopulation": "Any patient undergoing neurological examination.",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Examination finding",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Descriptive record",
+  "message": "This records a finding; it is not a score. Note the joint, the side and the number of beats."
+ },
+ "inputDefinitions": [
+  {
+   "id": "finding",
+   "type": "single",
+   "label": "Clonus",
+   "short": "Clonus",
+   "options": [
+    {
+     "value": "absent",
+     "label": "No clonus",
+     "points": 0,
+     "code": "Absent"
+    },
+    {
+     "value": "unsustained",
+     "label": "Unsustained",
+     "points": 1,
+     "code": "Unsustained",
+     "detail": "A limited number of beats that stop although the stretch is maintained."
+    },
+    {
+     "value": "sustained",
+     "label": "Sustained",
+     "points": 2,
+     "code": "Sustained",
+     "detail": "Rhythmic beats continue for as long as the stretch is maintained."
+    }
+   ]
+  },
+  {
+   "id": "site",
+   "type": "single",
+   "label": "Joint (optional)",
+   "short": "Joint",
+   "options": [
+    {
+     "value": "ankle",
+     "label": "Ankle",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "knee",
+     "label": "Knee (patellar)",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "wrist",
+     "label": "Wrist",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "other",
+     "label": "Other",
+     "points": 0,
+     "code": ""
+    }
+   ],
+   "required": false
+  },
+  {
+   "id": "beats",
+   "type": "integer",
+   "label": "Number of beats (optional)",
+   "short": "Beats",
+   "min": 1,
+   "max": 100,
+   "required": false
+  },
+  {
+   "id": "side",
+   "type": "single",
+   "label": "Side (optional)",
+   "short": "Side",
+   "options": [
+    {
+     "value": "left",
+     "label": "Left",
+     "points": 0,
+     "code": "L"
+    },
+    {
+     "value": "right",
+     "label": "Right",
+     "points": 0,
+     "code": "R"
+    }
+   ],
+   "help": "Recorded for the share text only; it does not change the grade.",
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_finding",
+   "label": "Finding",
+   "inputs": [
+    "finding"
+   ]
+  },
+  {
+   "id": "c_detail",
+   "label": "Joint, beats and side",
+   "inputs": [
+    "site",
+    "beats",
+    "side"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "finding",
+  "range": {
+   "min": 0,
+   "max": 2
+  },
+  "display": "{finding_code}",
+  "share": "{finding == 0 ? 'No clonus' : finding_code + ' clonus'}{isnull(site_value) ? '' : ', ' + site_value}{isnull(beats) ? '' : ', ' + beats + ' beats'}{isnull(side_code) ? '' : ' (' + side_code + ')'}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "absent"
+  },
+  {
+   "when": "total == 1",
+   "state": "unsustained"
+  },
+  {
+   "state": "sustained"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "absent",
+   "tone": "favorable",
+   "label": "No clonus elicited",
+   "summary": "No clonus elicited at this assessment.",
+   "detail": "Absence of clonus does not exclude an upper motor neuron lesion."
+  },
+  {
+   "id": "unsustained",
+   "tone": "informational",
+   "label": "Unsustained clonus",
+   "summary": "A few beats that stop despite maintained stretch.",
+   "detail": "A few symmetrical unsustained beats can occur without disease; asymmetry and other upper motor neuron signs make it more significant."
+  },
+  {
+   "id": "sustained",
+   "tone": "moderate",
+   "label": "Sustained clonus",
+   "summary": "Clonus continues while the stretch is maintained.",
+   "detail": "Sustained clonus is a sign of upper motor neuron dysfunction; correlate with tone, reflexes, the plantar response and the history."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Clonus is a rhythmic, involuntary contraction triggered by sudden stretch, associated with hyperreflexia.",
+   "importance": "major"
+  },
+  {
+   "text": "Usually tested at the ankle, by brisk and sustained dorsiflexion."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "finding == 2",
+   "importance": "major",
+   "text": "Record the joint, side and beat count so later examinations can be compared."
+  },
+  {
+   "text": "Compare both sides; asymmetry carries more weight than a symmetrical finding."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "No single agreed beat count defines 'sustained'; definitions differ between sources."
+  },
+  "Depends on technique and the force of the stretch.",
+  "Descriptive only; not a severity scale."
+ ],
+ "confounders": [
+  {
+   "factor": "Anxiety, cold or exertion",
+   "effect": "Can produce a few unsustained beats."
+  },
+  {
+   "factor": "Serotonergic and other drugs",
+   "effect": "Can produce clonus."
+  },
+  {
+   "factor": "Muscle contracture",
+   "effect": "Can prevent eliciting clonus."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The site or cause of the lesion.",
+  "The severity of spasticity (see Modified Ashworth and Modified Tardieu)."
+ ],
+ "guideSections": {
+  "what": "A descriptive record of clonus at a joint: absent, unsustained or sustained.",
+  "whenToUse": "Examination for upper motor neuron signs, and monitoring spinal cord or brain lesions.",
+  "howToPerform": "Support the limb with the knee slightly flexed. Dorsiflex the foot briskly and hold the stretch. Count the beats and note whether they continue while the stretch is maintained. Repeat on the other side.",
+  "clinicalContext": "Interpret with reflex grade, tone, power and the plantar response."
+ },
+ "sources": [
+  {
+   "citation": "Zimmerman B, Hubbard JB. Clonus. In: StatPearls. Treasure Island (FL): StatPearls Publishing; updated 2023.",
+   "url": "https://www.ncbi.nlm.nih.gov/books/NBK534862/"
+  },
+  {
+   "citation": "Hallett M. NINDS myotatic reflex scale. Neurology. 1993;43(12):2723."
+  }
+ ],
+ "licensing": {
+  "status": "Descriptive terms",
+  "note": "No instrument is reproduced."
+ },
+ "category": "exam"
+}

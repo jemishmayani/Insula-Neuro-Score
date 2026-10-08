@@ -1,0 +1,72 @@
+{
+ "scoreId": "clonus",
+ "cases": [
+  {
+   "name": "absent",
+   "answers": {
+    "finding": "absent"
+   },
+   "expect": {
+    "display": "Absent",
+    "state": "absent",
+    "shareText": "No clonus — No clonus elicited"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no clonus",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "unsustained",
+   "answers": {
+    "finding": "unsustained",
+    "site": "ankle",
+    "beats": 3
+   },
+   "expect": {
+    "state": "unsustained"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "unsustained, 3 beats",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "sustained ankle left",
+   "answers": {
+    "finding": "sustained",
+    "site": "ankle",
+    "beats": 12,
+    "side": "left"
+   },
+   "expect": {
+    "display": "Sustained",
+    "state": "sustained",
+    "shareText": "Sustained clonus, ankle, 12 beats (L) — Sustained clonus"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "sustained",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "beats with absent",
+   "answers": {
+    "finding": "absent",
+    "beats": 2
+   },
+   "expect": {
+    "state": "absent",
+    "warnings": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "inconsistent → warning",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -58,7 +58,8 @@
     spine: '<rect x="9" y="2" width="6" height="4" rx="1"/><rect x="9" y="8" width="6" height="4" rx="1"/><rect x="9" y="14" width="6" height="4" rx="1"/><path d="M12 18v4"/>',
     oncology: '<circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/>',
     functional: '<circle cx="12" cy="5" r="2"/><path d="M12 7v6l-3 8M12 13l3 8M7 10h10"/>',
-    icu: '<path d="M3 12h4l2-5 4 10 2-5h6"/>'
+    icu: '<path d="M3 12h4l2-5 4 10 2-5h6"/>',
+    exam: '<path d="M14.5 3.5l6 6-2.5 2.5-6-6z"/><path d="M13.25 7.25L4 16.5 7.5 20l9.25-9.25"/>'
   };
   var STATE_ICON = {
     favorable: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>',

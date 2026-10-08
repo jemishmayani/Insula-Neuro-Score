@@ -1,0 +1,867 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "mrc sum",
+  "mrc sum score",
+  "icu acquired weakness",
+  "icuaw",
+  "global muscle strength"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Summing when one or more movements could not be tested.",
+  "Testing before the patient can follow commands reliably.",
+  "Using the total without checking for asymmetry."
+ ],
+ "relatedScores": [
+  {
+   "id": "mrc",
+   "relation": "Grade for each movement"
+  },
+  {
+   "id": "sofa",
+   "relation": "Organ dysfunction in ICU"
+  },
+  {
+   "id": "dtr",
+   "relation": "Reflex grade"
+  }
+ ],
+ "id": "mrcss",
+ "name": "MRC Sum Score",
+ "abbreviation": "MRC-SS",
+ "subcategory": "Motor",
+ "specialties": [
+  "Neurocritical Care",
+  "Critical Care",
+  "Neurology",
+  "Rehabilitation"
+ ],
+ "version": {
+  "label": "MRC sum score, 12 muscle groups (Kleyweg et al. 1991)",
+  "detail": "Six movements on each side graded 0–5 with the MRC scale; total 0–60. The <48 threshold for ICU-acquired weakness is from De Jonghe et al. 2002."
+ },
+ "purpose": "Summarises global limb strength from 12 standard movements, for example when assessing ICU-acquired weakness.",
+ "intendedPopulation": "Adults able to follow commands for voluntary strength testing, including critically ill patients once awake and cooperative.",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Global muscle strength",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Requires an awake, cooperative patient",
+  "message": "If any movement cannot be tested, record it as not testable. No total is reported, because a partial sum is not comparable with the 0–60 scale."
+ },
+ "components": [
+  {
+   "id": "left",
+   "label": "Left side",
+   "inputs": [
+    "sh_l",
+    "el_l",
+    "wr_l",
+    "hi_l",
+    "kn_l",
+    "an_l"
+   ]
+  },
+  {
+   "id": "right",
+   "label": "Right side",
+   "inputs": [
+    "sh_r",
+    "el_r",
+    "wr_r",
+    "hi_r",
+    "kn_r",
+    "an_r"
+   ]
+  }
+ ],
+ "inputDefinitions": [
+  {
+   "id": "sh_l",
+   "type": "single",
+   "label": "Shoulder abduction, left",
+   "short": "L Shoulder abduction",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "el_l",
+   "type": "single",
+   "label": "Elbow flexion, left",
+   "short": "L Elbow flexion",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "wr_l",
+   "type": "single",
+   "label": "Wrist extension, left",
+   "short": "L Wrist extension",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "hi_l",
+   "type": "single",
+   "label": "Hip flexion, left",
+   "short": "L Hip flexion",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "kn_l",
+   "type": "single",
+   "label": "Knee extension, left",
+   "short": "L Knee extension",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "an_l",
+   "type": "single",
+   "label": "Ankle dorsiflexion, left",
+   "short": "L Ankle dorsiflexion",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "sh_r",
+   "type": "single",
+   "label": "Shoulder abduction, right",
+   "short": "R Shoulder abduction",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "el_r",
+   "type": "single",
+   "label": "Elbow flexion, right",
+   "short": "R Elbow flexion",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "wr_r",
+   "type": "single",
+   "label": "Wrist extension, right",
+   "short": "R Wrist extension",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "hi_r",
+   "type": "single",
+   "label": "Hip flexion, right",
+   "short": "R Hip flexion",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "kn_r",
+   "type": "single",
+   "label": "Knee extension, right",
+   "short": "R Knee extension",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  },
+  {
+   "id": "an_r",
+   "type": "single",
+   "label": "Ankle dorsiflexion, right",
+   "short": "R Ankle dorsiflexion",
+   "options": [
+    {
+     "value": "5",
+     "label": "5",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "4",
+     "label": "4",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "3",
+     "label": "3",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "2",
+     "label": "2",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "1",
+     "label": "1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "0",
+     "label": "0",
+     "points": 0,
+     "code": "0"
+    }
+   ],
+   "notTestable": {
+    "label": "Not testable",
+    "code": "NT",
+    "reasons": [
+     "Amputation or injury",
+     "Pain prevents testing",
+     "Not cooperating or sedated",
+     "Other"
+    ]
+   }
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "notTestablePolicy": "block",
+  "range": {
+   "min": 0,
+   "max": 60
+  },
+  "formula": "Left {left} + Right {right}",
+  "display": "{total}/60",
+  "share": "MRC-SS {total}/60 (L {left}, R {right})"
+ },
+ "notTestable": {
+  "label": "No total: movement not testable",
+  "summary": "At least one movement could not be tested, so no MRC sum score is reported.",
+  "display": "No total",
+  "detail": "Report the individual grades. A partial sum is not comparable with the 0–60 scale or the <48 threshold.",
+  "share": "MRC-SS not reported (movement not testable)"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 60",
+   "state": "full"
+  },
+  {
+   "when": "total >= 48",
+   "state": "above"
+  },
+  {
+   "state": "below"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "full",
+   "tone": "favorable",
+   "label": "No weakness measured",
+   "summary": "Full strength in all 12 movements tested at this assessment.",
+   "range": "60",
+   "detail": "Does not exclude distal, proximal-axial or respiratory muscle weakness.",
+   "min": 60,
+   "max": 60
+  },
+  {
+   "id": "above",
+   "tone": "mild",
+   "label": "Weakness above the ICU-AW threshold",
+   "summary": "Some weakness, with a total at or above 48.",
+   "range": "48–59",
+   "detail": "The <48 threshold applies to ICU-acquired weakness; interpret other causes of weakness on their own terms.",
+   "min": 48,
+   "max": 59
+  },
+  {
+   "id": "below",
+   "tone": "high",
+   "label": "Below 48: meets the ICU-AW strength criterion",
+   "summary": "Total below 48, the strength criterion used to define ICU-acquired weakness (De Jonghe 2002).",
+   "range": "0–47",
+   "detail": "Assess for ICU-acquired weakness in clinical context; the diagnosis also requires exclusion of other causes, and the score alone does not establish it.",
+   "min": 0,
+   "max": 47
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Summarises strength in 12 standard movements into one number.",
+   "importance": "major"
+  },
+  {
+   "text": "A total below 48 is the strength criterion in the definition of ICU-acquired weakness."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "abs(left - right) >= 6",
+   "importance": "major",
+   "text": "Marked side-to-side difference: a focal (central or peripheral) cause is more likely than generalised ICU-acquired weakness."
+  },
+  {
+   "text": "Repeat after sedation is reduced; early totals in the ICU are often limited by arousal and cooperation."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Requires an awake, cooperative patient; often not testable early in critical illness."
+  },
+  "Insensitive to small changes within MRC grade 4.",
+  "Does not test distal hand, neck, trunk or respiratory muscles.",
+  "Inter-rater agreement is lower in the ICU than in outpatient settings."
+ ],
+ "confounders": [
+  {
+   "factor": "Sedation or delirium",
+   "effect": "Reduces effort and cooperation."
+  },
+  {
+   "factor": "Pain, lines and positioning",
+   "effect": "Limit testing of some movements."
+  },
+  {
+   "factor": "Pre-existing weakness or joint disease",
+   "effect": "Lowers the total independent of the acute illness."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause of weakness (e.g. myopathy versus neuropathy).",
+  "Respiratory muscle strength.",
+  "Functional mobility."
+ ],
+ "guideSections": {
+  "what": "The sum of MRC grades for shoulder abduction, elbow flexion, wrist extension, hip flexion, knee extension and ankle dorsiflexion on both sides (0–60).",
+  "whenToUse": "Screening and monitoring for ICU-acquired weakness; global strength in Guillain-Barré syndrome and other generalised weakness.",
+  "howToPerform": "Confirm the patient is awake and can follow commands. Grade each of the 12 movements with the MRC 0–5 scale. Record any movement that cannot be tested; no total is reported in that case.",
+  "clinicalContext": "A summary of limb strength; identifying ICU-acquired weakness also needs clinical context and exclusion of other causes."
+ },
+ "sources": [
+  {
+   "citation": "Kleyweg RP, van der Meché FG, Schmitz PI. Interobserver agreement in the assessment of muscle strength and functional abilities in Guillain-Barré syndrome. Muscle Nerve. 1991;14(11):1103-1109."
+  },
+  {
+   "citation": "De Jonghe B, Sharshar T, Lefaucheur JP, et al. Paresis acquired in the intensive care unit: a prospective multicenter study. JAMA. 2002;288(22):2859-2867."
+  },
+  {
+   "citation": "Stevens RD, Marshall SA, Cornblath DR, et al. A framework for diagnosing and classifying intensive care unit-acquired weakness. Crit Care Med. 2009;37(10 Suppl):S299-S308."
+  }
+ ],
+ "licensing": {
+  "status": "Published method with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam"
+}

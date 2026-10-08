@@ -1,0 +1,321 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "ashworth",
+  "modified ashworth",
+  "spasticity",
+  "tone",
+  "muscle tone"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Treating grades as numbers and averaging them.",
+  "Moving the joint at different speeds between assessments.",
+  "Recording the grade without the muscle group and position."
+ ],
+ "relatedScores": [
+  {
+   "id": "mts",
+   "relation": "Separates spasticity from contracture"
+  },
+  {
+   "id": "clonus",
+   "relation": "Clonus"
+  },
+  {
+   "id": "dtr",
+   "relation": "Reflex grade"
+  }
+ ],
+ "id": "mas",
+ "name": "Modified Ashworth Scale",
+ "abbreviation": "MAS",
+ "subcategory": "Tone and spasticity",
+ "specialties": [
+  "Neurology",
+  "Neurosurgery",
+  "Rehabilitation"
+ ],
+ "version": {
+  "label": "Modified Ashworth Scale (Bohannon & Smith 1987)",
+  "detail": "Six grades: 0, 1, 1+, 2, 3, 4. The original Ashworth scale (1964) has five grades without 1+ and is a different version."
+ },
+ "purpose": "Grades resistance to passive movement (muscle tone) at one joint.",
+ "intendedPopulation": "Patients with spasticity from brain or spinal cord disorders.",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Tone grade",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Ordinal grade",
+  "message": "1+ lies between 1 and 2. Grades are categories, not measurements, so they should not be added or averaged."
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Resistance to passive movement",
+   "short": "MAS",
+   "options": [
+    {
+     "value": "0",
+     "label": "No increase in muscle tone",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "Slight increase: catch and release, or minimal resistance at the end of the range",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Slight increase: catch, then minimal resistance through less than half of the range",
+     "points": 2,
+     "code": "1+"
+    },
+    {
+     "value": "3",
+     "label": "More marked increase through most of the range, but the part moves easily",
+     "points": 3,
+     "code": "2"
+    },
+    {
+     "value": "4",
+     "label": "Considerable increase; passive movement is difficult",
+     "points": 4,
+     "code": "3"
+    },
+    {
+     "value": "5",
+     "label": "Affected part rigid in flexion or extension",
+     "points": 5,
+     "code": "4"
+    }
+   ],
+   "help": "Move the joint through its full range over about one second."
+  },
+  {
+   "id": "muscle",
+   "type": "single",
+   "label": "Muscle group (optional)",
+   "short": "Muscle",
+   "options": [
+    {
+     "value": "elbow flexors",
+     "label": "Elbow flexors",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "wrist flexors",
+     "label": "Wrist flexors",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "knee extensors",
+     "label": "Knee extensors",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "knee flexors",
+     "label": "Knee flexors",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "ankle plantarflexors",
+     "label": "Ankle plantarflexors",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "other",
+     "label": "Other",
+     "points": 0,
+     "code": ""
+    }
+   ],
+   "required": false
+  },
+  {
+   "id": "side",
+   "type": "single",
+   "label": "Side (optional)",
+   "short": "Side",
+   "options": [
+    {
+     "value": "left",
+     "label": "Left",
+     "points": 0,
+     "code": "L"
+    },
+    {
+     "value": "right",
+     "label": "Right",
+     "points": 0,
+     "code": "R"
+    }
+   ],
+   "help": "Recorded for the share text only; it does not change the grade.",
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Grade",
+   "inputs": [
+    "grade"
+   ]
+  },
+  {
+   "id": "c_site",
+   "label": "Muscle and side",
+   "inputs": [
+    "muscle",
+    "side"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "display": "MAS {grade_code}",
+  "share": "MAS {grade_code}{isnull(muscle_value) ? '' : ', ' + muscle_value}{isnull(side_code) ? '' : ' (' + side_code + ')'}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "g0"
+  },
+  {
+   "when": "total <= 2",
+   "state": "slight"
+  },
+  {
+   "when": "total == 3",
+   "state": "marked"
+  },
+  {
+   "when": "total == 4",
+   "state": "considerable"
+  },
+  {
+   "state": "rigid"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g0",
+   "tone": "favorable",
+   "label": "No increase in tone",
+   "summary": "No increase in muscle tone at this joint at this assessment.",
+   "range": "MAS 0",
+   "detail": "Tone varies with position, time of day and medication; other joints may differ."
+  },
+  {
+   "id": "slight",
+   "tone": "low",
+   "label": "Slight increase in tone",
+   "summary": "Slight increase in tone (grade 1 or 1+).",
+   "range": "MAS 1–1+"
+  },
+  {
+   "id": "marked",
+   "tone": "mild",
+   "label": "More marked increase",
+   "summary": "Increased tone through most of the range; the part still moves easily.",
+   "range": "MAS 2"
+  },
+  {
+   "id": "considerable",
+   "tone": "moderate",
+   "label": "Considerable increase",
+   "summary": "Passive movement is difficult.",
+   "range": "MAS 3"
+  },
+  {
+   "id": "rigid",
+   "tone": "high",
+   "label": "Rigid",
+   "summary": "Affected part rigid in flexion or extension.",
+   "range": "MAS 4",
+   "detail": "Assess passive range for fixed contracture; the Modified Tardieu Scale separates contracture from spasticity."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Grades resistance to passive movement at one joint.",
+   "importance": "major"
+  },
+  {
+   "text": "Widely used to document spasticity and response to treatment."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "MAS does not distinguish spasticity from contracture or rigidity; the Modified Tardieu Scale tests at different speeds."
+  },
+  {
+   "when": "total >= 4",
+   "text": "At grades 3–4, check passive range of motion for contracture."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Measures resistance, which mixes neural (spasticity) and non-neural (stiffness, contracture) components."
+  },
+  "Reliability is moderate, especially in the lower limb and around grades 1 and 1+.",
+  "Not velocity-controlled."
+ ],
+ "confounders": [
+  {
+   "factor": "Position, temperature, pain and anxiety",
+   "effect": "Change tone during testing."
+  },
+  {
+   "factor": "Time of day and recent medication",
+   "effect": "Antispasticity drugs alter tone."
+  },
+  {
+   "factor": "Contracture",
+   "effect": "Increases resistance independent of spasticity."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The neural versus contracture component of resistance.",
+  "Function or the effect of spasticity on daily life.",
+  "Strength."
+ ],
+ "guideSections": {
+  "what": "A six-grade ordinal scale (0, 1, 1+, 2, 3, 4) of resistance to passive movement.",
+  "whenToUse": "Documenting spasticity and change after treatment (e.g. botulinum toxin, intrathecal baclofen, rehabilitation).",
+  "howToPerform": "Position the patient consistently (usually supine). Move the joint through its full range over about one second. Grade the resistance felt. Record muscle group, side and position.",
+  "clinicalContext": "Use with passive range of motion and functional assessment; MAS alone does not separate spasticity from contracture."
+ },
+ "sources": [
+  {
+   "citation": "Bohannon RW, Smith MB. Interrater reliability of a modified Ashworth scale of muscle spasticity. Phys Ther. 1987;67(2):206-207."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam"
+}

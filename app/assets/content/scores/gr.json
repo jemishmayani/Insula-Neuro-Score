@@ -1,0 +1,297 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "gardner robertson",
+  "hearing",
+  "vestibular schwannoma",
+  "acoustic neuroma",
+  "serviceable hearing",
+  "cpa",
+  "cerebellopontine angle"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Silently choosing the better or poorer class when PTA and SDS disagree.",
+  "Not stating which frequencies make up the PTA.",
+  "Mixing Gardner-Robertson classes with AAO-HNS classes."
+ ],
+ "relatedScores": [
+  {
+   "id": "hb",
+   "relation": "Facial nerve function in CPA lesions"
+  }
+ ],
+ "id": "gr",
+ "name": "Gardner-Robertson Hearing Classification",
+ "abbreviation": "Gardner-Robertson",
+ "subcategory": "Hearing",
+ "specialties": [
+  "Neurosurgery",
+  "Otolaryngology",
+  "Radiation Oncology"
+ ],
+ "version": {
+  "label": "Gardner-Robertson modified hearing classification (1988)",
+  "detail": "Class from pure-tone average (PTA) and speech discrimination score (SDS). I 0–30 dB / 70–100%; II 31–50 dB / 50–69%; III 51–90 dB / 5–49%; IV 91 dB to maximum / 1–4%; V not testable / 0%. The AAO-HNS (1995) A–D hearing classes are a different system and are not combined."
+ },
+ "purpose": "Classifies hearing in the affected ear, mainly in vestibular schwannoma, using audiometry.",
+ "intendedPopulation": "Patients with vestibular schwannoma or other cerebellopontine angle lesions, with pure-tone and speech audiometry.",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Hearing class",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "When PTA and SDS disagree",
+  "message": "Published descriptions disagree on which class to use when PTA and SDS fall in different classes (some use the better, others the poorer). The app does not choose: it reports both classes."
+ },
+ "inputDefinitions": [
+  {
+   "id": "pta",
+   "type": "single",
+   "label": "Pure-tone average (PTA)",
+   "short": "PTA",
+   "options": [
+    {
+     "value": "1",
+     "label": "0–30 dB",
+     "points": 1,
+     "code": "I"
+    },
+    {
+     "value": "2",
+     "label": "31–50 dB",
+     "points": 2,
+     "code": "II"
+    },
+    {
+     "value": "3",
+     "label": "51–90 dB",
+     "points": 3,
+     "code": "III"
+    },
+    {
+     "value": "4",
+     "label": "91 dB to maximum",
+     "points": 4,
+     "code": "IV"
+    },
+    {
+     "value": "5",
+     "label": "Not testable",
+     "points": 5,
+     "code": "V"
+    }
+   ],
+   "help": "Use the PTA as defined by your audiology service (commonly 0.5, 1, 2 and 3 kHz, or 0.5, 1 and 2 kHz) and state which."
+  },
+  {
+   "id": "sds",
+   "type": "single",
+   "label": "Speech discrimination score (SDS)",
+   "short": "SDS",
+   "options": [
+    {
+     "value": "1",
+     "label": "70–100%",
+     "points": 1,
+     "code": "I"
+    },
+    {
+     "value": "2",
+     "label": "50–69%",
+     "points": 2,
+     "code": "II"
+    },
+    {
+     "value": "3",
+     "label": "5–49%",
+     "points": 3,
+     "code": "III"
+    },
+    {
+     "value": "4",
+     "label": "1–4%",
+     "points": 4,
+     "code": "IV"
+    },
+    {
+     "value": "5",
+     "label": "0%",
+     "points": 5,
+     "code": "V"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "pta == sds ? pta : 0",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "display": "{total == 0 ? 'Discordant' : 'Class ' + roman(total)}",
+  "share": "Gardner-Robertson {total == 0 ? 'discordant (PTA class ' + roman(pta) + ', SDS class ' + roman(sds) + ')' : 'class ' + roman(total)}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "disc"
+  },
+  {
+   "when": "total == 1",
+   "state": "c1"
+  },
+  {
+   "when": "total == 2",
+   "state": "c2"
+  },
+  {
+   "when": "total == 3",
+   "state": "c3"
+  },
+  {
+   "when": "total == 4",
+   "state": "c4"
+  },
+  {
+   "when": "total == 5",
+   "state": "c5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "disc",
+   "tone": "informational",
+   "label": "Discordant: PTA class {roman(pta)}, SDS class {roman(sds)}",
+   "summary": "PTA and SDS fall in different classes.",
+   "detail": "Sources apply different rules in this situation, so no single class is assigned. Report both values, and the rule used if your service has one."
+  },
+  {
+   "id": "c1",
+   "tone": "favorable",
+   "label": "Class I: good to excellent",
+   "summary": "PTA 0–30 dB and SDS 70–100% at this assessment.",
+   "range": "I",
+   "detail": "Describes audiometric hearing in the tested ear; it does not predict whether hearing will be preserved."
+  },
+  {
+   "id": "c2",
+   "tone": "low",
+   "label": "Class II: serviceable",
+   "summary": "PTA 31–50 dB and SDS 50–69%.",
+   "range": "II",
+   "detail": "Classes I–II are usually described as serviceable hearing."
+  },
+  {
+   "id": "c3",
+   "tone": "moderate",
+   "label": "Class III: non-serviceable",
+   "summary": "PTA 51–90 dB and SDS 5–49%.",
+   "range": "III"
+  },
+  {
+   "id": "c4",
+   "tone": "high",
+   "label": "Class IV: poor",
+   "summary": "PTA 91 dB to maximum and SDS 1–4%.",
+   "range": "IV",
+   "detail": "Assess with the full audiological picture according to the clinical situation; describes hearing in the tested ear only."
+  },
+  {
+   "id": "c5",
+   "tone": "high",
+   "label": "Class V: none",
+   "summary": "PTA not testable and SDS 0%.",
+   "range": "V",
+   "detail": "Assess with the full audiological picture according to the clinical situation; describes hearing in the tested ear only."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Classifies hearing in the affected ear from standard audiometry.",
+   "importance": "major"
+  },
+  {
+   "text": "Widely used to report hearing preservation after surgery or radiosurgery for vestibular schwannoma."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "total == 0",
+   "importance": "major",
+   "text": "Discordant PTA and SDS: report both classes rather than one."
+  },
+  {
+   "text": "State the frequencies used for the PTA; definitions differ between studies."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "No agreed rule when PTA and SDS fall in different classes."
+  },
+  "PTA frequency sets differ between studies.",
+  "Does not capture tinnitus, vestibular function or subjective hearing handicap."
+ ],
+ "confounders": [
+  {
+   "factor": "Contralateral hearing loss or masking",
+   "effect": "Affects audiometric results."
+  },
+  {
+   "factor": "Different speech test materials",
+   "effect": "Change SDS values between languages and centres."
+  },
+  {
+   "factor": "Conductive hearing loss",
+   "effect": "Raises PTA independent of the tumour."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Tumour size or growth.",
+  "The likelihood of preserving hearing with any treatment.",
+  "Patient-reported hearing function."
+ ],
+ "guideSections": {
+  "what": "A five-class hearing classification (I–V) from pure-tone average and speech discrimination.",
+  "whenToUse": "Reporting hearing before and after treatment of vestibular schwannoma and other cerebellopontine angle lesions.",
+  "howToPerform": "Obtain pure-tone and speech audiometry for the affected ear. Select the PTA band and the SDS band. If both are in the same class, that is the class; if not, report both.",
+  "clinicalContext": "A reporting classification; treatment decisions consider tumour size, growth, symptoms and patient preference."
+ },
+ "sources": [
+  {
+   "citation": "Gardner G, Robertson JH. Hearing preservation in unilateral acoustic neuroma surgery. Ann Otol Rhinol Laryngol. 1988;97(1):55-66."
+  },
+  {
+   "citation": "Hörklassen bei Patienten mit Vestibularisschwannom bei Verwendung deutschsprachiger Testverfahren (Hearing classes in vestibular schwannoma with German-language tests). HNO. 2021. Notes the conflicting rules for discordant PTA and SDS.",
+   "url": "https://link.springer.com/article/10.1007/s00106-020-00948-4"
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam",
+ "components": [
+  {
+   "id": "c_pta",
+   "label": "Pure-tone average (PTA)",
+   "inputs": [
+    "pta"
+   ]
+  },
+  {
+   "id": "c_sds",
+   "label": "Speech discrimination score (SDS)",
+   "inputs": [
+    "sds"
+   ]
+  }
+ ]
+}

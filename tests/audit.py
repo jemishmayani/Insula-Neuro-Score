@@ -14,7 +14,7 @@ SEED = {"v": 3, "favorites": ["gcs", "sins"], "favoriteGuides": ["nihss"], "rece
 SCREENS = [("home", "#/home", None), ("calculate", "#/calculate", None), ("category", "#/calculate/c/sah", None),
            ("gcs-filled", "#/calculate/s/gcs", "gcs"), ("nihss", "#/calculate/s/nihss", None), ("iss", "#/calculate/s/iss", "iss"), ("rts", "#/calculate/s/rts", "rts"),
            ("aspects", "#/calculate/s/aspects", "aspects"), ("guide-gcs", "#/guide/s/gcs", None), ("guide-sins", "#/guide/s/sins", None),
-           ("review-sofa", "#/guide/s/sofa", None), ("settings", "#/settings", None), ("search", "#/guide?search=sah", "search")]
+           ("guide-sofa", "#/guide/s/sofa", None), ("exam-group", "#/calculate/c/exam", None), ("calc-mts", "#/calculate/s/mts", None), ("settings", "#/settings", None), ("search", "#/guide?search=sah", "search")]
 if QUICK: DEVICES, SCALES, THEMES = DEVICES[:1] + DEVICES[3:4], [1.0, 2.0], ["light", "dark"]
 
 PROBE = r"""

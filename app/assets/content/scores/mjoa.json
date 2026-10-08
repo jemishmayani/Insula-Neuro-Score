@@ -21,10 +21,6 @@
    "relation": "Myelopathy grade"
   },
   {
-   "id": "joa",
-   "relation": "Original JOA (under review)"
-  },
-  {
    "id": "frankel",
    "relation": "Spinal cord injury grade"
   }

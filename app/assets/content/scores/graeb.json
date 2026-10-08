@@ -20,10 +20,6 @@
    "relation": "ICH severity grade"
   },
   {
-   "id": "mgraeb",
-   "relation": "Modified version (under review)"
-  },
-  {
    "id": "mfisher",
    "relation": "SAH CT grade including IVH"
   }

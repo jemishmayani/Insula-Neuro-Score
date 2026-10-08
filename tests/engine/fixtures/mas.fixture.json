@@ -1,0 +1,96 @@
+{
+ "scoreId": "mas",
+ "cases": [
+  {
+   "name": "0",
+   "answers": {
+    "grade": "0"
+   },
+   "expect": {
+    "display": "MAS 0",
+    "state": "g0"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "MAS 0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "1",
+   "answers": {
+    "grade": "1"
+   },
+   "expect": {
+    "display": "MAS 1",
+    "state": "slight"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "MAS 1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "1+",
+   "answers": {
+    "grade": "2"
+   },
+   "expect": {
+    "display": "MAS 1+",
+    "state": "slight"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "ordinal index 2 = MAS 1+",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "2",
+   "answers": {
+    "grade": "3"
+   },
+   "expect": {
+    "display": "MAS 2",
+    "state": "marked"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "ordinal index 3 = MAS 2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "3",
+   "answers": {
+    "grade": "4"
+   },
+   "expect": {
+    "display": "MAS 3",
+    "state": "considerable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "ordinal index 4 = MAS 3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "4",
+   "answers": {
+    "grade": "5"
+   },
+   "expect": {
+    "display": "MAS 4",
+    "state": "rigid",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "ordinal index 5 = MAS 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

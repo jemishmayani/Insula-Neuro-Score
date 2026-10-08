@@ -5,7 +5,8 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "app", "assets"); SHOTS = o
 os.makedirs(SHOTS, exist_ok=True); PORT = 8770; U = f"http://localhost:{PORT}/index.html"; results = []
 def check(n, c, info=""): results.append((n, bool(c))); print(("PASS " if c else "FAIL ") + n + (f"  [{info}]" if info and not c else ""))
 CAT = json.load(open(os.path.join(ROOT, "content", "catalog.json"))); BY = {s["id"]: s for s in CAT["scores"]}
-IMPL = [s["id"] for s in CAT["scores"] if s["status"] == "implemented"]; REVIEW = [s["id"] for s in CAT["scores"] if s["status"] == "review"]
+IMPL = [s["id"] for s in CAT["scores"] if s["status"] == "implemented"]; REVIEW = []   # v0.10: under-review entries are no longer in the active catalogue
+WITHHELD = [w["id"] for w in CAT.get("withheld", [])]
 ORDER = ["Overview", "Purpose", "Intended population", "When to use", "Calculation", "Interpretation", "Clinical context", "Limitations", "Confounders",
          "Common mistakes", "What it does not tell you", "Related scores", "Version", "Sources"]
 
@@ -62,7 +63,7 @@ async def main():
             # ---------- 3. spec examples ----------
             async def related_ids(sid):
                 await open_guide(sid); return await pg.evaluate("[...new Set([...document.querySelectorAll('#g-related [data-related]')].map(e => e.dataset.related))]")
-            r = await related_ids("gcs"); check("GCS → GCS-P, FOUR, GOSE", all(x in r for x in ["gcsp", "four", "gose"]), str(r))
+            r = await related_ids("gcs"); check("GCS → GCS-P, GOSE (no withheld scores linked)", all(x in r for x in ["gcsp", "gose"]) and not set(r) & set(WITHHELD), str(r))
             r = await related_ids("wfns"); check("SAH → Hunt & Hess, Modified Fisher, Fisher (from WFNS)", all(x in r for x in ["hunthess", "mfisher", "fisher"]), str(r))
             check("SAH cluster card present", await pg.locator("#g-related [data-cluster=sah]").count() == 1)
             r = await related_ids("sins"); check("Spinal metastases → Tokuhashi, Tomita, KPS (from SINS)", all(x in r for x in ["rtokuhashi", "tomita", "kps"]), str(r))
@@ -95,13 +96,15 @@ async def main():
                     if await hashof() != f"#/guide/s/{sid}": back_fail.append(f"{sid}←{t['id']}")
             check(f"every related link opens the right score ({clicked} links clicked across {len(IMPL) + len(REVIEW)} guides)", not failures and clicked > 150, str(failures[:4]))
             check("Back from each related score returns to the originating guide", not back_fail, str(back_fail[:4]))
-            un = BY["four"]; await open_guide("gcs"); await pg.locator('#g-related [data-related="four"] a.open').first.click(); await pg.wait_for_selector(".detail-head")
-            check("related under-review score opens with its review reason", "Under review" in await pg.locator("main").inner_text())
+            await open_guide("gcs")
+            check("no related links to withheld scores", await pg.locator(",".join(f'#g-related [data-related="{w}"]' for w in WITHHELD)).count() == 0)
+            await pg.goto(U + "#/guide/s/four"); await pg.wait_for_selector("main")
+            check("withheld score is not reachable (FOUR → not found)", await pg.locator(".error-state").count() == 1)
 
             # ---------- 5. Guide search ----------
             async def gsearch(q):
                 await pg.goto(U + "#/guide"); await pg.wait_for_selector("#search"); await pg.fill("#search", q); await pg.wait_for_timeout(60)
-                return [t.split("\n")[0].replace("Calculator", "").replace("Under review", "").strip() for t in await pg.locator("#search-results .score-card .title").all_inner_texts()]
+                return [t.split("\n")[0].replace("Calculator", "").strip() for t in await pg.locator("#search-results .score-card .title").all_inner_texts()]
             r = await gsearch("SAH"); check("'SAH' surfaces Hunt & Hess, WFNS, Fisher, Modified Fisher first", sorted(r[:4]) == sorted(["Hunt & Hess", "WFNS", "Fisher", "mFisher"]), str(r))
             await pg.screenshot(path=f"{SHOTS}/p7_search_sah.png")
             check("search shows why a result matched", await pg.locator("#search-results .sub:has-text('matched')").count() >= 1)

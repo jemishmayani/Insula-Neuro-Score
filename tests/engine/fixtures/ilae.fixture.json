@@ -1,0 +1,86 @@
+{
+ "scoreId": "ilae",
+ "cases": [
+  {
+   "name": "class 1a",
+   "answers": {
+    "cls": "1",
+    "since": "yes",
+    "fu": 3
+   },
+   "expect": {
+    "display": "Class 1a",
+    "state": "c1a",
+    "shareText": "ILAE outcome class 1a, year 3 — Class 1a"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1 + since surgery → 1a",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "class 1 not since surgery",
+   "answers": {
+    "cls": "1",
+    "since": "no"
+   },
+   "expect": {
+    "display": "Class 1",
+    "state": "c1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "class 4",
+   "answers": {
+    "cls": "4"
+   },
+   "expect": {
+    "display": "Class 4",
+    "state": "c4"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "1a flag on class 3",
+   "answers": {
+    "cls": "3",
+    "since": "yes"
+   },
+   "expect": {
+    "display": "Class 3",
+    "warnings": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1a only for class 1 → warning",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "class 6",
+   "answers": {
+    "cls": "6"
+   },
+   "expect": {
+    "display": "Class 6",
+    "state": "c6",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

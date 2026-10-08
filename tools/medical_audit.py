@@ -23,8 +23,8 @@ for c in impl:
     for f in e.get("flags", []): flags.append((s["abbreviation"], f))
 held_rows = []
 for i, e in HELD.items():
-    c = next(x for x in cat["scores"] if x["id"] == i)
-    held_rows.append([c["abbreviation"], mark(e["calc"]), mark(e["src"]), f"{fixtures(i)} hand-calculated cases retained", c.get("reviewReason", "")])
+    c = next(x for x in cat["withheld"] if x["id"] == i)
+    held_rows.append([c["abbreviation"], mark(e["calc"]), mark(e["src"]), f"{fixtures(i)} hand-calculated cases retained", c.get("withheldReason", "")])
     for f in e["flags"]: flags.append((c["abbreviation"] + " (held)", f))
 calc_issues = sum(len(r["issues"]) for r in calc.values())
 needs = [r[0] for r in rows if "FLAG" in " ".join(r[2:7])]
@@ -52,7 +52,8 @@ md += ["", "### Applies to all scores", "- **Limitations, confounders and clinic
 md += [f"- **{n}**" for n in needs if n not in ("Revised Tokuhashi",)]
 md += [f"- **{a}**" for a in sorted({a for a, _ in flags}) if a not in needs and "held" not in a and a != "Revised Tokuhashi"]
 md += ["", "**Secondary-source verification only (confirm against primary full text):** " + ", ".join(r[0] for r in rows if "secondary" in " ".join(r[2:7])) + ".", "",
-       "**Not implemented (under review):** " + "; ".join(f"{c['abbreviation']} ({c.get('reviewCategory','')})" for c in cat['scores'] if c['status'] == 'review') + ". Reasons: [CONTENT-AUDIT.md](CONTENT-AUDIT.md).", "",
+       "**Withheld (not shown in the app):** " + "; ".join(f"{c['abbreviation']} ({c['withheldCategory']})" for c in cat['withheld']) + ". Reasons: [CONTENT-AUDIT.md](CONTENT-AUDIT.md).", "",
+       "**Planned (future queue, not implemented):** " + ", ".join(c['abbreviation'] for c in cat.get('planned', [])) + ".", "",
        "## Corrections made during this audit", "- ICH Score: removed an unverified cohort size from the version text.", "- Hunt & Hess: Grade IV restored to the original wording ('…and vegetative disturbances').",
        "- GCS-P: the 1–8 band now states it is not defined in the original publication.", "- Revised Tokuhashi: calculator notice added about the conflicting item (scoring unchanged pending review).",
        "- ECOG: licensing status updated to public domain (ECOG-ACRIN).", "- RASS: held back pending licensing review (content and tests retained; reinstatement is a one-line change).",

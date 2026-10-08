@@ -1,0 +1,286 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "house brackmann",
+  "hb grade",
+  "facial nerve",
+  "facial palsy",
+  "bell palsy",
+  "facial weakness"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Grading forehead movement in a central (upper motor neuron) facial palsy, where the forehead is often spared.",
+  "Not recording the timepoint."
+ ],
+ "relatedScores": [
+  {
+   "id": "gr",
+   "relation": "Hearing in CPA lesions"
+  }
+ ],
+ "id": "hb",
+ "name": "House-Brackmann Facial Nerve Grading System",
+ "abbreviation": "House-Brackmann",
+ "subcategory": "Facial nerve",
+ "specialties": [
+  "Neurosurgery",
+  "Otolaryngology",
+  "Neurology"
+ ],
+ "version": {
+  "label": "House-Brackmann grading system, grades I–VI (House & Brackmann 1985)",
+  "detail": "Six grades based on gross appearance, symmetry at rest and movement of forehead, eye and mouth. Later revisions (e.g. House-Brackmann 2.0, 2009) are different versions and are not combined."
+ },
+ "purpose": "Grades overall facial nerve function, for example after vestibular schwannoma surgery or Bell palsy.",
+ "intendedPopulation": "Patients with peripheral facial nerve dysfunction.",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Facial nerve grade",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Choose the best-fitting grade",
+  "message": "When features fall between grades, choose the grade that best fits overall; eye closure is often the deciding feature."
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Facial nerve function",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "I: Normal",
+     "points": 1,
+     "code": "I",
+     "detail": "Normal facial function in all areas."
+    },
+    {
+     "value": "2",
+     "label": "II: Mild dysfunction",
+     "points": 2,
+     "code": "II",
+     "detail": "Slight weakness on close inspection; possibly very slight synkinesis. Normal symmetry and tone at rest. Forehead: moderate to good movement. Eye: complete closure with minimal effort. Mouth: slight asymmetry."
+    },
+    {
+     "value": "3",
+     "label": "III: Moderate dysfunction",
+     "points": 3,
+     "code": "III",
+     "detail": "Obvious but not disfiguring difference between sides; noticeable but not severe synkinesis, contracture or hemifacial spasm. Normal symmetry and tone at rest. Forehead: slight to moderate movement. Eye: complete closure with effort. Mouth: slightly weak with maximum effort."
+    },
+    {
+     "value": "4",
+     "label": "IV: Moderately severe dysfunction",
+     "points": 4,
+     "code": "IV",
+     "detail": "Obvious weakness and/or disfiguring asymmetry. Normal symmetry and tone at rest. Forehead: no movement. Eye: incomplete closure. Mouth: asymmetric with maximum effort."
+    },
+    {
+     "value": "5",
+     "label": "V: Severe dysfunction",
+     "points": 5,
+     "code": "V",
+     "detail": "Only barely perceptible movement. Asymmetry at rest. Forehead: no movement. Eye: incomplete closure. Mouth: slight movement."
+    },
+    {
+     "value": "6",
+     "label": "VI: Total paralysis",
+     "points": 6,
+     "code": "VI",
+     "detail": "No movement."
+    }
+   ]
+  },
+  {
+   "id": "side",
+   "type": "single",
+   "label": "Side (optional)",
+   "short": "Side",
+   "options": [
+    {
+     "value": "left",
+     "label": "Left",
+     "points": 0,
+     "code": "L"
+    },
+    {
+     "value": "right",
+     "label": "Right",
+     "points": 0,
+     "code": "R"
+    }
+   ],
+   "help": "Recorded for the share text only; it does not change the grade.",
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Grade",
+   "inputs": [
+    "grade"
+   ]
+  },
+  {
+   "id": "c_side",
+   "label": "Side",
+   "inputs": [
+    "side"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 1,
+   "max": 6
+  },
+  "display": "Grade {roman(total)}",
+  "share": "House-Brackmann grade {roman(total)}{isnull(side_code) ? '' : ' (' + side_code + ')'}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  },
+  {
+   "when": "total == 5",
+   "state": "g5"
+  },
+  {
+   "when": "total == 6",
+   "state": "g6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g1",
+   "tone": "favorable",
+   "label": "Grade I: normal",
+   "summary": "Normal facial function in all areas at this assessment.",
+   "range": "I",
+   "detail": "Describes facial movement at this timepoint; delayed weakness can occur after surgery."
+  },
+  {
+   "id": "g2",
+   "tone": "low",
+   "label": "Grade II: mild dysfunction",
+   "summary": "Slight weakness on close inspection; possibly very slight synkinesis. Normal symmetry and tone at rest. Forehead: moderate to good movement. Eye: complete closure with minimal effort. Mouth: slight asymmetry.",
+   "range": "II"
+  },
+  {
+   "id": "g3",
+   "tone": "mild",
+   "label": "Grade III: moderate dysfunction",
+   "summary": "Obvious but not disfiguring difference between sides; noticeable but not severe synkinesis, contracture or hemifacial spasm. Normal symmetry and tone at rest. Forehead: slight to moderate movement. Eye: complete closure with effort. Mouth: slightly weak with maximum effort.",
+   "range": "III"
+  },
+  {
+   "id": "g4",
+   "tone": "moderate",
+   "label": "Grade IV: moderately severe dysfunction",
+   "summary": "Obvious weakness and/or disfiguring asymmetry. Normal symmetry and tone at rest. Forehead: no movement. Eye: incomplete closure. Mouth: asymmetric with maximum effort.",
+   "range": "IV"
+  },
+  {
+   "id": "g5",
+   "tone": "high",
+   "label": "Grade V: severe dysfunction",
+   "summary": "Only barely perceptible movement. Asymmetry at rest. Forehead: no movement. Eye: incomplete closure. Mouth: slight movement.",
+   "range": "V",
+   "detail": "Assess eye closure and corneal protection according to the clinical situation and local protocol."
+  },
+  {
+   "id": "g6",
+   "tone": "high",
+   "label": "Grade VI: total paralysis",
+   "summary": "No movement.",
+   "range": "VI",
+   "detail": "Assess eye closure and corneal protection according to the clinical situation and local protocol."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The most widely used grading of facial nerve function.",
+   "importance": "major"
+  },
+  {
+   "text": "Complete eye closure separates grade III from grade IV."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "total >= 4",
+   "importance": "major",
+   "text": "Incomplete eye closure (grades IV–VI): corneal exposure is a risk to assess."
+  },
+  {
+   "text": "Record the timepoint (e.g. preoperative, day 1, 1 year), as recovery changes the grade."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "A single global grade; regional differences (e.g. good eye closure but weak mouth) are not captured."
+  },
+  "Synkinesis and secondary changes are not graded separately.",
+  "Inter-rater agreement is lower for intermediate grades (III–IV)."
+ ],
+ "confounders": [
+  {
+   "factor": "Early postoperative swelling",
+   "effect": "Can temporarily worsen function."
+  },
+  {
+   "factor": "Prior facial surgery or eyelid procedures",
+   "effect": "Alter eye closure and symmetry."
+  },
+  {
+   "factor": "Bilateral facial weakness",
+   "effect": "Removes the normal side for comparison."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause or site of the facial nerve lesion.",
+  "The likelihood of recovery.",
+  "Regional detail or synkinesis severity."
+ ],
+ "guideSections": {
+  "what": "A six-grade scale (I normal to VI total paralysis) of facial nerve function.",
+  "whenToUse": "Before and after cerebellopontine angle and skull base surgery; Bell palsy and other peripheral facial palsies.",
+  "howToPerform": "Observe the face at rest, then ask the patient to raise the eyebrows, close the eyes gently and tightly, and smile. Compare sides and choose the grade that best fits.",
+  "clinicalContext": "Designed for peripheral facial nerve dysfunction; forehead sparing suggests a central cause."
+ },
+ "sources": [
+  {
+   "citation": "House JW, Brackmann DE. Facial nerve grading system. Otolaryngol Head Neck Surg. 1985;93(2):146-147."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading system with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam"
+}

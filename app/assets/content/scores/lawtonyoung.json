@@ -1,0 +1,273 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "lawton young",
+  "supplementary grade",
+  "supp-sm",
+  "supplemented spetzler-martin",
+  "avm"
+ ],
+ "scoringRules": [
+  {
+   "id": "combined",
+   "expr": "isnull(sm) ? 0 : supp + sm"
+  }
+ ],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring ruptured presentation as 1 (unruptured scores 1).",
+  "Reporting the combined grade without the Spetzler-Martin grade used."
+ ],
+ "relatedScores": [
+  {
+   "id": "spetzler",
+   "relation": "Grade combined with it"
+  },
+  {
+   "id": "mrs",
+   "relation": "Functional outcome"
+  }
+ ],
+ "id": "lawtonyoung",
+ "name": "Lawton-Young Supplementary AVM Grade",
+ "abbreviation": "Lawton-Young",
+ "subcategory": "Vascular neurosurgery",
+ "specialties": [
+  "Neurosurgery",
+  "Interventional Neuroradiology"
+ ],
+ "version": {
+  "label": "Lawton-Young supplementary grading scale (Lawton et al. 2010)",
+  "detail": "Age (<20 years 1, 20–40 years 2, >40 years 3) + unruptured presentation (1; ruptured 0) + diffuse nidus (1; compact 0): supplementary grade 1–5. Adding the Spetzler-Martin grade gives the combined Supp-SM grade (2–10)."
+ },
+ "purpose": "Adds patient and AVM features to the Spetzler-Martin grade to refine surgical risk estimation.",
+ "intendedPopulation": "Patients with brain AVMs being considered for microsurgical resection.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Supplementary AVM grade",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Use with the Spetzler-Martin grade",
+  "message": "Enter the Spetzler-Martin grade to see the combined Supp-SM grade. Neither grade is a treatment decision."
+ },
+ "inputDefinitions": [
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age",
+   "short": "Age",
+   "options": [
+    {
+     "value": "lt20",
+     "label": "Under 20 years",
+     "points": 1
+    },
+    {
+     "value": "20to40",
+     "label": "20–40 years",
+     "points": 2
+    },
+    {
+     "value": "gt40",
+     "label": "Over 40 years",
+     "points": 3
+    }
+   ]
+  },
+  {
+   "id": "rupt",
+   "type": "single",
+   "label": "Presentation",
+   "short": "Presentation",
+   "options": [
+    {
+     "value": "ruptured",
+     "label": "Ruptured (haemorrhage)",
+     "points": 0
+    },
+    {
+     "value": "unruptured",
+     "label": "Unruptured",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "nidus",
+   "type": "single",
+   "label": "Nidus",
+   "short": "Nidus",
+   "options": [
+    {
+     "value": "compact",
+     "label": "Compact",
+     "points": 0
+    },
+    {
+     "value": "diffuse",
+     "label": "Diffuse",
+     "points": 1,
+     "detail": "Poorly defined nidus with intervening brain."
+    }
+   ]
+  },
+  {
+   "id": "sm",
+   "type": "single",
+   "label": "Spetzler-Martin grade (optional)",
+   "short": "SM grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "Grade I",
+     "points": 1,
+     "code": "I"
+    },
+    {
+     "value": "2",
+     "label": "Grade II",
+     "points": 2,
+     "code": "II"
+    },
+    {
+     "value": "3",
+     "label": "Grade III",
+     "points": 3,
+     "code": "III"
+    },
+    {
+     "value": "4",
+     "label": "Grade IV",
+     "points": 4,
+     "code": "IV"
+    },
+    {
+     "value": "5",
+     "label": "Grade V",
+     "points": 5,
+     "code": "V"
+    }
+   ],
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "supp",
+   "label": "Supplementary grade",
+   "inputs": [
+    "age",
+    "rupt",
+    "nidus"
+   ]
+  },
+  {
+   "id": "c_sm",
+   "label": "Spetzler-Martin grade",
+   "inputs": [
+    "sm"
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "supp",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Supp {total}{combined > 0 ? ' · Supp-SM ' + combined : ''}",
+  "share": "Lawton-Young supplementary grade {total}{combined > 0 ? '; Spetzler-Martin ' + roman(sm) + '; Supp-SM ' + combined : ''}"
+ },
+ "interpretationRules": [
+  {
+   "when": "combined > 0",
+   "state": "comb"
+  },
+  {
+   "state": "supp"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "supp",
+   "tone": "informational",
+   "label": "Supplementary grade {total}",
+   "summary": "Supplementary grade {total} of 5.",
+   "range": "Supp 1–5",
+   "detail": "Add the Spetzler-Martin grade for the combined Supp-SM grade (2–10)."
+  },
+  {
+   "id": "comb",
+   "tone": "informational",
+   "label": "Supp-SM grade {combined}",
+   "summary": "Supplementary grade {total} + Spetzler-Martin grade {roman(sm)} = Supp-SM {combined} (range 2–10).",
+   "range": "Supp-SM 2–10",
+   "detail": "In the derivation and validation cohorts, higher Supp-SM grades were associated with a higher risk of worse neurological outcome after resection."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Supplements the Spetzler-Martin grade with age, rupture status and nidus diffuseness.",
+   "importance": "major"
+  },
+  {
+   "text": "The combined Supp-SM grade predicted surgical outcome better than Spetzler-Martin alone in the derivation and validation series."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "rupt == 0",
+   "text": "Ruptured presentation scores 0: patients presenting with haemorrhage often already have a deficit, which lowers the additional risk attributed to surgery."
+  },
+  {
+   "text": "Report the supplementary grade, the Spetzler-Martin grade and the combined grade together."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Derived and validated in surgical series; not designed for radiosurgery or embolisation decisions."
+  },
+  "Nidus diffuseness is judged subjectively.",
+  "Group-level association with outcome; not an individual prediction."
+ ],
+ "confounders": [
+  {
+   "factor": "Haematoma",
+   "effect": "Obscures the nidus and its compactness."
+  },
+  {
+   "factor": "Prior treatment",
+   "effect": "Changes nidus appearance."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The natural history or haemorrhage risk.",
+  "Whether treatment is indicated.",
+  "Outcomes with non-surgical treatment."
+ ],
+ "guideSections": {
+  "what": "A 1–5 supplementary grade from age, rupture status and nidus diffuseness, added to the Spetzler-Martin grade for a combined 2–10 grade.",
+  "whenToUse": "Refining surgical risk estimation for brain AVMs alongside the Spetzler-Martin grade.",
+  "howToPerform": "Score age, presentation and nidus pattern, and sum. Add the Spetzler-Martin grade for the combined Supp-SM grade.",
+  "clinicalContext": "An input to multidisciplinary decisions with the patient's presentation and preferences."
+ },
+ "sources": [
+  {
+   "citation": "Lawton MT, Kim H, McCulloch CE, Mikhak B, Young WL. A supplementary grading scale for selecting patients with brain arteriovenous malformations for surgery. Neurosurgery. 2010;66(4):702-713."
+  },
+  {
+   "citation": "Kim H, Abla AA, Nelson J, et al. Validation of the supplemented Spetzler-Martin grading system for brain arteriovenous malformations in a multicenter cohort of 1009 surgical patients. Neurosurgery. 2015;76(1):25-31."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading system with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam"
+}

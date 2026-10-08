@@ -1,0 +1,242 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "markwalder",
+  "chronic subdural",
+  "csdh",
+  "subdural haematoma",
+  "subdural hematoma"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using the grade in place of a GCS.",
+  "Not documenting the timepoint (presentation, discharge, follow-up)."
+ ],
+ "relatedScores": [
+  {
+   "id": "gcs",
+   "relation": "Level of consciousness"
+  },
+  {
+   "id": "mrs",
+   "relation": "Functional outcome"
+  }
+ ],
+ "id": "markwalder",
+ "name": "Markwalder Grading Scale for Chronic Subdural Haematoma",
+ "abbreviation": "Markwalder",
+ "subcategory": "Neurotrauma: chronic subdural haematoma",
+ "specialties": [
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "Markwalder grading scale (1981), grades 0–4",
+  "detail": "Clinical grade from level of consciousness and neurological deficit."
+ },
+ "purpose": "Grades the clinical condition of patients with chronic subdural haematoma.",
+ "intendedPopulation": "Patients with chronic subdural haematoma, at presentation and follow-up.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Clinical grade",
+  "meter": true
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Clinical grade",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "0",
+     "label": "Grade 0: Neurologically normal",
+     "points": 0,
+     "code": "0",
+     "detail": "No neurological symptoms or signs."
+    },
+    {
+     "value": "1",
+     "label": "Grade 1: Alert and oriented; mild symptoms",
+     "points": 1,
+     "code": "1",
+     "detail": "Mild symptoms such as headache; absent or mild neurological signs such as reflex asymmetry."
+    },
+    {
+     "value": "2",
+     "label": "Grade 2: Drowsy or disoriented",
+     "points": 2,
+     "code": "2",
+     "detail": "Variable neurological deficit such as hemiparesis."
+    },
+    {
+     "value": "3",
+     "label": "Grade 3: Stuporous",
+     "points": 3,
+     "code": "3",
+     "detail": "Responds appropriately to painful stimuli; severe focal signs such as hemiplegia."
+    },
+    {
+     "value": "4",
+     "label": "Grade 4: Comatose",
+     "points": 4,
+     "code": "4",
+     "detail": "No motor response to painful stimuli; decerebrate or decorticate posturing."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 0,
+   "max": 4
+  },
+  "display": "Grade {total}",
+  "share": "Markwalder grade {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "g0"
+  },
+  {
+   "when": "total == 1",
+   "state": "g1"
+  },
+  {
+   "when": "total == 2",
+   "state": "g2"
+  },
+  {
+   "when": "total == 3",
+   "state": "g3"
+  },
+  {
+   "when": "total == 4",
+   "state": "g4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g0",
+   "tone": "favorable",
+   "label": "Grade 0: neurologically normal",
+   "summary": "No neurological symptoms or signs at this assessment.",
+   "range": "0",
+   "min": 0,
+   "max": 0,
+   "detail": "Describes clinical status only; it does not describe haematoma size or recurrence risk."
+  },
+  {
+   "id": "g1",
+   "tone": "low",
+   "label": "Grade 1: alert and oriented",
+   "summary": "Mild symptoms such as headache; absent or mild neurological signs such as reflex asymmetry.",
+   "range": "1",
+   "min": 1,
+   "max": 1
+  },
+  {
+   "id": "g2",
+   "tone": "moderate",
+   "label": "Grade 2: drowsy or disoriented",
+   "summary": "Variable neurological deficit such as hemiparesis.",
+   "range": "2",
+   "min": 2,
+   "max": 2
+  },
+  {
+   "id": "g3",
+   "tone": "high",
+   "label": "Grade 3: stuporous",
+   "summary": "Responds appropriately to painful stimuli; severe focal signs such as hemiplegia.",
+   "range": "3",
+   "min": 3,
+   "max": 3,
+   "detail": "Assess airway, neurological status and reversible causes according to the clinical situation and local protocol."
+  },
+  {
+   "id": "g4",
+   "tone": "high",
+   "label": "Grade 4: comatose",
+   "summary": "No motor response to painful stimuli; decerebrate or decorticate posturing.",
+   "range": "4",
+   "min": 4,
+   "max": 4,
+   "detail": "Assess airway, neurological status and reversible causes according to the clinical situation and local protocol."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A five-grade clinical description of patients with chronic subdural haematoma.",
+   "importance": "major"
+  },
+  {
+   "text": "Commonly used to report clinical status before and after treatment in studies."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Record the GCS alongside the grade; the grade combines consciousness and focal deficit."
+  },
+  {
+   "when": "total >= 3",
+   "importance": "major",
+   "text": "Depressed consciousness with severe deficit: assess according to the clinical situation and local protocol."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Broad grades combine consciousness and focal deficit, so different presentations can share a grade."
+  },
+  "Not designed as a prognostic score.",
+  "Grade 1 mixes asymptomatic signs with mild symptoms."
+ ],
+ "confounders": [
+  {
+   "factor": "Sedation, intoxication or metabolic disturbance",
+   "effect": "Lower consciousness independently of the haematoma."
+  },
+  {
+   "factor": "Pre-existing deficit or dementia",
+   "effect": "Affects orientation and focal signs."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Haematoma size, midline shift or recurrence risk.",
+  "Whether surgery is indicated."
+ ],
+ "guideSections": {
+  "what": "A five-grade (0–4) clinical scale for chronic subdural haematoma based on consciousness and neurological deficit.",
+  "whenToUse": "Documenting clinical status in chronic subdural haematoma, and reporting outcomes in studies.",
+  "howToPerform": "Assess consciousness, orientation, symptoms and focal deficit, and choose the grade that fits.",
+  "clinicalContext": "Use with imaging, GCS and comorbidity; the grade alone does not decide management."
+ },
+ "sources": [
+  {
+   "citation": "Markwalder TM, Steinsiepe KF, Rohner M, Reichenbach W, Markwalder H. The course of chronic subdural hematomas after burr-hole craniostomy and closed-system drainage. J Neurosurg. 1981;55(3):390-396."
+  },
+  {
+   "citation": "Markwalder TM. Chronic subdural hematomas: a review. J Neurosurg. 1981;54(5):637-645."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading scale with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam",
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Clinical grade",
+   "inputs": [
+    "grade"
+   ]
+  }
+ ]
+}

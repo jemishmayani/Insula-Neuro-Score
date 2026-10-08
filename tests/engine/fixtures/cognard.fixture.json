@@ -1,0 +1,84 @@
+{
+ "scoreId": "cognard",
+ "cases": [
+  {
+   "name": "type I",
+   "answers": {
+    "type": "1"
+   },
+   "expect": {
+    "display": "Type I",
+    "state": "t1",
+    "tone": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type IIa",
+   "answers": {
+    "type": "2"
+   },
+   "expect": {
+    "display": "Type IIa",
+    "state": "t2",
+    "tone": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IIa",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type IIa+b",
+   "answers": {
+    "type": "4"
+   },
+   "expect": {
+    "display": "Type IIa+b",
+    "state": "t4",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IIa+b",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type IV",
+   "answers": {
+    "type": "6"
+   },
+   "expect": {
+    "display": "Type IV",
+    "state": "t6"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IV (ectasia)",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type V",
+   "answers": {
+    "type": "7"
+   },
+   "expect": {
+    "display": "Type V",
+    "state": "t7",
+    "insightsContains": "myelopathy"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "V perimedullary",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

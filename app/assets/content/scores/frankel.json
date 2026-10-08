@@ -15,10 +15,6 @@
  ],
  "relatedScores": [
   {
-   "id": "ais",
-   "relation": "Current standard (under review)"
-  },
-  {
    "id": "nurick",
    "relation": "Myelopathy grade"
   },

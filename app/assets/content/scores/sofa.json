@@ -17,16 +17,8 @@
  ],
  "relatedScores": [
   {
-   "id": "sofa2",
-   "relation": "Updated version (under review)"
-  },
-  {
    "id": "gcs",
    "relation": "CNS component"
-  },
-  {
-   "id": "rass",
-   "relation": "Sedation level (under review)"
   }
  ],
  "id": "sofa",

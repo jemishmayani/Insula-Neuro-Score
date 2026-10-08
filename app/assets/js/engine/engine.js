@@ -124,7 +124,7 @@
       state: null, interpretation: null, breakdown: [],
       errors: [], warnings: [], missing: [], notTestable: [],
       insights: [], limitations: [], insightSet: null, notice: score.calculatorNotice || null, related: [], shareText: "",
-      formula: null, presentation: Insights.presentation(score), bands: null
+      formula: null, formulaEquals: cm.formulaEquals !== false, presentation: Insights.presentation(score), bands: null
     };
     if (score.resultPresentation && score.resultPresentation.meter) R.bands = score.resultStates.map(function (st) { return { id: st.id, min: st.min, max: st.max, tone: st.tone, label: st.label }; });
 

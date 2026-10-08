@@ -66,6 +66,8 @@
                     c: ((catById[s.category] || {}).name || "").toLowerCase(), kw: (s.keywords || []).map(function (k) { return k.toLowerCase(); }),
                     sp: (s.specialties || []).join(" | ").toLowerCase() });
     });
+    // cross-listed scores (category.include) also appear in that group's list; the score keeps its own category
+    cat.categories.forEach(function (c) { (c.include || []).forEach(function (id) { if (byId[id] && byCat[c.id].indexOf(byId[id]) < 0) byCat[c.id].push(byId[id]); }); });
     return { byId: byId, catById: catById, byCat: byCat, search: search };
   }
   function score(id) { return IDX.byId[id] || null; }
@@ -102,7 +104,6 @@
   var placeholderBadge = function () { return UI.StatusBadge({ tone: "neutral", label: "Placeholder", icon: false }); };
   function badgeFor(s) {
     if (s.status === "implemented") return UI.StatusBadge({ tone: "primary", label: "Calculator", icon: false });
-    if (s.status === "review") return UI.StatusBadge({ tone: "warning", label: "Under review", icon: false });
     return placeholderBadge();
   }
   function sub(s) { return s.name === s.abbreviation ? s.summary : s.name; }
@@ -291,7 +292,7 @@
   function rootListScreen(tab) {
     var cats = orderedCategories(false), hiddenN = Store.get().hiddenGroups.length;
     var body = searchBlock("search", tab === "calculate" ? "Search calculators" : "Search guides") + '<div id="page-body">' +
-      UI.Section({ id: "cats", title: "Categories", body: cats.length ? '<div class="category-grid">' + cats.map(function (c) {
+      UI.Section({ id: "cats", title: "Scores & Grades", body: cats.length ? '<div class="category-grid">' + cats.map(function (c) {
         return UI.CategoryCard({ category: c, href: "#/" + tab + "/c/" + c.id, count: scoresIn(c.id).length }); }).join("") + "</div>"
         : UI.EmptyState({ title: "All groups are hidden", message: "Show groups again in Settings.", action: UI.SecondaryButton({ label: "Manage groups", href: "#/settings", icon: "settings" }) }) }) +
       (hiddenN ? '<p class="lede" style="margin-top:var(--space-4)">' + hiddenN + " hidden group" + (hiddenN > 1 ? "s" : "") + '. <a href="#/settings" data-nav>Manage groups</a></p>' : "") + "</div>";
@@ -305,8 +306,19 @@
       UI.SecondaryButton({ label: onHome ? "On Home (priority)" : "Add group to Home", icon: "pin", act: "promote-group", data: { id: c.id } }) +
       UI.SecondaryButton({ label: isHidden ? "Show group in lists" : "Hide group from lists", icon: isHidden ? "eye" : "close", act: "hide-group", data: { id: c.id } }) + "</div>" +
       (isHidden ? UI.InfoBanner({ title: "This group is hidden", message: "It does not appear in the Calculate and Guide lists or on Home. Its scores remain searchable." }) : "");
-    var body = '<p class="lede">' + esc(c.description) + "</p>" + controls + UI.Section({ id: "scores", title: list.length + " score" + (list.length === 1 ? "" : "s"),
-      body: list.length ? UI.CardList(list.map(function (s) { return scoreCard(s, tab); }), c.name) : UI.EmptyState({ title: "No scores in this group yet" }) });
+    var listHtml;
+    if (list.length && c.groups && c.groups.length) {
+      var placed = {};
+      var parts = c.groups.map(function (g) {
+        var members = g.members.map(score).filter(function (s) { return s && list.indexOf(s) >= 0; });
+        members.forEach(function (s) { placed[s.id] = 1; });
+        return members.length ? '<h3 class="sub-h group-h">' + esc(g.title) + "</h3>" + UI.CardList(members.map(function (s) { return scoreCard(s, tab); }), g.title) : "";
+      });
+      var rest = list.filter(function (s) { return !placed[s.id]; });
+      if (rest.length) parts.push('<h3 class="sub-h group-h">Other</h3>' + UI.CardList(rest.map(function (s) { return scoreCard(s, tab); }), "Other"));
+      listHtml = parts.join("");
+    } else listHtml = list.length ? UI.CardList(list.map(function (s) { return scoreCard(s, tab); }), c.name) : UI.EmptyState({ title: "No scores in this group yet" });
+    var body = '<p class="lede">' + esc(c.description) + "</p>" + controls + UI.Section({ id: "scores", title: list.length + " score" + (list.length === 1 ? "" : "s"), body: listHtml });
     paint(frame({ title: c.name, tab: tab, back: true, body: body }), { title: c.name });
   }
 
@@ -357,8 +369,7 @@
   }
   function calcShell(s) {
     var rows = ""; for (var i = 1; i <= 3; i++) rows += '<div class="row"><span class="dot" aria-hidden="true"></span>Component ' + i + " (pending verification)</div>";
-    var why = s.status === "review" ? UI.WarningBanner({ title: "Under review: " + (s.reviewCategory || "pending"), message: (s.reviewReason || "") + " The calculator is not available until this is resolved." })
-      : UI.WarningBanner({ title: "Calculator not available yet", message: "This is a placeholder in the app shell. Scoring criteria are added only after the published version, sources and licensing are verified." });
+    var why = UI.WarningBanner({ title: "Calculator not available yet", message: "This is a placeholder in the app shell. Scoring criteria are added only after the published version, sources and licensing are verified." });
     return '<div class="section">' + why + "</div>" +
       '<div class="detail-grid two"><div>' + UI.Section({ id: "inputs", title: "Inputs", body: '<div class="input-shell" aria-label="Input placeholders">' + rows + "</div>" }) + "</div>" +
       '<div class="aside">' + UI.Section({ id: "result", title: "Result", body: UI.ResultCard({ tone: "incomplete", label: "Not available", value: "–", meta: s.abbreviation + " · placeholder", summary: "No calculation in this build." }) +
@@ -366,7 +377,7 @@
         UI.SecondaryButton({ label: "Open guide", icon: "guide", href: "#/guide/s/" + s.id, replace: true }) + "</div>" }) + "</div></div>";
   }
   function guideShell(s) {
-    var reviewNote = s.status === "review" ? '<div class="section">' + UI.WarningBanner({ title: "Under review: " + (s.reviewCategory || "pending"), message: s.reviewReason || "" }) + "</div>" : "";
+    var reviewNote = "";
     var toc = '<nav class="toc" aria-label="Guide sections">' + GUIDE_SECTIONS.map(function (t, i) { return '<a href="#" data-jump="g-' + t[0] + '">' + (i + 1) + ". " + esc(t[1]) + "</a>"; }).join("") + "</nav>";
     var groups = RELATED.filter(function (c) { return c.members.indexOf(s.id) >= 0; });
     var relatedHtml = groups.length ? groups.map(function (c) {
@@ -437,7 +448,7 @@
       UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' +
         UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
         (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
-      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.9.2 (review scores completed)</p>' +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.10.0 (Neurosurgical Examination &amp; Grades)</p>' +
         '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
         UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
     paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });

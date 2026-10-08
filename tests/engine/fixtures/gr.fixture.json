@@ -1,0 +1,72 @@
+{
+ "scoreId": "gr",
+ "cases": [
+  {
+   "name": "class I",
+   "answers": {
+    "pta": "1",
+    "sds": "1"
+   },
+   "expect": {
+    "display": "Class I",
+    "state": "c1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "PTA I = SDS I → I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "class II",
+   "answers": {
+    "pta": "2",
+    "sds": "2"
+   },
+   "expect": {
+    "display": "Class II",
+    "state": "c2"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "II = II",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "class V",
+   "answers": {
+    "pta": "5",
+    "sds": "5"
+   },
+   "expect": {
+    "display": "Class V",
+    "state": "c5"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "not testable + 0% → V",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "discordant",
+   "answers": {
+    "pta": "2",
+    "sds": "3"
+   },
+   "expect": {
+    "total": 0,
+    "display": "Discordant",
+    "state": "disc",
+    "label": "Discordant: PTA class II, SDS class III",
+    "shareText": "Gardner-Robertson discordant (PTA class II, SDS class III) — Discordant: PTA class II, SDS class III"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "PTA II ≠ SDS III → both reported",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

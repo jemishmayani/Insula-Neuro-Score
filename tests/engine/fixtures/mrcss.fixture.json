@@ -1,0 +1,169 @@
+{
+ "scoreId": "mrcss",
+ "cases": [
+  {
+   "name": "all 5",
+   "answers": {
+    "sh_l": "5",
+    "sh_r": "5",
+    "el_l": "5",
+    "el_r": "5",
+    "wr_l": "5",
+    "wr_r": "5",
+    "hi_l": "5",
+    "hi_r": "5",
+    "kn_l": "5",
+    "kn_r": "5",
+    "an_l": "5",
+    "an_r": "5"
+   },
+   "expect": {
+    "total": 60,
+    "display": "60/60",
+    "state": "full"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "12 × 5 = 60",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "mixed proximal weakness",
+   "answers": {
+    "sh_l": "4",
+    "sh_r": "4",
+    "el_l": "4",
+    "el_r": "4",
+    "wr_l": "5",
+    "wr_r": "5",
+    "hi_l": "3",
+    "hi_r": "3",
+    "kn_l": "5",
+    "kn_r": "5",
+    "an_l": "5",
+    "an_r": "5"
+   },
+   "expect": {
+    "total": 52,
+    "state": "above",
+    "formula": "Left 26 + Right 26"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "60 − 4×1 − 2×2 = 52",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "all 4 (threshold)",
+   "answers": {
+    "sh_l": "4",
+    "sh_r": "4",
+    "el_l": "4",
+    "el_r": "4",
+    "wr_l": "4",
+    "wr_r": "4",
+    "hi_l": "4",
+    "hi_r": "4",
+    "kn_l": "4",
+    "kn_r": "4",
+    "an_l": "4",
+    "an_r": "4"
+   },
+   "expect": {
+    "total": 48,
+    "state": "above"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "12 × 4 = 48 → at threshold, not below",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "below threshold",
+   "answers": {
+    "sh_l": "4",
+    "sh_r": "4",
+    "el_l": "4",
+    "el_r": "4",
+    "wr_l": "4",
+    "wr_r": "4",
+    "hi_l": "4",
+    "hi_r": "4",
+    "kn_l": "4",
+    "kn_r": "4",
+    "an_l": "3",
+    "an_r": "3"
+   },
+   "expect": {
+    "total": 46,
+    "state": "below",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "10×4 + 2×3 = 46 < 48",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "asymmetric",
+   "answers": {
+    "sh_l": "5",
+    "el_l": "5",
+    "wr_l": "5",
+    "hi_l": "5",
+    "kn_l": "5",
+    "an_l": "5",
+    "sh_r": "3",
+    "el_r": "3",
+    "wr_r": "3",
+    "hi_r": "3",
+    "kn_r": "3",
+    "an_r": "3"
+   },
+   "expect": {
+    "total": 48,
+    "state": "above",
+    "insightsContains": "side-to-side"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "L 30 + R 18 = 48; side difference 12",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "one movement not testable",
+   "answers": {
+    "sh_l": "5",
+    "sh_r": "5",
+    "el_l": "5",
+    "el_r": "5",
+    "wr_l": "5",
+    "wr_r": "5",
+    "hi_l": "5",
+    "hi_r": "5",
+    "kn_l": "5",
+    "kn_r": {
+     "nt": true,
+     "reason": "Amputation or injury"
+    },
+    "an_l": "5",
+    "an_r": "5"
+   },
+   "expect": {
+    "status": "not-interpretable",
+    "display": "No total",
+    "notTestable": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "NT → no total",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

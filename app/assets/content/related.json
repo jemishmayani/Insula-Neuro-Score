@@ -11,7 +11,6 @@
    "members": [
     "gcs",
     "gcsp",
-    "four",
     "gose",
     "gos"
    ],
@@ -114,10 +113,9 @@
     "ich",
     "func",
     "graeb",
-    "mgraeb",
     "gcs"
    ],
-   "description": "Severity (ICH Score), expected function (FUNC) and ventricular blood (Graeb, under review)."
+   "description": "Severity (ICH Score), expected function (FUNC) and ventricular blood (Graeb)."
   },
   {
    "id": "tbi",
@@ -148,7 +146,7 @@
     "iss",
     "triss"
    ],
-   "description": "Physiological (RTS) and anatomical (ISS) severity, combined in TRISS (under review)."
+   "description": "Physiological (RTS) and anatomical (ISS) severity, combined in TRISS."
   },
   {
    "id": "outcome",
@@ -166,21 +164,6 @@
    "description": "Global outcome scales used at follow-up."
   },
   {
-   "id": "sci",
-   "title": "Spinal cord injury",
-   "keywords": [
-    "sci",
-    "spinal cord injury",
-    "paraplegia",
-    "tetraplegia"
-   ],
-   "members": [
-    "frankel",
-    "ais"
-   ],
-   "description": "Frankel grade and the current ASIA/ISNCSCI standard (under review)."
-  },
-  {
    "id": "myelopathy",
    "title": "Cervical myelopathy",
    "keywords": [
@@ -190,10 +173,9 @@
    ],
    "members": [
     "nurick",
-    "mjoa",
-    "joa"
+    "mjoa"
    ],
-   "description": "Walking-based (Nurick) and broader functional scores (mJOA, JOA; under review)."
+   "description": "Walking-based (Nurick) and broader functional (mJOA) myelopathy scores."
   },
   {
    "id": "icu",
@@ -204,12 +186,90 @@
     "critical care"
    ],
    "members": [
-    "rass",
-    "four",
     "sofa",
     "gcs"
    ],
    "description": "Arousal, coma and organ-dysfunction measures used in the ICU."
+  },
+  {
+   "id": "motor-reflex",
+   "title": "Motor and reflex examination",
+   "keywords": [
+    "power",
+    "reflexes",
+    "umn",
+    "upper motor neuron"
+   ],
+   "members": [
+    "mrc",
+    "mrcss",
+    "dtr",
+    "clonus",
+    "plantar"
+   ],
+   "description": "Bedside grades for strength, reflexes and upper motor neuron signs."
+  },
+  {
+   "id": "spasticity",
+   "title": "Spasticity",
+   "keywords": [
+    "spasticity",
+    "tone",
+    "contracture"
+   ],
+   "members": [
+    "mas",
+    "mts",
+    "clonus"
+   ],
+   "description": "Resistance to passive movement, its velocity-dependent component, and clonus."
+  },
+  {
+   "id": "cpa",
+   "title": "Cerebellopontine angle",
+   "keywords": [
+    "vestibular schwannoma",
+    "acoustic neuroma",
+    "cpa",
+    "facial nerve",
+    "hearing"
+   ],
+   "members": [
+    "hb",
+    "gr"
+   ],
+   "description": "Facial nerve and hearing grades used before and after CPA surgery or radiosurgery."
+  },
+  {
+   "id": "vascular-malformation",
+   "title": "Vascular malformations",
+   "keywords": [
+    "avm",
+    "davf",
+    "fistula",
+    "arteriovenous"
+   ],
+   "members": [
+    "spetzler",
+    "lawtonyoung",
+    "borden",
+    "cognard"
+   ],
+   "description": "Brain AVM grades and dural arteriovenous fistula classifications."
+  },
+  {
+   "id": "epilepsy-surgery",
+   "title": "Epilepsy surgery outcome",
+   "keywords": [
+    "epilepsy",
+    "seizure",
+    "epilepsy surgery"
+   ],
+   "members": [
+    "engel",
+    "ilae"
+   ],
+   "description": "Seizure outcome classifications after epilepsy surgery."
   }
  ]
 }

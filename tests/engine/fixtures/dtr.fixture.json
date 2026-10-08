@@ -1,0 +1,84 @@
+{
+ "scoreId": "dtr",
+ "cases": [
+  {
+   "name": "absent",
+   "answers": {
+    "grade": "0"
+   },
+   "expect": {
+    "display": "0",
+    "state": "absent"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0 absent",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "trace",
+   "answers": {
+    "grade": "1"
+   },
+   "expect": {
+    "display": "1+",
+    "state": "reduced"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+ reduced",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "lower normal",
+   "answers": {
+    "grade": "2"
+   },
+   "expect": {
+    "display": "2+",
+    "state": "normal",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+ normal range",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "upper normal",
+   "answers": {
+    "grade": "3"
+   },
+   "expect": {
+    "display": "3+",
+    "state": "normal"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3+ still normal on NINDS scale",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "enhanced knee right",
+   "answers": {
+    "grade": "4",
+    "reflex": "knee",
+    "side": "right"
+   },
+   "expect": {
+    "display": "4+",
+    "state": "enhanced",
+    "shareText": "Reflex, knee 4+ (R) (NINDS scale) — Enhanced"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4+ enhanced",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

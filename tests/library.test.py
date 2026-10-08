@@ -1,12 +1,12 @@
-"""Phase 6 — walk every implemented calculator and guide in the real UI; check under-review entries."""
+"""Phase 6 / v0.10 — walk every implemented calculator and guide in the real UI; check the active catalogue holds no under-review entries."""
 import asyncio, json, os, subprocess, sys, time
 from playwright.async_api import async_playwright
 ROOT = os.path.join(os.path.dirname(__file__), "..", "app", "assets"); SHOTS = os.path.join(os.path.dirname(__file__), "shots")
 os.makedirs(SHOTS, exist_ok=True); PORT = 8769; U = f"http://localhost:{PORT}/index.html"; results = []
 def check(n, c, info=""): results.append((n, bool(c))); print(("PASS " if c else "FAIL ") + n + (f"  [{info}]" if info and not c else ""))
 CAT = json.load(open(os.path.join(ROOT, "content", "catalog.json")))
-IMPL = [s for s in CAT["scores"] if s["status"] == "implemented"]; REVIEW = [s for s in CAT["scores"] if s["status"] == "review"]
-SHOT_IDS = {"aspects", "abcd2", "ich", "marshall", "rts", "iss", "rtokuhashi", "gose"}
+IMPL = [s for s in CAT["scores"] if s["status"] == "implemented"]; WITHHELD = CAT.get("withheld", []); EXAM = next(c for c in CAT["categories"] if c["id"] == "exam")
+SHOT_IDS = {"aspects", "abcd2", "ich", "marshall", "rts", "iss", "rtokuhashi", "gose", "mrcss", "mts", "gr", "lawtonyoung"}
 
 async def fill_all(pg, sid):
     score = json.load(open(os.path.join(ROOT, "content", "scores", sid + ".json")))
@@ -29,7 +29,8 @@ async def main():
             b = await p.chromium.launch(); pg = await (await b.new_context(viewport={"width": 412, "height": 915}, device_scale_factor=2)).new_page()
             errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
             await pg.goto(U); await pg.wait_for_selector(".bottomnav")
-            check(f"catalogue: {len(IMPL)} implemented, {len(REVIEW)} under review, 0 placeholders", {s["id"] for s in IMPL} == {f[:-5] for f in os.listdir(os.path.join(ROOT, "content", "scores"))} and not [s for s in CAT["scores"] if s["status"] == "placeholder"])
+            check(f"catalogue: {len(IMPL)} implemented, only implemented scores listed ({len(WITHHELD)} withheld, {len(CAT.get('planned', []))} planned kept out of the app)",
+                  {s["id"] for s in IMPL} == {f[:-5] for f in os.listdir(os.path.join(ROOT, "content", "scores"))} and len(IMPL) == len(CAT["scores"]))
             for s in IMPL:
                 sid = s["id"]
                 await pg.goto(U + f"#/calculate/s/{sid}"); await pg.wait_for_selector(".field")
@@ -45,15 +46,45 @@ async def main():
                 n = await pg.locator(".section-card").count(); srcs = await pg.locator("#g-sources li").count()
                 ver = await pg.locator("#g-version").inner_text()
                 check(f"{sid}: guide has 14 sections, version shown, {srcs} source(s)", n == 14 and srcs >= 1 and score["version"]["label"] in ver)
-            for s in REVIEW:
-                await pg.goto(U + f"#/calculate/s/{s['id']}"); await pg.wait_for_selector(".detail-head")
-                txt = await pg.locator("main").inner_text()
-                check(f"{s['id']}: under review, reason shown ({s['reviewCategory']})", "Under review" in txt and s["reviewReason"][:40] in txt and await pg.locator(".field").count() == 0)
-            await pg.goto(U + "#/calculate/c/spine"); await pg.wait_for_selector(".score-card")
-            badges = await pg.locator(".score-card .status-badge").all_inner_texts()
-            check("category list distinguishes Calculator / Under review badges", "Calculator" in badges and "Under review" in badges, str(badges))
-            await pg.screenshot(path=f"{SHOTS}/p6_stroke_list.png")
-            await pg.goto(U + "#/calculate/s/sofa"); await pg.wait_for_selector(".detail-head"); await pg.screenshot(path=f"{SHOTS}/p6_sofa_review.png")
+            # ---------- v0.10: no under-review cards anywhere; withheld scores unreachable ----------
+            seen_review = []
+            for c in CAT["categories"]:
+                for tab in ("calculate", "guide"):
+                    await pg.goto(U + f"#/{tab}/c/{c['id']}"); await pg.wait_for_selector(".score-card")
+                    if "under review" in (await pg.locator("main").inner_text()).lower(): seen_review.append(f"{tab}/{c['id']}")
+            check("no 'Under review' text in any Calculate or Guide group list", not seen_review, str(seen_review))
+            for w in WITHHELD:
+                await pg.goto(U + f"#/calculate/s/{w['id']}"); await pg.wait_for_selector("main")
+                await pg.goto(U + "#/calculate"); await pg.wait_for_selector("#search"); await pg.fill("#search", w["abbreviation"]); await pg.wait_for_timeout(60)
+                titles = [t.split("\n")[0].strip() for t in await pg.locator("#search-results .score-card .title").all_inner_texts()]
+                check(f"withheld {w['abbreviation']}: not in search results", w["abbreviation"] not in [t.replace("Calculator", "").strip() for t in titles], str(titles))
+            # ---------- v0.10: Neurosurgical Examination & Grades ----------
+            await pg.goto(U + "#/home"); await pg.wait_for_selector("#search"); await pg.goto(U + "#/calculate"); await pg.wait_for_selector(".category-card")
+            check("root list section is titled 'Scores & Grades'", "Scores & Grades" in await pg.locator("#cats").inner_text())
+            check("'Neurosurgical Examination & Grades' group listed", await pg.locator('.category-card:has-text("Neurosurgical Examination & Grades")').count() == 1)
+            await pg.goto(U + "#/calculate/c/exam"); await pg.wait_for_selector(".score-card")
+            heads = [h.strip() for h in await pg.locator(".group-h").all_inner_texts()]
+            check("exam group shows its sub-sections in order", heads == [g["title"] for g in EXAM["groups"]], str(heads))
+            ids = await pg.evaluate("[...document.querySelectorAll('main .score-card a.open')].map(a => a.getAttribute('href').split('/').pop())")
+            expect = [m for g in EXAM["groups"] for m in g["members"]]
+            check(f"exam group lists all {len(expect)} entries (incl. cross-listed KPS, ECOG)", ids == expect, str(ids))
+            await pg.screenshot(path=f"{SHOTS}/v10_exam_group.png", full_page=True)
+            await pg.goto(U + "#/calculate/c/tbi"); await pg.wait_for_selector(".score-card")
+            check("Markwalder also listed under Traumatic brain injury", await pg.locator('main .score-card a.open[href$="/markwalder"]').count() == 1)
+            await pg.goto(U + "#/calculate"); await pg.fill("#search", "spasticity"); await pg.wait_for_timeout(60)
+            r = [t.split("\n")[0].replace("Calculator", "").strip() for t in await pg.locator("#search-results .score-card .title").all_inner_texts()]
+            check("search 'spasticity' finds MAS and MTS", "MAS" in r and "MTS" in r, str(r))
+            await pg.fill("#search", "avm"); await pg.wait_for_timeout(60)
+            r = [t.split("\n")[0].replace("Calculator", "").strip() for t in await pg.locator("#search-results .score-card .title").all_inner_texts()]
+            check("search 'avm' finds Spetzler-Martin and Lawton-Young", "Spetzler-Martin" in r and "Lawton-Young" in r, str(r))
+            # favourite + recent work for a new grade
+            await pg.goto(U + "#/calculate/c/exam"); await pg.wait_for_selector(".score-card")
+            await pg.locator('main .score-card:has(a.open[href$="/hb"]) [data-act="toggle-favorite"]').first.click()
+            await pg.goto(U + "#/calculate/s/hb"); await pg.wait_for_selector(".field"); await fill_all(pg, "hb"); await pg.wait_for_timeout(1200)
+            st = await pg.evaluate("JSON.parse(localStorage.getItem('ins.store.v3'))")
+            check("favourite and recent calculator recorded for a new grade (House-Brackmann)", "hb" in st["favorites"] and any(r["id"] == "hb" for r in st["recentCalc"]), str({k: st[k] for k in ("favorites", "recentCalc")}))
+            await pg.goto(U + "#/home"); await pg.wait_for_selector("#home-favorites")
+            check("Home shows the new favourite", await pg.locator('#home-favorites a.open[href$="/hb"]').count() == 1)
             check("no JS errors across the library", not errs, errs[:3])
             await b.close()
     finally: srv.terminate()

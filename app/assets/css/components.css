@@ -475,3 +475,6 @@ table.result-breakdown th { width: auto; }
 .ins-more .when-open { display: none; }
 .ins-more[open] .when-open { display: inline; }
 .ins-more[open] .when-closed { display: none; }
+/* v0.10: sub-groups inside a category list (e.g. Neurosurgical Examination & Grades) */
+.group-h { font-weight: 600; color: var(--color-text); margin: var(--space-5, 24px) 0 var(--space-2); }
+.group-h:first-child { margin-top: var(--space-2); }

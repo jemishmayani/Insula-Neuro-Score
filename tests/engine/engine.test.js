@@ -57,7 +57,7 @@ test("scoring rules feed expression method", () => {
 });
 test("related scores and insights are returned", () => {
   const r = Engine.calculate(load("gcs"), { e: "1", v: "1", m: "2" });
-  assert.ok(r.related.some((x) => x.id === "four"));
+  assert.ok(r.related.some((x) => x.id === "gcsp"));
   assert.ok(r.insights.some((t) => /motor response/.test(t)));
 });
 test("validator rejects malformed models with specific messages", () => {

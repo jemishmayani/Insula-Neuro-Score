@@ -132,6 +132,312 @@
   "issues": []
  },
  {
+  "id": "borden",
+  "abbreviation": "Borden",
+  "version": "Borden classification (Borden, Wu & Shucart 1995), types I–III with subtypes a/b",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 3
+  },
+  "reachMin": 1,
+  "reachMax": 3,
+  "space": 9,
+  "evaluated": 9,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 9
+  },
+  "components": [
+   {
+    "id": "type",
+    "label": "Venous drainage",
+    "type": "single",
+    "points": "I=1, II=2, III=3",
+    "nt": ""
+   },
+   {
+    "id": "sub",
+    "label": "Subtype (optional)",
+    "type": "single",
+    "points": "a=0, b=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "t1",
+    "label": "Type I: no cortical venous drainage",
+    "tone": "low",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "t2",
+    "label": "Type II: cortical venous reflux",
+    "tone": "high",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "t3",
+    "label": "Type III: direct cortical venous drainage",
+    "tone": "high",
+    "declared": "III",
+    "reached": "3"
+   }
+  ],
+  "boundaries": [
+   "1→2: t1 → t2",
+   "2→3: t2 → t3"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "clonus",
+  "abbreviation": "Clonus",
+  "version": "Descriptive examination record: absent, unsustained or sustained",
+  "method": "select",
+  "declared": {
+   "min": 0,
+   "max": 2
+  },
+  "reachMin": 0,
+  "reachMax": 2,
+  "space": 135,
+  "evaluated": 135,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 135
+  },
+  "components": [
+   {
+    "id": "finding",
+    "label": "Clonus",
+    "type": "single",
+    "points": "Absent=0, Unsustained=1, Sustained=2",
+    "nt": ""
+   },
+   {
+    "id": "site",
+    "label": "Joint (optional)",
+    "type": "single",
+    "points": "=0, =0, =0, =0",
+    "nt": ""
+   },
+   {
+    "id": "beats",
+    "label": "Number of beats (optional)",
+    "type": "integer",
+    "points": "1–100",
+    "nt": ""
+   },
+   {
+    "id": "side",
+    "label": "Side (optional)",
+    "type": "single",
+    "points": "L=0, R=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "absent",
+    "label": "No clonus elicited",
+    "tone": "favorable",
+    "declared": "",
+    "reached": "0"
+   },
+   {
+    "id": "unsustained",
+    "label": "Unsustained clonus",
+    "tone": "informational",
+    "declared": "",
+    "reached": "1"
+   },
+   {
+    "id": "sustained",
+    "label": "Sustained clonus",
+    "tone": "moderate",
+    "declared": "",
+    "reached": "2"
+   }
+  ],
+  "boundaries": [
+   "0→1: absent → unsustained",
+   "1→2: unsustained → sustained"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "cognard",
+  "abbreviation": "Cognard",
+  "version": "Cognard revised classification (Cognard et al. 1995): I, IIa, IIb, IIa+b, III, IV, V",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 7
+  },
+  "reachMin": 1,
+  "reachMax": 7,
+  "space": 7,
+  "evaluated": 7,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 7
+  },
+  "components": [
+   {
+    "id": "type",
+    "label": "Venous drainage pattern",
+    "type": "single",
+    "points": "I=1, IIa=2, IIb=3, IIa+b=4, III=5, IV=6, V=7",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "t1",
+    "label": "Type I",
+    "tone": "low",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "t2",
+    "label": "Type IIa",
+    "tone": "low",
+    "declared": "IIa",
+    "reached": "2"
+   },
+   {
+    "id": "t3",
+    "label": "Type IIb",
+    "tone": "high",
+    "declared": "IIb",
+    "reached": "3"
+   },
+   {
+    "id": "t4",
+    "label": "Type IIa+b",
+    "tone": "high",
+    "declared": "IIa+b",
+    "reached": "4"
+   },
+   {
+    "id": "t5",
+    "label": "Type III",
+    "tone": "high",
+    "declared": "III",
+    "reached": "5"
+   },
+   {
+    "id": "t6",
+    "label": "Type IV",
+    "tone": "high",
+    "declared": "IV",
+    "reached": "6"
+   },
+   {
+    "id": "t7",
+    "label": "Type V",
+    "tone": "high",
+    "declared": "V",
+    "reached": "7"
+   }
+  ],
+  "boundaries": [
+   "1→2: t1 → t2",
+   "2→3: t2 → t3",
+   "3→4: t3 → t4",
+   "4→5: t4 → t5",
+   "5→6: t5 → t6",
+   "6→7: t6 → t7"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "dtr",
+  "abbreviation": "Reflex grade",
+  "version": "NINDS Myotatic Reflex Scale, 0–4 (Hallett 1993)",
+  "method": "select",
+  "declared": {
+   "min": 0,
+   "max": 4
+  },
+  "reachMin": 0,
+  "reachMax": 4,
+  "space": 105,
+  "evaluated": 105,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 105
+  },
+  "components": [
+   {
+    "id": "grade",
+    "label": "Reflex amplitude",
+    "type": "single",
+    "points": "0=0, 1+=1, 2+=2, 3+=3, 4+=4",
+    "nt": ""
+   },
+   {
+    "id": "reflex",
+    "label": "Reflex tested (optional)",
+    "type": "single",
+    "points": "=0, =0, =0, =0, =0, =0",
+    "nt": ""
+   },
+   {
+    "id": "side",
+    "label": "Side (optional)",
+    "type": "single",
+    "points": "L=0, R=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "absent",
+    "label": "Absent",
+    "tone": "informational",
+    "declared": "0",
+    "reached": "0"
+   },
+   {
+    "id": "reduced",
+    "label": "Reduced",
+    "tone": "informational",
+    "declared": "1+",
+    "reached": "1"
+   },
+   {
+    "id": "normal",
+    "label": "Within the normal range",
+    "tone": "favorable",
+    "declared": "2+–3+",
+    "reached": "2–3"
+   },
+   {
+    "id": "enhanced",
+    "label": "Enhanced",
+    "tone": "informational",
+    "declared": "4+",
+    "reached": "4"
+   }
+  ],
+  "boundaries": [
+   "0→1: absent → reduced",
+   "1→2: reduced → normal",
+   "3→4: normal → enhanced"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "ecog",
   "abbreviation": "ECOG",
   "version": "ECOG Performance Status (Oken et al. 1982)",
@@ -207,6 +513,77 @@
    "2→3: g2 → g3",
    "3→4: g3 → g4",
    "4→5: g4 → g5"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "engel",
+  "abbreviation": "Engel",
+  "version": "Engel classification (Engel et al. 1993), classes I–IV with subclasses",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 13
+  },
+  "reachMin": 1,
+  "reachMax": 13,
+  "space": 39,
+  "evaluated": 39,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 39
+  },
+  "components": [
+   {
+    "id": "cls",
+    "label": "Outcome subclass",
+    "type": "single",
+    "points": "IA=1, IB=2, IC=3, ID=4, IIA=5, IIB=6, IIC=7, IID=8, IIIA=9, IIIB=10, IVA=11, IVB=12, IVC=13",
+    "nt": ""
+   },
+   {
+    "id": "fu",
+    "label": "Follow-up since surgery (years, optional)",
+    "type": "integer",
+    "points": "1–50",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "c1",
+    "label": "Class I: free of disabling seizures",
+    "tone": "favorable",
+    "declared": "IA–ID",
+    "reached": "1–4"
+   },
+   {
+    "id": "c2",
+    "label": "Class II: rare disabling seizures",
+    "tone": "low",
+    "declared": "IIA–IID",
+    "reached": "5–8"
+   },
+   {
+    "id": "c3",
+    "label": "Class III: worthwhile improvement",
+    "tone": "moderate",
+    "declared": "IIIA–IIIB",
+    "reached": "9–10"
+   },
+   {
+    "id": "c4",
+    "label": "Class IV: no worthwhile improvement",
+    "tone": "high",
+    "declared": "IVA–IVC",
+    "reached": "11–13"
+   }
+  ],
+  "boundaries": [
+   "4→5: c1 → c2",
+   "8→9: c2 → c3",
+   "10→11: c3 → c4"
   ],
   "nt": [],
   "issues": []
@@ -967,6 +1344,93 @@
   "issues": []
  },
  {
+  "id": "gr",
+  "abbreviation": "Gardner-Robertson",
+  "version": "Gardner-Robertson modified hearing classification (1988)",
+  "method": "expression: pta == sds ? pta : 0",
+  "declared": {
+   "min": 0,
+   "max": 5
+  },
+  "reachMin": 0,
+  "reachMax": 5,
+  "space": 25,
+  "evaluated": 25,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 25
+  },
+  "components": [
+   {
+    "id": "pta",
+    "label": "Pure-tone average (PTA)",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4, V=5",
+    "nt": ""
+   },
+   {
+    "id": "sds",
+    "label": "Speech discrimination score (SDS)",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4, V=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "disc",
+    "label": "Discordant: PTA class {roman(pta)}, SDS class {roman(sds)}",
+    "tone": "informational",
+    "declared": "",
+    "reached": "0"
+   },
+   {
+    "id": "c1",
+    "label": "Class I: good to excellent",
+    "tone": "favorable",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "c2",
+    "label": "Class II: serviceable",
+    "tone": "low",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "c3",
+    "label": "Class III: non-serviceable",
+    "tone": "moderate",
+    "declared": "III",
+    "reached": "3"
+   },
+   {
+    "id": "c4",
+    "label": "Class IV: poor",
+    "tone": "high",
+    "declared": "IV",
+    "reached": "4"
+   },
+   {
+    "id": "c5",
+    "label": "Class V: none",
+    "tone": "high",
+    "declared": "V",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "0→1: disc → c1",
+   "1→2: c1 → c2",
+   "2→3: c2 → c3",
+   "3→4: c3 → c4",
+   "4→5: c4 → c5"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "graeb",
   "abbreviation": "Graeb",
   "version": "Original Graeb score (Graeb et al. 1982)",
@@ -1031,6 +1495,93 @@
   ],
   "boundaries": [
    "0→1: none → scored"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "hb",
+  "abbreviation": "House-Brackmann",
+  "version": "House-Brackmann grading system, grades I–VI (House & Brackmann 1985)",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 6
+  },
+  "reachMin": 1,
+  "reachMax": 6,
+  "space": 18,
+  "evaluated": 18,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 18
+  },
+  "components": [
+   {
+    "id": "grade",
+    "label": "Facial nerve function",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4, V=5, VI=6",
+    "nt": ""
+   },
+   {
+    "id": "side",
+    "label": "Side (optional)",
+    "type": "single",
+    "points": "L=0, R=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "g1",
+    "label": "Grade I: normal",
+    "tone": "favorable",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "g2",
+    "label": "Grade II: mild dysfunction",
+    "tone": "low",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "g3",
+    "label": "Grade III: moderate dysfunction",
+    "tone": "mild",
+    "declared": "III",
+    "reached": "3"
+   },
+   {
+    "id": "g4",
+    "label": "Grade IV: moderately severe dysfunction",
+    "tone": "moderate",
+    "declared": "IV",
+    "reached": "4"
+   },
+   {
+    "id": "g5",
+    "label": "Grade V: severe dysfunction",
+    "tone": "high",
+    "declared": "V",
+    "reached": "5"
+   },
+   {
+    "id": "g6",
+    "label": "Grade VI: total paralysis",
+    "tone": "high",
+    "declared": "VI",
+    "reached": "6"
+   }
+  ],
+  "boundaries": [
+   "1→2: g1 → g2",
+   "2→3: g2 → g3",
+   "3→4: g3 → g4",
+   "4→5: g4 → g5",
+   "5→6: g5 → g6"
   ],
   "nt": [],
   "issues": []
@@ -1226,6 +1777,108 @@
    "3→4: s3 → s4",
    "4→5: s4 → s5",
    "5→6: s5 → s6"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "ilae",
+  "abbreviation": "ILAE outcome",
+  "version": "ILAE outcome classification (Wieser et al. 2001), classes 1–6 with 1a",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 6
+  },
+  "reachMin": 1,
+  "reachMax": 6,
+  "space": 54,
+  "evaluated": 54,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 54
+  },
+  "components": [
+   {
+    "id": "cls",
+    "label": "Outcome in this follow-up year",
+    "type": "single",
+    "points": "1=1, 2=2, 3=3, 4=4, 5=5, 6=6",
+    "nt": ""
+   },
+   {
+    "id": "since",
+    "label": "Seizure free with no auras since surgery? (class 1a)",
+    "type": "single",
+    "points": "=0, =0",
+    "nt": ""
+   },
+   {
+    "id": "fu",
+    "label": "Follow-up year (optional)",
+    "type": "integer",
+    "points": "1–50",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "c1a",
+    "label": "Class 1a",
+    "tone": "favorable",
+    "declared": "1a",
+    "reached": "1"
+   },
+   {
+    "id": "c1",
+    "label": "Class 1",
+    "tone": "favorable",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "c2",
+    "label": "Class 2",
+    "tone": "favorable",
+    "declared": "2",
+    "reached": "2"
+   },
+   {
+    "id": "c3",
+    "label": "Class 3",
+    "tone": "low",
+    "declared": "3",
+    "reached": "3"
+   },
+   {
+    "id": "c4",
+    "label": "Class 4",
+    "tone": "moderate",
+    "declared": "4",
+    "reached": "4"
+   },
+   {
+    "id": "c5",
+    "label": "Class 5",
+    "tone": "high",
+    "declared": "5",
+    "reached": "5"
+   },
+   {
+    "id": "c6",
+    "label": "Class 6",
+    "tone": "high",
+    "declared": "6",
+    "reached": "6"
+   }
+  ],
+  "boundaries": [
+   "1→1: c1 → c1a",
+   "1→2: c1a → c2",
+   "2→3: c2 → c3",
+   "3→4: c3 → c4",
+   "4→5: c4 → c5",
+   "5→6: c5 → c6"
   ],
   "nt": [],
   "issues": []
@@ -1464,6 +2117,155 @@
   "issues": []
  },
  {
+  "id": "lawtonyoung",
+  "abbreviation": "Lawton-Young",
+  "version": "Lawton-Young supplementary grading scale (Lawton et al. 2010)",
+  "method": "expression: supp",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 72,
+  "evaluated": 72,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 72
+  },
+  "components": [
+   {
+    "id": "age",
+    "label": "Age",
+    "type": "single",
+    "points": "lt20=1, 20to40=2, gt40=3",
+    "nt": ""
+   },
+   {
+    "id": "rupt",
+    "label": "Presentation",
+    "type": "single",
+    "points": "ruptured=0, unruptured=1",
+    "nt": ""
+   },
+   {
+    "id": "nidus",
+    "label": "Nidus",
+    "type": "single",
+    "points": "compact=0, diffuse=1",
+    "nt": ""
+   },
+   {
+    "id": "sm",
+    "label": "Spetzler-Martin grade (optional)",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4, V=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "supp",
+    "label": "Supplementary grade {total}",
+    "tone": "informational",
+    "declared": "Supp 1–5",
+    "reached": "1–5"
+   },
+   {
+    "id": "comb",
+    "label": "Supp-SM grade {combined}",
+    "tone": "informational",
+    "declared": "Supp-SM 2–10",
+    "reached": "1–5"
+   }
+  ],
+  "boundaries": [
+   "1→1: comb → supp",
+   "1→2: supp → comb",
+   "2→2: comb → supp",
+   "2→3: supp → comb",
+   "3→3: comb → supp",
+   "3→4: supp → comb",
+   "4→4: comb → supp",
+   "4→5: supp → comb",
+   "5→5: comb → supp"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "markwalder",
+  "abbreviation": "Markwalder",
+  "version": "Markwalder grading scale (1981), grades 0–4",
+  "method": "select",
+  "declared": {
+   "min": 0,
+   "max": 4
+  },
+  "reachMin": 0,
+  "reachMax": 4,
+  "space": 5,
+  "evaluated": 5,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 5
+  },
+  "components": [
+   {
+    "id": "grade",
+    "label": "Clinical grade",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "g0",
+    "label": "Grade 0: neurologically normal",
+    "tone": "favorable",
+    "declared": "0",
+    "reached": "0"
+   },
+   {
+    "id": "g1",
+    "label": "Grade 1: alert and oriented",
+    "tone": "low",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "g2",
+    "label": "Grade 2: drowsy or disoriented",
+    "tone": "moderate",
+    "declared": "2",
+    "reached": "2"
+   },
+   {
+    "id": "g3",
+    "label": "Grade 3: stuporous",
+    "tone": "high",
+    "declared": "3",
+    "reached": "3"
+   },
+   {
+    "id": "g4",
+    "label": "Grade 4: comatose",
+    "tone": "high",
+    "declared": "4",
+    "reached": "4"
+   }
+  ],
+  "boundaries": [
+   "0→1: g0 → g1",
+   "1→2: g1 → g2",
+   "2→3: g2 → g3",
+   "3→4: g3 → g4"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "marshall",
   "abbreviation": "Marshall",
   "version": "Marshall CT classification (1991)",
@@ -1567,6 +2369,92 @@
    "3→4: c3 → c4",
    "4→5: c4 → c5",
    "5→6: c5 → c6"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "mas",
+  "abbreviation": "MAS",
+  "version": "Modified Ashworth Scale (Bohannon & Smith 1987)",
+  "method": "select",
+  "declared": {
+   "min": 0,
+   "max": 5
+  },
+  "reachMin": 0,
+  "reachMax": 5,
+  "space": 126,
+  "evaluated": 126,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 126
+  },
+  "components": [
+   {
+    "id": "grade",
+    "label": "Resistance to passive movement",
+    "type": "single",
+    "points": "0=0, 1=1, 1+=2, 2=3, 3=4, 4=5",
+    "nt": ""
+   },
+   {
+    "id": "muscle",
+    "label": "Muscle group (optional)",
+    "type": "single",
+    "points": "=0, =0, =0, =0, =0, =0",
+    "nt": ""
+   },
+   {
+    "id": "side",
+    "label": "Side (optional)",
+    "type": "single",
+    "points": "L=0, R=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "g0",
+    "label": "No increase in tone",
+    "tone": "favorable",
+    "declared": "MAS 0",
+    "reached": "0"
+   },
+   {
+    "id": "slight",
+    "label": "Slight increase in tone",
+    "tone": "low",
+    "declared": "MAS 1–1+",
+    "reached": "1–2"
+   },
+   {
+    "id": "marked",
+    "label": "More marked increase",
+    "tone": "mild",
+    "declared": "MAS 2",
+    "reached": "3"
+   },
+   {
+    "id": "considerable",
+    "label": "Considerable increase",
+    "tone": "moderate",
+    "declared": "MAS 3",
+    "reached": "4"
+   },
+   {
+    "id": "rigid",
+    "label": "Rigid",
+    "tone": "high",
+    "declared": "MAS 4",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "0→1: g0 → slight",
+   "2→3: slight → marked",
+   "3→4: marked → considerable",
+   "4→5: considerable → rigid"
   ],
   "nt": [],
   "issues": []
@@ -1744,6 +2632,311 @@
   "issues": []
  },
  {
+  "id": "mrc",
+  "abbreviation": "MRC power",
+  "version": "Medical Research Council scale, grades 0–5",
+  "method": "select",
+  "declared": {
+   "min": 0,
+   "max": 5
+  },
+  "reachMin": 0,
+  "reachMax": 5,
+  "space": 18,
+  "evaluated": 18,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 18
+  },
+  "components": [
+   {
+    "id": "grade",
+    "label": "Power grade",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": ""
+   },
+   {
+    "id": "side",
+    "label": "Side (optional)",
+    "type": "single",
+    "points": "L=0, R=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "g5",
+    "label": "Grade 5: normal power",
+    "tone": "favorable",
+    "declared": "5",
+    "reached": "5"
+   },
+   {
+    "id": "g4",
+    "label": "Grade 4: against gravity and resistance",
+    "tone": "mild",
+    "declared": "4",
+    "reached": "4"
+   },
+   {
+    "id": "g3",
+    "label": "Grade 3: against gravity",
+    "tone": "moderate",
+    "declared": "3",
+    "reached": "3"
+   },
+   {
+    "id": "g2",
+    "label": "Grade 2: gravity eliminated",
+    "tone": "high",
+    "declared": "2",
+    "reached": "2"
+   },
+   {
+    "id": "g1",
+    "label": "Grade 1: flicker or trace",
+    "tone": "high",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "g0",
+    "label": "Grade 0: no contraction",
+    "tone": "high",
+    "declared": "0",
+    "reached": "0"
+   }
+  ],
+  "boundaries": [
+   "0→1: g0 → g1",
+   "1→2: g1 → g2",
+   "2→3: g2 → g3",
+   "3→4: g3 → g4",
+   "4→5: g4 → g5"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "mrcss",
+  "abbreviation": "MRC-SS",
+  "version": "MRC sum score, 12 muscle groups (Kleyweg et al. 1991)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 60
+  },
+  "reachMin": 0,
+  "reachMax": 60,
+  "space": 2176782336,
+  "evaluated": 300074,
+  "exhaustive": false,
+  "statusCount": {
+   "complete": 300000
+  },
+  "components": [
+   {
+    "id": "sh_l",
+    "label": "Shoulder abduction, left",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "el_l",
+    "label": "Elbow flexion, left",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "wr_l",
+    "label": "Wrist extension, left",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "hi_l",
+    "label": "Hip flexion, left",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "kn_l",
+    "label": "Knee extension, left",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "an_l",
+    "label": "Ankle dorsiflexion, left",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "sh_r",
+    "label": "Shoulder abduction, right",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "el_r",
+    "label": "Elbow flexion, right",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "wr_r",
+    "label": "Wrist extension, right",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "hi_r",
+    "label": "Hip flexion, right",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "kn_r",
+    "label": "Knee extension, right",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   },
+   {
+    "id": "an_r",
+    "label": "Ankle dorsiflexion, right",
+    "type": "single",
+    "points": "5=5, 4=4, 3=3, 2=2, 1=1, 0=0",
+    "nt": "NT (Amputation or injury/Pain prevents testing/Not cooperating or sedated/Other)"
+   }
+  ],
+  "states": [
+   {
+    "id": "full",
+    "label": "No weakness measured",
+    "tone": "favorable",
+    "declared": "60",
+    "reached": "60"
+   },
+   {
+    "id": "above",
+    "label": "Weakness above the ICU-AW threshold",
+    "tone": "mild",
+    "declared": "48–59",
+    "reached": "48–59"
+   },
+   {
+    "id": "below",
+    "label": "Below 48: meets the ICU-AW strength criterion",
+    "tone": "high",
+    "declared": "0–47",
+    "reached": "0–47"
+   }
+  ],
+  "boundaries": [
+   "47→48: below → above",
+   "59→60: above → full"
+  ],
+  "nt": [
+   {
+    "input": "sh_l",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "el_l",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "wr_l",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "hi_l",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "kn_l",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "an_l",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "sh_r",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "el_r",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "wr_r",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "hi_r",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "kn_r",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   },
+   {
+    "input": "an_r",
+    "policy": "block",
+    "status": "not-interpretable",
+    "total": null,
+    "reasonsRequired": false
+   }
+  ],
+  "issues": []
+ },
+ {
   "id": "mrs",
   "abbreviation": "mRS",
   "version": "Modified Rankin Scale 0–6 (van Swieten et al. 1988)",
@@ -1827,6 +3020,83 @@
    "3→4: g3 → g4",
    "4→5: g4 → g5",
    "5→6: g5 → g6"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "mts",
+  "abbreviation": "MTS",
+  "version": "Modified Tardieu Scale (Boyd & Graham 1999)",
+  "method": "expression: isnull(r1) ? 0 : abs(r2 - r1)",
+  "declared": {
+   "min": 0,
+   "max": 180
+  },
+  "reachMin": 0,
+  "reachMax": 180,
+  "space": 576,
+  "evaluated": 576,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 576
+  },
+  "components": [
+   {
+    "id": "muscle",
+    "label": "Muscle group (optional)",
+    "type": "single",
+    "points": "=0, =0, =0, =0, =0, =0, =0",
+    "nt": ""
+   },
+   {
+    "id": "vel",
+    "label": "Velocity of the fast stretch",
+    "type": "single",
+    "points": "V2=0, V3=0",
+    "nt": ""
+   },
+   {
+    "id": "x",
+    "label": "Quality of muscle reaction (X)",
+    "type": "single",
+    "points": "X0=0, X1=1, X2=2, X3=3, X4=4, X5=5",
+    "nt": ""
+   },
+   {
+    "id": "r1",
+    "label": "R1: angle of catch (fast stretch)",
+    "type": "integer",
+    "points": "0–180",
+    "nt": ""
+   },
+   {
+    "id": "r2",
+    "label": "R2: passive range (slow stretch, V1)",
+    "type": "integer",
+    "points": "0–180",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "nocatch",
+    "label": "{x_code}, no angle of catch",
+    "tone": "informational",
+    "declared": "",
+    "reached": "0"
+   },
+   {
+    "id": "catch",
+    "label": "{x_code}, dynamic component {total}°",
+    "tone": "informational",
+    "declared": "",
+    "reached": "0–180"
+   }
+  ],
+  "boundaries": [
+   "0→0: catch → nocatch",
+   "0→180: nocatch → catch"
   ],
   "nt": [],
   "issues": []
@@ -2144,6 +3414,77 @@
   ],
   "boundaries": [
    "9→10: scored → ten"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "plantar",
+  "abbreviation": "Plantar",
+  "version": "Descriptive examination record: flexor, extensor, equivocal or no response",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 4
+  },
+  "reachMin": 1,
+  "reachMax": 4,
+  "space": 12,
+  "evaluated": 12,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 12
+  },
+  "components": [
+   {
+    "id": "finding",
+    "label": "Great toe response",
+    "type": "single",
+    "points": "Flexor=1, Extensor=2, Equivocal=3, No response=4",
+    "nt": ""
+   },
+   {
+    "id": "side",
+    "label": "Side (optional)",
+    "type": "single",
+    "points": "L=0, R=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "flexor",
+    "label": "Flexor response",
+    "tone": "favorable",
+    "declared": "",
+    "reached": "1"
+   },
+   {
+    "id": "extensor",
+    "label": "Extensor response (Babinski sign)",
+    "tone": "moderate",
+    "declared": "",
+    "reached": "2"
+   },
+   {
+    "id": "equivocal",
+    "label": "Equivocal",
+    "tone": "informational",
+    "declared": "",
+    "reached": "3"
+   },
+   {
+    "id": "none",
+    "label": "No response",
+    "tone": "informational",
+    "declared": "",
+    "reached": "4"
+   }
+  ],
+  "boundaries": [
+   "1→2: flexor → extensor",
+   "2→3: extensor → equivocal",
+   "3→4: equivocal → none"
   ],
   "nt": [],
   "issues": []
@@ -2656,6 +3997,76 @@
   ],
   "boundaries": [
    "0→1: zero → scored"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "spetzler",
+  "abbreviation": "Spetzler-Martin",
+  "version": "Spetzler-Martin grading system (1986), grades I–V",
+  "method": "sum",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 12,
+  "evaluated": 12,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 12
+  },
+  "components": [
+   {
+    "id": "size",
+    "label": "Nidus size (maximum diameter)",
+    "type": "single",
+    "points": "small=1, medium=2, large=3",
+    "nt": ""
+   },
+   {
+    "id": "eloq",
+    "label": "Eloquence of adjacent brain",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "vein",
+    "label": "Venous drainage",
+    "type": "single",
+    "points": "sup=0, deep=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "low",
+    "label": "Grade {roman(total)}",
+    "tone": "low",
+    "declared": "I–II",
+    "reached": "1–2"
+   },
+   {
+    "id": "mid",
+    "label": "Grade III",
+    "tone": "moderate",
+    "declared": "III",
+    "reached": "3"
+   },
+   {
+    "id": "high",
+    "label": "Grade {roman(total)}",
+    "tone": "high",
+    "declared": "IV–V",
+    "reached": "4–5"
+   }
+  ],
+  "boundaries": [
+   "2→3: low → mid",
+   "3→4: mid → high"
   ],
   "nt": [],
   "issues": []

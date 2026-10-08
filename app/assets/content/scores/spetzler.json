@@ -1,0 +1,259 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "spetzler martin",
+  "avm grade",
+  "arteriovenous malformation",
+  "sm grade",
+  "avm"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Measuring the haematoma rather than the nidus.",
+  "Treating any grade as a decision to operate or not.",
+  "Counting a deep-draining vein only when it is the sole drainage (any deep drainage scores 1)."
+ ],
+ "relatedScores": [
+  {
+   "id": "lawtonyoung",
+   "relation": "Supplementary grade"
+  },
+  {
+   "id": "borden",
+   "relation": "Dural fistula classification"
+  },
+  {
+   "id": "mrs",
+   "relation": "Functional outcome"
+  }
+ ],
+ "id": "spetzler",
+ "name": "Spetzler-Martin AVM Grade",
+ "abbreviation": "Spetzler-Martin",
+ "subcategory": "Vascular neurosurgery",
+ "specialties": [
+  "Neurosurgery",
+  "Interventional Neuroradiology"
+ ],
+ "version": {
+  "label": "Spetzler-Martin grading system (1986), grades I–V",
+  "detail": "Size (<3 cm 1, 3–6 cm 2, >6 cm 3) + eloquence of adjacent brain (0/1) + venous drainage (superficial only 0, any deep 1). Grade VI (inoperable lesions) is described separately and is not calculated. The Spetzler-Ponce three-tier classes are a different system."
+ },
+ "purpose": "Grades brain arteriovenous malformations by features associated with surgical risk.",
+ "intendedPopulation": "Patients with brain AVMs being assessed for treatment, using angiography and MRI.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "AVM grade",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "A grade, not a treatment decision",
+  "message": "Treatment depends on presentation, age, AVM features beyond the grade, natural history and patient preference, in multidisciplinary discussion."
+ },
+ "inputDefinitions": [
+  {
+   "id": "size",
+   "type": "single",
+   "label": "Nidus size (maximum diameter)",
+   "short": "Size",
+   "options": [
+    {
+     "value": "small",
+     "label": "Small: under 3 cm",
+     "points": 1
+    },
+    {
+     "value": "medium",
+     "label": "Medium: 3–6 cm",
+     "points": 2
+    },
+    {
+     "value": "large",
+     "label": "Large: over 6 cm",
+     "points": 3
+    }
+   ]
+  },
+  {
+   "id": "eloq",
+   "type": "single",
+   "label": "Eloquence of adjacent brain",
+   "short": "Eloquence",
+   "options": [
+    {
+     "value": "no",
+     "label": "Non-eloquent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Eloquent",
+     "points": 1,
+     "detail": "Sensorimotor, language or visual cortex; hypothalamus or thalamus; internal capsule; brainstem; cerebellar peduncles; deep cerebellar nuclei."
+    }
+   ]
+  },
+  {
+   "id": "vein",
+   "type": "single",
+   "label": "Venous drainage",
+   "short": "Drainage",
+   "options": [
+    {
+     "value": "sup",
+     "label": "Superficial only",
+     "points": 0
+    },
+    {
+     "value": "deep",
+     "label": "Any deep drainage",
+     "points": 1,
+     "detail": "Any drainage into deep veins (e.g. internal cerebral veins, basal veins, precentral cerebellar vein)."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Grade {roman(total)}",
+  "share": "Spetzler-Martin grade {roman(total)} (size {size}, eloquence {eloq}, deep drainage {vein})"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 2",
+   "state": "low"
+  },
+  {
+   "when": "total == 3",
+   "state": "mid"
+  },
+  {
+   "state": "high"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low",
+   "tone": "low",
+   "label": "Grade {roman(total)}",
+   "summary": "Spetzler-Martin grade {roman(total)} (lower grades I–II).",
+   "range": "I–II",
+   "detail": "Lower grades were associated with lower surgical morbidity in the original series.",
+   "min": 1,
+   "max": 2
+  },
+  {
+   "id": "mid",
+   "tone": "moderate",
+   "label": "Grade III",
+   "summary": "Spetzler-Martin grade III: a heterogeneous group.",
+   "range": "III",
+   "detail": "Grade III includes AVMs with very different combinations of features; review the components.",
+   "min": 3,
+   "max": 3
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "Grade {roman(total)}",
+   "summary": "Spetzler-Martin grade {roman(total)} (higher grades IV–V).",
+   "range": "IV–V",
+   "detail": "Higher grades were associated with higher surgical morbidity in the original series. Management depends on presentation, AVM features and patient preference.",
+   "min": 4,
+   "max": 5
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Predicts the risk of surgical resection from size, eloquence and venous drainage.",
+   "importance": "major"
+  },
+  {
+   "text": "Often combined with the Lawton-Young supplementary grade, which adds age, rupture and nidus diffuseness."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "total == 3",
+   "importance": "major",
+   "text": "Grade III is heterogeneous (e.g. small, eloquent with deep drainage versus medium, eloquent, superficial); report the components."
+  },
+  {
+   "text": "The grade estimates surgical risk; it does not describe the natural history or haemorrhage risk."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Designed to estimate surgical risk; less applicable to radiosurgery or embolisation decisions."
+  },
+  "Does not include age, rupture status, nidus diffuseness or perforator supply.",
+  "Size and eloquence assessment vary between raters."
+ ],
+ "confounders": [
+  {
+   "factor": "Haematoma",
+   "effect": "Can compress the nidus and change apparent size."
+  },
+  {
+   "factor": "Imaging modality",
+   "effect": "MRI and angiography may give different measurements."
+  },
+  {
+   "factor": "Partial prior treatment",
+   "effect": "Changes size and drainage."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The annual risk of haemorrhage.",
+  "Whether treatment is indicated.",
+  "Outcomes after radiosurgery or embolisation."
+ ],
+ "guideSections": {
+  "what": "The sum of size (1–3), eloquence (0–1) and venous drainage (0–1), giving grades I–V.",
+  "whenToUse": "Describing brain AVMs and estimating surgical risk; communication between neurosurgery and neuroradiology.",
+  "howToPerform": "Measure the maximum nidus diameter on angiography or MRI. Decide whether adjacent brain is eloquent. Identify any deep venous drainage. Sum the points.",
+  "clinicalContext": "One input to multidisciplinary decisions, with the supplementary grade and the patient's presentation and preferences."
+ },
+ "sources": [
+  {
+   "citation": "Spetzler RF, Martin NA. A proposed grading system for arteriovenous malformations. J Neurosurg. 1986;65(4):476-483."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading system with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam",
+ "components": [
+  {
+   "id": "c_size",
+   "label": "Nidus size (maximum diameter)",
+   "inputs": [
+    "size"
+   ]
+  },
+  {
+   "id": "c_eloq",
+   "label": "Eloquence of adjacent brain",
+   "inputs": [
+    "eloq"
+   ]
+  },
+  {
+   "id": "c_vein",
+   "label": "Venous drainage",
+   "inputs": [
+    "vein"
+   ]
+  }
+ ]
+}

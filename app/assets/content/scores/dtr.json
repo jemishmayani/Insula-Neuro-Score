@@ -1,0 +1,323 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "dtr",
+  "deep tendon reflex",
+  "tendon reflex",
+  "myotatic reflex",
+  "ninds reflex scale",
+  "reflexes",
+  "hyperreflexia",
+  "areflexia"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Recording a reflex as absent without reinforcement.",
+  "Treating grade 3 as abnormal (it is within the normal range on this scale).",
+  "Mixing this scale with scales that use 5 for sustained clonus."
+ ],
+ "relatedScores": [
+  {
+   "id": "clonus",
+   "relation": "Record clonus"
+  },
+  {
+   "id": "plantar",
+   "relation": "Plantar response"
+  },
+  {
+   "id": "mrc",
+   "relation": "Muscle power"
+  },
+  {
+   "id": "mas",
+   "relation": "Tone"
+  }
+ ],
+ "id": "dtr",
+ "name": "Deep Tendon Reflex Grade (NINDS Myotatic Reflex Scale)",
+ "abbreviation": "Reflex grade",
+ "subcategory": "Reflexes",
+ "specialties": [
+  "Neurology",
+  "Neurosurgery",
+  "Spine Surgery"
+ ],
+ "version": {
+  "label": "NINDS Myotatic Reflex Scale, 0–4 (Hallett 1993)",
+  "detail": "0 absent; 1 small or trace, or only with reinforcement; 2 lower half of normal; 3 upper half of normal; 4 enhanced, including clonus if present. Written here as 0–4+ by convention. Other reflex scales (e.g. ones using 5 for sustained clonus) are different versions and are not combined."
+ },
+ "purpose": "Records the amplitude of a muscle stretch reflex on a standard five-point scale.",
+ "intendedPopulation": "Any patient undergoing neurological examination.",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Reflex grade",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Compare sides",
+  "message": "Grades 2 and 3 are both within the normal range. Asymmetry, and a change from previous examinations, usually matter more than one value."
+ },
+ "inputDefinitions": [
+  {
+   "id": "grade",
+   "type": "single",
+   "label": "Reflex amplitude",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "Small, less than normal",
+     "points": 1,
+     "code": "1+",
+     "detail": "Includes a trace response or one brought out only with reinforcement."
+    },
+    {
+     "value": "2",
+     "label": "Lower half of the normal range",
+     "points": 2,
+     "code": "2+"
+    },
+    {
+     "value": "3",
+     "label": "Upper half of the normal range",
+     "points": 3,
+     "code": "3+"
+    },
+    {
+     "value": "4",
+     "label": "Enhanced, more than normal",
+     "points": 4,
+     "code": "4+",
+     "detail": "Includes clonus if present; describe the clonus separately."
+    }
+   ]
+  },
+  {
+   "id": "reflex",
+   "type": "single",
+   "label": "Reflex tested (optional)",
+   "short": "Reflex",
+   "options": [
+    {
+     "value": "biceps",
+     "label": "Biceps",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "brachioradialis",
+     "label": "Brachioradialis",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "triceps",
+     "label": "Triceps",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "knee",
+     "label": "Knee (patellar)",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "ankle",
+     "label": "Ankle (Achilles)",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "other",
+     "label": "Other",
+     "points": 0,
+     "code": ""
+    }
+   ],
+   "help": "Recorded for the share text only.",
+   "required": false
+  },
+  {
+   "id": "side",
+   "type": "single",
+   "label": "Side (optional)",
+   "short": "Side",
+   "options": [
+    {
+     "value": "left",
+     "label": "Left",
+     "points": 0,
+     "code": "L"
+    },
+    {
+     "value": "right",
+     "label": "Right",
+     "points": 0,
+     "code": "R"
+    }
+   ],
+   "help": "Recorded for the share text only; it does not change the grade.",
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_grade",
+   "label": "Amplitude",
+   "inputs": [
+    "grade"
+   ]
+  },
+  {
+   "id": "c_site",
+   "label": "Reflex and side",
+   "inputs": [
+    "reflex",
+    "side"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "grade",
+  "range": {
+   "min": 0,
+   "max": 4
+  },
+  "display": "{grade_code}",
+  "share": "{isnull(reflex_value) ? 'Reflex' : 'Reflex, ' + reflex_value} {grade_code}{isnull(side_code) ? '' : ' (' + side_code + ')'} (NINDS scale)"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "absent"
+  },
+  {
+   "when": "total == 1",
+   "state": "reduced"
+  },
+  {
+   "when": "total <= 3",
+   "state": "normal"
+  },
+  {
+   "state": "enhanced"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "absent",
+   "tone": "informational",
+   "label": "Absent",
+   "summary": "No reflex obtained, including with reinforcement.",
+   "range": "0",
+   "detail": "Interpret with the other reflexes, strength and sensation; isolated absent ankle reflexes can occur in older adults."
+  },
+  {
+   "id": "reduced",
+   "tone": "informational",
+   "label": "Reduced",
+   "summary": "Reflex smaller than normal, or present only with reinforcement.",
+   "range": "1+"
+  },
+  {
+   "id": "normal",
+   "tone": "favorable",
+   "label": "Within the normal range",
+   "summary": "Reflex within the normal range (grades 2 and 3) at this assessment.",
+   "range": "2+–3+",
+   "detail": "A normal-range reflex can still be abnormal if it differs clearly from the other side."
+  },
+  {
+   "id": "enhanced",
+   "tone": "informational",
+   "label": "Enhanced",
+   "summary": "Reflex more than normal, which may include clonus.",
+   "range": "4+",
+   "detail": "Look for other upper motor neuron signs: tone, spread, clonus and the plantar response."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Describes the amplitude of one stretch reflex at one examination.",
+   "importance": "major"
+  },
+  {
+   "text": "The pattern across reflexes and sides helps separate upper from lower motor neuron and root lesions."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "total == 4",
+   "importance": "major",
+   "text": "If clonus is present, record whether it is sustained with the Clonus record in this section."
+  },
+  {
+   "when": "total == 0",
+   "text": "Use reinforcement (e.g. clenching the teeth or Jendrassik manoeuvre) before recording a reflex as absent."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Subjective, with moderate inter-rater agreement, particularly between adjacent grades."
+  },
+  "Normal reflex amplitude varies between people.",
+  "Does not record spread, latency or pendular quality."
+ ],
+ "confounders": [
+  {
+   "factor": "Anxiety or poor relaxation",
+   "effect": "Can brisken or suppress reflexes."
+  },
+  {
+   "factor": "Age",
+   "effect": "Ankle reflexes may be reduced or absent in older adults."
+  },
+  {
+   "factor": "Peripheral neuropathy",
+   "effect": "Reduces reflexes."
+  },
+  {
+   "factor": "Drugs and metabolic state",
+   "effect": "Some drugs and metabolic disturbances change reflex amplitude."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The site of the lesion on its own.",
+  "Whether a symmetrical brisk reflex is pathological.",
+  "Muscle tone or strength."
+ ],
+ "guideSections": {
+  "what": "The NINDS Myotatic Reflex Scale grades stretch-reflex amplitude 0–4. Grades 2 and 3 are within the normal range.",
+  "whenToUse": "Every neurological examination of the reflexes, and serial assessment of spinal cord, root and nerve lesions.",
+  "howToPerform": "Relax and position the limb. Strike the tendon with a consistent technique. If no response, use reinforcement. Grade the amplitude and compare both sides.",
+  "clinicalContext": "Interpret with tone, power, sensation, clonus and the plantar response."
+ },
+ "sources": [
+  {
+   "citation": "Hallett M. NINDS myotatic reflex scale. Neurology. 1993;43(12):2723."
+  },
+  {
+   "citation": "Litvan I, Mangone CA, Werden W, et al. Reliability of the NINDS Myotatic Reflex Scale. Neurology. 1996;47(4):969-972."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam"
+}

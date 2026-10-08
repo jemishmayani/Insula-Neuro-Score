@@ -1,0 +1,270 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "cognard",
+  "davf",
+  "dural arteriovenous fistula",
+  "dural fistula",
+  "cortical venous reflux"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Confusing Cognard type III with Borden type III (they are different definitions).",
+  "Omitting venous ectasia when distinguishing type III from IV."
+ ],
+ "relatedScores": [
+  {
+   "id": "borden",
+   "relation": "Simpler dAVF classification"
+  },
+  {
+   "id": "spetzler",
+   "relation": "AVM grade"
+  }
+ ],
+ "id": "cognard",
+ "name": "Cognard Classification of Dural Arteriovenous Fistulas",
+ "abbreviation": "Cognard",
+ "subcategory": "Vascular neurosurgery",
+ "specialties": [
+  "Neurosurgery",
+  "Interventional Neuroradiology",
+  "Neuroradiology"
+ ],
+ "version": {
+  "label": "Cognard revised classification (Cognard et al. 1995): I, IIa, IIb, IIa+b, III, IV, V",
+  "detail": "Classified by venous drainage: sinus flow direction, cortical venous reflux, venous ectasia and spinal perimedullary drainage."
+ },
+ "purpose": "Classifies intracranial dural arteriovenous fistulas by venous drainage pattern, in more detail than Borden.",
+ "intendedPopulation": "Patients with intracranial dural arteriovenous fistulas characterised by catheter angiography.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "dAVF classification",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "type",
+   "type": "single",
+   "label": "Venous drainage pattern",
+   "short": "Type",
+   "options": [
+    {
+     "value": "1",
+     "label": "Type I: Drains into a dural sinus with antegrade flow",
+     "points": 1,
+     "code": "I",
+     "detail": "No cortical venous reflux."
+    },
+    {
+     "value": "2",
+     "label": "Type IIa: Drains into a sinus with retrograde flow in the sinus",
+     "points": 2,
+     "code": "IIa",
+     "detail": "No cortical venous reflux."
+    },
+    {
+     "value": "3",
+     "label": "Type IIb: Drains into a sinus with reflux into cortical veins; antegrade flow in the sinus",
+     "points": 3,
+     "code": "IIb"
+    },
+    {
+     "value": "4",
+     "label": "Type IIa+b: Drains into a sinus with retrograde flow in the sinus and reflux into cortical veins",
+     "points": 4,
+     "code": "IIa+b"
+    },
+    {
+     "value": "5",
+     "label": "Type III: Drains directly into cortical veins, without venous ectasia",
+     "points": 5,
+     "code": "III"
+    },
+    {
+     "value": "6",
+     "label": "Type IV: Drains directly into cortical veins, with venous ectasia",
+     "points": 6,
+     "code": "IV",
+     "detail": "Ectasia: draining vein over 5 mm and more than three times the diameter of the draining vein."
+    },
+    {
+     "value": "7",
+     "label": "Type V: Drains into spinal perimedullary veins",
+     "points": 7,
+     "code": "V",
+     "detail": "Associated with progressive myelopathy."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "type",
+  "range": {
+   "min": 1,
+   "max": 7
+  },
+  "display": "Type {type_code}",
+  "share": "Cognard type {type_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "t1"
+  },
+  {
+   "when": "total == 2",
+   "state": "t2"
+  },
+  {
+   "when": "total == 3",
+   "state": "t3"
+  },
+  {
+   "when": "total == 4",
+   "state": "t4"
+  },
+  {
+   "when": "total == 5",
+   "state": "t5"
+  },
+  {
+   "when": "total == 6",
+   "state": "t6"
+  },
+  {
+   "when": "total == 7",
+   "state": "t7"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "t1",
+   "tone": "low",
+   "label": "Type I",
+   "summary": "Drains into a dural sinus with antegrade flow.",
+   "range": "I",
+   "detail": "No cortical venous reflux."
+  },
+  {
+   "id": "t2",
+   "tone": "low",
+   "label": "Type IIa",
+   "summary": "Drains into a sinus with retrograde flow in the sinus.",
+   "range": "IIa",
+   "detail": "No cortical venous reflux."
+  },
+  {
+   "id": "t3",
+   "tone": "high",
+   "label": "Type IIb",
+   "summary": "Drains into a sinus with reflux into cortical veins; antegrade flow in the sinus.",
+   "range": "IIb",
+   "detail": "Cortical venous drainage is associated with a higher risk of haemorrhage and neurological deficit. Management depends on symptoms, location and patient factors."
+  },
+  {
+   "id": "t4",
+   "tone": "high",
+   "label": "Type IIa+b",
+   "summary": "Drains into a sinus with retrograde flow in the sinus and reflux into cortical veins.",
+   "range": "IIa+b",
+   "detail": "Cortical venous drainage is associated with a higher risk of haemorrhage and neurological deficit. Management depends on symptoms, location and patient factors."
+  },
+  {
+   "id": "t5",
+   "tone": "high",
+   "label": "Type III",
+   "summary": "Drains directly into cortical veins, without venous ectasia.",
+   "range": "III",
+   "detail": "Cortical venous drainage is associated with a higher risk of haemorrhage and neurological deficit. Management depends on symptoms, location and patient factors."
+  },
+  {
+   "id": "t6",
+   "tone": "high",
+   "label": "Type IV",
+   "summary": "Drains directly into cortical veins, with venous ectasia.",
+   "range": "IV",
+   "detail": "Cortical venous drainage is associated with a higher risk of haemorrhage and neurological deficit. Management depends on symptoms, location and patient factors."
+  },
+  {
+   "id": "t7",
+   "tone": "high",
+   "label": "Type V",
+   "summary": "Drains into spinal perimedullary veins.",
+   "range": "V",
+   "detail": "Associated with progressive myelopathy; assess spinal cord function according to the clinical situation."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Classifies dural fistulas by sinus flow direction, cortical venous reflux, venous ectasia and spinal drainage.",
+   "importance": "major"
+  },
+  {
+   "text": "Types IIb to V have cortical (or perimedullary) venous drainage, associated with more aggressive behaviour."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "type >= 3",
+   "importance": "major",
+   "text": "Cortical or perimedullary venous drainage present."
+  },
+  {
+   "when": "type == 7",
+   "text": "Spinal perimedullary drainage: examine for myelopathy."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Requires catheter angiography."
+  },
+  "Drainage can change over time.",
+  "Does not include symptoms, location or arterial supply."
+ ],
+ "confounders": [
+  {
+   "factor": "Partial treatment or sinus thrombosis",
+   "effect": "Changes the drainage pattern."
+  },
+  {
+   "factor": "Incomplete angiographic study",
+   "effect": "Can miss reflux or ectasia."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Whether treatment is indicated.",
+  "Fistula location or feeding arteries.",
+  "The cause of symptoms."
+ ],
+ "guideSections": {
+  "what": "Seven types of intracranial dural fistula by venous drainage: I, IIa, IIb, IIa+b, III, IV and V.",
+  "whenToUse": "Detailed angiographic description of dural fistulas.",
+  "howToPerform": "On catheter angiography, identify the drainage route, the direction of sinus flow, any cortical venous reflux, venous ectasia and spinal perimedullary drainage. Assign the type.",
+  "clinicalContext": "An angiographic classification; management also depends on symptoms, location and patient factors."
+ },
+ "sources": [
+  {
+   "citation": "Cognard C, Gobin YP, Pierot L, et al. Cerebral dural arteriovenous fistulas: clinical and angiographic correlation with a revised classification of venous drainage. Radiology. 1995;194(3):671-680."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam",
+ "components": [
+  {
+   "id": "c_type",
+   "label": "Venous drainage pattern",
+   "inputs": [
+    "type"
+   ]
+  }
+ ]
+}

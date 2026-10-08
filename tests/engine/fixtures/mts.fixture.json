@@ -1,0 +1,111 @@
+{
+ "scoreId": "mts",
+ "cases": [
+  {
+   "name": "catch with dynamic component",
+   "answers": {
+    "vel": "v3",
+    "x": "2",
+    "r1": 60,
+    "r2": 150
+   },
+   "expect": {
+    "total": 90,
+    "display": "X2 · R2−R1 90°",
+    "state": "catch",
+    "formula": "R2 150° − R1 60°"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "|150 − 60| = 90°",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "small difference",
+   "answers": {
+    "vel": "v3",
+    "x": "2",
+    "r1": 145,
+    "r2": 150
+   },
+   "expect": {
+    "total": 5,
+    "insightsContains": "contracture"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "|150 − 145| = 5° → contracture-dominant insight",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "no catch",
+   "answers": {
+    "vel": "v2",
+    "x": "1",
+    "r2": 170
+   },
+   "expect": {
+    "total": 0,
+    "display": "X1",
+    "state": "nocatch"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "X1, no R1 → 0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "catch grade without R1",
+   "answers": {
+    "vel": "v2",
+    "x": "3",
+    "r2": 170
+   },
+   "expect": {
+    "warnings": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "X3 needs R1 → warning",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "R1 recorded with X0",
+   "answers": {
+    "vel": "v2",
+    "x": "0",
+    "r1": 90,
+    "r2": 170
+   },
+   "expect": {
+    "warnings": 1,
+    "total": 80
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "X0 with R1 → warning",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "velocity missing",
+   "answers": {
+    "x": "2",
+    "r1": 60,
+    "r2": 150
+   },
+   "expect": {
+    "status": "incomplete"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "velocity required",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

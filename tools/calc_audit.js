@@ -39,6 +39,7 @@ for (const id of ids) {
       (x.def.pointBands || []).forEach((b) => { [b.min, b.max].forEach((e) => { if (e != null) [e - 1, e, e + 1].forEach((v) => { if (v >= x.def.min && v <= x.def.max) pts.add(v); }); }); });
       x.vals = [...pts].sort((a, b) => a - b);
     }
+    if (x.def.required === false) x.vals = x.vals.concat([undefined]);   // optional inputs are also evaluated when left blank
   });
   const space = defs.reduce((p, x) => p * x.vals.length, 1), CAP = 300000;
   const totals = new Map(); let evaluated = 0, statusCount = {};
@@ -46,8 +47,8 @@ for (const id of ids) {
     const r = E.calculate(s, a); evaluated++;
     statusCount[r.status] = (statusCount[r.status] || 0) + 1;
     if (r.status === "complete" || (r.total != null && r.state)) {
-      const k = r.total;
-      if (!totals.has(k)) totals.set(k, { total: k, display: r.display, state: r.state.id, label: r.state.label, tone: r.state.tone, range: r.state.range });
+      const k = r.total + "|" + r.state.id;
+      if (!totals.has(k)) totals.set(k, { total: r.total, display: r.display, state: r.state.id, label: r.state.label, tone: r.state.tone, range: r.state.range });
     }
   }
   // sampled spaces: also evaluate the extreme answer sets (each input at its lowest / highest points) and one-step variants
@@ -58,7 +59,7 @@ for (const id of ids) {
     const extremes = [ext(lo), ext(hi)];
     defs.forEach((x) => { if (x.def.options) x.def.options.forEach((o) => { const a = ext(lo); a[x.id] = o.value; extremes.push(a); }); });
     for (const a of extremes) { const r = E.calculate(s, a); evaluated++;
-      if (r.status === "complete" && !totals.has(r.total)) totals.set(r.total, { total: r.total, display: r.display, state: r.state.id, label: r.state.label, tone: r.state.tone, range: r.state.range }); }
+      if (r.status === "complete" && !totals.has(r.total + "|" + r.state.id)) totals.set(r.total + "|" + r.state.id, { total: r.total, display: r.display, state: r.state.id, label: r.state.label, tone: r.state.tone, range: r.state.range }); }
   }
   const tlist = [...totals.values()].sort((a, b) => a.total - b.total);
   const reachMin = tlist.length ? tlist[0].total : null, reachMax = tlist.length ? tlist[tlist.length - 1].total : null;

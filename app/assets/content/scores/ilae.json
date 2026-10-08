@@ -1,0 +1,314 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "ilae",
+  "ilae outcome",
+  "wieser",
+  "epilepsy surgery outcome",
+  "seizure days"
+ ],
+ "scoringRules": [
+  {
+   "id": "is1a",
+   "expr": "cls == 1 && since_value == 'yes' ? 1 : 0"
+  }
+ ],
+ "consistencyRules": [
+  {
+   "when": "cls != 1 && since_value == 'yes'",
+   "severity": "warning",
+   "inputs": [
+    "since"
+   ],
+   "message": "Class 1a applies only to class 1 (completely seizure free, no auras)."
+  }
+ ],
+ "commonErrors": [
+  "Counting seizures rather than seizure days.",
+  "Counting seizures from the first postoperative month.",
+  "Reporting one class for the whole follow-up instead of per year."
+ ],
+ "relatedScores": [
+  {
+   "id": "engel",
+   "relation": "Alternative outcome classification"
+  }
+ ],
+ "id": "ilae",
+ "name": "ILAE Epilepsy Surgery Outcome Classification",
+ "abbreviation": "ILAE outcome",
+ "subcategory": "Epilepsy surgery",
+ "specialties": [
+  "Neurosurgery",
+  "Neurology",
+  "Epileptology"
+ ],
+ "version": {
+  "label": "ILAE outcome classification (Wieser et al. 2001), classes 1–6 with 1a",
+  "detail": "Assessed for each year after surgery, on each anniversary. A seizure day is a 24-hour period with one or more seizures. Baseline is seizure days in the 12 months before surgery. Seizures in the first postoperative month are not counted. Class 1a: completely seizure free since surgery, no auras."
+ },
+ "purpose": "Classifies seizure outcome after epilepsy surgery for each year of follow-up, using seizure days relative to baseline.",
+ "intendedPopulation": "Patients after epilepsy surgery with documented pre-operative seizure frequency.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Seizure outcome class",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "One class per follow-up year",
+  "message": "Classify each year after surgery separately. Count seizure days, not seizures, and ignore the first postoperative month."
+ },
+ "inputDefinitions": [
+  {
+   "id": "cls",
+   "type": "single",
+   "label": "Outcome in this follow-up year",
+   "short": "Class",
+   "options": [
+    {
+     "value": "1",
+     "label": "Class 1: Completely seizure free; no auras",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Class 2: Only auras; no other seizures",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Class 3: One to three seizure days per year, with or without auras",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "Class 4: Four seizure days per year to a 50% reduction of baseline seizure days, with or without auras",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "5",
+     "label": "Class 5: Less than a 50% reduction of baseline seizure days to a 100% increase, with or without auras",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "6",
+     "label": "Class 6: More than a 100% increase of baseline seizure days, with or without auras",
+     "points": 6,
+     "code": "6"
+    }
+   ]
+  },
+  {
+   "id": "since",
+   "type": "single",
+   "label": "Seizure free with no auras since surgery? (class 1a)",
+   "short": "Since surgery",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 0,
+     "code": ""
+    }
+   ],
+   "help": "Only applies to class 1.",
+   "required": false
+  },
+  {
+   "id": "fu",
+   "type": "integer",
+   "label": "Follow-up year (optional)",
+   "short": "Year",
+   "unit": "year",
+   "min": 1,
+   "max": 50,
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_cls",
+   "label": "Outcome",
+   "inputs": [
+    "cls"
+   ]
+  },
+  {
+   "id": "c_more",
+   "label": "Class 1a and follow-up year",
+   "inputs": [
+    "since",
+    "fu"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "cls",
+  "range": {
+   "min": 1,
+   "max": 6
+  },
+  "display": "Class {is1a == 1 ? '1a' : total}",
+  "share": "ILAE outcome class {is1a == 1 ? '1a' : total}{isnull(fu) ? '' : ', year ' + fu}"
+ },
+ "interpretationRules": [
+  {
+   "when": "is1a == 1",
+   "state": "c1a"
+  },
+  {
+   "when": "total == 1",
+   "state": "c1"
+  },
+  {
+   "when": "total == 2",
+   "state": "c2"
+  },
+  {
+   "when": "total == 3",
+   "state": "c3"
+  },
+  {
+   "when": "total == 4",
+   "state": "c4"
+  },
+  {
+   "when": "total == 5",
+   "state": "c5"
+  },
+  {
+   "when": "total == 6",
+   "state": "c6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "c1a",
+   "tone": "favorable",
+   "label": "Class 1a",
+   "summary": "Completely seizure free since surgery, with no auras, at this assessment.",
+   "range": "1a",
+   "detail": "Outcome is classified year by year and can change; report the follow-up year."
+  },
+  {
+   "id": "c1",
+   "tone": "favorable",
+   "label": "Class 1",
+   "summary": "Completely seizure free with no auras in this follow-up year, at this assessment.",
+   "range": "1",
+   "detail": "Outcome is classified year by year and can change; report the follow-up year."
+  },
+  {
+   "id": "c2",
+   "tone": "favorable",
+   "label": "Class 2",
+   "summary": "Only auras, no other seizures, in this follow-up year, at this assessment.",
+   "range": "2",
+   "detail": "Auras count only if brief, not observable by others and similar to pre-operative auras."
+  },
+  {
+   "id": "c3",
+   "tone": "low",
+   "label": "Class 3",
+   "summary": "One to three seizure days per year, with or without auras.",
+   "range": "3"
+  },
+  {
+   "id": "c4",
+   "tone": "moderate",
+   "label": "Class 4",
+   "summary": "Four seizure days per year to a 50% reduction of baseline seizure days, with or without auras.",
+   "range": "4"
+  },
+  {
+   "id": "c5",
+   "tone": "high",
+   "label": "Class 5",
+   "summary": "Less than a 50% reduction of baseline seizure days to a 100% increase, with or without auras.",
+   "range": "5",
+   "detail": "Assess seizure type, frequency and medication according to the clinical situation; the class depends on the baseline seizure-day frequency."
+  },
+  {
+   "id": "c6",
+   "tone": "high",
+   "label": "Class 6",
+   "summary": "More than a 100% increase of baseline seizure days, with or without auras.",
+   "range": "6",
+   "detail": "Assess seizure type, frequency and medication according to the clinical situation; the class depends on the baseline seizure-day frequency."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Defines outcome by seizure days relative to the pre-operative baseline, year by year.",
+   "importance": "major"
+  },
+  {
+   "text": "Designed to be less subjective than the Engel classification."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "cls >= 4",
+   "text": "Classes 4–6 depend on the baseline seizure-day frequency; record the baseline used."
+  },
+  {
+   "text": "Auras count only if brief, not observable by others and similar to pre-operative auras."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Requires a documented 12-month pre-operative baseline; approximations must be stated."
+  },
+  "Does not capture seizure severity, quality of life or medication changes.",
+  "A patient's class can change from year to year."
+ ],
+ "confounders": [
+  {
+   "factor": "Incomplete seizure diaries",
+   "effect": "Lead to misclassification."
+  },
+  {
+   "factor": "Medication withdrawal",
+   "effect": "Can provoke seizures in a given year."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Quality of life or cognitive outcome.",
+  "Seizure severity.",
+  "Future outcome."
+ ],
+ "guideSections": {
+  "what": "Six outcome classes after epilepsy surgery (1–6, with 1a) based on seizure days per year relative to baseline.",
+  "whenToUse": "Reporting year-by-year seizure outcome after epilepsy surgery, often alongside Engel.",
+  "howToPerform": "For the follow-up year assessed, count seizure days (excluding the first postoperative month) and auras. Compare with the baseline seizure days in the 12 months before surgery. Choose the class; mark 1a if seizure free with no auras since surgery.",
+  "clinicalContext": "An outcome classification; consider quality of life, cognition and medication alongside it."
+ },
+ "sources": [
+  {
+   "citation": "Wieser HG, Blume WT, Fish D, et al. ILAE Commission Report. Proposal for a new classification of outcome with respect to epileptic seizures following epilepsy surgery. Epilepsia. 2001;42(2):282-286.",
+   "url": "https://www.ilae.org/files/ilaeGuideline/New-Classification-of-OutcomeFollowing-Epilepsy-Surgery-2001.pdf"
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "Class definitions are paraphrased with attribution; the ILAE document (© ILAE) is not reproduced."
+ },
+ "category": "exam"
+}

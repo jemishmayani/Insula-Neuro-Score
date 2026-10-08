@@ -1,6 +1,6 @@
 {
  "contentVersion": "6.0.0",
- "note": "Catalogue. 'implemented' scores have content files; 'review' entries record why a listed score is not yet implemented; 'placeholder' entries contain no scoring criteria.",
+ "note": "Catalogue. 'scores' are implemented and shown in the app. 'withheld' records listed scores that are not implemented, with the reason; 'planned' is the future queue. Neither is shown in the app.",
  "categories": [
   {
    "id": "consciousness",
@@ -30,7 +30,10 @@
    "id": "tbi",
    "name": "Traumatic brain injury",
    "glyph": "tbi",
-   "description": "CT classification and trauma severity"
+   "description": "CT classification and trauma severity",
+   "include": [
+    "markwalder"
+   ]
   },
   {
    "id": "spine",
@@ -55,6 +58,81 @@
    "name": "Neurocritical care",
    "glyph": "icu",
    "description": "Sedation and organ dysfunction"
+  },
+  {
+   "id": "exam",
+   "name": "Neurosurgical Examination & Grades",
+   "glyph": "exam",
+   "description": "Motor, reflex, tone, cranial nerve, vascular and outcome grades",
+   "groups": [
+    {
+     "title": "Motor",
+     "members": [
+      "mrc",
+      "mrcss"
+     ]
+    },
+    {
+     "title": "Reflexes",
+     "members": [
+      "dtr",
+      "clonus",
+      "plantar"
+     ]
+    },
+    {
+     "title": "Tone and spasticity",
+     "members": [
+      "mas",
+      "mts"
+     ]
+    },
+    {
+     "title": "Facial nerve",
+     "members": [
+      "hb"
+     ]
+    },
+    {
+     "title": "Hearing and CPA",
+     "members": [
+      "gr"
+     ]
+    },
+    {
+     "title": "Vascular neurosurgery",
+     "members": [
+      "spetzler",
+      "lawtonyoung",
+      "borden",
+      "cognard"
+     ]
+    },
+    {
+     "title": "Neurotrauma",
+     "members": [
+      "markwalder"
+     ]
+    },
+    {
+     "title": "Functional and neuro-oncology",
+     "members": [
+      "kps",
+      "ecog"
+     ]
+    },
+    {
+     "title": "Epilepsy surgery",
+     "members": [
+      "engel",
+      "ilae"
+     ]
+    }
+   ],
+   "include": [
+    "kps",
+    "ecog"
+   ]
   }
  ],
  "scores": [
@@ -64,7 +142,6 @@
    "name": "Glasgow Coma Scale",
    "category": "consciousness",
    "summary": "Eye, verbal and motor responsiveness",
-   "status": "implemented",
    "aliases": [
     "glasgow",
     "coma",
@@ -100,7 +177,8 @@
     "tbi",
     "trauma",
     "traumatic brain injury"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "gcsp",
@@ -108,7 +186,6 @@
    "name": "GCS-Pupils Score",
    "category": "consciousness",
    "summary": "GCS combined with pupil reactivity",
-   "status": "implemented",
    "aliases": [
     "gcs pupils",
     "pupil reactivity score"
@@ -130,31 +207,8 @@
     "tbi",
     "trauma",
     "traumatic brain injury"
-   ]
-  },
-  {
-   "id": "four",
-   "abbreviation": "FOUR",
-   "name": "Full Outline of UnResponsiveness",
-   "category": "consciousness",
-   "summary": "Eye, motor, brainstem and respiration",
-   "status": "review",
-   "specialties": [],
-   "keywords": [
-    "brain injury",
-    "brainstem",
-    "coma",
-    "consciousness",
-    "critical care",
-    "icu",
-    "level of consciousness",
-    "loc",
-    "neurocritical care",
-    "outcome",
-    "sedation"
    ],
-   "reviewCategory": "Licensing",
-   "reviewReason": "Reproductions carry 'Used with permission of Mayo Foundation… All rights reserved'; the author handles permission requests. Not reproduced until permission is confirmed."
+   "status": "implemented"
   },
   {
    "id": "gos",
@@ -162,7 +216,6 @@
    "name": "Glasgow Outcome Scale",
    "category": "consciousness",
    "summary": "Global outcome after brain injury",
-   "status": "implemented",
    "aliases": [
     "glasgow outcome",
     "outcome after brain injury"
@@ -184,7 +237,8 @@
     "level of consciousness",
     "loc",
     "outcome"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "gose",
@@ -192,7 +246,6 @@
    "name": "Extended Glasgow Outcome Scale",
    "category": "consciousness",
    "summary": "Eight-level outcome after brain injury",
-   "status": "implemented",
    "aliases": [
     "gos-e",
     "extended glasgow outcome"
@@ -214,7 +267,8 @@
     "level of consciousness",
     "loc",
     "outcome"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "nihss",
@@ -222,7 +276,6 @@
    "name": "NIH Stroke Scale",
    "category": "stroke",
    "summary": "Neurological deficit in acute stroke",
-   "status": "implemented",
    "aliases": [
     "stroke scale",
     "national institutes of health",
@@ -251,7 +304,8 @@
     "tia",
     "transient ischaemic attack",
     "transient ischemic attack"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "aspects",
@@ -259,7 +313,6 @@
    "name": "Alberta Stroke Program Early CT Score",
    "category": "stroke",
    "summary": "Early ischaemic change, MCA territory",
-   "status": "implemented",
    "aliases": [
     "early ct score",
     "early ischaemic change",
@@ -282,7 +335,8 @@
     "stroke",
     "thrombectomy",
     "tia"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "pcaspects",
@@ -290,7 +344,6 @@
    "name": "Posterior Circulation ASPECTS",
    "category": "stroke",
    "summary": "Early ischaemic change, posterior circulation",
-   "status": "implemented",
    "aliases": [
     "early ct score",
     "early ischaemic change",
@@ -313,7 +366,8 @@
     "stroke",
     "thrombectomy",
     "tia"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "ich",
@@ -321,7 +375,6 @@
    "name": "ICH Score",
    "category": "ich",
    "summary": "Severity grading at presentation",
-   "status": "implemented",
    "aliases": [
     "intracerebral haemorrhage",
     "intracerebral hemorrhage",
@@ -342,7 +395,8 @@
     "intracerebral haemorrhage",
     "intracerebral hemorrhage",
     "severity at presentation"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "func",
@@ -350,7 +404,6 @@
    "name": "FUNC Score",
    "category": "ich",
    "summary": "Functional independence after ICH",
-   "status": "implemented",
    "aliases": [
     "functional outcome",
     "intracerebral haemorrhage",
@@ -371,7 +424,8 @@
     "intracerebral",
     "intracerebral haemorrhage",
     "intracerebral hemorrhage"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "graeb",
@@ -379,7 +433,6 @@
    "name": "Graeb Score",
    "category": "ich",
    "summary": "Intraventricular haemorrhage burden",
-   "status": "implemented",
    "specialties": [
     "Neurosurgery",
     "Neurocritical Care",
@@ -404,29 +457,8 @@
     "intraventricular haemorrhage",
     "intraventricular hemorrhage"
    ],
-   "version": "Original Graeb score (Graeb et al. 1982)"
-  },
-  {
-   "id": "mgraeb",
-   "abbreviation": "mGraeb",
-   "name": "Modified Graeb Score",
-   "category": "ich",
-   "summary": "Intraventricular haemorrhage burden",
-   "status": "review",
-   "specialties": [],
-   "keywords": [
-    "bleed",
-    "haemorrhage",
-    "hemorrhage",
-    "ich",
-    "intracerebral",
-    "intracerebral haemorrhage",
-    "intracerebral hemorrhage",
-    "intraventricular",
-    "ivh"
-   ],
-   "reviewCategory": "Verification",
-   "reviewReason": "Sources agree on the 0–32 total and +1 per region for expansion, but describe the scored regions and fill thresholds inconsistently; requires the Morgan 2013 primary table."
+   "version": "Original Graeb score (Graeb et al. 1982)",
+   "status": "implemented"
   },
   {
    "id": "hunthess",
@@ -434,7 +466,6 @@
    "name": "Hunt and Hess Scale",
    "category": "sah",
    "summary": "Clinical grade of aneurysmal SAH",
-   "status": "implemented",
    "aliases": [
     "hunt hess",
     "sah grade",
@@ -454,7 +485,8 @@
     "subarachnoid",
     "subarachnoid haemorrhage",
     "vasospasm"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "wfns",
@@ -462,7 +494,6 @@
    "name": "WFNS Subarachnoid Haemorrhage Grade",
    "category": "sah",
    "summary": "GCS-based SAH grade",
-   "status": "implemented",
    "aliases": [
     "world federation",
     "sah grade",
@@ -482,7 +513,8 @@
     "subarachnoid",
     "subarachnoid haemorrhage",
     "vasospasm"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "fisher",
@@ -490,7 +522,6 @@
    "name": "Fisher Scale",
    "category": "sah",
    "summary": "CT blood pattern",
-   "status": "implemented",
    "aliases": [
     "fisher grade",
     "sah ct",
@@ -511,7 +542,8 @@
     "subarachnoid",
     "subarachnoid haemorrhage",
     "vasospasm"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "mfisher",
@@ -519,7 +551,6 @@
    "name": "Modified Fisher Scale",
    "category": "sah",
    "summary": "CT blood burden and IVH",
-   "status": "implemented",
    "aliases": [
     "modified fisher",
     "vasospasm",
@@ -540,7 +571,8 @@
     "subarachnoid",
     "subarachnoid haemorrhage",
     "vasospasm"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "marshall",
@@ -548,7 +580,6 @@
    "name": "Marshall CT Classification",
    "category": "tbi",
    "summary": "CT classification of TBI",
-   "status": "implemented",
    "aliases": [
     "marshall ct",
     "tbi ct",
@@ -568,7 +599,8 @@
     "tbi",
     "trauma",
     "traumatic brain injury"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "rotterdam",
@@ -576,7 +608,6 @@
    "name": "Rotterdam CT Score",
    "category": "tbi",
    "summary": "CT score of TBI",
-   "status": "implemented",
    "aliases": [
     "rotterdam ct",
     "tbi ct",
@@ -596,7 +627,8 @@
     "tbi",
     "trauma",
     "traumatic brain injury"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "rts",
@@ -604,7 +636,6 @@
    "name": "Revised Trauma Score",
    "category": "tbi",
    "summary": "Physiological trauma score",
-   "status": "implemented",
    "aliases": [
     "trauma score",
     "t-rts",
@@ -625,7 +656,8 @@
     "trauma",
     "trauma severity",
     "traumatic brain injury"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "iss",
@@ -633,7 +665,6 @@
    "name": "Injury Severity Score",
    "category": "tbi",
    "summary": "Anatomical injury severity",
-   "status": "implemented",
    "aliases": [
     "injury severity",
     "ais",
@@ -655,7 +686,8 @@
     "trauma",
     "trauma severity",
     "traumatic brain injury"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "triss",
@@ -663,7 +695,6 @@
    "name": "Trauma and Injury Severity Score",
    "category": "tbi",
    "summary": "Combined anatomical and physiological model",
-   "status": "implemented",
    "specialties": [
     "Trauma",
     "Emergency Medicine",
@@ -686,32 +717,8 @@
     "ps",
     "trauma survival"
    ],
-   "version": "TRISS with 1995 MTOS coefficients (Champion et al.)"
-  },
-  {
-   "id": "ais",
-   "abbreviation": "AIS",
-   "name": "ASIA Impairment Scale (ISNCSCI)",
-   "category": "spine",
-   "summary": "Spinal cord injury classification",
-   "status": "review",
-   "specialties": [],
-   "keywords": [
-    "asia",
-    "cervical",
-    "isncsci",
-    "myelopathy",
-    "paraplegia",
-    "sci",
-    "spinal",
-    "spinal cord",
-    "spinal cord injury",
-    "spine",
-    "spine and spinal cord",
-    "tetraplegia"
-   ],
-   "reviewCategory": "Licensing / version",
-   "reviewReason": "ISNCSCI and the AIS worksheet are maintained by ASIA/ISCoS with reproduction terms and periodic revisions (current 2019 revision); requires licensing and version review."
+   "version": "TRISS with 1995 MTOS coefficients (Champion et al.)",
+   "status": "implemented"
   },
   {
    "id": "frankel",
@@ -719,7 +726,6 @@
    "name": "Frankel Classification",
    "category": "spine",
    "summary": "Spinal cord injury grade",
-   "status": "implemented",
    "aliases": [
     "frankel grade",
     "spinal cord injury",
@@ -743,7 +749,8 @@
     "spine",
     "spine and spinal cord",
     "tetraplegia"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "sins",
@@ -751,7 +758,6 @@
    "name": "Spinal Instability Neoplastic Score",
    "category": "spine",
    "summary": "Neoplastic spinal instability",
-   "status": "implemented",
    "aliases": [
     "spinal instability",
     "metastasis",
@@ -783,7 +789,8 @@
     "spine metastases",
     "spine tumor",
     "spine tumour"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "nurick",
@@ -791,7 +798,6 @@
    "name": "Nurick Grade",
    "category": "spine",
    "summary": "Cervical myelopathy disability",
-   "status": "implemented",
    "aliases": [
     "nurick",
     "cervical myelopathy",
@@ -814,7 +820,8 @@
     "spinal cord",
     "spine",
     "spine and spinal cord"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "mjoa",
@@ -822,7 +829,6 @@
    "name": "Modified Japanese Orthopaedic Association Score",
    "category": "spine",
    "summary": "Cervical myelopathy severity",
-   "status": "implemented",
    "specialties": [
     "Neurosurgery",
     "Spine Surgery",
@@ -847,50 +853,8 @@
     "cervical myelopathy",
     "benzel"
    ],
-   "version": "mJOA, clinician-rated (Benzel et al. 1991), 0–18"
-  },
-  {
-   "id": "odi",
-   "abbreviation": "ODI",
-   "name": "Oswestry Disability Index",
-   "category": "spine",
-   "summary": "Low back pain disability",
-   "status": "review",
-   "specialties": [],
-   "keywords": [
-    "back pain",
-    "cervical",
-    "disability",
-    "myelopathy",
-    "sci",
-    "spinal",
-    "spinal cord",
-    "spine",
-    "spine and spinal cord"
-   ],
-   "reviewCategory": "Licensing",
-   "reviewReason": "ODI version 2.1a is © Jeremy Fairbank, licensed through Mapi Research Trust; free only for unfunded academic research and individual clinical practice, with a fee for commercial use."
-  },
-  {
-   "id": "tokuhashi",
-   "abbreviation": "Tokuhashi (1990)",
-   "name": "Tokuhashi Score (original 1990)",
-   "category": "oncology",
-   "summary": "Spinal metastasis prognosis",
-   "status": "review",
-   "specialties": [],
-   "keywords": [
-    "cancer",
-    "metastases",
-    "metastasis",
-    "neuro-oncology",
-    "oncology",
-    "spinal metastases",
-    "tumor",
-    "tumour"
-   ],
-   "reviewCategory": "Verification",
-   "reviewReason": "Original 1990 item weights verified, but the vertebral-body metastasis item has the same unresolved conflict as the revised score, and published prognosis bands for the original are inconsistent. Revised Tokuhashi (2005) is implemented separately."
+   "version": "mJOA, clinician-rated (Benzel et al. 1991), 0–18",
+   "status": "implemented"
   },
   {
    "id": "tomita",
@@ -898,7 +862,6 @@
    "name": "Tomita Score",
    "category": "oncology",
    "summary": "Spinal metastasis prognosis",
-   "status": "implemented",
    "aliases": [
     "tomita",
     "spinal metastasis",
@@ -923,7 +886,8 @@
     "spine tumour",
     "tumor",
     "tumour"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "kps",
@@ -931,7 +895,6 @@
    "name": "Karnofsky Performance Status",
    "category": "oncology",
    "summary": "Functional performance",
-   "status": "implemented",
    "aliases": [
     "karnofsky",
     "performance status"
@@ -956,7 +919,8 @@
     "spine tumour",
     "tumor",
     "tumour"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "ecog",
@@ -964,7 +928,6 @@
    "name": "ECOG Performance Status",
    "category": "oncology",
    "summary": "Functional performance",
-   "status": "implemented",
    "aliases": [
     "ecog",
     "who performance status",
@@ -989,7 +952,8 @@
     "spine tumour",
     "tumor",
     "tumour"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "mrs",
@@ -997,7 +961,6 @@
    "name": "Modified Rankin Scale",
    "category": "functional",
    "summary": "Global disability and dependence",
-   "status": "implemented",
    "aliases": [
     "rankin",
     "disability",
@@ -1024,33 +987,8 @@
     "ischemic",
     "outcome",
     "stroke"
-   ]
-  },
-  {
-   "id": "rass",
-   "abbreviation": "RASS",
-   "name": "Richmond Agitation–Sedation Scale",
-   "category": "neurocritical",
-   "summary": "Agitation and sedation level",
-   "status": "review",
-   "aliases": [
-    "sedation",
-    "agitation",
-    "richmond",
-    "icu"
    ],
-   "version": "RASS (Sessler et al. 2002)",
-   "specialties": [],
-   "keywords": [
-    "critical care",
-    "icu",
-    "intensive care",
-    "neurocritical",
-    "neurocritical care",
-    "sedation"
-   ],
-   "reviewCategory": "Licensing",
-   "reviewReason": "Virginia Commonwealth University lists RASS as a licensable technology; terms for use in a commercial app must be confirmed. Content is verified and ready to reinstate after licensing review."
+   "status": "implemented"
   },
   {
    "id": "sofa",
@@ -1058,7 +996,6 @@
    "name": "Sequential Organ Failure Assessment (original SOFA)",
    "category": "neurocritical",
    "summary": "Organ dysfunction",
-   "status": "implemented",
    "specialties": [
     "Critical Care",
     "Neurocritical Care"
@@ -1080,7 +1017,8 @@
     "sepsis",
     "organ dysfunction"
    ],
-   "version": "Original SOFA (Vincent et al. 1996), as tabulated in Sepsis-3 (Singer et al. 2016)"
+   "version": "Original SOFA (Vincent et al. 1996), as tabulated in Sepsis-3 (Singer et al. 2016)",
+   "status": "implemented"
   },
   {
    "id": "abcd2",
@@ -1088,7 +1026,6 @@
    "name": "ABCD² Score",
    "category": "stroke",
    "summary": "Estimates short-term stroke risk after transient ischaemic attack.",
-   "status": "implemented",
    "aliases": [
     "abcd2",
     "tia",
@@ -1112,7 +1049,8 @@
     "tia",
     "transient ischaemic attack",
     "transient ischemic attack"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "race",
@@ -1120,7 +1058,6 @@
    "name": "Rapid Arterial oCclusion Evaluation Scale",
    "category": "stroke",
    "summary": "Prehospital estimation of the likelihood of large vessel occlusion in suspected stroke.",
-   "status": "implemented",
    "aliases": [
     "race scale",
     "large vessel occlusion",
@@ -1146,7 +1083,8 @@
     "stroke",
     "thrombectomy",
     "tia"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "lams",
@@ -1154,7 +1092,6 @@
    "name": "Los Angeles Motor Scale",
    "category": "stroke",
    "summary": "Brief prehospital stroke severity scale.",
-   "status": "implemented",
    "aliases": [
     "los angeles",
     "large vessel occlusion",
@@ -1180,15 +1117,15 @@
     "stroke",
     "thrombectomy",
     "tia"
-   ]
+   ],
+   "status": "implemented"
   },
   {
    "id": "fasted",
    "abbreviation": "FAST-ED",
    "name": "Field Assessment Stroke Triage for Emergency Destination",
    "category": "stroke",
-   "summary": "Under review",
-   "status": "implemented",
+   "summary": "Prehospital estimation of large vessel occlusion likelihood in suspected stroke.",
    "specialties": [
     "Stroke",
     "Emergency Medicine",
@@ -1215,7 +1152,8 @@
     "prehospital",
     "large vessel occlusion"
    ],
-   "version": "FAST-ED (Lima et al. 2016)"
+   "version": "FAST-ED (Lima et al. 2016)",
+   "status": "implemented"
   },
   {
    "id": "rtokuhashi",
@@ -1223,7 +1161,6 @@
    "name": "Revised Tokuhashi Score",
    "category": "oncology",
    "summary": "Preoperative prognostic estimate for patients with metastatic spine tumours.",
-   "status": "implemented",
    "aliases": [
     "tokuhashi",
     "spinal metastasis",
@@ -1250,38 +1187,15 @@
     "spine tumour",
     "tumor",
     "tumour"
-   ]
-  },
-  {
-   "id": "joa",
-   "abbreviation": "JOA",
-   "name": "Japanese Orthopaedic Association Score",
-   "category": "spine",
-   "summary": "Under review",
-   "status": "review",
-   "specialties": [],
-   "keywords": [
-    "cervical",
-    "cervical myelopathy",
-    "cervical spondylosis",
-    "dcm",
-    "myelopathy",
-    "sci",
-    "spinal",
-    "spinal cord",
-    "spine",
-    "spine and spinal cord"
    ],
-   "reviewCategory": "Version",
-   "reviewReason": "Five substantially different versions exist (1975 original, 1994 revised, 1991/1993/1999 modifications). The 1975 item wording (including the chopsticks item) was not available in a verifiable English source. mJOA (Benzel 1991) is implemented separately."
+   "status": "implemented"
   },
   {
    "id": "gpa",
    "abbreviation": "GPA",
    "name": "Graded Prognostic Assessment (original)",
    "category": "oncology",
-   "summary": "Under review",
-   "status": "implemented",
+   "summary": "Estimates median survival group for patients with brain metastases.",
    "specialties": [
     "Neuro-oncology",
     "Radiation Oncology",
@@ -1306,50 +1220,748 @@
     "sperduto",
     "rtog"
    ],
-   "version": "Original GPA (Sperduto et al. 2008, RTOG database)"
+   "version": "Original GPA (Sperduto et al. 2008, RTOG database)",
+   "status": "implemented"
+  },
+  {
+   "id": "mrc",
+   "abbreviation": "MRC power",
+   "name": "MRC Muscle Power Scale",
+   "category": "exam",
+   "summary": "Records the strength of one muscle or muscle group on a six-point ordinal scale.",
+   "aliases": [
+    "mrc",
+    "muscle power",
+    "muscle strength",
+    "power grade",
+    "oxford scale",
+    "manual muscle testing"
+   ],
+   "version": "Medical Research Council scale, grades 0–5",
+   "specialties": [
+    "Neurosurgery",
+    "Neurology",
+    "Spine Surgery",
+    "Rehabilitation"
+   ],
+   "keywords": [
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "motor",
+    "motor and reflex examination",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "power",
+    "reflexes",
+    "strength",
+    "umn",
+    "upper motor neuron",
+    "weakness"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "mrcss",
+   "abbreviation": "MRC-SS",
+   "name": "MRC Sum Score",
+   "category": "exam",
+   "summary": "Summarises global limb strength from 12 standard movements, for example when assessing ICU-acquired weakness.",
+   "aliases": [
+    "mrc sum",
+    "mrc sum score",
+    "icu acquired weakness",
+    "icuaw",
+    "global muscle strength"
+   ],
+   "version": "MRC sum score, 12 muscle groups (Kleyweg et al. 1991)",
+   "specialties": [
+    "Neurocritical Care",
+    "Critical Care",
+    "Neurology",
+    "Rehabilitation"
+   ],
+   "keywords": [
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "icu",
+    "motor",
+    "motor and reflex examination",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "power",
+    "reflexes",
+    "umn",
+    "upper motor neuron",
+    "weakness"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "dtr",
+   "abbreviation": "Reflex grade",
+   "name": "Deep Tendon Reflex Grade (NINDS Myotatic Reflex Scale)",
+   "category": "exam",
+   "summary": "Records the amplitude of a muscle stretch reflex on a standard five-point scale.",
+   "aliases": [
+    "dtr",
+    "deep tendon reflex",
+    "tendon reflex",
+    "myotatic reflex",
+    "ninds reflex scale",
+    "reflexes",
+    "hyperreflexia",
+    "areflexia"
+   ],
+   "version": "NINDS Myotatic Reflex Scale, 0–4 (Hallett 1993)",
+   "specialties": [
+    "Neurology",
+    "Neurosurgery",
+    "Spine Surgery"
+   ],
+   "keywords": [
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "motor and reflex examination",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "power",
+    "reflex",
+    "reflexes",
+    "umn",
+    "upper motor neuron"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "clonus",
+   "abbreviation": "Clonus",
+   "name": "Clonus",
+   "category": "exam",
+   "summary": "Records whether clonus is present at a joint and whether it is sustained.",
+   "aliases": [
+    "ankle clonus",
+    "patellar clonus",
+    "sustained clonus",
+    "upper motor neuron"
+   ],
+   "version": "Descriptive examination record: absent, unsustained or sustained",
+   "specialties": [
+    "Neurology",
+    "Neurosurgery",
+    "Spine Surgery"
+   ],
+   "keywords": [
+    "contracture",
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "motor and reflex examination",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "power",
+    "reflex",
+    "reflexes",
+    "spasticity",
+    "tone",
+    "umn",
+    "upper motor neuron"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "plantar",
+   "abbreviation": "Plantar",
+   "name": "Plantar Response",
+   "category": "exam",
+   "summary": "Records the response of the great toe to stimulation of the lateral sole.",
+   "aliases": [
+    "babinski",
+    "babinski sign",
+    "plantar reflex",
+    "extensor plantar",
+    "upgoing toe"
+   ],
+   "version": "Descriptive examination record: flexor, extensor, equivocal or no response",
+   "specialties": [
+    "Neurology",
+    "Neurosurgery",
+    "Spine Surgery"
+   ],
+   "keywords": [
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "motor and reflex examination",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "power",
+    "reflex",
+    "reflexes",
+    "umn",
+    "upper motor neuron"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "mas",
+   "abbreviation": "MAS",
+   "name": "Modified Ashworth Scale",
+   "category": "exam",
+   "summary": "Grades resistance to passive movement (muscle tone) at one joint.",
+   "aliases": [
+    "ashworth",
+    "modified ashworth",
+    "spasticity",
+    "tone",
+    "muscle tone"
+   ],
+   "version": "Modified Ashworth Scale (Bohannon & Smith 1987)",
+   "specialties": [
+    "Neurology",
+    "Neurosurgery",
+    "Rehabilitation"
+   ],
+   "keywords": [
+    "contracture",
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "spasticity",
+    "tone",
+    "tone and spasticity"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "mts",
+   "abbreviation": "MTS",
+   "name": "Modified Tardieu Scale",
+   "category": "exam",
+   "summary": "Separates the velocity-dependent (neural) component of spasticity from fixed contracture at one joint.",
+   "aliases": [
+    "tardieu",
+    "modified tardieu",
+    "spasticity",
+    "angle of catch",
+    "r1 r2"
+   ],
+   "version": "Modified Tardieu Scale (Boyd & Graham 1999)",
+   "specialties": [
+    "Neurology",
+    "Neurosurgery",
+    "Rehabilitation"
+   ],
+   "keywords": [
+    "contracture",
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "spasticity",
+    "tone",
+    "tone and spasticity"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "hb",
+   "abbreviation": "House-Brackmann",
+   "name": "House-Brackmann Facial Nerve Grading System",
+   "category": "exam",
+   "summary": "Grades overall facial nerve function, for example after vestibular schwannoma surgery or Bell palsy.",
+   "aliases": [
+    "house brackmann",
+    "hb grade",
+    "facial nerve",
+    "facial palsy",
+    "bell palsy",
+    "facial weakness"
+   ],
+   "version": "House-Brackmann grading system, grades I–VI (House & Brackmann 1985)",
+   "specialties": [
+    "Neurosurgery",
+    "Otolaryngology",
+    "Neurology"
+   ],
+   "keywords": [
+    "acoustic neuroma",
+    "cerebellopontine angle",
+    "cn vii",
+    "cpa",
+    "exam",
+    "examination",
+    "facial nerve",
+    "facial palsy",
+    "grade",
+    "grades",
+    "hearing",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "vestibular schwannoma"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "gr",
+   "abbreviation": "Gardner-Robertson",
+   "name": "Gardner-Robertson Hearing Classification",
+   "category": "exam",
+   "summary": "Classifies hearing in the affected ear, mainly in vestibular schwannoma, using audiometry.",
+   "aliases": [
+    "gardner robertson",
+    "hearing",
+    "vestibular schwannoma",
+    "acoustic neuroma",
+    "serviceable hearing",
+    "cpa",
+    "cerebellopontine angle"
+   ],
+   "version": "Gardner-Robertson modified hearing classification (1988)",
+   "specialties": [
+    "Neurosurgery",
+    "Otolaryngology",
+    "Radiation Oncology"
+   ],
+   "keywords": [
+    "acoustic neuroma",
+    "cerebellopontine angle",
+    "cpa",
+    "exam",
+    "examination",
+    "facial nerve",
+    "grade",
+    "grades",
+    "hearing",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "vestibular schwannoma"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "spetzler",
+   "abbreviation": "Spetzler-Martin",
+   "name": "Spetzler-Martin AVM Grade",
+   "category": "exam",
+   "summary": "Grades brain arteriovenous malformations by features associated with surgical risk.",
+   "aliases": [
+    "spetzler martin",
+    "avm grade",
+    "arteriovenous malformation",
+    "sm grade",
+    "avm"
+   ],
+   "version": "Spetzler-Martin grading system (1986), grades I–V",
+   "specialties": [
+    "Neurosurgery",
+    "Interventional Neuroradiology"
+   ],
+   "keywords": [
+    "arteriovenous",
+    "avm",
+    "davf",
+    "exam",
+    "examination",
+    "fistula",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "vascular malformations",
+    "vascular neurosurgery"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "lawtonyoung",
+   "abbreviation": "Lawton-Young",
+   "name": "Lawton-Young Supplementary AVM Grade",
+   "category": "exam",
+   "summary": "Adds patient and AVM features to the Spetzler-Martin grade to refine surgical risk estimation.",
+   "aliases": [
+    "lawton young",
+    "supplementary grade",
+    "supp-sm",
+    "supplemented spetzler-martin",
+    "avm"
+   ],
+   "version": "Lawton-Young supplementary grading scale (Lawton et al. 2010)",
+   "specialties": [
+    "Neurosurgery",
+    "Interventional Neuroradiology"
+   ],
+   "keywords": [
+    "arteriovenous",
+    "avm",
+    "davf",
+    "exam",
+    "examination",
+    "fistula",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "vascular malformations",
+    "vascular neurosurgery"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "borden",
+   "abbreviation": "Borden",
+   "name": "Borden Classification of Dural Arteriovenous Fistulas",
+   "category": "exam",
+   "summary": "Classifies cranial and spinal dural arteriovenous fistulas by venous drainage, the main angiographic feature associated with aggressive behaviour.",
+   "aliases": [
+    "borden",
+    "davf",
+    "dural arteriovenous fistula",
+    "dural fistula",
+    "cortical venous drainage"
+   ],
+   "version": "Borden classification (Borden, Wu & Shucart 1995), types I–III with subtypes a/b",
+   "specialties": [
+    "Neurosurgery",
+    "Interventional Neuroradiology",
+    "Neuroradiology"
+   ],
+   "keywords": [
+    "arteriovenous",
+    "avm",
+    "davf",
+    "exam",
+    "examination",
+    "fistula",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "vascular malformations",
+    "vascular neurosurgery"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "cognard",
+   "abbreviation": "Cognard",
+   "name": "Cognard Classification of Dural Arteriovenous Fistulas",
+   "category": "exam",
+   "summary": "Classifies intracranial dural arteriovenous fistulas by venous drainage pattern, in more detail than Borden.",
+   "aliases": [
+    "cognard",
+    "davf",
+    "dural arteriovenous fistula",
+    "dural fistula",
+    "cortical venous reflux"
+   ],
+   "version": "Cognard revised classification (Cognard et al. 1995): I, IIa, IIb, IIa+b, III, IV, V",
+   "specialties": [
+    "Neurosurgery",
+    "Interventional Neuroradiology",
+    "Neuroradiology"
+   ],
+   "keywords": [
+    "arteriovenous",
+    "avm",
+    "davf",
+    "exam",
+    "examination",
+    "fistula",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "vascular malformations",
+    "vascular neurosurgery"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "markwalder",
+   "abbreviation": "Markwalder",
+   "name": "Markwalder Grading Scale for Chronic Subdural Haematoma",
+   "category": "exam",
+   "summary": "Grades the clinical condition of patients with chronic subdural haematoma.",
+   "aliases": [
+    "markwalder",
+    "chronic subdural",
+    "csdh",
+    "subdural haematoma",
+    "subdural hematoma"
+   ],
+   "version": "Markwalder grading scale (1981), grades 0–4",
+   "specialties": [
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "csdh",
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "neurotrauma: chronic subdural haematoma",
+    "subdural"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "engel",
+   "abbreviation": "Engel",
+   "name": "Engel Epilepsy Surgery Outcome Classification",
+   "category": "exam",
+   "summary": "Classifies seizure outcome after epilepsy surgery.",
+   "aliases": [
+    "engel",
+    "epilepsy surgery outcome",
+    "seizure outcome",
+    "seizure freedom"
+   ],
+   "version": "Engel classification (Engel et al. 1993), classes I–IV with subclasses",
+   "specialties": [
+    "Neurosurgery",
+    "Neurology",
+    "Epileptology"
+   ],
+   "keywords": [
+    "epilepsy",
+    "epilepsy surgery",
+    "epilepsy surgery outcome",
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "seizure"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "ilae",
+   "abbreviation": "ILAE outcome",
+   "name": "ILAE Epilepsy Surgery Outcome Classification",
+   "category": "exam",
+   "summary": "Classifies seizure outcome after epilepsy surgery for each year of follow-up, using seizure days relative to baseline.",
+   "aliases": [
+    "ilae",
+    "ilae outcome",
+    "wieser",
+    "epilepsy surgery outcome",
+    "seizure days"
+   ],
+   "version": "ILAE outcome classification (Wieser et al. 2001), classes 1–6 with 1a",
+   "specialties": [
+    "Neurosurgery",
+    "Neurology",
+    "Epileptology"
+   ],
+   "keywords": [
+    "epilepsy",
+    "epilepsy surgery",
+    "epilepsy surgery outcome",
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "seizure"
+   ],
+   "status": "implemented"
+  }
+ ],
+ "withheld": [
+  {
+   "id": "four",
+   "abbreviation": "FOUR",
+   "name": "Full Outline of UnResponsiveness",
+   "category": "consciousness",
+   "withheldCategory": "Licensing",
+   "withheldReason": "Reproductions carry 'Used with permission of Mayo Foundation… All rights reserved'; the author handles permission requests. Not reproduced until permission is confirmed."
+  },
+  {
+   "id": "mgraeb",
+   "abbreviation": "mGraeb",
+   "name": "Modified Graeb Score",
+   "category": "ich",
+   "withheldCategory": "Verification",
+   "withheldReason": "Sources agree on the 0–32 total and +1 per region for expansion, but describe the scored regions and fill thresholds inconsistently; requires the Morgan 2013 primary table."
+  },
+  {
+   "id": "ais",
+   "abbreviation": "AIS",
+   "name": "ASIA Impairment Scale (ISNCSCI)",
+   "category": "spine",
+   "withheldCategory": "Licensing / version",
+   "withheldReason": "ISNCSCI and the AIS worksheet are maintained by ASIA/ISCoS with reproduction terms and periodic revisions (current 2019 revision); requires licensing and version review."
+  },
+  {
+   "id": "odi",
+   "abbreviation": "ODI",
+   "name": "Oswestry Disability Index",
+   "category": "spine",
+   "withheldCategory": "Licensing",
+   "withheldReason": "ODI version 2.1a is © Jeremy Fairbank, licensed through Mapi Research Trust; free only for unfunded academic research and individual clinical practice, with a fee for commercial use."
+  },
+  {
+   "id": "tokuhashi",
+   "abbreviation": "Tokuhashi (1990)",
+   "name": "Tokuhashi Score (original 1990)",
+   "category": "oncology",
+   "withheldCategory": "Verification",
+   "withheldReason": "Original 1990 item weights verified, but the vertebral-body metastasis item has the same unresolved conflict as the revised score, and published prognosis bands for the original are inconsistent. Revised Tokuhashi (2005) is implemented separately."
+  },
+  {
+   "id": "rass",
+   "abbreviation": "RASS",
+   "name": "Richmond Agitation–Sedation Scale",
+   "category": "neurocritical",
+   "withheldCategory": "Licensing",
+   "withheldReason": "Virginia Commonwealth University lists RASS as a licensable technology; terms for use in a commercial app must be confirmed. Content is verified and ready to reinstate after licensing review."
+  },
+  {
+   "id": "joa",
+   "abbreviation": "JOA",
+   "name": "Japanese Orthopaedic Association Score",
+   "category": "spine",
+   "withheldCategory": "Version",
+   "withheldReason": "Five substantially different versions exist (1975 original, 1994 revised, 1991/1993/1999 modifications). The 1975 item wording (including the chopsticks item) was not available in a verifiable English source. mJOA (Benzel 1991) is implemented separately."
   },
   {
    "id": "sofa2",
    "abbreviation": "SOFA-2",
    "name": "Sequential Organ Failure Assessment-2 (2025)",
    "category": "neurocritical",
-   "summary": "Under review",
-   "status": "review",
-   "specialties": [],
-   "keywords": [
-    "critical care",
-    "icu",
-    "intensive care",
-    "neurocritical",
-    "neurocritical care",
-    "organ failure",
-    "sedation",
-    "sepsis"
-   ],
-   "reviewCategory": "Verification",
-   "reviewReason": "SOFA-2 (Ranzani et al., JAMA 2025) has detailed sub-rules (organ-support definitions, vasopressor dose categories, alternatives when no arterial blood gas). Only a simplified adaptation was available for verification; not implemented until the full published table is checked."
+   "withheldCategory": "Verification",
+   "withheldReason": "SOFA-2 (Ranzani et al., JAMA 2025) has detailed sub-rules (organ-support definitions, vasopressor dose categories, alternatives when no arterial blood gas). Only a simplified adaptation was available for verification; not implemented until the full published table is checked."
   },
   {
    "id": "dsgpa",
    "abbreviation": "DS-GPA",
    "name": "Disease-specific Graded Prognostic Assessments",
    "category": "oncology",
-   "summary": "Under review",
-   "status": "review",
-   "specialties": [],
-   "keywords": [
-    "brain metastases",
-    "cancer",
-    "metastases",
-    "metastasis",
-    "neuro-oncology",
-    "oncology",
-    "spinal metastases",
-    "tumor",
-    "tumour"
-   ],
-   "reviewCategory": "Version",
-   "reviewReason": "Disease-specific GPAs (lung, breast, melanoma, renal, GI and others) are separate instruments that are updated frequently; each needs its own verified version before implementation."
+   "withheldCategory": "Version",
+   "withheldReason": "Disease-specific GPAs (lung, breast, melanoma, renal, GI and others) are separate instruments that are updated frequently; each needs its own verified version before implementation."
+  },
+  {
+   "id": "sunnybrook",
+   "abbreviation": "Sunnybrook",
+   "name": "Sunnybrook Facial Grading System",
+   "category": "exam",
+   "withheldCategory": "Verification / licensing",
+   "withheldReason": "Item point values could not be confirmed from an accessible primary source in this review, the stated 0–100 composite range does not match the arithmetic of the published weights, and translation groups obtained the authors' permission before adapting the form. Not implemented until the original form and its terms are checked."
+  }
+ ],
+ "planned": [
+  {
+   "id": "helsinki",
+   "name": "Helsinki CT Score",
+   "abbreviation": "Helsinki CT",
+   "category": "tbi",
+   "status": "planned"
+  },
+  {
+   "id": "stockholm",
+   "name": "Stockholm CT Score",
+   "abbreviation": "Stockholm CT",
+   "category": "tbi",
+   "status": "planned"
+  },
+  {
+   "id": "impact",
+   "name": "IMPACT prognostic models (TBI)",
+   "abbreviation": "IMPACT",
+   "category": "tbi",
+   "status": "planned"
+  },
+  {
+   "id": "crash",
+   "name": "CRASH prognostic models (TBI)",
+   "abbreviation": "CRASH",
+   "category": "tbi",
+   "status": "planned"
+  },
+  {
+   "id": "scim3",
+   "name": "Spinal Cord Independence Measure III",
+   "abbreviation": "SCIM III",
+   "category": "spine",
+   "status": "planned"
+  },
+  {
+   "id": "wisci2",
+   "name": "Walking Index for Spinal Cord Injury II",
+   "abbreviation": "WISCI II",
+   "category": "spine",
+   "status": "planned"
+  },
+  {
+   "id": "rpa",
+   "name": "Recursive Partitioning Analysis (brain metastases)",
+   "abbreviation": "RPA",
+   "category": "oncology",
+   "status": "planned"
+  },
+  {
+   "id": "evans",
+   "name": "Evans Index",
+   "abbreviation": "Evans Index",
+   "category": "exam",
+   "status": "planned"
+  },
+  {
+   "id": "fohr",
+   "name": "Frontal and Occipital Horn Ratio",
+   "abbreviation": "FOHR",
+   "category": "exam",
+   "status": "planned"
   }
  ]
 }

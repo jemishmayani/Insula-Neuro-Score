@@ -1,0 +1,66 @@
+{
+ "scoreId": "plantar",
+ "cases": [
+  {
+   "name": "flexor",
+   "answers": {
+    "finding": "flexor"
+   },
+   "expect": {
+    "display": "Flexor",
+    "state": "flexor",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "flexor",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "extensor",
+   "answers": {
+    "finding": "extensor",
+    "side": "left"
+   },
+   "expect": {
+    "display": "Extensor",
+    "state": "extensor",
+    "shareText": "Plantar response: Extensor (L) — Extensor response (Babinski sign)"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "extensor (Babinski)",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "equivocal",
+   "answers": {
+    "finding": "equivocal"
+   },
+   "expect": {
+    "state": "equivocal"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "equivocal",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "no response",
+   "answers": {
+    "finding": "none"
+   },
+   "expect": {
+    "state": "none"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no response",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

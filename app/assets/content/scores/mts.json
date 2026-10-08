@@ -1,0 +1,347 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "tardieu",
+  "modified tardieu",
+  "spasticity",
+  "angle of catch",
+  "r1 r2"
+ ],
+ "scoringRules": [
+  {
+   "id": "has_catch",
+   "expr": "isnull(r1) ? 0 : 1"
+  }
+ ],
+ "consistencyRules": [
+  {
+   "when": "x >= 2 && x <= 4 && isnull(r1)",
+   "severity": "warning",
+   "inputs": [
+    "r1"
+   ],
+   "message": "X2–X4 describe a catch or clonus at a precise angle: record R1."
+  },
+  {
+   "when": "x <= 1 && !isnull(r1)",
+   "severity": "warning",
+   "inputs": [
+    "r1"
+   ],
+   "message": "X0–X1 have no clear catch at a precise angle, so R1 is normally not recorded."
+  }
+ ],
+ "commonErrors": [
+  "Measuring R1 and R2 with different angle conventions.",
+  "Recording R1 when there is no clear catch.",
+  "Not stating the velocity used."
+ ],
+ "relatedScores": [
+  {
+   "id": "mas",
+   "relation": "Resistance to passive movement"
+  },
+  {
+   "id": "clonus",
+   "relation": "Clonus"
+  }
+ ],
+ "id": "mts",
+ "name": "Modified Tardieu Scale",
+ "abbreviation": "MTS",
+ "subcategory": "Tone and spasticity",
+ "specialties": [
+  "Neurology",
+  "Neurosurgery",
+  "Rehabilitation"
+ ],
+ "version": {
+  "label": "Modified Tardieu Scale (Boyd & Graham 1999)",
+  "detail": "Quality of muscle reaction X (0–5) at a stated velocity; R1 = angle of catch after a fast stretch (V2 or V3); R2 = passive range after a slow stretch (V1). The dynamic component is the difference between R2 and R1."
+ },
+ "purpose": "Separates the velocity-dependent (neural) component of spasticity from fixed contracture at one joint.",
+ "intendedPopulation": "Children and adults with spasticity (originally cerebral palsy).",
+ "resultPresentation": {
+  "type": "examination-grade",
+  "typeLabel": "Spasticity assessment",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Measure both angles the same way",
+  "message": "Use the same joint-angle convention and a goniometer for R1 and R2. The difference is reported as a magnitude in degrees."
+ },
+ "inputDefinitions": [
+  {
+   "id": "muscle",
+   "type": "single",
+   "label": "Muscle group (optional)",
+   "short": "Muscle",
+   "options": [
+    {
+     "value": "elbow flexors",
+     "label": "Elbow flexors",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "wrist flexors",
+     "label": "Wrist flexors",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "hip adductors",
+     "label": "Hip adductors",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "hamstrings",
+     "label": "Hamstrings",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "gastrocnemius",
+     "label": "Gastrocnemius (knee extended)",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "soleus",
+     "label": "Soleus (knee flexed)",
+     "points": 0,
+     "code": ""
+    },
+    {
+     "value": "other",
+     "label": "Other",
+     "points": 0,
+     "code": ""
+    }
+   ],
+   "required": false
+  },
+  {
+   "id": "vel",
+   "type": "single",
+   "label": "Velocity of the fast stretch",
+   "short": "Velocity",
+   "options": [
+    {
+     "value": "v2",
+     "label": "V2: speed of the limb falling under gravity",
+     "points": 0,
+     "code": "V2"
+    },
+    {
+     "value": "v3",
+     "label": "V3: as fast as possible",
+     "points": 0,
+     "code": "V3"
+    }
+   ]
+  },
+  {
+   "id": "x",
+   "type": "single",
+   "label": "Quality of muscle reaction (X)",
+   "short": "X",
+   "options": [
+    {
+     "value": "0",
+     "label": "No resistance through the passive movement",
+     "points": 0,
+     "code": "X0"
+    },
+    {
+     "value": "1",
+     "label": "Slight resistance throughout, no clear catch at a precise angle",
+     "points": 1,
+     "code": "X1"
+    },
+    {
+     "value": "2",
+     "label": "Clear catch at a precise angle, interrupting the movement, then release",
+     "points": 2,
+     "code": "X2"
+    },
+    {
+     "value": "3",
+     "label": "Fatigable clonus (under 10 s with maintained pressure) at a precise angle",
+     "points": 3,
+     "code": "X3"
+    },
+    {
+     "value": "4",
+     "label": "Unfatigable clonus (over 10 s with maintained pressure) at a precise angle",
+     "points": 4,
+     "code": "X4"
+    },
+    {
+     "value": "5",
+     "label": "Joint immovable",
+     "points": 5,
+     "code": "X5"
+    }
+   ]
+  },
+  {
+   "id": "r1",
+   "type": "integer",
+   "label": "R1: angle of catch (fast stretch)",
+   "short": "R1",
+   "unit": "°",
+   "min": 0,
+   "max": 180,
+   "required": false,
+   "help": "Leave blank if there is no catch (X0–X1)."
+  },
+  {
+   "id": "r2",
+   "type": "integer",
+   "label": "R2: passive range (slow stretch, V1)",
+   "short": "R2",
+   "unit": "°",
+   "min": 0,
+   "max": 180
+  }
+ ],
+ "components": [
+  {
+   "id": "c_setup",
+   "label": "Muscle and velocity",
+   "inputs": [
+    "muscle",
+    "vel"
+   ],
+   "showSubtotal": false
+  },
+  {
+   "id": "c_x",
+   "label": "Quality of reaction",
+   "inputs": [
+    "x"
+   ]
+  },
+  {
+   "id": "c_angles",
+   "label": "Angles",
+   "inputs": [
+    "r1",
+    "r2"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "isnull(r1) ? 0 : abs(r2 - r1)",
+  "range": {
+   "min": 0,
+   "max": 180
+  },
+  "formula": "{has_catch == 1 ? 'R2 ' + r2 + '° − R1 ' + r1 + '°' : 'No angle of catch recorded'}",
+  "formulaEquals": false,
+  "display": "{has_catch == 1 ? x_code + ' · R2−R1 ' + total + '°' : x_code}",
+  "share": "MTS {x_code} at {vel_code}{has_catch == 1 ? ', R1 ' + r1 + '°' : ''}, R2 {r2}°{has_catch == 1 ? ', R2−R1 ' + total + '°' : ''}{isnull(muscle_value) ? '' : ', ' + muscle_value}"
+ },
+ "interpretationRules": [
+  {
+   "when": "has_catch == 0",
+   "state": "nocatch"
+  },
+  {
+   "state": "catch"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "nocatch",
+   "tone": "informational",
+   "label": "{x_code}, no angle of catch",
+   "summary": "Quality of muscle reaction {x_code}; no angle of catch recorded.",
+   "detail": "R2 records the passive range of motion at slow velocity."
+  },
+  {
+   "id": "catch",
+   "tone": "informational",
+   "label": "{x_code}, dynamic component {total}°",
+   "summary": "Quality of muscle reaction {x_code}; the difference between R2 and R1 is {total}°.",
+   "detail": "A large difference suggests a larger dynamic (neural) component; a small difference suggests that fixed contracture dominates."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Tests resistance at slow and fast velocities, so it separates spasticity from contracture.",
+   "importance": "major"
+  },
+  {
+   "text": "Commonly used to plan and review focal spasticity treatment."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "has_catch == 1 && total <= 10",
+   "text": "Small R2−R1 difference: resistance is mostly from reduced passive range (contracture) at this joint."
+  },
+  {
+   "when": "x == 5",
+   "importance": "major",
+   "text": "Joint immovable: angles may not be measurable; check for fixed contracture."
+  },
+  {
+   "text": "Re-test with the same position, velocity and angle convention for comparison."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Requires a goniometer and a standard position for each muscle; technique strongly affects reliability."
+  },
+  "Velocities are judged by the examiner, not measured.",
+  "Angle conventions differ between joints and centres."
+ ],
+ "confounders": [
+  {
+   "factor": "Position and posture",
+   "effect": "Change muscle length and the angle of catch."
+  },
+  {
+   "factor": "Pain, anxiety and temperature",
+   "effect": "Change tone."
+  },
+  {
+   "factor": "Recent antispasticity treatment",
+   "effect": "Alters the reaction."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Function or goal attainment.",
+  "Strength or selective motor control.",
+  "Spasticity in muscles not tested."
+ ],
+ "guideSections": {
+  "what": "A velocity-based spasticity assessment recording the quality of muscle reaction (X0–X5), the angle of catch at a fast stretch (R1) and the passive range at a slow stretch (R2).",
+  "whenToUse": "Assessing spasticity before and after focal treatment such as botulinum toxin, casting or surgery.",
+  "howToPerform": "Position the patient in the standard position for the muscle. Move the joint as slowly as possible (V1) and measure R2. Then move it fast (V2 or V3), grade the reaction X and measure the angle of catch R1. Record the velocity used.",
+  "clinicalContext": "R2−R1 helps decide whether resistance is mainly dynamic (neural) or fixed (contracture)."
+ },
+ "sources": [
+  {
+   "citation": "Boyd RN, Graham HK. Objective measurement of clinical findings in the use of botulinum toxin type A for the management of children with cerebral palsy. Eur J Neurol. 1999;6(Suppl 4):S23-S35."
+  },
+  {
+   "citation": "Tardieu Scale and Modified Tardieu Scale (MTS). StrokEngine, McGill University.",
+   "url": "https://strokengine.ca/en/assessments/tardieu-scale-and-modified-tardieu-scale-mts/"
+  }
+ ],
+ "licensing": {
+  "status": "Published scale with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam"
+}

@@ -1,0 +1,77 @@
+{
+ "scoreId": "lawtonyoung",
+ "cases": [
+  {
+   "name": "minimum",
+   "answers": {
+    "age": "lt20",
+    "rupt": "ruptured",
+    "nidus": "compact"
+   },
+   "expect": {
+    "total": 1,
+    "display": "Supp 1",
+    "state": "supp"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+0+0 = 1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "maximum",
+   "answers": {
+    "age": "gt40",
+    "rupt": "unruptured",
+    "nidus": "diffuse"
+   },
+   "expect": {
+    "total": 5,
+    "display": "Supp 5"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3+1+1 = 5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "with SM grade",
+   "answers": {
+    "age": "20to40",
+    "rupt": "unruptured",
+    "nidus": "compact",
+    "sm": "3"
+   },
+   "expect": {
+    "total": 3,
+    "display": "Supp 3 · Supp-SM 6",
+    "state": "comb",
+    "shareText": "Lawton-Young supplementary grade 3; Spetzler-Martin III; Supp-SM 6 — Supp-SM grade 6"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+1+0 = 3; 3 + SM III = 6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "combined maximum",
+   "answers": {
+    "age": "gt40",
+    "rupt": "unruptured",
+    "nidus": "diffuse",
+    "sm": "5"
+   },
+   "expect": {
+    "display": "Supp 5 · Supp-SM 10"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "5 + 5 = 10",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

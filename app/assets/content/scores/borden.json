@@ -1,0 +1,223 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-08",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "borden",
+  "davf",
+  "dural arteriovenous fistula",
+  "dural fistula",
+  "cortical venous drainage"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Classifying from non-invasive imaging alone.",
+  "Mixing Borden and Cognard type numbers."
+ ],
+ "relatedScores": [
+  {
+   "id": "cognard",
+   "relation": "More detailed dAVF classification"
+  },
+  {
+   "id": "spetzler",
+   "relation": "AVM grade"
+  }
+ ],
+ "id": "borden",
+ "name": "Borden Classification of Dural Arteriovenous Fistulas",
+ "abbreviation": "Borden",
+ "subcategory": "Vascular neurosurgery",
+ "specialties": [
+  "Neurosurgery",
+  "Interventional Neuroradiology",
+  "Neuroradiology"
+ ],
+ "version": {
+  "label": "Borden classification (Borden, Wu & Shucart 1995), types I–III with subtypes a/b",
+  "detail": "Type by venous drainage pattern; subtype a = single-hole fistula, b = multiple-hole fistula."
+ },
+ "purpose": "Classifies cranial and spinal dural arteriovenous fistulas by venous drainage, the main angiographic feature associated with aggressive behaviour.",
+ "intendedPopulation": "Patients with dural arteriovenous fistulas characterised by catheter angiography.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "dAVF classification",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "type",
+   "type": "single",
+   "label": "Venous drainage",
+   "short": "Type",
+   "options": [
+    {
+     "value": "1",
+     "label": "Type I: into a dural sinus or meningeal vein, normal antegrade flow",
+     "points": 1,
+     "code": "I",
+     "detail": "No retrograde flow into subarachnoid (cortical) veins."
+    },
+    {
+     "value": "2",
+     "label": "Type II: into a dural sinus or meningeal vein, with retrograde flow into subarachnoid veins",
+     "points": 2,
+     "code": "II"
+    },
+    {
+     "value": "3",
+     "label": "Type III: directly into subarachnoid veins, or an isolated sinus segment",
+     "points": 3,
+     "code": "III",
+     "detail": "Cortical venous drainage only."
+    }
+   ]
+  },
+  {
+   "id": "sub",
+   "type": "single",
+   "label": "Subtype (optional)",
+   "short": "Subtype",
+   "options": [
+    {
+     "value": "a",
+     "label": "a: single-hole fistula",
+     "points": 0,
+     "code": "a"
+    },
+    {
+     "value": "b",
+     "label": "b: multiple-hole fistula",
+     "points": 0,
+     "code": "b"
+    }
+   ],
+   "required": false
+  }
+ ],
+ "components": [
+  {
+   "id": "c_type",
+   "label": "Type",
+   "inputs": [
+    "type"
+   ]
+  },
+  {
+   "id": "c_sub",
+   "label": "Subtype",
+   "inputs": [
+    "sub"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "type",
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "display": "Type {roman(total)}{isnull(sub_code) ? '' : sub_code}",
+  "share": "Borden type {roman(total)}{isnull(sub_code) ? '' : sub_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "t1"
+  },
+  {
+   "when": "total == 2",
+   "state": "t2"
+  },
+  {
+   "state": "t3"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "t1",
+   "tone": "low",
+   "label": "Type I: no cortical venous drainage",
+   "summary": "Drainage into a sinus or meningeal vein with antegrade flow.",
+   "range": "I",
+   "detail": "Lesions without cortical venous drainage are generally associated with a more benign course; drainage can change over time."
+  },
+  {
+   "id": "t2",
+   "tone": "high",
+   "label": "Type II: cortical venous reflux",
+   "summary": "Sinus drainage with retrograde flow into cortical veins.",
+   "range": "II",
+   "detail": "Cortical venous drainage is associated with a higher risk of haemorrhage and non-haemorrhagic neurological deficit. Management depends on symptoms, location and patient factors."
+  },
+  {
+   "id": "t3",
+   "tone": "high",
+   "label": "Type III: direct cortical venous drainage",
+   "summary": "Drainage directly into cortical veins.",
+   "range": "III",
+   "detail": "Cortical venous drainage is associated with a higher risk of haemorrhage and non-haemorrhagic neurological deficit. Management depends on symptoms, location and patient factors."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Classifies dural fistulas by whether they drain into cortical (subarachnoid) veins.",
+   "importance": "major"
+  },
+  {
+   "text": "Cortical venous drainage is the key angiographic feature associated with aggressive behaviour."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "type >= 2",
+   "importance": "major",
+   "text": "Cortical venous drainage present: Cognard classification adds detail on sinus flow and venous ectasia."
+  },
+  {
+   "text": "Fistulas can progress from one type to another; drainage can change over time."
+  }
+ ],
+ "limitations": [
+  {
+   "importance": "major",
+   "text": "Requires catheter angiography; CT or MR angiography may not show drainage reliably."
+  },
+  "Does not grade venous ectasia or symptoms.",
+  "Three types group together lesions with different behaviour."
+ ],
+ "confounders": [
+  {
+   "factor": "Partial treatment or thrombosis",
+   "effect": "Changes the drainage pattern."
+  },
+  {
+   "factor": "Incomplete angiographic study",
+   "effect": "Can miss cortical venous reflux."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The fistula's location or arterial supply.",
+  "Whether treatment is needed.",
+  "Symptoms or their cause."
+ ],
+ "guideSections": {
+  "what": "Three types of dural arteriovenous fistula by venous drainage, with subtypes for single- or multiple-hole fistulas.",
+  "whenToUse": "Describing dural fistulas on angiography and communicating the presence of cortical venous drainage.",
+  "howToPerform": "On catheter angiography, identify where the fistula drains and the direction of flow in the draining sinus and cortical veins. Assign the type; add subtype a or b if known.",
+  "clinicalContext": "An angiographic classification; management also depends on symptoms, location and patient factors."
+ },
+ "sources": [
+  {
+   "citation": "Borden JA, Wu JK, Shucart WA. A proposed classification for spinal and cranial dural arteriovenous fistulous malformations and implications for treatment. J Neurosurg. 1995;82(2):166-179."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "category": "exam"
+}

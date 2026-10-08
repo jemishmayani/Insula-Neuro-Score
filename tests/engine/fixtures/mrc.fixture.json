@@ -1,0 +1,65 @@
+{
+ "scoreId": "mrc",
+ "cases": [
+  {
+   "name": "grade 5",
+   "answers": {
+    "grade": "5"
+   },
+   "expect": {
+    "display": "5/5",
+    "state": "g5",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "5/5 normal power",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 3 left",
+   "answers": {
+    "grade": "3",
+    "side": "left"
+   },
+   "expect": {
+    "display": "3/5",
+    "state": "g3",
+    "shareText": "MRC power 3/5 (L) — Grade 3: against gravity"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3/5; side L in share",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 0",
+   "answers": {
+    "grade": "0"
+   },
+   "expect": {
+    "display": "0/5",
+    "state": "g0"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0/5 no contraction",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "missing grade",
+   "answers": {},
+   "expect": {
+    "status": "incomplete"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no grade → incomplete",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

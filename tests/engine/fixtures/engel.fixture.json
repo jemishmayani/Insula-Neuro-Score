@@ -1,0 +1,84 @@
+{
+ "scoreId": "engel",
+ "cases": [
+  {
+   "name": "IA",
+   "answers": {
+    "cls": "1"
+   },
+   "expect": {
+    "display": "Engel IA",
+    "state": "c1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IA → class I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "ID",
+   "answers": {
+    "cls": "4"
+   },
+   "expect": {
+    "display": "Engel ID",
+    "state": "c1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "ID → class I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "IIA",
+   "answers": {
+    "cls": "5",
+    "fu": 2
+   },
+   "expect": {
+    "display": "Engel IIA",
+    "state": "c2",
+    "shareText": "Engel class IIA at 2 years — Class II: rare disabling seizures"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IIA → class II",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "IIIB",
+   "answers": {
+    "cls": "10"
+   },
+   "expect": {
+    "display": "Engel IIIB",
+    "state": "c3"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IIIB → class III",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "IVC",
+   "answers": {
+    "cls": "13",
+    "fu": 1
+   },
+   "expect": {
+    "display": "Engel IVC",
+    "state": "c4",
+    "shareText": "Engel class IVC at 1 year — Class IV: no worthwhile improvement"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IVC → class IV",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

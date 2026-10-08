@@ -1,0 +1,69 @@
+{
+ "scoreId": "hb",
+ "cases": [
+  {
+   "name": "grade I",
+   "answers": {
+    "grade": "1"
+   },
+   "expect": {
+    "display": "Grade I",
+    "state": "g1",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I normal",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade III",
+   "answers": {
+    "grade": "3"
+   },
+   "expect": {
+    "display": "Grade III",
+    "state": "g3"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III moderate",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade IV",
+   "answers": {
+    "grade": "4",
+    "side": "right"
+   },
+   "expect": {
+    "display": "Grade IV",
+    "state": "g4",
+    "insightsContains": "eye closure",
+    "shareText": "House-Brackmann grade IV (R) — Grade IV: moderately severe dysfunction"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IV incomplete eye closure",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade VI",
+   "answers": {
+    "grade": "6"
+   },
+   "expect": {
+    "display": "Grade VI",
+    "state": "g6"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "VI total paralysis",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

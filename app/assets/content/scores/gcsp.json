@@ -23,10 +23,6 @@
    "relation": "Underlying scale"
   },
   {
-   "id": "four",
-   "relation": "Includes brainstem reflexes"
-  },
-  {
    "id": "gose",
    "relation": "Outcome after brain injury"
   },

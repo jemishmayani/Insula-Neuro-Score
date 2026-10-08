@@ -411,48 +411,65 @@ if __name__ == "__main__":
     scores += library.build(scores[0]["inputDefinitions"])
     import library2
     scores += library2.build()
+    import library3
+    scores += library3.build()
     library.UNDER_REVIEW.update(library2.UNDER_REVIEW_NEW)
     scores = [x for x in scores if x["id"] not in library.UNDER_REVIEW]   # verified but held back (e.g. licensing review)
+    impl = {s["id"]: s for s in scores}
     import related
     for sc in scores:
         if sc["id"] in related.RELATED: sc["relatedScores"] = [{"id": i, "relation": r} for i, r in related.RELATED[sc["id"]]]
+        sc["relatedScores"] = [r for r in sc["relatedScores"] if r["id"] in impl]   # only link to scores shown in the app
     os.makedirs(os.path.join(OUT, "scores"), exist_ok=True); os.makedirs(os.path.join(OUT, "dev"), exist_ok=True)
     for f in os.listdir(os.path.join(OUT, "scores")): os.remove(os.path.join(OUT, "scores", f))
     for s in scores:
         json.dump(s, open(os.path.join(OUT, "scores", s["id"] + ".json"), "w"), ensure_ascii=False, indent=1)
     json.dump(demo, open(os.path.join(OUT, "dev", "demo-inputs.json"), "w"), ensure_ascii=False, indent=1)
-    # ---- catalogue: implemented / under review (with reason) / placeholder
+    # ---- catalogue (v0.10): `scores` lists implemented scores only (shown in the app).
+    #      `withheld` records listed scores not implemented, with the reason (not shown). `planned` is the future queue (not shown).
     cat_path = os.path.join(OUT, "catalog.json"); cat = json.load(open(cat_path))
-    by_id = {c["id"]: c for c in cat["scores"]}
-    extra = {"abcd2": ("ABCD²", "ABCD² Score", "stroke"), "race": ("RACE", "Rapid Arterial oCclusion Evaluation Scale", "stroke"),
-             "lams": ("LAMS", "Los Angeles Motor Scale", "stroke"), "fasted": ("FAST-ED", "Field Assessment Stroke Triage for Emergency Destination", "stroke"),
-             "rtokuhashi": ("Revised Tokuhashi", "Revised Tokuhashi Score", "oncology"), "joa": ("JOA", "Japanese Orthopaedic Association Score", "spine"),
-             "gpa": ("GPA", "Graded Prognostic Assessment (original)", "oncology"),
-             "sofa2": ("SOFA-2", "Sequential Organ Failure Assessment-2 (2025)", "neurocritical"),
-             "dsgpa": ("DS-GPA", "Disease-specific Graded Prognostic Assessments", "oncology")}
-    for k, (ab, nm, ct) in extra.items():
-        if k not in by_id:
-            e = {"id": k, "abbreviation": ab, "name": nm, "category": ct, "summary": "", "status": "placeholder"}; cat["scores"].append(e); by_id[k] = e
+    cat["categories"] = [c for c in cat["categories"] if c["id"] != library3.EXAM_CATEGORY["id"]] + [dict(library3.EXAM_CATEGORY)]
+    for c in cat["categories"]:
+        c.pop("include", None)
+        if c["id"] in library3.CROSS_LIST: c["include"] = list(library3.CROSS_LIST[c["id"]])
+    cat["categories"][-1]["include"] = list(library3.EXAM_CATEGORY["include"])
+    entries = cat["scores"] + cat.get("withheld", [])
+    by_id = {c["id"]: c for c in entries}
+    for k, (ab, nm, ct) in {"sofa2": ("SOFA-2", "Sequential Organ Failure Assessment-2 (2025)", "neurocritical"),
+                            "dsgpa": ("DS-GPA", "Disease-specific Graded Prognostic Assessments", "oncology")}.items():
+        if k not in by_id: e = {"id": k, "abbreviation": ab, "name": nm, "category": ct}; entries.append(e); by_id[k] = e
+    for k, (nm, ab, ct, rc, rr) in library3.WITHHELD_NEW.items():
+        if k not in by_id: e = {"id": k, "abbreviation": ab, "name": nm, "category": ct}; entries.append(e); by_id[k] = e
+    for s in scores:
+        if s["id"] not in by_id: e = {"id": s["id"], "abbreviation": s["abbreviation"], "name": s["name"], "category": s["category"], "summary": ""}; entries.append(e); by_id[s["id"]] = e
     by_id["tokuhashi"].update({"abbreviation": "Tokuhashi (1990)", "name": "Tokuhashi Score (original 1990)"})
-    impl = {s["id"]: s for s in scores}
-    for c in cat["scores"]:
-        c.pop("reviewReason", None); c.pop("reviewCategory", None)
+    reasons = dict(library.UNDER_REVIEW); reasons.update({k: (v[3], v[4]) for k, v in library3.WITHHELD_NEW.items()})
+    active, withheld = [], []
+    for c in entries:
+        for k in ("reviewReason", "reviewCategory", "status", "withheldCategory", "withheldReason"): c.pop(k, None)
         if c["id"] in impl:
             s = impl[c["id"]]; c["status"] = "implemented"; c["abbreviation"] = s["abbreviation"]; c["name"] = s["name"]; c["category"] = s["category"]
             c["aliases"] = s.get("aliases", []); c["version"] = s["version"]["label"]
-            if not c.get("summary"): c["summary"] = s["purpose"]
-        elif c["id"] in library.UNDER_REVIEW:
-            c["status"] = "review"; c["reviewCategory"], c["reviewReason"] = library.UNDER_REVIEW[c["id"]]
-            if not c.get("summary"): c["summary"] = "Under review"
+            if not c.get("summary") or c["summary"] == "Under review": c["summary"] = s["purpose"]
+            active.append(c)
         else:
-            c["status"] = "placeholder"
+            assert c["id"] in reasons, "catalogue entry without implementation or reason: " + c["id"]
+            w = {"id": c["id"], "abbreviation": c["abbreviation"], "name": c["name"], "category": c["category"]}
+            w["withheldCategory"], w["withheldReason"] = reasons[c["id"]]
+            withheld.append(w)
+    cat["scores"] = active; cat["withheld"] = withheld
+    cat["planned"] = [{"id": i, "name": n, "abbreviation": a, "category": c, "status": "planned"} for i, n, a, c in library3.PLANNED if i not in impl]
+    # ---- category groups must reference shown scores
+    for c in cat["categories"]:
+        for m in c.get("include", []) + [x for g in c.get("groups", []) for x in g["members"]]: assert m in impl, (c["id"], m)
     # ---- Phase 7: clusters + search keywords (specialty, category, keywords, cluster titles)
     import related
-    ids = {c["id"] for c in cat["scores"]}
+    known = {c["id"] for c in cat["scores"]} | {w["id"] for w in cat["withheld"]}
     for cl in related.CLUSTERS:
-        missing = [m for m in cl["members"] if m not in ids]
+        missing = [m for m in cl["members"] if m not in known]
         assert not missing, (cl["id"], missing)
-    json.dump({"clusters": related.CLUSTERS}, open(os.path.join(OUT, "related.json"), "w"), ensure_ascii=False, indent=1)
+        cl["members"] = [m for m in cl["members"] if m in impl]
+    json.dump({"clusters": [cl for cl in related.CLUSTERS if len(cl["members"]) >= 2]}, open(os.path.join(OUT, "related.json"), "w"), ensure_ascii=False, indent=1)
     catname = {c["id"]: c["name"] for c in cat["categories"]}
     for c in cat["scores"]:
         s = impl.get(c["id"])
@@ -464,6 +481,6 @@ if __name__ == "__main__":
             if c["id"] in cl["members"]: kw |= {cl["title"].lower()} | set(cl["keywords"])
         c["keywords"] = sorted(k for k in kw if k)
     cat["contentVersion"] = library.CV
-    cat["note"] = "Catalogue. 'implemented' scores have content files; 'review' entries record why a listed score is not yet implemented; 'placeholder' entries contain no scoring criteria."
+    cat["note"] = "Catalogue. 'scores' are implemented and shown in the app. 'withheld' records listed scores that are not implemented, with the reason; 'planned' is the future queue. Neither is shown in the app."
     json.dump(cat, open(cat_path, "w"), ensure_ascii=False, indent=1)
-    print("implemented:", len(scores), "| review:", sum(1 for c in cat["scores"] if c["status"] == "review"), "| placeholder:", sum(1 for c in cat["scores"] if c["status"] == "placeholder"))
+    print("implemented:", len(scores), "| withheld:", len(cat["withheld"]), "| planned:", len(cat["planned"]))
