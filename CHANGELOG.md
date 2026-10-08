@@ -3,6 +3,10 @@
 All notable changes to Insula Neuro Score. Versions follow the Android `versionName`.
 The app is **not clinically ready** in any version listed here; see [docs/MEDICAL-CONTENT-AUDIT.md](docs/MEDICAL-CONTENT-AUDIT.md).
 
+## [Unreleased]
+### Added
+- Release workflow: pushing a `v*` tag builds, tests, signs and publishes the APK to GitHub Releases.
+
 ## [0.10.0] - 2026-10-08
 Neurosurgical Examination & Grades. Under-review scores removed from the app.
 

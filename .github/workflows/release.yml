@@ -1,0 +1,72 @@
+name: release
+# Push a version tag (e.g. `git tag v0.11.0 && git push origin v0.11.0`) to build, sign and publish the APK.
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   ANDROID_KEYSTORE_B64  base64 of the release keystore (the key that signed v0.10.0)
+#   ANDROID_KS_PASS       keystore / key password
+#   ANDROID_KEY_ALIAS     key alias (insula)
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to (re)build and release, e.g. v0.10.0"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+
+      - name: Check the tag matches the app version
+        run: |
+          v=$(grep -o 'android:versionName="[^"]*"' app/AndroidManifest.xml | cut -d'"' -f2)
+          test "v$v" = "$TAG" || { echo "::error::Tag $TAG does not match versionName $v in app/AndroidManifest.xml"; exit 1; }
+
+      - name: Content, engine tests and calculation audit
+        run: |
+          python3 content_src/build_scores.py && git diff --exit-code app/assets/content/
+          node --test tests/engine/*.test.js
+          node tools/calc_audit.js | tee /tmp/calc.txt && grep -q " 0 with issues" /tmp/calc.txt
+
+      - name: Install Android build tools
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q android-sdk-platform-23 aapt apksigner zipalign dalvik-exchange
+
+      - name: Build and sign the APK
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KS_PASS: ${{ secrets.ANDROID_KS_PASS }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          test -n "$KS_B64" && test -n "$KS_PASS" || { echo "::error::Signing secrets are not set"; exit 1; }
+          echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.keystore"
+          KEYSTORE="$RUNNER_TEMP/release.keystore" KEY_ALIAS="${KEY_ALIAS:-insula}" bash app/build.sh
+          cp app/build/InsulaNeuroScore.apk "InsulaNeuroScore-$TAG.apk"
+          rm -f "$RUNNER_TEMP/release.keystore"
+          apksigner verify --print-certs "InsulaNeuroScore-$TAG.apk" | grep -i "SHA-256"
+
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes="docs/releases/$TAG.md"
+          [ -f "$notes" ] || { printf 'See [CHANGELOG.md](CHANGELOG.md).\n' > /tmp/notes.md; notes=/tmp/notes.md; }
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "InsulaNeuroScore-$TAG.apk" --clobber
+          else
+            gh release create "$TAG" "InsulaNeuroScore-$TAG.apk" --title "$TAG" --notes-file "$notes" --prerelease --verify-tag
+          fi

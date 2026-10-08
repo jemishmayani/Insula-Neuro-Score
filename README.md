@@ -96,6 +96,17 @@ python3 tools/content_audit.py          # regenerate docs/CONTENT-AUDIT.md
 cd app && KEYSTORE=/path/to/release.keystore KS_PASS=... ./build.sh
 ```
 
+### Releasing
+
+Pushing a version tag builds, tests, signs and publishes the APK as a GitHub release (`.github/workflows/release.yml`):
+
+```bash
+# 1. bump versionCode/versionName in app/AndroidManifest.xml, add docs/releases/vX.Y.Z.md and a CHANGELOG entry, push to main
+git tag v0.11.0 && git push origin v0.11.0
+```
+
+The tag must match `versionName`. Release notes come from `docs/releases/<tag>.md`. Signing uses three repository secrets: `ANDROID_KEYSTORE_B64` (base64 of the keystore), `ANDROID_KS_PASS` and `ANDROID_KEY_ALIAS`. An existing tag can be rebuilt from Actions → release → Run workflow.
+
 Without `KEYSTORE`, `build.sh` generates `keystore/local.keystore`. **Never commit keystores.** Updates must be signed with the same key.
 
 Minimum Android 7.0 (API 24), target API 34.
