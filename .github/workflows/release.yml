@@ -37,7 +37,9 @@ jobs:
           if [ "${{ github.ref_type }}" = "tag" ] || [ -n "${{ github.event.inputs.tag }}" ]; then TAG="${{ github.event.inputs.tag || github.ref_name }}"; else TAG="v$v"; fi
           echo "TAG=$TAG" >> "$GITHUB_ENV"
           if [ "${{ github.ref_type }}" = "branch" ] && gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "Release $TAG already exists; nothing to do."; echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Release $TAG already exists; making sure it is the latest full release."
+            gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --prerelease=false --latest
+            echo "skip=true" >> "$GITHUB_OUTPUT"
           else echo "skip=false" >> "$GITHUB_OUTPUT"; fi
       - uses: actions/setup-node@v4
         if: steps.ver.outputs.skip != 'true'
@@ -89,7 +91,8 @@ jobs:
           [ -f "$notes" ] || { printf 'See [CHANGELOG.md](CHANGELOG.md).\n' > /tmp/notes.md; notes=/tmp/notes.md; }
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "InsulaNeuroScore-$TAG.apk" --clobber
+            gh release edit "$TAG" --prerelease=false --latest
           else
             if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then verify="--verify-tag"; else verify="--target $GITHUB_SHA"; fi
-            gh release create "$TAG" "InsulaNeuroScore-$TAG.apk" --title "$TAG" --notes-file "$notes" --prerelease $verify
+            gh release create "$TAG" "InsulaNeuroScore-$TAG.apk" --title "$TAG" --notes-file "$notes" --latest $verify
           fi
