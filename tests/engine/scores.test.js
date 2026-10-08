@@ -7,6 +7,9 @@ test("every fixture case is a documented manual verification", () => {
   for (const f of fs.readdirSync(FIX)) for (const c of JSON.parse(fs.readFileSync(path.join(FIX, f))).cases)
     assert.ok(c.verification && c.verification.method === "manual" && c.verification.calculation, f + ": " + c.name);
 });
+test("every shipped item declares its type (score, grade, classification or measurement)", () => {
+  for (const id of scoreIds()) assert.ok(Engine.ITEM_TYPES.includes(load(id).itemType), id);
+});
 test("every implemented score validates and has a fixture file", () => {
   for (const id of scoreIds()) {
     assert.deepEqual(Engine.validateScore(load(id)), [], id);

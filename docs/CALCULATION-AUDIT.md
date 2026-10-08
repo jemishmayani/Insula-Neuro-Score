@@ -99,7 +99,7 @@ Version: Borden classification (Borden, Wu & Shucart 1995), types I–III with s
 | Component | Points |
 |---|---|
 | Venous drainage | I=1, II=2, III=3 |
-| Subtype (optional) | a=0, b=0 |
+| Subtype | a=0, b=0 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -116,9 +116,9 @@ Version: Descriptive examination record: absent, unsustained or sustained. Metho
 | Component | Points |
 |---|---|
 | Clonus | Absent=0, Unsustained=1, Sustained=2 |
-| Joint (optional) | =0, =0, =0, =0 |
-| Number of beats (optional) | 1–100 |
-| Side (optional) | L=0, R=0 |
+| Joint | =0, =0, =0, =0 |
+| Number of beats | 1–100 |
+| Side | L=0, R=0 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -155,8 +155,8 @@ Version: NINDS Myotatic Reflex Scale, 0–4 (Hallett 1993). Method: `select`.
 | Component | Points |
 |---|---|
 | Reflex amplitude | 0=0, 1+=1, 2+=2, 3+=3, 4+=4 |
-| Reflex tested (optional) | =0, =0, =0, =0, =0, =0 |
-| Side (optional) | L=0, R=0 |
+| Reflex tested | =0, =0, =0, =0, =0, =0 |
+| Side | L=0, R=0 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -193,7 +193,7 @@ Version: Engel classification (Engel et al. 1993), classes I–IV with subclasse
 | Component | Points |
 |---|---|
 | Outcome subclass | IA=1, IB=2, IC=3, ID=4, IIA=5, IIB=6, IIC=7, IID=8, IIIA=9, IIIB=10, IVA=11, IVB=12, IVC=13 |
-| Follow-up since surgery (years, optional) | 1–50 |
+| Follow-up since surgery | 1–50 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -424,7 +424,7 @@ Version: House-Brackmann grading system, grades I–VI (House & Brackmann 1985).
 | Component | Points |
 |---|---|
 | Facial nerve function | I=1, II=2, III=3, IV=4, V=5, VI=6 |
-| Side (optional) | L=0, R=0 |
+| Side | L=0, R=0 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -488,7 +488,7 @@ Version: ILAE outcome classification (Wieser et al. 2001), classes 1–6 with 1a
 |---|---|
 | Outcome in this follow-up year | 1=1, 2=2, 3=3, 4=4, 5=5, 6=6 |
 | Seizure free with no auras since surgery? (class 1a) | =0, =0 |
-| Follow-up year (optional) | 1–50 |
+| Follow-up year | 1–50 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -568,7 +568,7 @@ Version: Lawton-Young supplementary grading scale (Lawton et al. 2010). Method: 
 | Age | lt20=1, 20to40=2, gt40=3 |
 | Presentation | ruptured=0, unruptured=1 |
 | Nidus | compact=0, diffuse=1 |
-| Spetzler-Martin grade (optional) | I=1, II=2, III=3, IV=4, V=5 |
+| Spetzler-Martin grade | I=1, II=2, III=3, IV=4, V=5 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -625,8 +625,8 @@ Version: Modified Ashworth Scale (Bohannon & Smith 1987). Method: `select`.
 | Component | Points |
 |---|---|
 | Resistance to passive movement | 0=0, 1=1, 1+=2, 2=3, 3=4, 4=5 |
-| Muscle group (optional) | =0, =0, =0, =0, =0, =0 |
-| Side (optional) | L=0, R=0 |
+| Muscle group | =0, =0, =0, =0, =0, =0 |
+| Side | L=0, R=0 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -685,7 +685,7 @@ Version: Medical Research Council scale, grades 0–5. Method: `select`.
 | Component | Points |
 |---|---|
 | Power grade | 5=5, 4=4, 3=3, 2=2, 1=1, 0=0 |
-| Side (optional) | L=0, R=0 |
+| Side | L=0, R=0 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|
@@ -753,7 +753,7 @@ Version: Modified Tardieu Scale (Boyd & Graham 1999). Method: `expression: isnul
 
 | Component | Points |
 |---|---|
-| Muscle group (optional) | =0, =0, =0, =0, =0, =0, =0 |
+| Muscle group | =0, =0, =0, =0, =0, =0, =0 |
 | Velocity of the fast stretch | V2=0, V3=0 |
 | Quality of muscle reaction (X) | X0=0, X1=1, X2=2, X3=3, X4=4, X5=5 |
 | R1: angle of catch (fast stretch) | 0–180 |
@@ -838,7 +838,7 @@ Version: Descriptive examination record: flexor, extensor, equivocal or no respo
 | Component | Points |
 |---|---|
 | Great toe response | Flexor=1, Extensor=2, Equivocal=3, No response=4 |
-| Side (optional) | L=0, R=0 |
+| Side | L=0, R=0 |
 
 | State | Tone | Declared range | Totals that reach it |
 |---|---|---|---|

@@ -312,5 +312,6 @@
  "licensing": {
   "status": "Widely published grade definitions",
   "note": "Structured mRS interview instruments (e.g. mRS-9Q, Rankin Focused Assessment) have their own terms and are not reproduced."
- }
+ },
+ "itemType": "grade"
 }

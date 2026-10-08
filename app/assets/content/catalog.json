@@ -3,6 +3,49 @@
  "note": "Catalogue. 'scores' are implemented and shown in the app. 'withheld' records listed scores that are not implemented, with the reason; 'planned' is the future queue. Neither is shown in the app.",
  "categories": [
   {
+   "id": "quick-exam",
+   "name": "Quick Clinical Examination",
+   "glyph": "exam",
+   "collection": true,
+   "description": "Bedside consciousness, power, facial nerve, reflex and tone grades",
+   "include": [
+    "gcs",
+    "mrc",
+    "hb",
+    "dtr",
+    "mas"
+   ]
+  },
+  {
+   "id": "neurotrauma",
+   "name": "Neurotrauma",
+   "glyph": "tbi",
+   "collection": true,
+   "description": "Consciousness, CT classification and injury severity",
+   "include": [
+    "gcs",
+    "gcsp",
+    "marshall",
+    "rotterdam",
+    "iss"
+   ]
+  },
+  {
+   "id": "vascular",
+   "name": "Vascular",
+   "glyph": "sah",
+   "collection": true,
+   "description": "SAH grades, AVM grade and dural fistula classifications",
+   "include": [
+    "hunthess",
+    "wfns",
+    "mfisher",
+    "spetzler",
+    "borden",
+    "cognard"
+   ]
+  },
+  {
    "id": "consciousness",
    "name": "Consciousness",
    "glyph": "consciousness",
@@ -57,7 +100,7 @@
    "id": "neurocritical",
    "name": "Neurocritical care",
    "glyph": "icu",
-   "description": "Sedation and organ dysfunction"
+   "description": "Organ dysfunction"
   },
   {
    "id": "exam",
@@ -173,11 +216,12 @@
     "loc",
     "neurocritical care",
     "outcome",
-    "sedation",
+    "score",
     "tbi",
     "trauma",
     "traumatic brain injury"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -204,10 +248,12 @@
     "level of consciousness",
     "loc",
     "outcome",
+    "score",
     "tbi",
     "trauma",
     "traumatic brain injury"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -228,6 +274,7 @@
    ],
    "keywords": [
     "brain injury",
+    "classification",
     "coma",
     "consciousness",
     "disability",
@@ -238,6 +285,7 @@
     "loc",
     "outcome"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -258,6 +306,7 @@
    ],
    "keywords": [
     "brain injury",
+    "classification",
     "coma",
     "consciousness",
     "disability",
@@ -268,6 +317,7 @@
     "loc",
     "outcome"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -298,6 +348,7 @@
     "lvo",
     "prehospital",
     "prehospital lvo screens",
+    "score",
     "stroke",
     "stroke deficit quantification",
     "thrombectomy",
@@ -305,6 +356,7 @@
     "transient ischaemic attack",
     "transient ischemic attack"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -332,10 +384,12 @@
     "ischaemic",
     "ischemic",
     "lvo",
+    "score",
     "stroke",
     "thrombectomy",
     "tia"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -363,10 +417,12 @@
     "ischaemic",
     "ischemic",
     "lvo",
+    "score",
     "stroke",
     "thrombectomy",
     "tia"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -394,8 +450,10 @@
     "intracerebral",
     "intracerebral haemorrhage",
     "intracerebral hemorrhage",
+    "score",
     "severity at presentation"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -423,8 +481,10 @@
     "ich",
     "intracerebral",
     "intracerebral haemorrhage",
-    "intracerebral hemorrhage"
+    "intracerebral hemorrhage",
+    "score"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -449,7 +509,8 @@
     "intracerebral hemorrhage",
     "intraventricular",
     "intraventricular haemorrhage (ct)",
-    "ivh"
+    "ivh",
+    "score"
    ],
    "aliases": [
     "graeb",
@@ -458,6 +519,7 @@
     "intraventricular hemorrhage"
    ],
    "version": "Original Graeb score (Graeb et al. 1982)",
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -480,12 +542,14 @@
     "aneurysm",
     "aneurysmal",
     "clinical grade",
+    "grade",
     "sah",
     "sah grading",
     "subarachnoid",
     "subarachnoid haemorrhage",
     "vasospasm"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -508,12 +572,14 @@
     "aneurysm",
     "aneurysmal",
     "clinical grade",
+    "grade",
     "sah",
     "sah grading",
     "subarachnoid",
     "subarachnoid haemorrhage",
     "vasospasm"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -536,6 +602,7 @@
    "keywords": [
     "aneurysm",
     "aneurysmal",
+    "classification",
     "ct grade",
     "sah",
     "sah grading",
@@ -543,6 +610,7 @@
     "subarachnoid haemorrhage",
     "vasospasm"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -565,6 +633,7 @@
    "keywords": [
     "aneurysm",
     "aneurysmal",
+    "classification",
     "ct grade",
     "sah",
     "sah grading",
@@ -572,6 +641,7 @@
     "subarachnoid haemorrhage",
     "vasospasm"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -593,6 +663,7 @@
     "Trauma"
    ],
    "keywords": [
+    "classification",
     "ct classification",
     "head injury",
     "polytrauma",
@@ -600,6 +671,7 @@
     "trauma",
     "traumatic brain injury"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -624,10 +696,12 @@
     "ct score",
     "head injury",
     "polytrauma",
+    "score",
     "tbi",
     "trauma",
     "traumatic brain injury"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -652,11 +726,13 @@
     "injury",
     "physiological trauma score",
     "polytrauma",
+    "score",
     "tbi",
     "trauma",
     "trauma severity",
     "traumatic brain injury"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -682,11 +758,13 @@
     "head injury",
     "injury",
     "polytrauma",
+    "score",
     "tbi",
     "trauma",
     "trauma severity",
     "traumatic brain injury"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -704,6 +782,7 @@
     "head injury",
     "injury",
     "polytrauma",
+    "score",
     "survival",
     "tbi",
     "trauma",
@@ -718,6 +797,7 @@
     "trauma survival"
    ],
    "version": "TRISS with 1995 MTOS coefficients (Champion et al.)",
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -739,17 +819,16 @@
    ],
    "keywords": [
     "cervical",
+    "grade",
     "myelopathy",
-    "paraplegia",
     "sci",
     "spinal",
     "spinal cord",
-    "spinal cord injury",
     "spinal cord injury grade",
     "spine",
-    "spine and spinal cord",
-    "tetraplegia"
+    "spine and spinal cord"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -780,6 +859,7 @@
     "myelopathy",
     "neoplastic spinal instability",
     "sci",
+    "score",
     "spinal",
     "spinal cord",
     "spinal metastases",
@@ -790,6 +870,7 @@
     "spine tumor",
     "spine tumour"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -814,6 +895,7 @@
     "cervical myelopathy",
     "cervical spondylosis",
     "dcm",
+    "grade",
     "myelopathy",
     "sci",
     "spinal",
@@ -821,6 +903,7 @@
     "spine",
     "spine and spinal cord"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -841,6 +924,7 @@
     "dcm",
     "myelopathy",
     "sci",
+    "score",
     "spinal",
     "spinal cord",
     "spine",
@@ -854,6 +938,7 @@
     "benzel"
    ],
    "version": "mJOA, clinician-rated (Benzel et al. 1991), 0–18",
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -879,6 +964,7 @@
     "metastasis",
     "neuro-oncology",
     "oncology",
+    "score",
     "spinal metastases",
     "spinal metastasis",
     "spinal metastasis prognosis",
@@ -887,6 +973,7 @@
     "tumor",
     "tumour"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -913,6 +1000,7 @@
     "neuro-oncology",
     "oncology",
     "performance status",
+    "score",
     "spinal metastases",
     "spinal metastasis",
     "spine tumor",
@@ -920,6 +1008,7 @@
     "tumor",
     "tumour"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -941,6 +1030,7 @@
    ],
    "keywords": [
     "cancer",
+    "grade",
     "metastases",
     "metastasis",
     "neuro-oncology",
@@ -953,6 +1043,7 @@
     "tumor",
     "tumour"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -983,11 +1074,13 @@
     "functional and disability",
     "functional outcome",
     "global disability and dependence",
+    "grade",
     "ischaemic",
     "ischemic",
     "outcome",
     "stroke"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -1008,7 +1101,7 @@
     "neurocritical care",
     "organ dysfunction",
     "organ failure",
-    "sedation",
+    "score",
     "sepsis"
    ],
    "aliases": [
@@ -1018,6 +1111,7 @@
     "organ dysfunction"
    ],
    "version": "Original SOFA (Vincent et al. 1996), as tabulated in Sepsis-3 (Singer et al. 2016)",
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -1044,12 +1138,14 @@
     "ischemic",
     "lvo",
     "risk after tia",
+    "score",
     "stroke",
     "thrombectomy",
     "tia",
     "transient ischaemic attack",
     "transient ischemic attack"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -1080,10 +1176,12 @@
     "prehospital",
     "prehospital large vessel occlusion screen",
     "prehospital lvo screens",
+    "score",
     "stroke",
     "thrombectomy",
     "tia"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -1114,10 +1212,12 @@
     "prehospital",
     "prehospital large vessel occlusion screen",
     "prehospital lvo screens",
+    "score",
     "stroke",
     "thrombectomy",
     "tia"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -1141,6 +1241,7 @@
     "prehospital",
     "prehospital large vessel occlusion screen",
     "prehospital lvo screens",
+    "score",
     "stroke",
     "thrombectomy",
     "tia"
@@ -1153,6 +1254,7 @@
     "large vessel occlusion"
    ],
    "version": "FAST-ED (Lima et al. 2016)",
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -1180,6 +1282,7 @@
     "metastasis",
     "neuro-oncology",
     "oncology",
+    "score",
     "spinal metastases",
     "spinal metastasis",
     "spinal metastasis prognosis",
@@ -1188,6 +1291,7 @@
     "tumor",
     "tumour"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -1210,6 +1314,7 @@
     "metastasis",
     "neuro-oncology",
     "oncology",
+    "score",
     "spinal metastases",
     "tumor",
     "tumour"
@@ -1221,6 +1326,7 @@
     "rtog"
    ],
    "version": "Original GPA (Sperduto et al. 2008, RTOG database)",
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -1262,6 +1368,7 @@
     "upper motor neuron",
     "weakness"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -1298,10 +1405,12 @@
     "neurosurgical examination & grades",
     "power",
     "reflexes",
+    "score",
     "umn",
     "upper motor neuron",
     "weakness"
    ],
+   "itemType": "score",
    "status": "implemented"
   },
   {
@@ -1342,6 +1451,7 @@
     "umn",
     "upper motor neuron"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -1363,6 +1473,7 @@
     "Spine Surgery"
    ],
    "keywords": [
+    "classification",
     "contracture",
     "exam",
     "examination",
@@ -1381,6 +1492,7 @@
     "umn",
     "upper motor neuron"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -1403,6 +1515,7 @@
     "Spine Surgery"
    ],
    "keywords": [
+    "classification",
     "exam",
     "examination",
     "grade",
@@ -1418,6 +1531,7 @@
     "umn",
     "upper motor neuron"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -1453,6 +1567,7 @@
     "tone",
     "tone and spasticity"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -1480,6 +1595,7 @@
     "examination",
     "grade",
     "grades",
+    "measurement",
     "neurological examination",
     "neurosurgery",
     "neurosurgical",
@@ -1488,6 +1604,7 @@
     "tone",
     "tone and spasticity"
    ],
+   "itemType": "measurement",
    "status": "implemented"
   },
   {
@@ -1528,6 +1645,7 @@
     "neurosurgical examination & grades",
     "vestibular schwannoma"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -1554,6 +1672,7 @@
    "keywords": [
     "acoustic neuroma",
     "cerebellopontine angle",
+    "classification",
     "cpa",
     "exam",
     "examination",
@@ -1567,6 +1686,7 @@
     "neurosurgical examination & grades",
     "vestibular schwannoma"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -1603,6 +1723,7 @@
     "vascular malformations",
     "vascular neurosurgery"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -1639,6 +1760,7 @@
     "vascular malformations",
     "vascular neurosurgery"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -1663,6 +1785,7 @@
    "keywords": [
     "arteriovenous",
     "avm",
+    "classification",
     "davf",
     "exam",
     "examination",
@@ -1676,6 +1799,7 @@
     "vascular malformations",
     "vascular neurosurgery"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -1700,6 +1824,7 @@
    "keywords": [
     "arteriovenous",
     "avm",
+    "classification",
     "davf",
     "exam",
     "examination",
@@ -1713,6 +1838,7 @@
     "vascular malformations",
     "vascular neurosurgery"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -1745,6 +1871,7 @@
     "neurotrauma: chronic subdural haematoma",
     "subdural"
    ],
+   "itemType": "grade",
    "status": "implemented"
   },
   {
@@ -1766,6 +1893,7 @@
     "Epileptology"
    ],
    "keywords": [
+    "classification",
     "epilepsy",
     "epilepsy surgery",
     "epilepsy surgery outcome",
@@ -1779,6 +1907,7 @@
     "neurosurgical examination & grades",
     "seizure"
    ],
+   "itemType": "classification",
    "status": "implemented"
   },
   {
@@ -1801,6 +1930,7 @@
     "Epileptology"
    ],
    "keywords": [
+    "classification",
     "epilepsy",
     "epilepsy surgery",
     "epilepsy surgery outcome",
@@ -1814,6 +1944,7 @@
     "neurosurgical examination & grades",
     "seizure"
    ],
+   "itemType": "classification",
    "status": "implemented"
   }
  ],
@@ -1962,6 +2093,29 @@
    "abbreviation": "FOHR",
    "category": "exam",
    "status": "planned"
+  }
+ ],
+ "defaultPriorityGroups": [
+  "quick-exam",
+  "neurotrauma",
+  "vascular"
+ ],
+ "itemTypes": [
+  {
+   "id": "score",
+   "label": "Score"
+  },
+  {
+   "id": "grade",
+   "label": "Grade"
+  },
+  {
+   "id": "classification",
+   "label": "Classification"
+  },
+  {
+   "id": "measurement",
+   "label": "Measurement"
   }
  ]
 }

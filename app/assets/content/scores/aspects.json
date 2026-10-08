@@ -226,5 +226,6 @@
  "licensing": {
   "status": "Published scoring method, original wording",
   "note": "No reproduction restrictions identified; template images are not reproduced."
- }
+ },
+ "itemType": "score"
 }

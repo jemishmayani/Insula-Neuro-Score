@@ -397,5 +397,6 @@
  "licensing": {
   "status": "Published index, original wording",
   "note": "Official GCS aids and the authors' probability charts are not reproduced."
- }
+ },
+ "itemType": "score"
 }

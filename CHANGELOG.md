@@ -3,9 +3,28 @@
 All notable changes to Insula Neuro Score. Versions follow the Android `versionName`.
 The app is **not clinically ready** in any version listed here; see [docs/MEDICAL-CONTENT-AUDIT.md](docs/MEDICAL-CONTENT-AUDIT.md).
 
-## [Unreleased]
+## [0.11.0] - 2026-10-08
+Scores & Grades: item types, quick groups and a consistency clean-up.
+
 ### Added
+- **Item types.** Every item is labelled **Score**, **Grade**, **Classification** or **Measurement** on its card, detail page and guide. Grades such as MRC 0–5 and House-Brackmann are no longer presented as scores. Types are searchable (e.g. "grade").
+- **Quick groups**, shown above the Scores & Grades groups and on Home by default:
+  - Quick Clinical Examination: GCS, MRC power, House-Brackmann, reflex grade, Modified Ashworth
+  - Neurotrauma: GCS, GCS-P, Marshall, Rotterdam, ISS
+  - Vascular: Hunt & Hess, WFNS, Modified Fisher, Spetzler-Martin, Borden, Cognard
+- Home shows priority groups first. New installs start with the three quick groups; they can be removed or reordered in Settings.
+- `tools/consistency_check.py` (run in CI and before every release): fails if the catalogue, shipped JSON, related links, groups, fixtures, audit evidence or app defaults disagree.
 - Release workflow: pushing a `v*` tag builds, tests, signs and publishes the APK to GitHub Releases.
+
+### Changed
+- **Optional inputs reviewed.** Descriptive details (side, muscle group, reflex, joint, beat count, follow-up) are grouped under "Details for your note". They are left out of the breakdown when not entered, never change the result, and are listed separately in the guide, not as scoring components. Long detail lists use a dropdown. Optional inputs that do change the result (Lawton-Young's Spetzler-Martin grade, ILAE class 1a, Borden subtype, Modified Tardieu R1) stay with the scored inputs and say what they add.
+- Guides name the table column by what it holds (Points, Grade, Class or Code), drop a code column that only repeats the option, and give ranges as clinicians read them (MAS 0–4, Cognard I–V, plantar response "4 categories"), not internal ordinal numbers. The result card uses the same ranges.
+- Group and list counts say "items" instead of "scores".
+
+### Fixed
+- **RASS state made consistent.** RASS is withheld for licensing. Its verified content had stayed inside the built library with a licensing note saying "no restrictions identified", while the catalogue listed it as withheld. It now lives only in `content_src/withheld.py` (never built), with its licensing note corrected. Its tests moved to `tests/engine/fixtures-withheld/`, and related links and the audit treat it as withheld. No RASS JSON ships.
+- Removed links and cluster entries pointing to withheld scores from the related-score source, plus the "sedation" search keyword (no sedation scale ships). Removed the single-member "Spinal cord injury" cluster.
+- Home test race (seeding storage before the first load finished).
 
 ## [0.10.0] - 2026-10-08
 Neurosurgical Examination & Grades. Under-review scores removed from the app.

@@ -416,6 +416,10 @@ if __name__ == "__main__":
     library.UNDER_REVIEW.update(library2.UNDER_REVIEW_NEW)
     scores = [x for x in scores if x["id"] not in library.UNDER_REVIEW]   # verified but held back (e.g. licensing review)
     impl = {s["id"]: s for s in scores}
+    import itemtypes
+    missing_type = [i for i in impl if i not in itemtypes.TYPE_OF]
+    assert not missing_type, "item type missing for: %s" % missing_type
+    for sc in scores: sc["itemType"] = itemtypes.TYPE_OF[sc["id"]]
     import related
     for sc in scores:
         if sc["id"] in related.RELATED: sc["relatedScores"] = [{"id": i, "relation": r} for i, r in related.RELATED[sc["id"]]]
@@ -428,11 +432,18 @@ if __name__ == "__main__":
     # ---- catalogue (v0.10): `scores` lists implemented scores only (shown in the app).
     #      `withheld` records listed scores not implemented, with the reason (not shown). `planned` is the future queue (not shown).
     cat_path = os.path.join(OUT, "catalog.json"); cat = json.load(open(cat_path))
-    cat["categories"] = [c for c in cat["categories"] if c["id"] != library3.EXAM_CATEGORY["id"]] + [dict(library3.EXAM_CATEGORY)]
+    coll_ids = [c["id"] for c in itemtypes.COLLECTIONS]
+    cat["categories"] = [dict(c) for c in itemtypes.COLLECTIONS] + \
+        [c for c in cat["categories"] if c["id"] != library3.EXAM_CATEGORY["id"] and c["id"] not in coll_ids] + [dict(library3.EXAM_CATEGORY)]
     for c in cat["categories"]:
+        if c["id"] == "neurocritical": c["description"] = "Organ dysfunction"
+    for c in cat["categories"]:
+        if c.get("collection"): continue
         c.pop("include", None)
         if c["id"] in library3.CROSS_LIST: c["include"] = list(library3.CROSS_LIST[c["id"]])
     cat["categories"][-1]["include"] = list(library3.EXAM_CATEGORY["include"])
+    cat["defaultPriorityGroups"] = list(itemtypes.DEFAULT_PRIORITY_GROUPS)
+    cat["itemTypes"] = [{"id": k, "label": v} for k, v in itemtypes.TYPE_LABEL.items()]
     entries = cat["scores"] + cat.get("withheld", [])
     by_id = {c["id"]: c for c in entries}
     for k, (ab, nm, ct) in {"sofa2": ("SOFA-2", "Sequential Organ Failure Assessment-2 (2025)", "neurocritical"),
@@ -449,7 +460,7 @@ if __name__ == "__main__":
         for k in ("reviewReason", "reviewCategory", "status", "withheldCategory", "withheldReason"): c.pop(k, None)
         if c["id"] in impl:
             s = impl[c["id"]]; c["status"] = "implemented"; c["abbreviation"] = s["abbreviation"]; c["name"] = s["name"]; c["category"] = s["category"]
-            c["aliases"] = s.get("aliases", []); c["version"] = s["version"]["label"]
+            c["aliases"] = s.get("aliases", []); c["version"] = s["version"]["label"]; c["itemType"] = s["itemType"]
             if not c.get("summary") or c["summary"] == "Under review": c["summary"] = s["purpose"]
             active.append(c)
         else:
@@ -464,7 +475,7 @@ if __name__ == "__main__":
         for m in c.get("include", []) + [x for g in c.get("groups", []) for x in g["members"]]: assert m in impl, (c["id"], m)
     # ---- Phase 7: clusters + search keywords (specialty, category, keywords, cluster titles)
     import related
-    known = {c["id"] for c in cat["scores"]} | {w["id"] for w in cat["withheld"]}
+    known = {c["id"] for c in cat["scores"]}
     for cl in related.CLUSTERS:
         missing = [m for m in cl["members"] if m not in known]
         assert not missing, (cl["id"], missing)
@@ -475,7 +486,7 @@ if __name__ == "__main__":
         s = impl.get(c["id"])
         c["specialties"] = s["specialties"] if s else []
         kw = set(related.CATEGORY_KEYWORDS.get(c["category"], [])) | {c["category"], catname.get(c["category"], "").lower()}
-        if s: kw |= {s["subcategory"].lower()}
+        if s: kw |= {s["subcategory"].lower(), itemtypes.TYPE_LABEL[s["itemType"]].lower()}
         kw |= set(related.EXTRA_KEYWORDS.get(c["id"], []))
         for cl in related.CLUSTERS:
             if c["id"] in cl["members"]: kw |= {cl["title"].lower()} | set(cl["keywords"])

@@ -275,5 +275,6 @@
  "licensing": {
   "status": "Published score, original wording",
   "note": "No reproduction restrictions identified."
- }
+ },
+ "itemType": "score"
 }

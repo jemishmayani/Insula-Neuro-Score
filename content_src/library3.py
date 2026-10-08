@@ -7,10 +7,16 @@ from library import o, single, st, conf, score
 REVIEWED = "2026-10-08"
 CAT = "exam"
 
-def opt(id, label, short, options, help=None):
-    """Optional descriptive input (side, muscle, site): no points shown in the breakdown."""
-    for x in options: x.setdefault("code", "")
-    d = single(id, label, short, options, help); d["required"] = False; return d
+def opt(id, label, short, options, help=None, detail=True):
+    """Optional input. detail=True: a descriptive detail for the note (side, muscle, site) that never
+    changes the result; shown under 'Details for your note' and left out of the guide's scoring tables."""
+    if detail:
+        for x in options: x.setdefault("code", "")
+    d = single(id, label, short, options, help); d["required"] = False
+    if detail:
+        d["detail"] = True
+        if len(options) > 3: d["type"] = "dropdown"   # long detail lists stay compact
+    return d
 
 def build():
     L = []
@@ -18,7 +24,7 @@ def build():
         k.setdefault("category", CAT)
         d = score(**k); d["lastReviewed"] = REVIEWED; return d
     EXAM = lambda label: {"type": "examination-grade", "typeLabel": label, "meter": False}
-    SIDE = lambda: opt("side", "Side (optional)", "Side", [o("left", "Left", 0, "L"), o("right", "Right", 0, "R")], help="Recorded for the share text only; it does not change the grade.")
+    SIDE = lambda: opt("side", "Side", "Side", [o("left", "Left", 0, "L"), o("right", "Right", 0, "R")], help="Added to the copied result; it does not change the grade.")
 
     # ================================================================ MRC muscle power
     mrc_opts = [o(5, "Normal power", 5, "5"), o(4, "Active movement against gravity and resistance", 4, "4"),
@@ -105,8 +111,8 @@ def build():
         licensing={"status": "Published method with attribution", "note": "No reproduction restrictions identified."}))
 
     # ================================================================ Deep tendon reflex (NINDS)
-    REFLEX = opt("reflex", "Reflex tested (optional)", "Reflex", [o("biceps", "Biceps", 0), o("brachioradialis", "Brachioradialis", 0), o("triceps", "Triceps", 0),
-                 o("knee", "Knee (patellar)", 0), o("ankle", "Ankle (Achilles)", 0), o("other", "Other", 0)], help="Recorded for the share text only.")
+    REFLEX = opt("reflex", "Reflex tested", "Reflex", [o("biceps", "Biceps", 0), o("brachioradialis", "Brachioradialis", 0), o("triceps", "Triceps", 0),
+                 o("knee", "Knee (patellar)", 0), o("ankle", "Ankle (Achilles)", 0), o("other", "Other", 0)], help="Added to the copied result.")
     L.append(s(id="dtr", name="Deep Tendon Reflex Grade (NINDS Myotatic Reflex Scale)", abbreviation="Reflex grade", aliases=["dtr", "deep tendon reflex", "tendon reflex", "myotatic reflex", "ninds reflex scale", "reflexes", "hyperreflexia", "areflexia"],
         subcategory="Reflexes", specialties=["Neurology", "Neurosurgery", "Spine Surgery"],
         version={"label": "NINDS Myotatic Reflex Scale, 0–4 (Hallett 1993)", "detail": "0 absent; 1 small or trace, or only with reinforcement; 2 lower half of normal; 3 upper half of normal; 4 enhanced, including clonus if present. Written here as 0–4+ by convention. Other reflex scales (e.g. ones using 5 for sustained clonus) are different versions and are not combined."},
@@ -150,8 +156,8 @@ def build():
         inputDefinitions=[single("finding", "Clonus", "Clonus", [o("absent", "No clonus", 0, "Absent"),
                                                               o("unsustained", "Unsustained", 1, "Unsustained", "A limited number of beats that stop although the stretch is maintained."),
                                                               o("sustained", "Sustained", 2, "Sustained", "Rhythmic beats continue for as long as the stretch is maintained.")]),
-                          opt("site", "Joint (optional)", "Joint", [o("ankle", "Ankle", 0), o("knee", "Knee (patellar)", 0), o("wrist", "Wrist", 0), o("other", "Other", 0)]),
-                          {"id": "beats", "type": "integer", "label": "Number of beats (optional)", "short": "Beats", "min": 1, "max": 100, "required": False}, SIDE()],
+                          opt("site", "Joint", "Joint", [o("ankle", "Ankle", 0), o("knee", "Knee (patellar)", 0), o("wrist", "Wrist", 0), o("other", "Other", 0)]),
+                          {"id": "beats", "type": "integer", "label": "Number of beats", "short": "Beats", "min": 1, "max": 100, "required": False, "detail": True}, SIDE()],
         components=[{"id": "c_finding", "label": "Finding", "inputs": ["finding"]}, {"id": "c_detail", "label": "Joint, beats and side", "inputs": ["site", "beats", "side"], "showSubtotal": False}],
         calculationMethod={"type": "select", "input": "finding", "range": {"min": 0, "max": 2}, "display": "{finding_code}",
                            "share": "{finding == 0 ? 'No clonus' : finding_code + ' clonus'}{isnull(site_value) ? '' : ', ' + site_value}{isnull(beats) ? '' : ', ' + beats + ' beats'}{isnull(side_code) ? '' : ' (' + side_code + ')'}"},
@@ -224,7 +230,7 @@ def build():
             o(3, "More marked increase through most of the range, but the part moves easily", 3, "2"),
             o(4, "Considerable increase; passive movement is difficult", 4, "3"),
             o(5, "Affected part rigid in flexion or extension", 5, "4")], help="Move the joint through its full range over about one second."),
-            opt("muscle", "Muscle group (optional)", "Muscle", [o("elbow flexors", "Elbow flexors", 0), o("wrist flexors", "Wrist flexors", 0), o("knee extensors", "Knee extensors", 0), o("knee flexors", "Knee flexors", 0), o("ankle plantarflexors", "Ankle plantarflexors", 0), o("other", "Other", 0)]),
+            opt("muscle", "Muscle group", "Muscle", [o("elbow flexors", "Elbow flexors", 0), o("wrist flexors", "Wrist flexors", 0), o("knee extensors", "Knee extensors", 0), o("knee flexors", "Knee flexors", 0), o("ankle plantarflexors", "Ankle plantarflexors", 0), o("other", "Other", 0)]),
             SIDE()],
         components=[{"id": "c_grade", "label": "Grade", "inputs": ["grade"]}, {"id": "c_site", "label": "Muscle and side", "inputs": ["muscle", "side"], "showSubtotal": False}],
         calculationMethod={"type": "select", "input": "grade", "range": {"min": 0, "max": 5}, "display": "MAS {grade_code}",
@@ -259,7 +265,7 @@ def build():
         resultPresentation=EXAM("Spasticity assessment"),
         calculatorNotice={"tone": "info", "title": "Measure both angles the same way", "message": "Use the same joint-angle convention and a goniometer for R1 and R2. The difference is reported as a magnitude in degrees."},
         inputDefinitions=[
-            opt("muscle", "Muscle group (optional)", "Muscle", [o("elbow flexors", "Elbow flexors", 0), o("wrist flexors", "Wrist flexors", 0), o("hip adductors", "Hip adductors", 0), o("hamstrings", "Hamstrings", 0),
+            opt("muscle", "Muscle group", "Muscle", [o("elbow flexors", "Elbow flexors", 0), o("wrist flexors", "Wrist flexors", 0), o("hip adductors", "Hip adductors", 0), o("hamstrings", "Hamstrings", 0),
                                                             o("gastrocnemius", "Gastrocnemius (knee extended)", 0), o("soleus", "Soleus (knee flexed)", 0), o("other", "Other", 0)]),
             single("vel", "Velocity of the fast stretch", "Velocity", [o("v2", "V2: speed of the limb falling under gravity", 0, "V2"), o("v3", "V3: as fast as possible", 0, "V3")]),
             single("x", "Quality of muscle reaction (X)", "X", [o(0, "No resistance through the passive movement", 0, "X0"),
@@ -268,7 +274,7 @@ def build():
                                                                o(3, "Fatigable clonus (under 10 s with maintained pressure) at a precise angle", 3, "X3"),
                                                                o(4, "Unfatigable clonus (over 10 s with maintained pressure) at a precise angle", 4, "X4"),
                                                                o(5, "Joint immovable", 5, "X5")]),
-            {"id": "r1", "type": "integer", "label": "R1: angle of catch (fast stretch)", "short": "R1", "unit": "°", "min": 0, "max": 180, "required": False, "help": "Leave blank if there is no catch (X0–X1)."},
+            {"id": "r1", "type": "integer", "label": "R1: angle of catch (fast stretch)", "short": "R1", "unit": "°", "min": 0, "max": 180, "required": False, "help": "Required for X2–X4. Leave blank if there is no catch (X0–X1) or the joint is immovable (X5)."},
             {"id": "r2", "type": "integer", "label": "R2: passive range (slow stretch, V1)", "short": "R2", "unit": "°", "min": 0, "max": 180}],
         components=[{"id": "c_setup", "label": "Muscle and velocity", "inputs": ["muscle", "vel"], "showSubtotal": False}, {"id": "c_x", "label": "Quality of reaction", "inputs": ["x"]},
                     {"id": "c_angles", "label": "Angles", "inputs": ["r1", "r2"], "showSubtotal": False}],
@@ -416,7 +422,7 @@ def build():
         inputDefinitions=[single("age", "Age", "Age", [o("lt20", "Under 20 years", 1), o("20to40", "20–40 years", 2), o("gt40", "Over 40 years", 3)]),
                           single("rupt", "Presentation", "Presentation", [o("ruptured", "Ruptured (haemorrhage)", 0), o("unruptured", "Unruptured", 1)]),
                           single("nidus", "Nidus", "Nidus", [o("compact", "Compact", 0), o("diffuse", "Diffuse", 1, detail="Poorly defined nidus with intervening brain.")]),
-                          opt("sm", "Spetzler-Martin grade (optional)", "SM grade", [o(i, "Grade " + r, i, r) for i, r in enumerate(["I", "II", "III", "IV", "V"], 1)])],
+                          opt("sm", "Spetzler-Martin grade", "SM grade", [o(i, "Grade " + r, i, r) for i, r in enumerate(["I", "II", "III", "IV", "V"], 1)], help="Optional. Adds the combined Supp-SM grade (2–10).", detail=False)],
         components=[{"id": "supp", "label": "Supplementary grade", "inputs": ["age", "rupt", "nidus"]}, {"id": "c_sm", "label": "Spetzler-Martin grade", "inputs": ["sm"]}],
         scoringRules=[{"id": "combined", "expr": "isnull(sm) ? 0 : supp + sm"}],
         calculationMethod={"type": "expression", "expression": "supp", "range": {"min": 1, "max": 5},
@@ -453,7 +459,7 @@ def build():
         inputDefinitions=[single("type", "Venous drainage", "Type", [o(1, "Type I: into a dural sinus or meningeal vein, normal antegrade flow", 1, "I", "No retrograde flow into subarachnoid (cortical) veins."),
                                                                   o(2, "Type II: into a dural sinus or meningeal vein, with retrograde flow into subarachnoid veins", 2, "II"),
                                                                   o(3, "Type III: directly into subarachnoid veins, or an isolated sinus segment", 3, "III", "Cortical venous drainage only.")]),
-                          opt("sub", "Subtype (optional)", "Subtype", [o("a", "a: single-hole fistula", 0, "a"), o("b", "b: multiple-hole fistula", 0, "b")])],
+                          opt("sub", "Subtype", "Subtype", [o("a", "a: single-hole fistula", 0, "a"), o("b", "b: multiple-hole fistula", 0, "b")], help="Optional. Added to the type, e.g. IIb.", detail=False)],
         components=[{"id": "c_type", "label": "Type", "inputs": ["type"]}, {"id": "c_sub", "label": "Subtype", "inputs": ["sub"], "showSubtotal": False}],
         calculationMethod={"type": "select", "input": "type", "range": {"min": 1, "max": 3}, "display": "Type {roman(total)}{isnull(sub_code) ? '' : sub_code}",
                            "share": "Borden type {roman(total)}{isnull(sub_code) ? '' : sub_code}"},
@@ -550,7 +556,7 @@ def build():
           ("IIC", "More than rare disabling seizures after surgery, but rare seizures for at least 2 years"), ("IID", "Nocturnal seizures only"),
           ("IIIA", "Worthwhile seizure reduction"), ("IIIB", "Prolonged seizure-free intervals amounting to more than half of the follow-up period, but not less than 2 years"),
           ("IVA", "Significant seizure reduction"), ("IVB", "No appreciable change"), ("IVC", "Seizures worse")]
-    FU = {"id": "fu", "type": "integer", "label": "Follow-up since surgery (years, optional)", "short": "Follow-up", "unit": "years", "min": 1, "max": 50, "required": False}
+    FU = {"id": "fu", "type": "integer", "label": "Follow-up since surgery", "short": "Follow-up", "unit": "years", "min": 1, "max": 50, "required": False, "detail": True}
     L.append(s(id="engel", name="Engel Epilepsy Surgery Outcome Classification", abbreviation="Engel", aliases=["engel", "epilepsy surgery outcome", "seizure outcome", "seizure freedom"],
         subcategory="Epilepsy surgery", specialties=["Neurosurgery", "Neurology", "Epileptology"],
         version={"label": "Engel classification (Engel et al. 1993), classes I–IV with subclasses", "detail": "Class I free of disabling seizures; II rare disabling seizures; III worthwhile improvement; IV no worthwhile improvement. The ILAE outcome classification (2001) is a different system and is not combined."},
@@ -594,8 +600,8 @@ def build():
         resultPresentation={"type": "classification", "typeLabel": "Seizure outcome class", "meter": False},
         calculatorNotice={"tone": "info", "title": "One class per follow-up year", "message": "Classify each year after surgery separately. Count seizure days, not seizures, and ignore the first postoperative month."},
         inputDefinitions=[single("cls", "Outcome in this follow-up year", "Class", [o(i + 1, "Class %d: %s" % (i + 1, t), i + 1, str(i + 1)) for i, (t, _) in enumerate(il)]),
-                          opt("since", "Seizure free with no auras since surgery? (class 1a)", "Since surgery", [o("no", "No", 0), o("yes", "Yes", 0)], help="Only applies to class 1."),
-                          dict(FU, label="Follow-up year (optional)", short="Year", unit="year")],
+                          opt("since", "Seizure free with no auras since surgery? (class 1a)", "Since surgery", [o("no", "No", 0, ""), o("yes", "Yes", 0, "")], help="Optional. Only applies to class 1.", detail=False),
+                          dict(FU, label="Follow-up year", short="Year", unit="year")],
         components=[{"id": "c_cls", "label": "Outcome", "inputs": ["cls"]}, {"id": "c_more", "label": "Class 1a and follow-up year", "inputs": ["since", "fu"], "showSubtotal": False}],
         scoringRules=[{"id": "is1a", "expr": "cls == 1 && since_value == 'yes' ? 1 : 0"}],
         calculationMethod={"type": "select", "input": "cls", "range": {"min": 1, "max": 6}, "display": "Class {is1a == 1 ? '1a' : total}",

@@ -141,7 +141,7 @@
   function CategoryCard(o) {
     var c = o.category;
     return '<a class="category-card" href="' + esc(o.href) + '" data-nav><span class="glyph">' + icon(c.glyph) + '</span><span class="text"><span class="name">' + esc(c.name) +
-      '</span><span class="count">' + o.count + " score" + (o.count === 1 ? "" : "s") + (c.description ? " · " + esc(c.description) : "") + "</span></span>" + icon("chevron", "chev") + "</a>";
+      '</span><span class="count">' + o.count + " item" + (o.count === 1 ? "" : "s") + (c.description ? " · " + esc(c.description) : "") + "</span></span>" + icon("chevron", "chev") + "</a>";
   }
 
   /** ScaleMeter({min, max, value, bands:[{min,max,tone,label}], label}) — position on a score's own scale */

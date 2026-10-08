@@ -28,12 +28,14 @@ async def main():
             await go(pg, "#/home")
 
             # ---------- 1. order + empty states ----------
-            check("Home order: Search, Favorite scores, Favorite guides, Recent calculators, Recent guides, Priority scores, Priority groups",
+            check("Home order: Search, Priority groups (default quick groups), Favorite scores, Favorite guides, Recent calculators, Recent guides, Priority scores",
                   await pg.evaluate("document.querySelector('#page-body').previousElementSibling.previousElementSibling.classList.contains('searchbar')") and
-                  await home_ids(pg) == ["home-favorites", "home-favoriteGuides", "home-recentCalc", "home-recentGuide", "home-priorityScores", "home-priorityGroups"])
+                  await home_ids(pg) == ["home-priorityGroups", "home-favorites", "home-favoriteGuides", "home-recentCalc", "home-recentGuide", "home-priorityScores"])
+            dchips = [c.split("\n")[0].strip() for c in await pg.locator("#home-priorityGroups .chip").all_inner_texts()]
+            check("default priority groups on a fresh install: Quick Clinical Examination, Neurotrauma, Vascular", dchips == ["Quick Clinical Examination", "Neurotrauma", "Vascular"], str(dchips))
             empty = await pg.locator("#home-favorites .empty-state").inner_text()
             check("empty state copy: 'No favorite scores yet.' / 'Add a score to Favorites for one-tap access.'", "No favorite scores yet." in empty and "Add a score to Favorites for one-tap access." in empty)
-            for sec in ["favoriteGuides", "recentCalc", "recentGuide", "priorityScores", "priorityGroups"]:
+            for sec in ["favoriteGuides", "recentCalc", "recentGuide", "priorityScores"]:
                 check(f"empty state for {sec} has title + guidance", await pg.locator(f"#home-{sec} .empty-state h3").count() == 1 and await pg.locator(f"#home-{sec} .empty-state p").count() == 1)
             check("recent calculators empty state states inputs are never stored", "never your inputs" in await pg.locator("#home-recentCalc .empty-state").inner_text())
             await pg.click("#home-favorites .empty-state .btn"); await pg.wait_for_selector(".category-grid")
@@ -106,7 +108,7 @@ async def main():
                 await go(pg, f"#/calculate/s/{sid}", "[data-act=toggle-priority]"); await pg.click("[data-act=toggle-priority]")
             check("promote score to Home from its screen", (await store(pg))["priorityScores"] == ["gcs", "nihss", "wfns", "sins"])
             await go(pg, "#/settings", "#s-home")
-            for _ in range(4):
+            for _ in range(5):
                 idx = await pg.evaluate("[...document.querySelectorAll('#s-home .reorder-row .label')].map(e=>e.textContent).indexOf('Priority scores')")
                 await pg.click(f"#s-home [data-act=move][data-index='{idx}'][data-delta='-1']")
             await go(pg, "#/home")
@@ -134,29 +136,29 @@ async def main():
             # ---------- 5. priority groups: promote, reorder, hide ----------
             for cat in ["stroke", "spine", "sah"]:
                 await go(pg, f"#/calculate/c/{cat}", "[data-act=promote-group]"); await pg.click("[data-act=promote-group]")
-            check("promote category to Home", (await store(pg))["priorityGroups"] == ["stroke", "spine", "sah"])
+            check("promote category to Home", (await store(pg))["priorityGroups"] == ["quick-exam", "neurotrauma", "vascular", "stroke", "spine", "sah"])
             await go(pg, "#/home")
             chips = [c.split("\n")[0].strip() for c in await pg.locator("#home-priorityGroups .chip").all_inner_texts()]
-            check("priority groups shown on Home in order", chips == ["Stroke", "Spine and spinal cord", "Subarachnoid haemorrhage"], str(chips))
+            check("priority groups shown on Home in order", chips == ["Quick Clinical Examination", "Neurotrauma", "Vascular", "Stroke", "Spine and spinal cord", "Subarachnoid haemorrhage"], str(chips))
             await pg.click("#home-priorityGroups [data-act=home-edit]")
-            await pg.click("#home-priorityGroups [data-act=home-move][data-index='2'][data-delta='-1']")
-            check("reorder categories on Home", (await store(pg))["priorityGroups"] == ["stroke", "sah", "spine"])
+            await pg.click("#home-priorityGroups [data-act=home-move][data-index='5'][data-delta='-1']")
+            check("reorder categories on Home", (await store(pg))["priorityGroups"] == ["quick-exam", "neurotrauma", "vascular", "stroke", "sah", "spine"])
             await pg.click("#home-priorityGroups [data-act=home-edit]")
             await go(pg, "#/calculate/c/spine", "[data-act=hide-group]"); await pg.click("[data-act=hide-group]")
             check("hide category → banner on its screen", await pg.locator("text=This group is hidden").count() == 1)
             await go(pg, "#/calculate", ".category-card")
             check("hidden category removed from Calculate list", "Spine and spinal cord" not in await pg.locator(".category-card .name").all_inner_texts())
             await go(pg, "#/home")
-            check("hidden category left out of Home priority groups", await pg.locator("#home-priorityGroups .chip:has-text('Spine')").count() == 0 and await pg.locator("#home-priorityGroups .chip").count() == 2)
+            check("hidden category left out of Home priority groups", await pg.locator("#home-priorityGroups .chip:has-text('Spine')").count() == 0 and await pg.locator("#home-priorityGroups .chip").count() == 5)
             await pg.fill("#search", "sins"); await pg.wait_for_timeout(50)
             check("hidden category's scores remain searchable", await pg.locator("#search-results .home-row:has-text('SINS')").count() == 1)
             await go(pg, "#/calculate/c/spine", "[data-act=hide-group]"); await pg.click("[data-act=hide-group]")
             check("show category again", "spine" not in (await store(pg))["hiddenGroups"])
             await go(pg, "#/settings", "#s-groups")
-            await pg.click("#s-groups [data-act=move][data-index='3'][data-delta='-1']")
+            await pg.click("#s-groups [data-act=move][data-key=groupOrder][data-index='4'][data-delta='-1']")   # Stroke above Consciousness
             await go(pg, "#/calculate", ".category-card")
-            names = await pg.locator(".category-card .name").all_inner_texts()
-            check("reorder categories in Settings changes Calculate list", names[2] == "Subarachnoid haemorrhage", str(names[:4]))
+            names = await pg.locator("#cats .category-card .name").all_inner_texts()
+            check("reorder categories in Settings changes Calculate list", names[0] == "Stroke", str(names[:4]))
 
             # ---------- 6. startup screen remembered ----------
             for choice, h in [("calculate", "#/calculate"), ("guide", "#/guide"), ("home", "#/home")]:
@@ -184,7 +186,7 @@ async def main():
             s3, gone, ids = await migrated(v2default)
             check("v2 → v3: data kept, recents gain timestamps, key replaced", s3["v"] == 3 and s3["favorites"] == ["gcs"] and s3["favoriteGuides"] == [] and
                   s3["recentCalc"] == [{"id": "sins", "at": 0}, {"id": "gcs", "at": 0}] and s3["theme"] == "dark" and gone is None, str(s3)[:200])
-            check("v2 default layout → Phase 5 order", ids == ["home-favorites", "home-favoriteGuides", "home-recentCalc", "home-recentGuide", "home-priorityScores", "home-priorityGroups"], str(ids))
+            check("v2 default layout → current default order", ids == ["home-priorityGroups", "home-favorites", "home-favoriteGuides", "home-recentCalc", "home-recentGuide", "home-priorityScores"], str(ids))
             v2custom = copy.deepcopy(v2default); v2custom["homeSections"] = [{"id": i, "visible": i != "recentGuide"} for i in ["favorites", "priorityScores", "recentCalc", "priorityGroups", "recentGuide"]]
             s3, gone, ids = await migrated(v2custom)
             check("v2 customised layout kept; favorite guides inserted after favorites", ids == ["home-favorites", "home-favoriteGuides", "home-priorityScores", "home-recentCalc", "home-priorityGroups"], str(ids))
@@ -203,7 +205,8 @@ async def main():
                 sid = route.request.url.rsplit("/", 1)[1].replace(".json", ""); g = copy.deepcopy(gcs); g["id"] = sid
                 await route.fulfill(status=200, content_type="application/json", body=json.dumps(g))
             await pp.route("**/content/catalog.json", cat_route); await pp.route("**/content/scores/syn-*.json", syn_route)
-            await pp.goto(U); await pp.evaluate(f"""localStorage.setItem('{KEY}', JSON.stringify({{v:3, favorites: Array.from({{length: 60}}, (_, i) => 'syn-' + i),
+            await pp.goto(U); await pp.wait_for_selector(".bottomnav")   # let the first load finish its own store write before seeding
+            await pp.evaluate(f"""localStorage.setItem('{KEY}', JSON.stringify({{v:3, favorites: Array.from({{length: 60}}, (_, i) => 'syn-' + i),
               favoriteGuides: Array.from({{length: 60}}, (_, i) => 'syn-' + (100 + i)), recentCalc: Array.from({{length: 10}}, (_, i) => ({{id: 'syn-' + (200 + i), at: Date.now() - i * 60000}})),
               priorityScores: ['gcs', 'nihss', 'syn-5'], priorityGroups: ['stroke', 'spine']}}))""")
             reqs.clear(); t0 = time.time(); await pp.reload(); await pp.wait_for_selector("#home-favorites .home-row"); load_ms = (time.time() - t0) * 1000

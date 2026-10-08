@@ -854,5 +854,6 @@
  "licensing": {
   "status": "Public domain (NINDS)",
   "note": "The NIHSS is public domain. The picture, naming and reading stimulus pages (marked © Apex Innovations in the NINDS document) and official training/certification materials are not reproduced."
- }
+ },
+ "itemType": "score"
 }

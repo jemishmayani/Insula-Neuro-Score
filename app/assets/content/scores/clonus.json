@@ -97,8 +97,8 @@
   },
   {
    "id": "site",
-   "type": "single",
-   "label": "Joint (optional)",
+   "type": "dropdown",
+   "label": "Joint",
    "short": "Joint",
    "options": [
     {
@@ -126,21 +126,23 @@
      "code": ""
     }
    ],
-   "required": false
+   "required": false,
+   "detail": true
   },
   {
    "id": "beats",
    "type": "integer",
-   "label": "Number of beats (optional)",
+   "label": "Number of beats",
    "short": "Beats",
    "min": 1,
    "max": 100,
-   "required": false
+   "required": false,
+   "detail": true
   },
   {
    "id": "side",
    "type": "single",
-   "label": "Side (optional)",
+   "label": "Side",
    "short": "Side",
    "options": [
     {
@@ -156,8 +158,9 @@
      "code": "R"
     }
    ],
-   "help": "Recorded for the share text only; it does not change the grade.",
-   "required": false
+   "help": "Added to the copied result; it does not change the grade.",
+   "required": false,
+   "detail": true
   }
  ],
  "components": [
@@ -289,5 +292,6 @@
   "status": "Descriptive terms",
   "note": "No instrument is reproduced."
  },
- "category": "exam"
+ "category": "exam",
+ "itemType": "classification"
 }

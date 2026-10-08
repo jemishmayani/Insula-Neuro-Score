@@ -416,5 +416,6 @@
  "licensing": {
   "status": "Published model, original wording",
   "note": "The AIS dictionary is licensed by AAAM and is not reproduced; only severity numbers are entered."
- }
+ },
+ "itemType": "score"
 }

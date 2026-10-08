@@ -4,15 +4,20 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: v0.10.0. **Not clinically ready**
+## Status: v0.11.0. **Not clinically ready**
 
 50 scores and grades are implemented. Each was checked against its cited sources before implementation and is pending independent clinician review. Unresolved issues are listed in the [medical content audit](docs/MEDICAL-CONTENT-AUDIT.md).
 
 - **What changed:** [CHANGELOG.md](CHANGELOG.md)
-- **Latest release notes:** [docs/releases/v0.10.0.md](docs/releases/v0.10.0.md)
-- **Download:** the APK is attached to the GitHub release. Uninstall versions before 0.10.0 first: 0.10.0 is signed with a new key.
+- **Latest release notes:** [docs/releases/v0.11.0.md](docs/releases/v0.11.0.md)
+- **Download:** the APK is attached to each GitHub release. v0.11.0 installs over v0.10.0; uninstall versions before 0.10.0 first (new signing key from 0.10.0).
 
 ## Scores & Grades
+
+Every item has a type: **Score** (points or a model give a total), **Grade** (one ordinal level, e.g. MRC 0–5, House-Brackmann), **Classification** (a category, e.g. Fisher, Cognard, Engel) or **Measurement** (e.g. Modified Tardieu angles). Grades and classifications are findings or categories, not prognostic scores.
+
+**Quick groups** (on Home by default): **Quick Clinical Examination** (GCS, MRC power, House-Brackmann, reflex grade, Modified Ashworth) · **Neurotrauma** (GCS, GCS-P, Marshall, Rotterdam, ISS) · **Vascular** (Hunt & Hess, WFNS, Modified Fisher, Spetzler-Martin, Borden, Cognard).
+
 
 | Group | Implemented |
 |---|---|
@@ -29,7 +34,7 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 Only implemented scores appear in the app.
 
-**Withheld** (recorded in `catalog.json` with the reason, not shown): FOUR, RASS, ODI and ASIA/AIS (licensing); JOA and DS-GPA (version); Modified Graeb, Tokuhashi (1990) and SOFA-2 (verification); Sunnybrook (verification and licensing).
+**Withheld** (recorded in `catalog.json` with the reason; no JSON ships, no links, not shown. RASS's verified content is kept only in `content_src/withheld.py`, which is never built): FOUR, RASS, ODI and ASIA/AIS (licensing); JOA and DS-GPA (version); Modified Graeb, Tokuhashi (1990) and SOFA-2 (verification); Sunnybrook (verification and licensing).
 
 **Planned** (IDs reserved, not implemented): Helsinki CT, Stockholm CT, IMPACT, CRASH, SCIM III, WISCI II, RPA, Evans Index, FOHR.
 
@@ -67,7 +72,7 @@ tests/engine/             engine unit tests + per-score fixtures (node --test)
 tests/calculator.test.py  calculator UI tests (Playwright)
 tests/home.test.py        personalization + performance tests (Playwright)
 tests/shell.test.py       shell regression tests (Playwright)
-content_src/              score content source (library.py, library2.py, library3.py, related.py clusters)
+content_src/              score content source (library.py, library2.py, library3.py; itemtypes.py types + quick groups; related.py; withheld.py never built)
 tools/                    calculation, content and medical audits; evidence ledger
 brand/                    app icon sources (SVG). Current logo: Insula_Neuro_Score_Full_Better.svg
 docs/                     architecture and phase reports
@@ -81,6 +86,7 @@ apt-get install android-sdk-platform-23 aapt apksigner zipalign dalvik-exchange 
 pip install playwright && playwright install chromium
 
 python3 content_src/build_scores.py      # score JSON from source
+python3 tools/consistency_check.py       # catalogue, JSON, links, fixtures and audit evidence agree
 node --test tests/engine/*.test.js      # engine unit + fixture tests
 python3 tests/calculator.test.py        # calculator UI tests
 python3 tests/shell.test.py             # shell regression

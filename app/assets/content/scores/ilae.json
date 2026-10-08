@@ -125,18 +125,19 @@
      "code": ""
     }
    ],
-   "help": "Only applies to class 1.",
+   "help": "Optional. Only applies to class 1.",
    "required": false
   },
   {
    "id": "fu",
    "type": "integer",
-   "label": "Follow-up year (optional)",
+   "label": "Follow-up year",
    "short": "Year",
    "unit": "year",
    "min": 1,
    "max": 50,
-   "required": false
+   "required": false,
+   "detail": true
   }
  ],
  "components": [
@@ -310,5 +311,6 @@
   "status": "Published classification with attribution",
   "note": "Class definitions are paraphrased with attribution; the ILAE document (© ILAE) is not reproduced."
  },
- "category": "exam"
+ "category": "exam",
+ "itemType": "classification"
 }

@@ -77,7 +77,7 @@
   {
    "id": "sub",
    "type": "single",
-   "label": "Subtype (optional)",
+   "label": "Subtype",
    "short": "Subtype",
    "options": [
     {
@@ -93,6 +93,7 @@
      "code": "b"
     }
    ],
+   "help": "Optional. Added to the type, e.g. IIb.",
    "required": false
   }
  ],
@@ -219,5 +220,6 @@
   "status": "Published classification with attribution",
   "note": "No reproduction restrictions identified."
  },
- "category": "exam"
+ "category": "exam",
+ "itemType": "classification"
 }

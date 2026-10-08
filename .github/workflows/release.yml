@@ -38,6 +38,7 @@ jobs:
       - name: Content, engine tests and calculation audit
         run: |
           python3 content_src/build_scores.py && git diff --exit-code app/assets/content/
+          python3 tools/consistency_check.py
           node --test tests/engine/*.test.js
           node tools/calc_audit.js | tee /tmp/calc.txt && grep -q " 0 with issues" /tmp/calc.txt
 

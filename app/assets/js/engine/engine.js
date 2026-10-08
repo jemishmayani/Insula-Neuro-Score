@@ -18,6 +18,7 @@
 
   var TONES = ["favorable", "low", "mild", "moderate", "high", "critical", "informational", "incomplete", "not-interpretable"];
   var METHODS = ["sum", "expression", "select"];
+  var ITEM_TYPES = ["score", "grade", "classification", "measurement"];   // what kind of item this is (shown on cards)
   var PRESENTATIONS = Object.keys(Insights.PRESENTATIONS);
   var NT_POLICIES = ["block", "exclude"];
   var REQUIRED = ["id", "name", "abbreviation", "category", "subcategory", "specialties", "version", "purpose", "intendedPopulation",
@@ -36,6 +37,7 @@
     if (!/^[a-z][a-z0-9-]*$/.test(s.id)) e.push("id must be lower-case: " + s.id);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(s.lastReviewed)) e.push("lastReviewed must be YYYY-MM-DD");
     if (!s.version.label) e.push("version.label is required");
+    if (s.itemType != null && ITEM_TYPES.indexOf(s.itemType) < 0) e.push("itemType must be one of " + ITEM_TYPES.join(", "));
     if (!Array.isArray(s.sources) || !s.sources.length) e.push("at least one source is required");
 
     var ids = {};
@@ -241,5 +243,5 @@
     var a = {}; score.inputDefinitions.forEach(function (d) { if (d.default !== undefined) a[d.id] = d.default; }); return a;
   }
 
-  return { insights: Insights, calculate: calculate, validateScore: validateScore, initialAnswers: initialAnswers, TONES: TONES, METHODS: METHODS, PRESENTATIONS: PRESENTATIONS, INPUT_TYPES: Inputs.TYPES };
+  return { insights: Insights, calculate: calculate, validateScore: validateScore, initialAnswers: initialAnswers, TONES: TONES, METHODS: METHODS, ITEM_TYPES: ITEM_TYPES, PRESENTATIONS: PRESENTATIONS, INPUT_TYPES: Inputs.TYPES };
 });

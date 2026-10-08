@@ -863,5 +863,6 @@
   "status": "Published method with attribution",
   "note": "No reproduction restrictions identified."
  },
- "category": "exam"
+ "category": "exam",
+ "itemType": "score"
 }

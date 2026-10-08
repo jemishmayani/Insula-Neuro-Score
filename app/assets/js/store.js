@@ -6,8 +6,9 @@
 (function (global) {
   "use strict";
   var KEY = "ins.store.v3", V2_KEY = "ins.store.v2", LEGACY_KEY = "ins.prefs", VERSION = 3, RECENT_MAX = 10;
-  /* Home order per Phase 5: search is fixed on top; these sections follow. */
-  var HOME_SECTIONS = ["favorites", "favoriteGuides", "recentCalc", "recentGuide", "priorityScores", "priorityGroups"];
+  /* Home order: search is fixed on top; these sections follow. v0.11: priority groups first, so the
+     default quick groups (Quick Clinical Examination, Neurotrauma, Vascular) are the top level on Home. */
+  var HOME_SECTIONS = ["priorityGroups", "favorites", "favoriteGuides", "recentCalc", "recentGuide", "priorityScores"];
   var V2_DEFAULT_ORDER = ["priorityScores", "priorityGroups", "favorites", "recentCalc", "recentGuide"];
 
   function defaults() {
@@ -19,7 +20,7 @@
       recentCalc: [],           // [{id, at}] completed calculations, newest first
       recentGuide: [],          // [{id, at}] opened guides, newest first
       priorityScores: [],       // user-selected scores promoted to Home
-      priorityGroups: [],       // user-selected categories promoted to Home
+      priorityGroups: ["quick-exam", "neurotrauma", "vascular"],   // groups promoted to Home; defaults = catalog.defaultPriorityGroups
       hiddenGroups: [], groupOrder: [],
       homeSections: HOME_SECTIONS.map(function (id) { return { id: id, visible: true }; })
     };

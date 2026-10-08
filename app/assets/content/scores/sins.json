@@ -405,5 +405,6 @@
  "licensing": {
   "status": "Published classification",
   "note": "Criteria in original wording with attribution. No reproduction restrictions identified."
- }
+ },
+ "itemType": "score"
 }

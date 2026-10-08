@@ -246,5 +246,6 @@
  "licensing": {
   "status": "Published formula; AIS not reproduced",
   "note": "The Abbreviated Injury Scale dictionary is licensed by AAAM; only severity numbers are entered."
- }
+ },
+ "itemType": "score"
 }

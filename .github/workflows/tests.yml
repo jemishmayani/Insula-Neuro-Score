@@ -13,6 +13,8 @@ jobs:
         run: |
           python3 content_src/build_scores.py
           git diff --exit-code app/assets/content/
+      - name: Catalogue, JSON, related links, fixtures and audit evidence agree
+        run: python3 tools/consistency_check.py
       - name: Engine, fixture, safety and fuzz tests
         run: node --test tests/engine/*.test.js
       - name: Calculation audit (must report 0 issues)

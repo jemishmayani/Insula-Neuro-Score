@@ -81,7 +81,7 @@ EVIDENCE = {
  "engel": dict(calc=V, interp=V, pop=V, lim=ED, src=VS, basis="Engel 1993 classes and subclasses IA–IVC confirmed (Ars Neurochirurgica); book chapter not seen."),
  "ilae": dict(calc=V, interp=V, pop=V, lim=ED, src=V, basis="ILAE 2001 (Wieser et al.) document fetched from ilae.org: classes 1–6, 1a, seizure-day and baseline definitions, annual assessment."),
 }
-# Verified but held back from the app pending licensing review (content and tests retained).
-HELD = {"rass": dict(calc=V, interp=V, pop=V, lim=ED, src=V, basis="All ten levels confirmed in multiple trial protocols citing Sessler 2002.",
+# Withheld from the app (licensing): content kept in content_src/withheld.py, never built; tests in tests/engine/fixtures-withheld/.
+WITHHELD = {"rass": dict(calc=V, interp=V, pop=V, lim=ED, src=V, basis="All ten levels confirmed in multiple trial protocols citing Sessler 2002.",
                      flags=["Licensing: VCU lists RASS as a licensable technology; confirm terms before reinstating.",
                             "Terminology: 'Drowsy' sustained awakening is '>10 s' in most sources and '≥10 s' in VCU's description."])}

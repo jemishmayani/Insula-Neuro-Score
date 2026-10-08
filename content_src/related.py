@@ -19,8 +19,8 @@ RELATED = {
     "engel": [("ilae", "Alternative outcome classification"), ("mrs", "Functional status")],
     "ilae": [("engel", "Alternative outcome classification")],
     # Consciousness / outcome
-    "gcs": [("gcsp", "Adds pupil reactivity"), ("four", "Coma scale without a verbal component"), ("gose", "Outcome after brain injury"), ("wfns", "SAH grade built on GCS"), ("rass", "Arousal and sedation in ICU")],
-    "gcsp": [("gcs", "Underlying scale"), ("four", "Includes brainstem reflexes"), ("gose", "Outcome after brain injury"), ("rotterdam", "CT prognostic score in TBI")],
+    "gcs": [("gcsp", "Adds pupil reactivity"), ("gose", "Outcome after brain injury"), ("wfns", "SAH grade built on GCS")],
+    "gcsp": [("gcs", "Underlying scale"), ("gose", "Outcome after brain injury"), ("rotterdam", "CT prognostic score in TBI")],
     "gos": [("gose", "Extended 8-category version"), ("gcs", "Acute level of consciousness"), ("mrs", "Global disability scale")],
     "gose": [("gos", "Original 5-category scale"), ("gcs", "Acute level of consciousness"), ("gcsp", "Acute severity with pupils"), ("mrs", "Global disability scale")],
     # Stroke
@@ -50,16 +50,15 @@ RELATED = {
     "tomita": [("sins", "Mechanical stability"), ("rtokuhashi", "Alternative prognostic score"), ("kps", "Performance status")],
     "kps": [("ecog", "Alternative performance scale"), ("rtokuhashi", "Uses KPS"), ("sins", "Spinal metastasis stability")],
     "ecog": [("kps", "Alternative performance scale"), ("rtokuhashi", "Spinal metastasis prognosis"), ("tomita", "Spinal metastasis prognosis")],
-    "frankel": [("ais", "Current standard"), ("nurick", "Myelopathy grade"), ("rtokuhashi", "Uses Frankel grade")],
+    "frankel": [("nurick", "Myelopathy grade"), ("rtokuhashi", "Uses Frankel grade")],
     "nurick": [("mjoa", "Myelopathy score"), ("frankel", "Spinal cord injury grade")],
     # Neurocritical care
     "triss": [("rts", "Physiological component"), ("iss", "Anatomical component"), ("gcs", "Input to RTS")],
-    "sofa": [("sofa2", "Updated version"), ("gcs", "CNS component"), ("rass", "Sedation level")],
-    "graeb": [("ich", "ICH severity grade"), ("mgraeb", "Modified version"), ("mfisher", "SAH CT grade including IVH")],
+    "sofa": [("gcs", "CNS component")],
+    "graeb": [("ich", "ICH severity grade"), ("mfisher", "SAH CT grade including IVH")],
     "fasted": [("race", "Prehospital LVO scale"), ("lams", "Prehospital motor scale"), ("nihss", "Full stroke scale")],
-    "mjoa": [("nurick", "Myelopathy grade"), ("joa", "Original JOA"), ("frankel", "Spinal cord injury grade")],
-    "gpa": [("dsgpa", "Disease-specific versions"), ("kps", "Input: performance status"), ("ecog", "Performance status")],
-    "rass": [("gcs", "Level of consciousness"), ("four", "Coma scale"), ("sofa", "Organ dysfunction")],
+    "mjoa": [("nurick", "Myelopathy grade"), ("frankel", "Spinal cord injury grade")],
+    "gpa": [("kps", "Input: performance status"), ("ecog", "Performance status")],
 }
 # Clinical clusters: restored verbatim from the earlier Phase 7 build output (content/related.json).
 CLUSTERS = [
@@ -74,7 +73,6 @@ CLUSTERS = [
   "members": [
    "gcs",
    "gcsp",
-   "four",
    "gose",
    "gos"
   ],
@@ -177,7 +175,6 @@ CLUSTERS = [
    "ich",
    "func",
    "graeb",
-   "mgraeb",
    "gcs"
   ],
   "description": "Severity (ICH Score), expected function (FUNC) and ventricular blood (Graeb)."
@@ -229,21 +226,6 @@ CLUSTERS = [
   "description": "Global outcome scales used at follow-up."
  },
  {
-  "id": "sci",
-  "title": "Spinal cord injury",
-  "keywords": [
-   "sci",
-   "spinal cord injury",
-   "paraplegia",
-   "tetraplegia"
-  ],
-  "members": [
-   "frankel",
-   "ais"
-  ],
-  "description": "Spinal cord injury grading."
- },
- {
   "id": "myelopathy",
   "title": "Cervical myelopathy",
   "keywords": [
@@ -254,7 +236,6 @@ CLUSTERS = [
   "members": [
    "nurick",
    "mjoa",
-   "joa"
   ],
   "description": "Walking-based (Nurick) and broader functional (mJOA) myelopathy scores."
  },
@@ -263,12 +244,9 @@ CLUSTERS = [
   "title": "Neurocritical care",
   "keywords": [
    "icu",
-   "sedation",
    "critical care"
   ],
   "members": [
-   "rass",
-   "four",
    "sofa",
    "gcs"
   ],
@@ -299,13 +277,11 @@ CATEGORY_KEYWORDS = {
     "spine": ["spine", "spinal", "sci", "spinal cord", "myelopathy", "cervical"],
     "oncology": ["oncology", "tumour", "tumor", "cancer", "metastasis", "metastases", "spinal metastases"],
     "functional": ["outcome", "disability", "function", "functional"],
-    "neurocritical": ["icu", "critical care", "intensive care", "sedation"],
+    "neurocritical": ["icu", "critical care", "intensive care"],
 }
 EXTRA_KEYWORDS = {"mrc": ["power", "weakness", "strength"], "mrcss": ["weakness", "icu"], "dtr": ["reflex", "reflexes"], "clonus": ["reflex", "umn"], "plantar": ["reflex", "umn"],
                   "mas": ["spasticity", "tone"], "mts": ["spasticity", "tone", "contracture"], "hb": ["facial nerve", "facial palsy", "cn vii"], "gr": ["hearing", "vestibular schwannoma", "cpa"],
                   "spetzler": ["avm"], "lawtonyoung": ["avm"], "borden": ["davf", "fistula"], "cognard": ["davf", "fistula"], "markwalder": ["csdh", "subdural"],
                   "engel": ["epilepsy", "seizure"], "ilae": ["epilepsy", "seizure"],
-                  "sins": ["spinal metastases", "spine metastases"], "rtokuhashi": ["spinal metastases"], "tomita": ["spinal metastases"],
-                  "four": ["coma", "brainstem"], "fasted": ["lvo", "prehospital"], "sofa": ["organ failure", "sepsis"], "sofa2": ["organ failure", "sepsis"], "dsgpa": ["brain metastases"], "triss": ["survival", "trauma"],
-                  "ais": ["asia", "isncsci", "spinal cord injury"], "mjoa": ["myelopathy", "dcm"], "joa": ["myelopathy"], "odi": ["back pain", "disability"],
-                  "graeb": ["ivh", "intraventricular"], "mgraeb": ["ivh", "intraventricular"], "gpa": ["brain metastases"], "tokuhashi": ["spinal metastases"]}
+                  "sins": ["spinal metastases", "spine metastases"], "rtokuhashi": ["spinal metastases"], "tomita": ["spinal metastases"], "fasted": ["lvo", "prehospital"], "sofa": ["organ failure", "sepsis"], "triss": ["survival", "trauma"], "mjoa": ["myelopathy", "dcm"],
+                  "graeb": ["ivh", "intraventricular"], "gpa": ["brain metastases"]}

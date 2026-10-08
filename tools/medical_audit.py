@@ -2,8 +2,8 @@
 Run after: node tools/calc_audit.js"""
 import json, os, sys
 ROOT = os.path.join(os.path.dirname(__file__), "..")
-sys.path.insert(0, os.path.dirname(__file__)); from evidence import EVIDENCE, HELD
-A = os.path.join(ROOT, "app", "assets", "content"); FX = os.path.join(ROOT, "tests", "engine", "fixtures"); FXP = os.path.join(ROOT, "tests", "engine", "fixtures-pending")
+sys.path.insert(0, os.path.dirname(__file__)); from evidence import EVIDENCE, WITHHELD
+A = os.path.join(ROOT, "app", "assets", "content"); FX = os.path.join(ROOT, "tests", "engine", "fixtures"); FXP = os.path.join(ROOT, "tests", "engine", "fixtures-withheld")
 cat = json.load(open(os.path.join(A, "catalog.json"))); calc = {r["id"]: r for r in json.load(open(os.path.join(ROOT, "docs", "calc-audit.json")))}
 def fixtures(i):
     for d in (FX, FXP):
@@ -22,10 +22,10 @@ for c in impl:
                  "Scripted UI walkthrough (calculator + guide); human clinical testing pending", s["lastReviewed"]])
     for f in e.get("flags", []): flags.append((s["abbreviation"], f))
 held_rows = []
-for i, e in HELD.items():
+for i, e in WITHHELD.items():
     c = next(x for x in cat["withheld"] if x["id"] == i)
     held_rows.append([c["abbreviation"], mark(e["calc"]), mark(e["src"]), f"{fixtures(i)} hand-calculated cases retained", c.get("withheldReason", "")])
-    for f in e["flags"]: flags.append((c["abbreviation"] + " (held)", f))
+    for f in e["flags"]: flags.append((c["abbreviation"] + " (withheld)", f))
 calc_issues = sum(len(r["issues"]) for r in calc.values())
 needs = [r[0] for r in rows if "FLAG" in " ".join(r[2:7])]
 H = ["Score", "Version", "Calculation verified", "Interpretation verified", "Population verified", "Limitations verified", "Source verified", "Automated tests", "Manual tests", "Last reviewed"]
@@ -34,7 +34,7 @@ md = ["# Medical content audit (Phase 9)", "",
       "Legend: **Verified** = matched a primary or authoritative source; **Verified (secondary)** = matched several independent secondary sources (primary full text not seen); **Editorial** = guidance text needing clinician review; **⚠ FLAG** = manual verification required.", "",
       "## 1. Content audit", "", "| " + " | ".join(H) + " |", "|" + "---|" * len(H)]
 md += ["| " + " | ".join(str(x).replace("|", "/") for x in r) + " |" for r in rows]
-md += ["", "### Verified but held back (licensing review)", "", "| Score | Calculation | Source | Tests | Reason |", "|---|---|---|---|---|"]
+md += ["", "### Withheld: verified but not shipped (licensing)", "", "| Score | Calculation | Source | Tests | Reason |", "|---|---|---|---|---|"]
 md += ["| " + " | ".join(r) + " |" for r in held_rows]
 md += ["", "## 2. Calculation audit", "",
        f"All {len(calc)} implemented scores were evaluated through the production engine: **{sum(r['evaluated'] for r in calc.values()):,} input combinations** (exhaustive where the input space allows; otherwise a 300,000 sample plus every extreme and one-step variant).",
@@ -50,13 +50,13 @@ md += ["", "### Applies to all scores", "- **Limitations, confounders and clinic
        "**Calculation-affecting (must be resolved before clinical use):**", "- **Revised Tokuhashi**: vertebral-body metastasis item conflict between published tables.", "",
        "**Interpretation or wording (review before release):**"]
 md += [f"- **{n}**" for n in needs if n not in ("Revised Tokuhashi",)]
-md += [f"- **{a}**" for a in sorted({a for a, _ in flags}) if a not in needs and "held" not in a and a != "Revised Tokuhashi"]
+md += [f"- **{a}**" for a in sorted({a for a, _ in flags}) if a not in needs and "withheld" not in a and a != "Revised Tokuhashi"]
 md += ["", "**Secondary-source verification only (confirm against primary full text):** " + ", ".join(r[0] for r in rows if "secondary" in " ".join(r[2:7])) + ".", "",
        "**Withheld (not shown in the app):** " + "; ".join(f"{c['abbreviation']} ({c['withheldCategory']})" for c in cat['withheld']) + ". Reasons: [CONTENT-AUDIT.md](CONTENT-AUDIT.md).", "",
        "**Planned (future queue, not implemented):** " + ", ".join(c['abbreviation'] for c in cat.get('planned', [])) + ".", "",
        "## Corrections made during this audit", "- ICH Score: removed an unverified cohort size from the version text.", "- Hunt & Hess: Grade IV restored to the original wording ('…and vegetative disturbances').",
        "- GCS-P: the 1–8 band now states it is not defined in the original publication.", "- Revised Tokuhashi: calculator notice added about the conflicting item (scoring unchanged pending review).",
-       "- ECOG: licensing status updated to public domain (ECOG-ACRIN).", "- RASS: held back pending licensing review (content and tests retained; reinstatement is a one-line change).",
+       "- ECOG: licensing status updated to public domain (ECOG-ACRIN).", "- RASS: withheld for licensing. It ships no JSON and has no catalogue entry or related links in the app. Verified content is kept only in `content_src/withheld.py` (never built) with tests in `tests/engine/fixtures-withheld/`.",
        "- Audit tooling: the calculation audit now also evaluates extremes for sampled input spaces (initially missed NIHSS maximum in a sample)."]
 open(os.path.join(ROOT, "docs", "MEDICAL-CONTENT-AUDIT.md"), "w").write("\n".join(md) + "\n")
-print(f"{len(rows)} implemented, {len(held_rows)} held, {len(flags)} flags, {calc_issues} calc issues; needs manual: {needs}")
+print(f"{len(rows)} implemented, {len(held_rows)} withheld with retained content, {len(flags)} flags, {calc_issues} calc issues; needs manual: {needs}")

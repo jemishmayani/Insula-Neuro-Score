@@ -139,12 +139,13 @@
   {
    "id": "fu",
    "type": "integer",
-   "label": "Follow-up since surgery (years, optional)",
+   "label": "Follow-up since surgery",
    "short": "Follow-up",
    "unit": "years",
    "min": 1,
    "max": 50,
-   "required": false
+   "required": false,
+   "detail": true
   }
  ],
  "components": [
@@ -278,5 +279,6 @@
   "status": "Published classification with attribution",
   "note": "Class definitions are paraphrased; the book chapter is not reproduced."
  },
- "category": "exam"
+ "category": "exam",
+ "itemType": "classification"
 }

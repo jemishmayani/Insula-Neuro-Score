@@ -158,7 +158,7 @@
    },
    {
     "id": "sub",
-    "label": "Subtype (optional)",
+    "label": "Subtype",
     "type": "single",
     "points": "a=0, b=0",
     "nt": ""
@@ -221,21 +221,21 @@
    },
    {
     "id": "site",
-    "label": "Joint (optional)",
-    "type": "single",
+    "label": "Joint",
+    "type": "dropdown",
     "points": "=0, =0, =0, =0",
     "nt": ""
    },
    {
     "id": "beats",
-    "label": "Number of beats (optional)",
+    "label": "Number of beats",
     "type": "integer",
     "points": "1–100",
     "nt": ""
    },
    {
     "id": "side",
-    "label": "Side (optional)",
+    "label": "Side",
     "type": "single",
     "points": "L=0, R=0",
     "nt": ""
@@ -386,14 +386,14 @@
    },
    {
     "id": "reflex",
-    "label": "Reflex tested (optional)",
-    "type": "single",
+    "label": "Reflex tested",
+    "type": "dropdown",
     "points": "=0, =0, =0, =0, =0, =0",
     "nt": ""
    },
    {
     "id": "side",
-    "label": "Side (optional)",
+    "label": "Side",
     "type": "single",
     "points": "L=0, R=0",
     "nt": ""
@@ -544,7 +544,7 @@
    },
    {
     "id": "fu",
-    "label": "Follow-up since surgery (years, optional)",
+    "label": "Follow-up since surgery",
     "type": "integer",
     "points": "1–50",
     "nt": ""
@@ -1526,7 +1526,7 @@
    },
    {
     "id": "side",
-    "label": "Side (optional)",
+    "label": "Side",
     "type": "single",
     "points": "L=0, R=0",
     "nt": ""
@@ -1815,7 +1815,7 @@
    },
    {
     "id": "fu",
-    "label": "Follow-up year (optional)",
+    "label": "Follow-up year",
     "type": "integer",
     "points": "1–50",
     "nt": ""
@@ -2157,7 +2157,7 @@
    },
    {
     "id": "sm",
-    "label": "Spetzler-Martin grade (optional)",
+    "label": "Spetzler-Martin grade",
     "type": "single",
     "points": "I=1, II=2, III=3, IV=4, V=5",
     "nt": ""
@@ -2400,14 +2400,14 @@
    },
    {
     "id": "muscle",
-    "label": "Muscle group (optional)",
-    "type": "single",
+    "label": "Muscle group",
+    "type": "dropdown",
     "points": "=0, =0, =0, =0, =0, =0",
     "nt": ""
    },
    {
     "id": "side",
-    "label": "Side (optional)",
+    "label": "Side",
     "type": "single",
     "points": "L=0, R=0",
     "nt": ""
@@ -2658,7 +2658,7 @@
    },
    {
     "id": "side",
-    "label": "Side (optional)",
+    "label": "Side",
     "type": "single",
     "points": "L=0, R=0",
     "nt": ""
@@ -3044,8 +3044,8 @@
   "components": [
    {
     "id": "muscle",
-    "label": "Muscle group (optional)",
-    "type": "single",
+    "label": "Muscle group",
+    "type": "dropdown",
     "points": "=0, =0, =0, =0, =0, =0, =0",
     "nt": ""
    },
@@ -3445,7 +3445,7 @@
    },
    {
     "id": "side",
-    "label": "Side (optional)",
+    "label": "Side",
     "type": "single",
     "points": "L=0, R=0",
     "nt": ""

@@ -105,8 +105,8 @@
   },
   {
    "id": "reflex",
-   "type": "single",
-   "label": "Reflex tested (optional)",
+   "type": "dropdown",
+   "label": "Reflex tested",
    "short": "Reflex",
    "options": [
     {
@@ -146,13 +146,14 @@
      "code": ""
     }
    ],
-   "help": "Recorded for the share text only.",
-   "required": false
+   "help": "Added to the copied result.",
+   "required": false,
+   "detail": true
   },
   {
    "id": "side",
    "type": "single",
-   "label": "Side (optional)",
+   "label": "Side",
    "short": "Side",
    "options": [
     {
@@ -168,8 +169,9 @@
      "code": "R"
     }
    ],
-   "help": "Recorded for the share text only; it does not change the grade.",
-   "required": false
+   "help": "Added to the copied result; it does not change the grade.",
+   "required": false,
+   "detail": true
   }
  ],
  "components": [
@@ -319,5 +321,6 @@
   "status": "Published scale with attribution",
   "note": "No reproduction restrictions identified."
  },
- "category": "exam"
+ "category": "exam",
+ "itemType": "grade"
 }

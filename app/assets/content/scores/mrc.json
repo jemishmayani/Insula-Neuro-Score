@@ -110,7 +110,7 @@
   {
    "id": "side",
    "type": "single",
-   "label": "Side (optional)",
+   "label": "Side",
    "short": "Side",
    "options": [
     {
@@ -126,8 +126,9 @@
      "code": "R"
     }
    ],
-   "help": "Recorded for the share text only; it does not change the grade.",
-   "required": false
+   "help": "Added to the copied result; it does not change the grade.",
+   "required": false,
+   "detail": true
   }
  ],
  "components": [
@@ -311,5 +312,6 @@
   "status": "Grade definitions with attribution",
   "note": "The MRC/Guarantors of Brain booklet and its illustrations are copyrighted and not reproduced; only the grade definitions are paraphrased."
  },
- "category": "exam"
+ "category": "exam",
+ "itemType": "grade"
 }

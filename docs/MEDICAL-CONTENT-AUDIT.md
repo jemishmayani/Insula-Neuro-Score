@@ -59,7 +59,7 @@ Legend: **Verified** = matched a primary or authoritative source; **Verified (se
 | Reflex grade | NINDS Myotatic Reflex Scale, 0–4 (Hallett 1993) | Verified | Verified | Verified | Editorial | Verified | 5 hand-calculated cases; 105 combinations (all); fuzz | Scripted UI walkthrough (calculator + guide); human clinical testing pending | 2026-10-08 |
 | Spetzler-Martin | Spetzler-Martin grading system (1986), grades I–V | Verified | Verified | Verified | Editorial | Verified (secondary) | 4 hand-calculated cases; 12 combinations (all); fuzz | Scripted UI walkthrough (calculator + guide); human clinical testing pending | 2026-10-08 |
 
-### Verified but held back (licensing review)
+### Withheld: verified but not shipped (licensing)
 
 | Score | Calculation | Source | Tests | Reason |
 |---|---|---|---|---|
@@ -96,8 +96,8 @@ Internal consistency does not prove source fidelity: the source column above and
 19. **MTS**: StrokEngine states X definitions are identical in Tardieu and MTS, including X5 'joint immovable'; some reproductions of the MTS list X0–X4 only. Confirm against Boyd & Graham 1999.
 20. **MTS**: R2−R1 is reported as an absolute difference because angle conventions differ between joints.
 21. **Reflex grade**: The '+' notation (1+–4+) is display convention; the NINDS paper uses plain numerals. Scales that use 5 for sustained clonus are a different version and are not combined.
-22. **RASS (held)**: Licensing: VCU lists RASS as a licensable technology; confirm terms before reinstating.
-23. **RASS (held)**: Terminology: 'Drowsy' sustained awakening is '>10 s' in most sources and '≥10 s' in VCU's description.
+22. **RASS (withheld)**: Licensing: VCU lists RASS as a licensable technology; confirm terms before reinstating.
+23. **RASS (withheld)**: Terminology: 'Drowsy' sustained awakening is '>10 s' in most sources and '≥10 s' in VCU's description.
 
 ### Applies to all scores
 - **Limitations, confounders and clinical-context text** is editorial (source-supported, not scoring rules) and requires clinician review.
@@ -139,5 +139,5 @@ Internal consistency does not prove source fidelity: the source column above and
 - GCS-P: the 1–8 band now states it is not defined in the original publication.
 - Revised Tokuhashi: calculator notice added about the conflicting item (scoring unchanged pending review).
 - ECOG: licensing status updated to public domain (ECOG-ACRIN).
-- RASS: held back pending licensing review (content and tests retained; reinstatement is a one-line change).
+- RASS: withheld for licensing. It ships no JSON and has no catalogue entry or related links in the app. Verified content is kept only in `content_src/withheld.py` (never built) with tests in `tests/engine/fixtures-withheld/`.
 - Audit tooling: the calculation audit now also evaluates extremes for sampled input spaces (initially missed NIHSS maximum in a sample).

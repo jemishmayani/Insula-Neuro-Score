@@ -67,11 +67,30 @@
       help + html + '<p class="field-error" id="' + fieldId(d) + '-err" role="alert"></p></fieldset>';
   }
   function rangeText(d, unitLabel) { return d.min != null && d.max != null ? "(" + d.min + "–" + d.max + (unitLabel ? " " + unitLabel : "") + ")" : ""; }
+  var TYPE_LABEL = { score: "Score", grade: "Grade", classification: "Classification", measurement: "Measurement" };
+  /** Range as the clinician reads it: grades and classes by their codes (MAS 0–4, Cognard I–V), not internal ordinals. */
+  function rangeLabel(score) {
+    var cm = score.calculationMethod;
+    if (cm.type === "select") {
+      var d = score.inputDefinitions.filter(function (x) { return x.id === cm.input; })[0], os = (d && d.options) || [];
+      if (os.length && os.some(function (o) { return o.code != null && String(o.code) !== String(o.points); })) {
+        if (os.every(function (o) { return String(o.code).toLowerCase() === String(o.label).toLowerCase(); })) return os.length + " categories";
+        var codes = os.map(function (o) { return String(o.code); });
+        return codes[0] + "–" + codes[codes.length - 1];
+      }
+    }
+    return cm.range.min + "–" + cm.range.max;
+  }
+  /** The code/points tag beside an option; empty when it would only repeat the option's label (e.g. "Flexor"). */
+  function optTag(o) {
+    var t = o.code != null ? o.code : o.points;
+    return t != null && String(t).toLowerCase() === String(o.label).toLowerCase() ? "" : t;
+  }
   function choiceRow(d, kind, o, checked) {
-    var tag = o.isNT ? (o.code || "NT") : (o.code != null ? o.code : o.points);
+    var tag = o.isNT ? (o.code || "NT") : optTag(o);
     return '<label class="choice' + (checked ? " is-on" : "") + (o.isNT ? " is-nt" : "") + '"><input type="' + kind + '" class="vh" name="' + esc(d.id) + '" value="' + esc(o.value) + '" data-input="' + esc(d.id) + '"' + (checked ? " checked" : "") + ">" +
       '<span class="mark ' + kind + '" aria-hidden="true"></span><span class="choice-text"><span class="choice-label">' + esc(o.label) + "</span>" + (o.detail ? '<span class="choice-detail">' + esc(o.detail) + "</span>" : "") + "</span>" +
-      (tag != null ? '<span class="choice-pts" aria-hidden="true">' + esc(tag) + "</span>" : "") + "</label>";
+      (tag != null && tag !== "" ? '<span class="choice-pts" aria-hidden="true">' + esc(tag) + "</span>" : "") + "</label>";
   }
 
   /* ---------------- result panel (renders ResultModel only) ---------------- */
@@ -93,15 +112,19 @@
     var meter = r.bands ? UI.ScaleMeter({ min: r.range.min, max: r.range.max, value: r.status === "complete" ? r.total : null, bands: r.bands, label: score.abbreviation }) : "";
     var h = UI.ResultCard({ tone: tone, label: stateLabel(r), value: r.display, typeLabel: pres.typeLabel,
       formula: r.formula, formulaJoin: r.formula && r.status === "complete" && r.formulaEquals !== false ? "=" : null,
-      meta: UI.TONE_LABEL[tone] + " · " + score.abbreviation + " range " + r.range.min + "–" + r.range.max, summary: r.state.summary, meter: meter });
+      meta: UI.TONE_LABEL[tone] + " · " + score.abbreviation + " range " + rangeLabel(score), summary: r.state.summary, meter: meter });
     if (r.warnings.length) h += '<div class="result-block" data-block="warnings">' + r.warnings.map(function (w) { return UI.WarningBanner({ title: "Check", message: w.message }); }).join("") + "</div>";
     // Breakdown
     h += '<div class="result-block" data-block="breakdown"><h3 class="result-h">Breakdown</h3><table class="breakdown result-breakdown"><colgroup><col class="c-item"><col class="c-value"><col class="c-pts"></colgroup><tbody>' + r.breakdown.map(function (c) {
-      var rows = c.items.map(function (it) {
+      var shown = c.items.filter(function (it) { var d = score.inputDefinitions.filter(function (x) { return x.id === it.inputId; })[0]; return !(d && d.detail && it.status === "empty"); });
+      if (!shown.length) return "";
+      var rows = shown.map(function (it) {
+        var tag = it.status === "ok" ? (it.code != null ? it.code : it.points) : it.status === "nt" ? it.code : "–";
+        if (tag != null && String(tag).toLowerCase() === String(it.display).toLowerCase()) tag = "";
         return '<tr class="bd-' + it.status + '"><th scope="row">' + esc(it.short) + "</th><td>" + esc(it.display) + (it.reason ? " (" + esc(it.reason) + ")" : "") +
-          '</td><td class="pts">' + esc(it.status === "ok" ? (it.code != null ? it.code : it.points) : it.status === "nt" ? it.code : "–") + "</td></tr>";
+          '</td><td class="pts">' + esc(tag) + "</td></tr>";
       }).join("");
-      var head = c.items.length > 1 ? '<tr class="bd-group"><th scope="rowgroup" colspan="2">' + esc(c.label) + '</th><td class="pts">' + (c.subtotal == null ? "–" : c.subtotal) + "</td></tr>" : "";
+      var head = shown.length > 1 && c.showSubtotal !== false ? '<tr class="bd-group"><th scope="rowgroup" colspan="2">' + esc(c.label) + '</th><td class="pts">' + (c.subtotal == null ? "–" : c.subtotal) + "</td></tr>" : "";
       return head + rows;
     }).join("") + '<tr class="bd-total"><th scope="row">Result</th><td>' + esc(r.state.label) + '</td><td class="pts">' + esc(ptsCell(r)) + "</td></tr></tbody></table></div>";
     // Interpretation
@@ -136,11 +159,15 @@
   function mount(el, score, answers, opts) {
     opts = opts || {};
     var links = opts.links || function () { return null; };
+    var details = score.inputDefinitions.filter(function (d) { return d.detail; });
     var grouped = score.components.map(function (c) {
-      var defs = c.inputs.map(function (id) { return score.inputDefinitions.filter(function (d) { return d.id === id; })[0]; });
+      var defs = c.inputs.map(function (id) { return score.inputDefinitions.filter(function (d) { return d.id === id; })[0]; }).filter(function (d) { return !d.detail; });
+      if (!defs.length) return "";
       var inner = defs.map(function (d) { return controlHTML(d, answers[d.id]); }).join("");
-      return score.components.length > 1 && c.inputs.length > 1 ? '<section class="input-group"><h3 class="input-group-h">' + esc(c.label) + "</h3>" + inner + "</section>" : inner;
-    }).join("");
+      return score.components.length > 1 && defs.length > 1 ? '<section class="input-group"><h3 class="input-group-h">' + esc(c.label) + "</h3>" + inner + "</section>" : inner;
+    }).join("") +
+      (details.length ? '<section class="input-group input-details"><h3 class="input-group-h">Details for your note</h3><p class="field-help">Optional. Added to the copied result; they never change the result.</p>' +
+        details.map(function (d) { return controlHTML(d, answers[d.id]); }).join("") + "</section>" : "");
     el.innerHTML = '<div class="detail-grid two calc"><form class="calc-inputs" novalidate onsubmit="return false" aria-label="' + esc(score.abbreviation) + ' inputs">' +
       (score.calculatorNotice ? '<div class="calc-notice">' + (score.calculatorNotice.tone === "warning" ? UI.WarningBanner : UI.InfoBanner)({ title: score.calculatorNotice.title, message: score.calculatorNotice.message }) + "</div>" : "") +
       '<div class="calc-progress" aria-live="polite"></div>' + grouped + '</form><div class="aside"><section id="result" aria-label="Result" tabindex="-1"></section></div></div>' +
@@ -258,6 +285,8 @@
   }
 
   /* ---------------- guide (renders model data only) ---------------- */
+  var SELECT_TEXT = { grade: "The result is the single grade selected.", classification: "The result is the single category selected." };
+  var COMP_HEAD = { score: "Scoring components", grade: "Grade definitions", classification: "Category definitions", measurement: "Inputs" };
   var METHOD_TEXT = { sum: "The result is the sum of the item points.", select: "The result is the single level selected.", expression: "The result is derived from the item points using the published formula." };
   var NT_TEXT = { block: "If any item is not testable, no total is reported; the testable components are shown instead.",
     exclude: "Items marked untestable contribute no points and are flagged; the total may underestimate the true value." };
@@ -285,7 +314,8 @@
 
     /* 1 Overview: highlight box, at-a-glance table, key warnings (limitations surfaced at the top) */
     var overview = infoBox(null, "<p>" + esc(g.what) + "</p>", "primary") +
-      factTable([["Result type", pres ? esc(pres.typeLabel) : ""], ["Range", cm.range.min + "–" + cm.range.max], ["Components", score.components.length + " (" + score.inputDefinitions.length + " input" + (score.inputDefinitions.length === 1 ? "" : "s") + ")"],
+      factTable([["Type", esc(TYPE_LABEL[score.itemType] || "Score")], ["Result type", pres ? esc(pres.typeLabel) : ""], ["Range", esc(rangeLabel(score))],
+                 ["Components", (function () { var n = score.inputDefinitions.filter(function (d) { return !d.detail; }).length; return n + (score.itemType === "score" ? " scored input" : " input") + (n === 1 ? "" : "s"); })()],
                  ["Version", esc(score.version.label)], ["Category", esc(score.subcategory)], ["Review", /pending/i.test(score.reviewStatus) ? "Pending independent clinician review" : esc(score.reviewStatus)]]) +
       '<div class="guide-warnings" data-block="key-warnings"><h4 class="sub-h">' + UI.icon("warning") + " Key warnings and limitations</h4>" + (notice || "") +
       (majors.length ? '<ul class="insight-list">' + majors.map(function (i) { return UI.InsightCard({ type: "limitation", item: { text: i.text, importance: "major" } }); }).join("") + "</ul>" : "") +
@@ -297,28 +327,39 @@
 
     /* 5 Calculation: numbered steps, method box, component tables */
     var steps = sentences(g.howToPerform);
+    var TYPE_COL = { score: "Value", grade: "Grade", classification: "Class", measurement: "Value" };
+    var colHead = function (d) {
+      if (d.type === "multi" || d.pointBands) return "Points";
+      var asCode = (d.options || []).some(function (o) { return o.code != null && String(o.code) !== String(o.points); });
+      if (!asCode) return "Points";
+      return cm.type === "select" && cm.input === d.id ? (TYPE_COL[score.itemType] || "Value") : "Code";
+    };
+    var detailDefs = score.inputDefinitions.filter(function (d) { return d.detail; });
     var comps = score.components.map(function (c) {
-      var defs = c.inputs.map(function (id) { return score.inputDefinitions.filter(function (x) { return x.id === id; })[0]; });
+      var defs = c.inputs.map(function (id) { return score.inputDefinitions.filter(function (x) { return x.id === id; })[0]; }).filter(function (d) { return !d.detail; });
+      if (!defs.length) return "";
       var plain = defs.length > 1 && defs.every(function (d) { return !d.options && !d.pointBands && d.min != null; });
       if (plain) return '<div class="guide-comp"><h4>' + esc(c.label) + '</h4><div class="table-scroll"><table class="breakdown"><thead><tr><th scope="col">Input</th><th scope="col" class="pts">Range</th></tr></thead><tbody>' +
         defs.map(function (d) { return "<tr><td>" + esc(d.label) + (d.help ? '<br><span class="choice-detail">' + esc(d.help) + "</span>" : "") + '</td><td class="pts">' + d.min + "–" + d.max + (d.unit ? " " + esc(d.unit) : "") + "</td></tr>"; }).join("") +
         "</tbody></table></div></div>";
-      return '<div class="guide-comp"><h4>' + esc(c.label) + "</h4>" + c.inputs.map(function (id) {
-        var d = score.inputDefinitions.filter(function (x) { return x.id === id; })[0];
+      return '<div class="guide-comp"><h4>' + esc(defs.length === 1 ? defs[0].label : c.label) + "</h4>" + defs.map(function (d) {
         var rows;
         if (d.options) rows = d.options.map(function (o) {
-          return "<tr><td>" + esc(o.label) + (o.detail ? '<br><span class="choice-detail">' + esc(o.detail) + "</span>" : "") + '</td><td class="pts">' + esc(o.exclusive ? "—" : (o.code != null ? o.code : o.points)) + "</td></tr>"; }).join("") +
+          return "<tr><td>" + esc(o.label) + (o.detail ? '<br><span class="choice-detail">' + esc(o.detail) + "</span>" : "") + '</td><td class="pts">' + esc(o.exclusive ? "—" : optTag(o)) + "</td></tr>"; }).join("") +
           (d.notTestable ? '<tr class="bd-nt"><td><i>' + esc(d.notTestable.label) + "</i>" + (d.notTestable.reasons ? '<br><span class="choice-detail">Allowed for: ' + esc(d.notTestable.reasons.join(", ")) + "</span>" : "") + '</td><td class="pts">' + esc(d.notTestable.code || "NT") + "</td></tr>" : "");
         else if (d.pointBands) rows = d.pointBands.map(function (bd) { return "<tr><td>" + (bd.min == null ? "≤ " + bd.max : bd.max == null ? "≥ " + bd.min : bd.min === bd.max ? bd.min : bd.min + "–" + bd.max) + (d.unit ? " " + esc(d.unit) : "") + '</td><td class="pts">' + bd.points + "</td></tr>"; }).join("");
         else rows = "<tr><td>Whole number " + d.min + "–" + d.max + (d.unit ? " " + esc(d.unit) : "") + '</td><td class="pts">value</td></tr>';
-        return (c.inputs.length > 1 ? '<p class="guide-item">' + esc(d.label) + "</p>" : "") + (d.help ? '<p class="field-help">' + esc(d.help) + "</p>" : "") +
-          '<div class="table-scroll"><table class="breakdown"><thead><tr><th scope="col">' + (d.type === "multi" ? "Select all that apply" : "Option") + '</th><th scope="col" class="pts">Points</th></tr></thead><tbody>' + rows + "</tbody></table></div>";
+        var oneCol = d.options && !d.notTestable && d.options.every(function (o) { return optTag(o) === "" || optTag(o) == null; });
+        if (oneCol) rows = rows.replace(/<td class="pts">[^<]*<\/td>/g, "");
+        return (defs.length > 1 ? '<p class="guide-item">' + esc(d.label) + (d.required === false ? " (optional)" : "") + "</p>" : "") + (d.help ? '<p class="field-help">' + esc(d.help) + "</p>" : "") +
+          '<div class="table-scroll"><table class="breakdown"><thead><tr><th scope="col">' + (d.type === "multi" ? "Select all that apply" : oneCol ? "Category" : "Option") + "</th>" + (oneCol ? "" : '<th scope="col" class="pts">' + (d.options || d.pointBands ? colHead(d) : "Value") + "</th>") + "</tr></thead><tbody>" + rows + "</tbody></table></div>";
       }).join("") + "</div>";
-    }).join("");
+    }).join("") +
+      (detailDefs.length ? '<p class="lede">Optional details for your note (not scored): ' + esc(detailDefs.map(function (d) { return d.label.toLowerCase(); }).join(", ")) + ".</p>" : "");
     var calculation = (steps.length ? '<ol class="g-steps">' + steps.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ol>" : "") +
-      infoBox("Method", "<p>" + esc(METHOD_TEXT[cm.type]) + " Range " + cm.range.min + "–" + cm.range.max + "." + (cm.formula ? " Components are reported individually alongside the result." : "") + "</p>" +
+      infoBox("Method", "<p>" + esc(cm.type === "select" ? (SELECT_TEXT[score.itemType] || METHOD_TEXT.select) : METHOD_TEXT[cm.type]) + " Range: " + esc(rangeLabel(score)) + "." + (cm.formula ? " Components are reported individually alongside the result." : "") + "</p>" +
         (score.inputDefinitions.some(function (d) { return d.notTestable; }) ? "<p>" + esc(NT_TEXT[cm.notTestablePolicy || "block"]) + "</p>" : ""), "info") +
-      '<h4 class="sub-h">Scoring components</h4>' + comps;
+      '<h4 class="sub-h">' + esc(cm.type === "select" ? (COMP_HEAD[score.itemType] || "Scoring components") : "Scoring components") + "</h4>" + comps;
 
     /* 6 Interpretation: result type card + state cards */
     var interp = (pres ? UI.InsightSection({ section: { type: "interpretation", title: "Result type", question: "", items: [{ title: pres.typeLabel, text: pres.describes }] }, hideTitle: true }) : "") +

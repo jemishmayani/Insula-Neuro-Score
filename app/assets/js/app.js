@@ -101,9 +101,10 @@
     if (d < 60) return "just now"; if (d < 3600) return Math.floor(d / 60) + " min ago"; if (d < 86400) return Math.floor(d / 3600) + " h ago";
     if (d < 172800) return "yesterday"; return new Date(at).toLocaleDateString(undefined, { day: "numeric", month: "short" });
   }
+  var TYPE_LABEL = { score: "Score", grade: "Grade", classification: "Classification", measurement: "Measurement" };
   var placeholderBadge = function () { return UI.StatusBadge({ tone: "neutral", label: "Placeholder", icon: false }); };
   function badgeFor(s) {
-    if (s.status === "implemented") return UI.StatusBadge({ tone: "primary", label: "Calculator", icon: false });
+    if (s.status === "implemented") return UI.StatusBadge({ tone: "primary", label: TYPE_LABEL[s.itemType] || "Score", icon: false });
     return placeholderBadge();
   }
   function sub(s) { return s.name === s.abbreviation ? s.summary : s.name; }
@@ -265,7 +266,7 @@
       var groups = st.priorityGroups.map(category).filter(function (c) { return c && hidden.indexOf(c.id) < 0; });
       if (!groups.length) body = empty();
       else if (editing) body = '<ul class="card-list">' + groups.map(function (c, i) {
-          return '<li class="score-card home-row is-editing"><span class="open"><span class="row-icon" aria-hidden="true">' + UI.icon(c.glyph) + '</span><span class="text"><span class="title">' + esc(c.name) + '</span><span class="sub">' + scoresIn(c.id).length + " scores</span></span></span>" +
+          return '<li class="score-card home-row is-editing"><span class="open"><span class="row-icon" aria-hidden="true">' + UI.icon(c.glyph) + '</span><span class="text"><span class="title">' + esc(c.name) + '</span><span class="sub">' + scoresIn(c.id).length + " items</span></span></span>" +
             UI.IconButton({ icon: "up", label: "Move " + c.name + " up", act: "home-move", disabled: i === 0, data: { key: "priorityGroups", index: st.priorityGroups.indexOf(c.id), delta: -1, to: groups[i - 1] ? st.priorityGroups.indexOf(groups[i - 1].id) : "" } }) +
             UI.IconButton({ icon: "down", label: "Move " + c.name + " down", act: "home-move", disabled: i === groups.length - 1, data: { key: "priorityGroups", index: st.priorityGroups.indexOf(c.id), delta: 1, to: groups[i + 1] ? st.priorityGroups.indexOf(groups[i + 1].id) : "" } }) +
             UI.IconButton({ icon: "close", label: "Remove " + c.name + " from priority groups", act: "home-remove", data: { key: "priorityGroups", id: c.id } }) + "</li>"; }).join("") + "</ul>";
@@ -290,10 +291,12 @@
 
   /* ---------------- CALCULATE / GUIDE lists ---------------- */
   function rootListScreen(tab) {
-    var cats = orderedCategories(false), hiddenN = Store.get().hiddenGroups.length;
-    var body = searchBlock("search", tab === "calculate" ? "Search calculators" : "Search guides") + '<div id="page-body">' +
-      UI.Section({ id: "cats", title: "Scores & Grades", body: cats.length ? '<div class="category-grid">' + cats.map(function (c) {
-        return UI.CategoryCard({ category: c, href: "#/" + tab + "/c/" + c.id, count: scoresIn(c.id).length }); }).join("") + "</div>"
+    var all = orderedCategories(false), hiddenN = Store.get().hiddenGroups.length;
+    var quick = all.filter(function (c) { return c.collection; }), cats = all.filter(function (c) { return !c.collection; });
+    var card = function (c) { return UI.CategoryCard({ category: c, href: "#/" + tab + "/c/" + c.id, count: scoresIn(c.id).length }); };
+    var body = searchBlock("search", tab === "calculate" ? "Search scores and grades" : "Search guides") + '<div id="page-body">' +
+      (quick.length ? UI.Section({ id: "quick", title: "Quick groups", body: '<div class="category-grid">' + quick.map(card).join("") + "</div>" }) : "") +
+      UI.Section({ id: "cats", title: "Scores & Grades", body: cats.length ? '<div class="category-grid">' + cats.map(card).join("") + "</div>"
         : UI.EmptyState({ title: "All groups are hidden", message: "Show groups again in Settings.", action: UI.SecondaryButton({ label: "Manage groups", href: "#/settings", icon: "settings" }) }) }) +
       (hiddenN ? '<p class="lede" style="margin-top:var(--space-4)">' + hiddenN + " hidden group" + (hiddenN > 1 ? "s" : "") + '. <a href="#/settings" data-nav>Manage groups</a></p>' : "") + "</div>";
     paint(frame({ title: tab === "calculate" ? "Calculate" : "Guide", tab: tab, body: body, wide: true }), { title: tab === "calculate" ? "Calculate" : "Guide" });
@@ -318,7 +321,7 @@
       if (rest.length) parts.push('<h3 class="sub-h group-h">Other</h3>' + UI.CardList(rest.map(function (s) { return scoreCard(s, tab); }), "Other"));
       listHtml = parts.join("");
     } else listHtml = list.length ? UI.CardList(list.map(function (s) { return scoreCard(s, tab); }), c.name) : UI.EmptyState({ title: "No scores in this group yet" });
-    var body = '<p class="lede">' + esc(c.description) + "</p>" + controls + UI.Section({ id: "scores", title: list.length + " score" + (list.length === 1 ? "" : "s"), body: listHtml });
+    var body = '<p class="lede">' + esc(c.description) + "</p>" + controls + UI.Section({ id: "scores", title: list.length + " item" + (list.length === 1 ? "" : "s"), body: listHtml });
     paint(frame({ title: c.name, tab: tab, back: true, body: body }), { title: c.name });
   }
 
@@ -422,10 +425,10 @@
     var favs = managedList("favorites", st.favorites.map(score).filter(Boolean), sc, sd, "Add favorite scores", "No favorite scores yet. Add a score to Favorites for one-tap access.");
     var favGuides = managedList("favoriteGuides", st.favoriteGuides.map(score).filter(Boolean), sc, sd, "Add favorite guides", "No favorite guides yet. Save a guide to Favorites to reopen it in one tap.");
     var prio = managedList("priorityScores", st.priorityScores.map(score).filter(Boolean), sc, sd, "Choose priority scores", "Priority scores appear first on Home.");
-    var groups = managedList("priorityGroups", st.priorityGroups.map(category).filter(Boolean), function (c) { return c.name; }, function (c) { return scoresIn(c.id).length + " scores"; }, "Choose priority groups", "Priority groups appear as shortcuts on Home.");
+    var groups = managedList("priorityGroups", st.priorityGroups.map(category).filter(Boolean), function (c) { return c.name; }, function (c) { return scoresIn(c.id).length + " items"; }, "Choose priority groups", "Priority groups appear as shortcuts on Home.");
     var allCats = orderedCategories(true);
     var groupVis = '<ul class="settings-list">' + allCats.map(function (c, i) {
-      return reorderRow({ key: "groupOrder", id: c.id, index: i, count: allCats.length, label: c.name, desc: scoresIn(c.id).length + " scores", hidden: st.hiddenGroups.indexOf(c.id) >= 0,
+      return reorderRow({ key: "groupOrder", id: c.id, index: i, count: allCats.length, label: c.name, desc: scoresIn(c.id).length + " items", hidden: st.hiddenGroups.indexOf(c.id) >= 0,
         visibility: st.hiddenGroups.indexOf(c.id) < 0, visibilityAct: "toggle-group-visible", moved: lastMoved && lastMoved.key === "groupOrder" && lastMoved.index === i });
     }).join("") + "</ul>";
     lastMoved = null;
@@ -448,7 +451,7 @@
       UI.Section({ id: "s-data", title: "Data on this device", body: '<div class="btn-row">' +
         UI.SecondaryButton({ label: "Reset all settings", icon: "reset", act: "reset-all" }) + "</div>" +
         (Store.storageAvailable() ? "" : '<div style="margin-top:var(--space-3)">' + UI.WarningBanner({ title: "Settings cannot be saved", message: "Device storage is unavailable. Changes will last only until the app closes." }) + "</div>") }) +
-      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.10.0 (Neurosurgical Examination &amp; Grades)</p>' +
+      UI.Section({ id: "s-about", title: "About", body: '<div class="about"><p><b>Insula Neuro Score</b> · Insula Neurosciences<br>Version 0.11.0 (Scores &amp; Grades: item types, quick groups)</p>' +
         '<p class="lede">A clinical calculation tool and reference guide. It does not diagnose and does not make treatment decisions. Works fully offline; preferences are stored only on this device. No patient data is collected or stored.</p>' +
         UI.SecondaryButton({ label: "Design system", icon: "eye", href: "#/settings/gallery", block: true }) + "</div>" });
     paint(frame({ title: "Settings", tab: "", back: true, noSettings: true, body: body }), { title: "Settings", focusMain: false });
@@ -459,7 +462,7 @@
     var body;
     if (key === "priorityGroups") {
       body = '<ul class="settings-list">' + orderedCategories(true).map(function (c) {
-        return "<li>" + UI.Toggle({ id: "p-" + c.id, label: c.name, description: scoresIn(c.id).length + " scores", checked: st.priorityGroups.indexOf(c.id) >= 0, act: "pick", data: { key: key, id: c.id } }) + "</li>"; }).join("") + "</ul>";
+        return "<li>" + UI.Toggle({ id: "p-" + c.id, label: c.name, description: scoresIn(c.id).length + " items", checked: st.priorityGroups.indexOf(c.id) >= 0, act: "pick", data: { key: key, id: c.id } }) + "</li>"; }).join("") + "</ul>";
     } else {
       body = orderedCategories(true).map(function (c) {
         return UI.Section({ id: "pk-" + c.id, title: c.name, body: '<ul class="settings-list">' + scoresIn(c.id).map(function (s) {

@@ -448,5 +448,6 @@
  "licensing": {
   "status": "Criteria with attribution",
   "note": "The official GCS aid, charts, videos and translations (glasgowcomascale.org) are not reproduced."
- }
+ },
+ "itemType": "score"
 }

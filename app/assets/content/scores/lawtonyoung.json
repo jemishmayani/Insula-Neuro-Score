@@ -118,7 +118,7 @@
   {
    "id": "sm",
    "type": "single",
-   "label": "Spetzler-Martin grade (optional)",
+   "label": "Spetzler-Martin grade",
    "short": "SM grade",
    "options": [
     {
@@ -152,6 +152,7 @@
      "code": "V"
     }
    ],
+   "help": "Optional. Adds the combined Supp-SM grade (2–10).",
    "required": false
   }
  ],
@@ -269,5 +270,6 @@
   "status": "Published grading system with attribution",
   "note": "No reproduction restrictions identified."
  },
- "category": "exam"
+ "category": "exam",
+ "itemType": "grade"
 }

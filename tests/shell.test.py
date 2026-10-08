@@ -63,7 +63,7 @@ async def main():
             for sid in ["favorites", "favoriteGuides", "recentCalc", "recentGuide", "priorityScores", "priorityGroups"]:
                 check(f"home section present: {sid}", await pg.locator(f"#home-{sid}").count() == 1)
             order = await pg.evaluate("[...document.querySelectorAll('#page-body > .section[id^=home-]')].map(e=>e.id)")
-            check("home sections in Phase 5 order", order == ["home-favorites", "home-favoriteGuides", "home-recentCalc", "home-recentGuide", "home-priorityScores", "home-priorityGroups"], str(order))
+            check("home sections in v0.11 order (priority groups first)", order == ["home-priorityGroups", "home-favorites", "home-favoriteGuides", "home-recentCalc", "home-recentGuide", "home-priorityScores"], str(order))
             check("empty favourites shows EmptyState", await pg.locator("#home-favorites .empty-state").count() == 1)
             check("settings in top-right app bar", await pg.locator(".appbar a[aria-label=Settings]").count() == 1)
             check("bottom nav has Home|Calculate|Guide", [t.strip() for t in await pg.locator(".bottomnav a").all_inner_texts()] == ["Home", "Calculate", "Guide"])
@@ -77,7 +77,7 @@ async def main():
 
             # ---- navigation & back stack ----
             await pg.click(".bottomnav >> text=Calculate"); await pg.wait_for_selector(".category-grid")
-            check("Calculate shows category cards", await pg.locator(".category-card").count() == 10)   # v0.10: + Neurosurgical Examination & Grades
+            check("Calculate shows category cards", await pg.locator(".category-card").count() == 13)   # v0.11: 3 quick groups + 10 groups
             await pg.screenshot(path=f"{SHOTS}/02_calculate.png")
             await pg.click(".category-card:has-text('Subarachnoid')"); await pg.wait_for_selector(".score-card")
             check("category → score list", await hashof(pg) == "#/calculate/c/sah" and await pg.locator(".score-card").count() == 4)
@@ -148,14 +148,14 @@ async def main():
             await pg.click("#s-home input[data-id=recentGuide]")
             await pg.goto(U + "#/home"); await pg.wait_for_selector(".section")
             ids = await pg.evaluate("[...document.querySelectorAll('#page-body > .section[id^=home-]')].map(e=>e.id)")
-            check("Home section order + visibility applied", ids[:2] == ["home-favoriteGuides", "home-favorites"] and "home-recentGuide" not in ids, str(ids))
+            check("Home section order + visibility applied", ids[:2] == ["home-favorites", "home-priorityGroups"] and "home-recentGuide" not in ids, str(ids))
             # group order & hide
             await pg.goto(U + "#/settings"); await pg.wait_for_selector("#s-groups")
             await pg.click("#s-groups [data-act=move][data-index='1'][data-delta='-1']")
             await pg.click("#s-groups input[data-id=oncology]")
             await pg.goto(U + "#/calculate"); await pg.wait_for_selector(".category-card")
             names = await pg.locator(".category-card .name").all_inner_texts()
-            check("group order applied", names[0] == "Stroke", str(names[:3]))
+            check("group order applied", names[0] == "Neurotrauma", str(names[:3]))
             check("hidden group removed from Calculate", "Neuro-oncology" not in names and await pg.locator("text=1 hidden group").count() == 1)
             await pg.goto(U + "#/guide"); await pg.wait_for_selector(".category-card")
             check("hidden group removed from Guide", "Neuro-oncology" not in await pg.locator(".category-card .name").all_inner_texts())
