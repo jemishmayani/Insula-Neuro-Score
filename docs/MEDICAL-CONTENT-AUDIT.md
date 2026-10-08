@@ -69,7 +69,7 @@ Internal consistency does not prove source fidelity: the source column above and
 8. **Marshall**: Category is derived from findings using the standard order of precedence; confirm with a neuroradiologist for mixed-lesion edge cases.
 9. **RTS**: The '<4' threshold is described in secondary sources as proposed for identifying severe injury; confirm wording.
 10. **GPA**: Middle age band printed as 50–59 or 50–60 in different reproductions; implemented as 50–60 (lowest band is >60).
-11. **Revised Tokuhashi**: CONFLICT: 'Metastases in the vertebral body' is ≥3/2/1 in one reproduction and ≥3/1–2/0 in two others (WJO 2016, PMC review). Implementation uses ≥3/2/1. Verify against the original 2005 paper before clinical use. A notice in the calculator states this.
+11. **Revised Tokuhashi**: CONFLICT: 'Metastases in the vertebral body' is ≥3/2/1 in one reproduction and ≥3/1–2/0 in two others (WJO 2016, PMC review). Implementation uses ≥3/2/1. A user textbook table (Spine Surgery and Peripheral Nerve Surgery 2025, Table 8.1) also shows ≥3/2/1, but that table mixes the 1990 and 2005 versions, so it is weak evidence. Verify against the original 2005 paper (Spine 30:2186) before clinical use. A notice in the calculator states this.
 12. **Tomita**: One review table (Global Spine J 2018) gives 3 points for rapid growth; the original 2–10 range requires 4. Implementation uses 4; noted for review.
 13. **SOFA**: Reproductions differ at some boundaries (dopamine ≤5 vs <5; creatinine >5.0 vs ≥5.0; one table gives platelets <25); implementation follows the Sepsis-3 table.
 14. **SOFA**: PaO2/FiO2 <200 without respiratory support is not explicitly assigned in the table.
