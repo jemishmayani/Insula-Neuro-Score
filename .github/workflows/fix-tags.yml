@@ -1,0 +1,27 @@
+name: fix-tags
+# One-off repair: v0.10.0 and v0.9.2 were created on the Phase 1 commit (25595c2) by mistake.
+# Deletes v0.10.0 (no release exists for it; v0.11.0 supersedes it) and moves v0.9.2 to the real v0.9.2 commit (416edd8).
+# Acts only while the tags still point at 25595c2, so re-runs do nothing.
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/fix-tags.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Repair tags
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --tags --force origin
+          bad=25595c2cb0a8b9f559a45f4904c380769d8b2bcc
+          if [ "$(git rev-parse -q --verify 'refs/tags/v0.10.0^{commit}' || true)" = "$bad" ]; then git push origin :refs/tags/v0.10.0; echo "deleted v0.10.0"; fi
+          if [ "$(git rev-parse -q --verify 'refs/tags/v0.9.2^{commit}' || true)" = "$bad" ]; then
+            git tag -f -a v0.9.2 416edd8 -m "v0.9.2: review scores completed"; git push -f origin refs/tags/v0.9.2; echo "moved v0.9.2 to 416edd8"; fi
+          git ls-remote --tags origin
