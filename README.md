@@ -4,9 +4,44 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: v0.10.0, 50 scores and grades implemented. **Not clinically ready** (see medical content audit)
+## Status: v0.10.0. **Not clinically ready**
 
-**50 scores and grades implemented**, each verified against cited sources, including the new **Neurosurgical Examination & Grades** group ([docs/V0.10.md](docs/V0.10.md)). Only implemented scores appear in the app. **10 withheld** (licensing, version or verification; RASS verified but held for licensing) and **9 planned** are recorded in `catalog.json` with reasons but not shown. See [docs/CONTENT-AUDIT.md](docs/CONTENT-AUDIT.md). Each was verified against its authoritative source. Results and guides are built by the structured clinical insight engine. **Medical content audit: [docs/MEDICAL-CONTENT-AUDIT.md](docs/MEDICAL-CONTENT-AUDIT.md)** lists unresolved issues that require clinician review before any clinical use. Final UX and performance: [docs/PHASE-8.md](docs/PHASE-8.md). Guide experience: [docs/PHASE-7.md](docs/PHASE-7.md). Library expansion: [docs/PHASE-6.md](docs/PHASE-6.md). Personalized Home: [docs/PHASE-5.md](docs/PHASE-5.md). See [docs/PHASE-4.md](docs/PHASE-4.md), [docs/PHASE-3.md](docs/PHASE-3.md) and [docs/SCORE-MODEL.md](docs/SCORE-MODEL.md).
+50 scores and grades are implemented. Each was checked against its cited sources before implementation and is pending independent clinician review. Unresolved issues are listed in the [medical content audit](docs/MEDICAL-CONTENT-AUDIT.md).
+
+- **What changed:** [CHANGELOG.md](CHANGELOG.md)
+- **Latest release notes:** [docs/releases/v0.10.0.md](docs/releases/v0.10.0.md)
+- **Download:** the APK is attached to the GitHub release. Uninstall versions before 0.10.0 first: 0.10.0 is signed with a new key.
+
+## Scores & Grades
+
+| Group | Implemented |
+|---|---|
+| Consciousness | GCS, GCS-P, GOS, GOSE |
+| Stroke | NIHSS, ASPECTS, pc-ASPECTS, ABCD², RACE, LAMS, FAST-ED |
+| Intracerebral haemorrhage | ICH Score, FUNC, Graeb |
+| Subarachnoid haemorrhage | Hunt & Hess, WFNS, Fisher, Modified Fisher |
+| Traumatic brain injury | Marshall, Rotterdam, RTS, ISS, TRISS, Markwalder |
+| Spine and spinal cord | Frankel, SINS, Nurick, mJOA |
+| Neuro-oncology | KPS, ECOG, Tomita, Revised Tokuhashi, GPA |
+| Functional and disability | mRS |
+| Neurocritical care | SOFA (original) |
+| **Neurosurgical Examination & Grades** | **Motor:** MRC power, MRC sum score · **Reflexes:** reflex grade (NINDS), clonus, plantar response · **Tone:** Modified Ashworth, Modified Tardieu · **Facial nerve:** House-Brackmann · **Hearing/CPA:** Gardner-Robertson · **Vascular:** Spetzler-Martin, Lawton-Young, Borden, Cognard · **Neurotrauma:** Markwalder · **Functional/neuro-oncology:** KPS, ECOG · **Epilepsy surgery:** Engel, ILAE outcome |
+
+Only implemented scores appear in the app.
+
+**Withheld** (recorded in `catalog.json` with the reason, not shown): FOUR, RASS, ODI and ASIA/AIS (licensing); JOA and DS-GPA (version); Modified Graeb, Tokuhashi (1990) and SOFA-2 (verification); Sunnybrook (verification and licensing).
+
+**Planned** (IDs reserved, not implemented): Helsinki CT, Stockholm CT, IMPACT, CRASH, SCIM III, WISCI II, RPA, Evans Index, FOHR.
+
+## Principles
+
+- Calculates, explains and shows limitations. It never turns a threshold into a treatment instruction.
+- Never invents criteria or combines versions. Uncertain items are flagged or withheld.
+- Fully offline. Inputs are never stored; only score IDs and times are kept for recent items.
+
+## Documentation
+
+[Architecture](docs/ARCHITECTURE.md) · [Score model](docs/SCORE-MODEL.md) · [Content audit](docs/CONTENT-AUDIT.md) · [Calculation audit](docs/CALCULATION-AUDIT.md) · [Medical content audit](docs/MEDICAL-CONTENT-AUDIT.md) · [Performance](docs/PERFORMANCE.md) · v0.10 notes: [docs/V0.10.md](docs/V0.10.md) · Phase reports: [1](docs/PHASE-1.md) [2](docs/PHASE-2.md) [3](docs/PHASE-3.md) [4](docs/PHASE-4.md) [5](docs/PHASE-5.md) [6](docs/PHASE-6.md) [7](docs/PHASE-7.md) [8](docs/PHASE-8.md)
 
 ## Repository layout
 
@@ -26,13 +61,14 @@ app/
     js/app.js             router and screens
     content/scores/       implemented scores (generated from content_src/)
     content/dev/          non-clinical input-types demo
-    content/catalog.json  placeholder catalogue (categories + score names; no criteria)
+    content/catalog.json  catalogue: implemented scores (shown), withheld and planned entries (not shown), group sub-sections
   build.sh                Gradle-free APK build
 tests/engine/             engine unit tests + per-score fixtures (node --test)
 tests/calculator.test.py  calculator UI tests (Playwright)
 tests/home.test.py        personalization + performance tests (Playwright)
 tests/shell.test.py       shell regression tests (Playwright)
-content_src/              score content source (library.py, related.py clusters)
+content_src/              score content source (library.py, library2.py, library3.py, related.py clusters)
+tools/                    calculation, content and medical audits; evidence ledger
 brand/                    app icon sources (SVG). Current logo: Insula_Neuro_Score_Full_Better.svg
 docs/                     architecture and phase reports
 ```
@@ -54,6 +90,8 @@ python3 tests/guide.test.py             # guide structure, navigation, all relat
 python3 tests/journey.test.py           # full user journey (phone + tablet), errors, reduced motion
 python3 tests/perf.test.py              # performance under 4x CPU throttle
 python3 tests/audit.py                  # 585-render responsiveness/accessibility/contrast audit
+node tools/calc_audit.js                # calculation audit (all combinations)
+python3 tools/medical_audit.py          # regenerate docs/MEDICAL-CONTENT-AUDIT.md
 python3 tools/content_audit.py          # regenerate docs/CONTENT-AUDIT.md
 cd app && KEYSTORE=/path/to/release.keystore KS_PASS=... ./build.sh
 ```
