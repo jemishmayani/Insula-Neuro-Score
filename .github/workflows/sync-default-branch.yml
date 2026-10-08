@@ -1,0 +1,16 @@
+name: sync-default-branch
+# The repository's default branch is `engine-preview` (a repository setting this project cannot change from CI).
+# Keep it identical to `main` so the repository front page always shows the current code and README.
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Fast-forward engine-preview to main
+        run: git push origin HEAD:refs/heads/engine-preview
