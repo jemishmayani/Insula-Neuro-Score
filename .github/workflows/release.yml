@@ -1,11 +1,15 @@
 name: release
-# Push a version tag (e.g. `git tag v0.11.0 && git push origin v0.11.0`) to build, sign and publish the APK.
+# Publishes a signed APK as a GitHub release for the app version in app/AndroidManifest.xml:
+#  - automatically on a push to main when no release exists yet for that version (bump versionName to release), or
+#  - when a version tag is pushed (e.g. `git tag v0.12.0 && git push origin v0.12.0`), or
+#  - manually: Actions → release → Run workflow (an existing tag).
 # Required repository secrets (Settings → Secrets and variables → Actions):
 #   ANDROID_KEYSTORE_B64  base64 of the release keystore (the key that signed v0.10.0)
 #   ANDROID_KS_PASS       keystore / key password
 #   ANDROID_KEY_ALIAS     key alias (insula)
 on:
   push:
+    branches: [main]
     tags: ["v*"]
   workflow_dispatch:
     inputs:
@@ -19,23 +23,37 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-24.04
-    env:
-      TAG: ${{ github.event.inputs.tag || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Work out the version and whether it needs a release
+        id: ver
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(grep -o 'android:versionName="[^"]*"' app/AndroidManifest.xml | cut -d'"' -f2)
+          if [ "${{ github.ref_type }}" = "tag" ] || [ -n "${{ github.event.inputs.tag }}" ]; then TAG="${{ github.event.inputs.tag || github.ref_name }}"; else TAG="v$v"; fi
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          if [ "${{ github.ref_type }}" = "branch" ] && gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; nothing to do."; echo "skip=true" >> "$GITHUB_OUTPUT"
+          else echo "skip=false" >> "$GITHUB_OUTPUT"; fi
       - uses: actions/setup-node@v4
+        if: steps.ver.outputs.skip != 'true'
         with: { node-version: 22 }
       - uses: actions/setup-python@v5
+        if: steps.ver.outputs.skip != 'true'
         with: { python-version: "3.12" }
 
       - name: Check the tag matches the app version
+        if: steps.ver.outputs.skip != 'true'
         run: |
           v=$(grep -o 'android:versionName="[^"]*"' app/AndroidManifest.xml | cut -d'"' -f2)
           test "v$v" = "$TAG" || { echo "::error::Tag $TAG does not match versionName $v in app/AndroidManifest.xml"; exit 1; }
 
       - name: Content, engine tests and calculation audit
+        if: steps.ver.outputs.skip != 'true'
         run: |
           python3 content_src/build_scores.py && git diff --exit-code app/assets/content/
           python3 tools/consistency_check.py
@@ -43,11 +61,13 @@ jobs:
           node tools/calc_audit.js | tee /tmp/calc.txt && grep -q " 0 with issues" /tmp/calc.txt
 
       - name: Install Android build tools
+        if: steps.ver.outputs.skip != 'true'
         run: |
           sudo apt-get update -q
           sudo apt-get install -y -q android-sdk-platform-23 aapt apksigner zipalign dalvik-exchange
 
       - name: Build and sign the APK
+        if: steps.ver.outputs.skip != 'true'
         env:
           KS_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
           KS_PASS: ${{ secrets.ANDROID_KS_PASS }}
@@ -61,6 +81,7 @@ jobs:
           apksigner verify --print-certs "InsulaNeuroScore-$TAG.apk" | grep -i "SHA-256"
 
       - name: Publish the GitHub release
+        if: steps.ver.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -69,5 +90,6 @@ jobs:
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "InsulaNeuroScore-$TAG.apk" --clobber
           else
-            gh release create "$TAG" "InsulaNeuroScore-$TAG.apk" --title "$TAG" --notes-file "$notes" --prerelease --verify-tag
+            if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then verify="--verify-tag"; else verify="--target $GITHUB_SHA"; fi
+            gh release create "$TAG" "InsulaNeuroScore-$TAG.apk" --title "$TAG" --notes-file "$notes" --prerelease $verify
           fi

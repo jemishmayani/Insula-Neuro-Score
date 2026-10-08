@@ -14,7 +14,7 @@ Scores & Grades: item types, quick groups and a consistency clean-up.
   - Vascular: Hunt & Hess, WFNS, Modified Fisher, Spetzler-Martin, Borden, Cognard
 - Home shows priority groups first. New installs start with the three quick groups; they can be removed or reordered in Settings.
 - `tools/consistency_check.py` (run in CI and before every release): fails if the catalogue, shipped JSON, related links, groups, fixtures, audit evidence or app defaults disagree.
-- Release workflow: pushing a `v*` tag builds, tests, signs and publishes the APK to GitHub Releases.
+- Release workflow: a push to `main` with a new `versionName` (or a pushed `v*` tag) builds, tests, signs and publishes the APK to GitHub Releases.
 
 ### Changed
 - **Optional inputs reviewed.** Descriptive details (side, muscle group, reflex, joint, beat count, follow-up) are grouped under "Details for your note". They are left out of the breakdown when not entered, never change the result, and are listed separately in the guide, not as scoring components. Long detail lists use a dropdown. Optional inputs that do change the result (Lawton-Young's Spetzler-Martin grade, ILAE class 1a, Borden subtype, Modified Tardieu R1) stay with the scored inputs and say what they add.

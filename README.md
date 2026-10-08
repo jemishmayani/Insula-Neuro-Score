@@ -104,14 +104,13 @@ cd app && KEYSTORE=/path/to/release.keystore KS_PASS=... ./build.sh
 
 ### Releasing
 
-Pushing a version tag builds, tests, signs and publishes the APK as a GitHub release (`.github/workflows/release.yml`):
+`.github/workflows/release.yml` builds, tests, signs and publishes the APK as a GitHub release. To release:
 
-```bash
-# 1. bump versionCode/versionName in app/AndroidManifest.xml, add docs/releases/vX.Y.Z.md and a CHANGELOG entry, push to main
-git tag v0.11.0 && git push origin v0.11.0
-```
+1. Bump `versionCode` and `versionName` in `app/AndroidManifest.xml`.
+2. Add `docs/releases/vX.Y.Z.md` and a CHANGELOG entry.
+3. Push to `main`.
 
-The tag must match `versionName`. Release notes come from `docs/releases/<tag>.md`. Signing uses three repository secrets: `ANDROID_KEYSTORE_B64` (base64 of the keystore), `ANDROID_KS_PASS` and `ANDROID_KEY_ALIAS`. An existing tag can be rebuilt from Actions → release → Run workflow.
+When no release exists yet for that version, the workflow creates the tag and the release with the APK attached. Pushes that don't change the version are skipped. Pushing a `v*` tag, or Actions → release → Run workflow, also works. Signing uses three repository secrets: `ANDROID_KEYSTORE_B64` (base64 of the keystore), `ANDROID_KS_PASS` and `ANDROID_KEY_ALIAS`.
 
 Without `KEYSTORE`, `build.sh` generates `keystore/local.keystore`. **Never commit keystores.** Updates must be signed with the same key.
 
