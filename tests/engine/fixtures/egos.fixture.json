@@ -1,0 +1,73 @@
+{
+ "scoreId": "egos",
+ "cases": [
+  {
+   "name": "minimum",
+   "answers": {
+    "age": "le40",
+    "diar": "no",
+    "gbs": "0"
+   },
+   "expect": {
+    "total": 1,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0+0+1 = 1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "high",
+   "answers": {
+    "age": "41to60",
+    "diar": "yes",
+    "gbs": "4"
+   },
+   "expect": {
+    "total": 5.5,
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0.5+1+4 = 5.5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "intermediate",
+   "answers": {
+    "age": "gt60",
+    "diar": "no",
+    "gbs": "3"
+   },
+   "expect": {
+    "total": 4,
+    "state": "mid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+0+3 = 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "maximum",
+   "answers": {
+    "age": "gt60",
+    "diar": "yes",
+    "gbs": "5"
+   },
+   "expect": {
+    "total": 7,
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "7",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

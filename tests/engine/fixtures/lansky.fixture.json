@@ -1,0 +1,51 @@
+{
+ "scoreId": "lansky",
+ "cases": [
+  {
+   "name": "100",
+   "answers": {
+    "lv": "100"
+   },
+   "expect": {
+    "display": "Lansky 100",
+    "state": "full",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "100",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "60",
+   "answers": {
+    "lv": "60"
+   },
+   "expect": {
+    "display": "Lansky 60",
+    "state": "mid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "60",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "0",
+   "answers": {
+    "lv": "0"
+   },
+   "expect": {
+    "display": "Lansky 0",
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

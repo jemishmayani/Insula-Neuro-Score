@@ -1,0 +1,175 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "cpp",
+  "cerebral perfusion pressure",
+  "icp",
+  "intracranial pressure",
+  "map"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using systolic pressure instead of MAP.",
+  "Mixing transducer levels between readings."
+ ],
+ "relatedScores": [
+  {
+   "id": "gcs",
+   "relation": "Consciousness"
+  },
+  {
+   "id": "marshall",
+   "relation": "CT classification"
+  }
+ ],
+ "id": "cpp",
+ "name": "Cerebral Perfusion Pressure",
+ "abbreviation": "CPP",
+ "category": "neurocritical",
+ "subcategory": "Intracranial pressure",
+ "specialties": [
+  "Neurocritical Care",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "CPP = MAP − ICP",
+  "detail": "Mean arterial pressure minus intracranial pressure, both in mmHg. If MAP is not displayed, it can be estimated as diastolic + (systolic − diastolic)/3."
+ },
+ "purpose": "Calculates cerebral perfusion pressure from MAP and ICP.",
+ "intendedPopulation": "Patients with ICP monitoring, e.g. after severe traumatic brain injury.",
+ "resultPresentation": {
+  "type": "measurement",
+  "typeLabel": "Cerebral perfusion pressure",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Use one reference level",
+  "message": "Arterial transducer levelling (heart or tragus) changes MAP and therefore CPP. Use your unit's convention consistently."
+ },
+ "inputDefinitions": [
+  {
+   "id": "map",
+   "type": "integer",
+   "label": "Mean arterial pressure",
+   "short": "MAP",
+   "unit": "mmHg",
+   "min": 20,
+   "max": 200
+  },
+  {
+   "id": "icp",
+   "type": "integer",
+   "label": "Intracranial pressure",
+   "short": "ICP",
+   "unit": "mmHg",
+   "min": -10,
+   "max": 100
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "map - icp",
+  "range": {
+   "min": -80,
+   "max": 210
+  },
+  "formula": "MAP {map} − ICP {icp}",
+  "display": "{total} mmHg",
+  "share": "CPP {total} mmHg (MAP {map}, ICP {icp})"
+ },
+ "interpretationRules": [
+  {
+   "state": "val"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "val",
+   "tone": "informational",
+   "label": "CPP {total} mmHg",
+   "summary": "Calculated cerebral perfusion pressure.",
+   "detail": "Interpret with ICP, MAP trend, autoregulation status and the unit's targets."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "CPP is a surrogate for cerebral blood flow when autoregulation is impaired.",
+   "importance": "major"
+  },
+  {
+   "text": "Severe TBI guideline context (Brain Trauma Foundation, 4th ed. 2016): CPP 60–70 mmHg recommended as a target range; ICP above 22 mmHg associated with higher mortality."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "icp > 22",
+   "importance": "major",
+   "text": "ICP is above 22 mmHg, the BTF 2016 threshold associated with increased mortality in severe TBI."
+  },
+  {
+   "when": "total < 60",
+   "text": "CPP is below the BTF 2016 target range of 60–70 mmHg for severe TBI."
+  },
+  {
+   "when": "total > 70",
+   "text": "CPP is above 70 mmHg; BTF 2016 notes risk of respiratory complications with aggressive CPP elevation."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "A single value; trends and autoregulation matter more than one reading.",
+   "importance": "major"
+  },
+  "Targets come from severe TBI and may not apply to other conditions."
+ ],
+ "confounders": [
+  {
+   "factor": "Transducer levelling",
+   "effect": "Changes MAP and CPP by several mmHg."
+  },
+  {
+   "factor": "Zero drift of ICP monitors",
+   "effect": "Particularly with parenchymal sensors over time."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Cerebral blood flow directly.",
+  "Autoregulation status."
+ ],
+ "guideSections": {
+  "what": "CPP = MAP − ICP.",
+  "whenToUse": "Patients with ICP monitoring.",
+  "howToPerform": "Enter MAP and ICP measured at the same time.",
+  "clinicalContext": "Interpret with trends, autoregulation and guideline targets."
+ },
+ "sources": [
+  {
+   "citation": "Carney N, Totten AM, O'Reilly C, et al. Guidelines for the management of severe traumatic brain injury, fourth edition. Neurosurgery. 2017;80(1):6-15."
+  }
+ ],
+ "licensing": {
+  "status": "Formula; guideline cited",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_map",
+   "label": "Mean arterial pressure",
+   "inputs": [
+    "map"
+   ]
+  },
+  {
+   "id": "c_icp",
+   "label": "Intracranial pressure",
+   "inputs": [
+    "icp"
+   ]
+  }
+ ],
+ "itemType": "measurement"
+}

@@ -1,0 +1,354 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "chads",
+  "cha2ds2-vasc",
+  "chadsvasc",
+  "atrial fibrillation stroke risk",
+  "af",
+  "anticoagulation"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring 1 for age 75+ (it scores 2).",
+  "Treating female sex alone as a risk factor.",
+  "Mixing with the CHA₂DS₂-VA version."
+ ],
+ "relatedScores": [
+  {
+   "id": "hasbled",
+   "relation": "Bleeding risk"
+  },
+  {
+   "id": "toast",
+   "relation": "Stroke mechanism"
+  },
+  {
+   "id": "abcd2",
+   "relation": "Risk after TIA"
+  }
+ ],
+ "id": "chadsvasc",
+ "name": "CHA₂DS₂-VASc Score",
+ "abbreviation": "CHA₂DS₂-VASc",
+ "category": "stroke",
+ "subcategory": "Stroke risk in atrial fibrillation",
+ "specialties": [
+  "Stroke",
+  "Neurology",
+  "Cardiology"
+ ],
+ "version": {
+  "label": "CHA₂DS₂-VASc (Lip et al. 2010)",
+  "detail": "Total 0–9. The 2024 ESC guideline's CHA₂DS₂-VA (sex category removed) is a different version and is not combined."
+ },
+ "purpose": "Estimates thromboembolic stroke risk in non-valvular atrial fibrillation.",
+ "intendedPopulation": "Adults with atrial fibrillation without moderate-severe mitral stenosis or mechanical valves.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Stroke risk score",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "chf",
+   "type": "single",
+   "label": "Congestive heart failure or LV dysfunction",
+   "short": "C",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "htn",
+   "type": "single",
+   "label": "Hypertension",
+   "short": "H",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age",
+   "short": "Age",
+   "options": [
+    {
+     "value": "lt65",
+     "label": "Under 65",
+     "points": 0
+    },
+    {
+     "value": "65to74",
+     "label": "65–74",
+     "points": 1
+    },
+    {
+     "value": "ge75",
+     "label": "75 or older",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "dm",
+   "type": "single",
+   "label": "Diabetes mellitus",
+   "short": "D",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "stroke",
+   "type": "single",
+   "label": "Previous stroke, TIA or thromboembolism",
+   "short": "S₂",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "vasc",
+   "type": "single",
+   "label": "Vascular disease (previous MI, peripheral arterial disease or aortic plaque)",
+   "short": "V",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "sex",
+   "type": "single",
+   "label": "Sex category",
+   "short": "Sc",
+   "options": [
+    {
+     "value": "m",
+     "label": "Male",
+     "points": 0
+    },
+    {
+     "value": "f",
+     "label": "Female",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 9
+  },
+  "display": "{total}",
+  "share": "CHA₂DS₂-VASc {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "low"
+  },
+  {
+   "when": "total == 1 && sex == 1",
+   "state": "sexonly"
+  },
+  {
+   "when": "total == 1",
+   "state": "one"
+  },
+  {
+   "state": "two"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low",
+   "tone": "low",
+   "label": "Low risk",
+   "summary": "CHA₂DS₂-VASc 0: the lowest risk group.",
+   "range": "0"
+  },
+  {
+   "id": "sexonly",
+   "tone": "low",
+   "label": "Female sex only",
+   "summary": "CHA₂DS₂-VASc 1 from female sex alone, which is not regarded as a risk factor on its own.",
+   "range": "1"
+  },
+  {
+   "id": "one",
+   "tone": "informational",
+   "label": "CHA₂DS₂-VASc 1",
+   "summary": "One non-sex risk factor.",
+   "range": "1",
+   "detail": "Decisions depend on the guideline in use and patient factors, including bleeding risk."
+  },
+  {
+   "id": "two",
+   "tone": "informational",
+   "label": "CHA₂DS₂-VASc {total}",
+   "summary": "Two or more points: higher annual stroke risk with each point.",
+   "range": "2–9",
+   "detail": "Guideline thresholds for anticoagulation differ by version and sex; integrate with bleeding risk and patient preference."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Estimates thromboembolic risk in atrial fibrillation; used with a bleeding risk score.",
+   "importance": "major"
+  },
+  {
+   "text": "Relevant in stroke clinic for secondary prevention after AF-related stroke (previous stroke scores 2)."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "stroke == 2",
+   "text": "After stroke or TIA the score is at least 2; risk factors and bleeding risk still guide shared decisions."
+  },
+  {
+   "text": "Assess bleeding risk alongside (e.g. HAS-BLED) and address modifiable risk factors."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Derived for non-valvular atrial fibrillation; not for mechanical valves or moderate-severe mitral stenosis.",
+   "importance": "major"
+  },
+  "Event rates per point vary between cohorts.",
+  "Does not include renal function, AF burden or imaging markers."
+ ],
+ "confounders": [
+  {
+   "factor": "Undocumented history",
+   "effect": "Under-scores vascular disease or prior TIA."
+  },
+  {
+   "factor": "Definition differences",
+   "effect": "e.g. what counts as vascular disease."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Bleeding risk.",
+  "Whether a stroke was cardioembolic.",
+  "The choice of anticoagulant."
+ ],
+ "guideSections": {
+  "what": "A 0–9 point score of stroke risk factors in atrial fibrillation.",
+  "whenToUse": "Atrial fibrillation, including after stroke or TIA.",
+  "howToPerform": "Score each factor present: CHF 1, hypertension 1, age 75+ 2, diabetes 1, prior stroke/TIA/thromboembolism 2, vascular disease 1, age 65–74 1, female sex 1.",
+  "clinicalContext": "One input to anticoagulation decisions with bleeding risk and patient preference."
+ },
+ "sources": [
+  {
+   "citation": "Lip GYH, Nieuwlaat R, Pisters R, Lane DA, Crijns HJGM. Refining clinical risk stratification for predicting stroke and thromboembolism in atrial fibrillation using a novel risk factor-based approach: the Euro Heart Survey on Atrial Fibrillation. Chest. 2010;137(2):263-272."
+  }
+ ],
+ "licensing": {
+  "status": "Published score with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_chf",
+   "label": "Congestive heart failure or LV dysfunction",
+   "inputs": [
+    "chf"
+   ]
+  },
+  {
+   "id": "c_htn",
+   "label": "Hypertension",
+   "inputs": [
+    "htn"
+   ]
+  },
+  {
+   "id": "c_age",
+   "label": "Age",
+   "inputs": [
+    "age"
+   ]
+  },
+  {
+   "id": "c_dm",
+   "label": "Diabetes mellitus",
+   "inputs": [
+    "dm"
+   ]
+  },
+  {
+   "id": "c_stroke",
+   "label": "Previous stroke, TIA or thromboembolism",
+   "inputs": [
+    "stroke"
+   ]
+  },
+  {
+   "id": "c_vasc",
+   "label": "Vascular disease (previous MI, peripheral arterial disease or aortic plaque)",
+   "inputs": [
+    "vasc"
+   ]
+  },
+  {
+   "id": "c_sex",
+   "label": "Sex category",
+   "inputs": [
+    "sex"
+   ]
+  }
+ ],
+ "itemType": "score"
+}

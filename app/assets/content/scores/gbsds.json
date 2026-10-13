@@ -1,0 +1,224 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "hughes",
+  "gbs disability",
+  "guillain-barre",
+  "guillain barre",
+  "gbs"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing the 5 m and 10 m wording versions."
+ ],
+ "relatedScores": [
+  {
+   "id": "egos",
+   "relation": "Prognosis"
+  },
+  {
+   "id": "mrcss",
+   "relation": "Global strength"
+  }
+ ],
+ "id": "gbsds",
+ "name": "GBS Disability Scale (Hughes)",
+ "abbreviation": "GBS disability",
+ "category": "neurology",
+ "subcategory": "Neuromuscular",
+ "specialties": [
+  "Neurology",
+  "Neurocritical Care"
+ ],
+ "version": {
+  "label": "GBS disability scale (Hughes 1978) as used in EGOS (van Koningsveld 2007)",
+  "detail": "Grades 0–6. Wording of grades 2–3 differs slightly between versions (5 m vs 10 m); the EGOS wording is used."
+ },
+ "purpose": "Grades functional disability in Guillain-Barré syndrome.",
+ "intendedPopulation": "Patients with Guillain-Barré syndrome.",
+ "resultPresentation": {
+  "type": "disability",
+  "typeLabel": "Disability grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Functional level",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "0",
+     "label": "0: A healthy state",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "1: Minor symptoms and capable of running",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "2: Able to walk 10 m or more without assistance but unable to run",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "3: Able to walk 10 m across an open space with help",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "4: Bedridden or chairbound",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "5",
+     "label": "5: Requiring assisted ventilation for at least part of the day",
+     "points": 5,
+     "code": "5"
+    },
+    {
+     "value": "6",
+     "label": "6: Dead",
+     "points": 6,
+     "code": "6"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 0,
+   "max": 6
+  },
+  "display": "Grade {total}",
+  "share": "GBS disability grade {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "g0"
+  },
+  {
+   "when": "total <= 2",
+   "state": "walk"
+  },
+  {
+   "when": "total <= 4",
+   "state": "nowalk"
+  },
+  {
+   "when": "total == 5",
+   "state": "vent"
+  },
+  {
+   "state": "dead"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "g0",
+   "tone": "favorable",
+   "label": "Healthy state",
+   "summary": "No disability measured by the scale at this assessment.",
+   "range": "0",
+   "detail": "Fatigue, pain and sensory symptoms are not captured."
+  },
+  {
+   "id": "walk",
+   "tone": "informational",
+   "label": "Grade {total}: walks independently",
+   "summary": "Able to walk independently.",
+   "range": "1–2"
+  },
+  {
+   "id": "nowalk",
+   "tone": "informational",
+   "label": "Grade {total}: unable to walk independently",
+   "summary": "Unable to walk 10 m without help.",
+   "range": "3–4"
+  },
+  {
+   "id": "vent",
+   "tone": "informational",
+   "label": "Grade 5: ventilated",
+   "summary": "Requires assisted ventilation for at least part of the day.",
+   "range": "5"
+  },
+  {
+   "id": "dead",
+   "tone": "informational",
+   "label": "Grade 6: dead",
+   "summary": "Outcome: dead.",
+   "range": "6"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The standard functional outcome in GBS trials; grade 3 or more defines inability to walk independently.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "The grade at 2 weeks after admission feeds the EGOS prognostic score."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Coarse, walking-weighted scale.",
+   "importance": "major"
+  },
+  "Insensitive to upper limb, sensory and autonomic involvement."
+ ],
+ "confounders": [
+  {
+   "factor": "Pre-existing gait problems",
+   "effect": "Raise the grade independent of GBS."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Strength (see MRC sum score).",
+  "Autonomic dysfunction."
+ ],
+ "guideSections": {
+  "what": "Seven grades from healthy (0) to dead (6).",
+  "whenToUse": "Serial assessment in GBS and trial outcomes.",
+  "howToPerform": "Assess walking, running and ventilation needs; choose the grade.",
+  "clinicalContext": "Used with MRC sum score and EGOS."
+ },
+ "sources": [
+  {
+   "citation": "Hughes RAC, Newsom-Davis JM, Perkin GD, Pierce JM. Controlled trial of prednisolone in acute polyneuropathy. Lancet. 1978;2(8093):750-753."
+  },
+  {
+   "citation": "van Koningsveld R, Steyerberg EW, Hughes RAC, Swan AV, van Doorn PA, Jacobs BC. A clinical prognostic scoring system for Guillain-Barré syndrome. Lancet Neurol. 2007;6(7):589-594."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Functional level",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

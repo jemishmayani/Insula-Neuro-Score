@@ -1,0 +1,33 @@
+{
+ "scoreId": "suzuki",
+ "cases": [
+  {
+   "name": "stage I",
+   "answers": {
+    "stg": "1"
+   },
+   "expect": {
+    "display": "Stage I"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "stage VI",
+   "answers": {
+    "stg": "6"
+   },
+   "expect": {
+    "display": "Stage VI"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "VI",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

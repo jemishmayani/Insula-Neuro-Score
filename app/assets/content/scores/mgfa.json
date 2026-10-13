@@ -1,0 +1,256 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "mgfa",
+  "myasthenia",
+  "myasthenia gravis",
+  "osserman"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using MGFA class as an outcome measure."
+ ],
+ "relatedScores": [
+  {
+   "id": "mrcss",
+   "relation": "Global strength"
+  }
+ ],
+ "id": "mgfa",
+ "name": "MGFA Clinical Classification of Myasthenia Gravis",
+ "abbreviation": "MGFA class",
+ "category": "neurology",
+ "subcategory": "Neuromuscular",
+ "specialties": [
+  "Neurology",
+  "Neurocritical Care"
+ ],
+ "version": {
+  "label": "MGFA clinical classification (Jaretzki et al. 2000)",
+  "detail": "Classes I–V with subclasses a (limb/axial) and b (oropharyngeal/respiratory). Classes II–IV allow ocular weakness of any severity. The older Osserman classification is different."
+ },
+ "purpose": "Classifies the maximum severity and distribution of myasthenic weakness.",
+ "intendedPopulation": "Patients with myasthenia gravis.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Clinical class",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "cls",
+   "type": "single",
+   "label": "Clinical class",
+   "short": "Class",
+   "options": [
+    {
+     "value": "1",
+     "label": "I: Ocular weakness only (may include eye closure); all other strength normal",
+     "points": 1,
+     "code": "I"
+    },
+    {
+     "value": "2",
+     "label": "IIa: Mild non-ocular weakness, predominantly limb and/or axial",
+     "points": 2,
+     "code": "IIa"
+    },
+    {
+     "value": "3",
+     "label": "IIb: Mild non-ocular weakness, predominantly oropharyngeal and/or respiratory",
+     "points": 3,
+     "code": "IIb"
+    },
+    {
+     "value": "4",
+     "label": "IIIa: Moderate non-ocular weakness, predominantly limb and/or axial",
+     "points": 4,
+     "code": "IIIa"
+    },
+    {
+     "value": "5",
+     "label": "IIIb: Moderate non-ocular weakness, predominantly oropharyngeal and/or respiratory",
+     "points": 5,
+     "code": "IIIb"
+    },
+    {
+     "value": "6",
+     "label": "IVa: Severe non-ocular weakness, predominantly limb and/or axial",
+     "points": 6,
+     "code": "IVa"
+    },
+    {
+     "value": "7",
+     "label": "IVb: Severe non-ocular weakness, predominantly oropharyngeal and/or respiratory (includes feeding tube without intubation)",
+     "points": 7,
+     "code": "IVb"
+    },
+    {
+     "value": "8",
+     "label": "V: Intubation, with or without mechanical ventilation (excluding routine postoperative care)",
+     "points": 8,
+     "code": "V"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "cls",
+  "range": {
+   "min": 1,
+   "max": 8
+  },
+  "display": "MGFA {cls_code}",
+  "share": "MGFA class {cls_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  },
+  {
+   "when": "total == 6",
+   "state": "s6"
+  },
+  {
+   "when": "total == 7",
+   "state": "s7"
+  },
+  {
+   "when": "total == 8",
+   "state": "s8"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Class I",
+   "summary": "Ocular weakness only (may include eye closure); all other strength normal.",
+   "range": "I"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Class IIa",
+   "summary": "Mild non-ocular weakness, predominantly limb and/or axial.",
+   "range": "IIa"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Class IIb",
+   "summary": "Mild non-ocular weakness, predominantly oropharyngeal and/or respiratory.",
+   "range": "IIb"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Class IIIa",
+   "summary": "Moderate non-ocular weakness, predominantly limb and/or axial.",
+   "range": "IIIa"
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Class IIIb",
+   "summary": "Moderate non-ocular weakness, predominantly oropharyngeal and/or respiratory.",
+   "range": "IIIb"
+  },
+  {
+   "id": "s6",
+   "tone": "informational",
+   "label": "Class IVa",
+   "summary": "Severe non-ocular weakness, predominantly limb and/or axial.",
+   "range": "IVa"
+  },
+  {
+   "id": "s7",
+   "tone": "informational",
+   "label": "Class IVb",
+   "summary": "Severe non-ocular weakness, predominantly oropharyngeal and/or respiratory (includes feeding tube without intubation).",
+   "range": "IVb"
+  },
+  {
+   "id": "s8",
+   "tone": "informational",
+   "label": "Class V",
+   "summary": "Intubation, with or without mechanical ventilation (excluding routine postoperative care).",
+   "range": "V"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Standard description of disease severity and pattern, used for trial entry and communication.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "cls == 3 || cls == 5 || cls == 7",
+   "text": "Bulbar or respiratory predominance: correlate with respiratory function and swallowing."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Designed to classify maximum severity; not a sensitive measure of change (use quantitative scales).",
+   "importance": "major"
+  },
+  "Mild, moderate and severe are not defined numerically."
+ ],
+ "confounders": [
+  {
+   "factor": "Treatment",
+   "effect": "Classification at maximum severity versus current status differs."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Response to treatment.",
+  "Antibody status."
+ ],
+ "guideSections": {
+  "what": "Five classes of myasthenic weakness, with a/b subclasses by distribution.",
+  "whenToUse": "Describing myasthenia gravis severity.",
+  "howToPerform": "Assess ocular, limb, axial, bulbar and respiratory weakness; choose the class.",
+  "clinicalContext": "Used with quantitative MG scores and respiratory monitoring."
+ },
+ "sources": [
+  {
+   "citation": "Jaretzki A 3rd, Barohn RJ, Ernstoff RM, et al. Myasthenia gravis: recommendations for clinical research standards. Task Force of the Medical Scientific Advisory Board of the Myasthenia Gravis Foundation of America. Neurology. 2000;55(1):16-23."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_cls",
+   "label": "Clinical class",
+   "inputs": [
+    "cls"
+   ]
+  }
+ ],
+ "itemType": "classification"
+}

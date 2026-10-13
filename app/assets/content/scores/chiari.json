@@ -1,0 +1,188 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "chiari",
+  "arnold-chiari",
+  "tonsillar ectopia",
+  "hindbrain herniation"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Calling acquired tonsillar descent from low CSF pressure a Chiari I malformation."
+ ],
+ "relatedScores": [],
+ "id": "chiari",
+ "name": "Chiari Malformation Classification",
+ "abbreviation": "Chiari",
+ "category": "spine",
+ "subcategory": "Craniovertebral junction",
+ "specialties": [
+  "Neurosurgery",
+  "Paediatric Neurosurgery",
+  "Neuroradiology"
+ ],
+ "version": {
+  "label": "Classical Chiari types I–IV (Chiari 1891, 1896)",
+  "detail": "Types 0, 1.5 and V are later additions and are not included. The ≥5 mm tonsillar descent threshold is a later radiological convention."
+ },
+ "purpose": "Classifies hindbrain herniation malformations.",
+ "intendedPopulation": "Patients with posterior fossa or craniovertebral junction anomalies on MRI.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Malformation type",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "t",
+   "type": "single",
+   "label": "Malformation type",
+   "short": "Type",
+   "options": [
+    {
+     "value": "1",
+     "label": "Type I: Caudal displacement of the cerebellar tonsils below the foramen magnum (commonly ≥5 mm on MRI)",
+     "points": 1,
+     "code": "I"
+    },
+    {
+     "value": "2",
+     "label": "Type II: Caudal displacement of the vermis, brainstem and fourth ventricle",
+     "points": 2,
+     "code": "II"
+    },
+    {
+     "value": "3",
+     "label": "Type III: Herniation of posterior fossa contents into a low occipital or high cervical encephalocele",
+     "points": 3,
+     "code": "III"
+    },
+    {
+     "value": "4",
+     "label": "Type IV: Severe cerebellar hypoplasia without herniation",
+     "points": 4,
+     "code": "IV"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "t",
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "display": "Chiari {t_code}",
+  "share": "Chiari type {t_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Type I",
+   "summary": "Caudal displacement of the cerebellar tonsils below the foramen magnum (commonly ≥5 mm on MRI).",
+   "range": "I",
+   "detail": "May be associated with syringomyelia."
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Type II",
+   "summary": "Caudal displacement of the vermis, brainstem and fourth ventricle.",
+   "range": "II",
+   "detail": "Almost always with open spinal dysraphism (myelomeningocele)."
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Type III",
+   "summary": "Herniation of posterior fossa contents into a low occipital or high cervical encephalocele.",
+   "range": "III",
+   "detail": "Rare and severe."
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Type IV",
+   "summary": "Severe cerebellar hypoplasia without herniation.",
+   "range": "IV",
+   "detail": "Now regarded as a form of cerebellar hypoplasia."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Types I and II are common in clinical practice; type II accompanies myelomeningocele.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "t == 1",
+   "text": "Tonsillar descent alone, without symptoms or syrinx, is often an incidental finding."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Anatomical classification; symptoms correlate poorly with the degree of tonsillar descent.",
+   "importance": "major"
+  },
+  "Types IV and later additions are inconsistently defined between sources."
+ ],
+ "confounders": [
+  {
+   "factor": "Intracranial hypotension",
+   "effect": "Can cause acquired tonsillar descent."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Whether symptoms are due to the malformation.",
+  "Need for surgery."
+ ],
+ "guideSections": {
+  "what": "Four classical types of hindbrain malformation.",
+  "whenToUse": "MRI of the posterior fossa and craniovertebral junction.",
+  "howToPerform": "Identify which structures are displaced and any associated dysraphism or encephalocele.",
+  "clinicalContext": "Correlate with symptoms, syrinx and CSF flow."
+ },
+ "sources": [
+  {
+   "citation": "Chiari H. Über Veränderungen des Kleinhirns infolge von Hydrocephalie des Grosshirns. Dtsch Med Wochenschr. 1891;17:1172-1175."
+  }
+ ],
+ "licensing": {
+  "status": "Classical classification",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_t",
+   "label": "Malformation type",
+   "inputs": [
+    "t"
+   ]
+  }
+ ],
+ "itemType": "classification"
+}

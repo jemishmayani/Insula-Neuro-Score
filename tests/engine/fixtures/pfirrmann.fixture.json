@@ -1,0 +1,33 @@
+{
+ "scoreId": "pfirrmann",
+ "cases": [
+  {
+   "name": "grade I",
+   "answers": {
+    "g": "1"
+   },
+   "expect": {
+    "display": "Grade I"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade V",
+   "answers": {
+    "g": "5"
+   },
+   "expect": {
+    "display": "Grade V"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "V",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

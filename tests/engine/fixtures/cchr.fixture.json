@@ -1,0 +1,115 @@
+{
+ "scoreId": "cchr",
+ "cases": [
+  {
+   "name": "no factors",
+   "answers": {
+    "h1": "no",
+    "h2": "no",
+    "h3": "no",
+    "h4": "no",
+    "h5": "no",
+    "m1": "no",
+    "m2": "no",
+    "applies": "yes"
+   },
+   "expect": {
+    "total": 1,
+    "state": "none"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "none → criteria not met",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "age 65",
+   "answers": {
+    "h1": "no",
+    "h2": "no",
+    "h3": "no",
+    "h4": "no",
+    "h5": "yes",
+    "m1": "no",
+    "m2": "no",
+    "applies": "yes"
+   },
+   "expect": {
+    "total": 3,
+    "state": "high",
+    "insightsContains": "65"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "high-risk",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "dangerous mechanism only",
+   "answers": {
+    "h1": "no",
+    "h2": "no",
+    "h3": "no",
+    "h4": "no",
+    "h5": "no",
+    "m1": "no",
+    "m2": "yes",
+    "applies": "yes"
+   },
+   "expect": {
+    "total": 2,
+    "state": "med"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "medium",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "high and medium",
+   "answers": {
+    "h1": "yes",
+    "h2": "no",
+    "h3": "no",
+    "h4": "no",
+    "h5": "no",
+    "m1": "yes",
+    "m2": "no",
+    "applies": "yes"
+   },
+   "expect": {
+    "total": 3
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "high wins",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "not applicable",
+   "answers": {
+    "h1": "yes",
+    "h2": "no",
+    "h3": "no",
+    "h4": "no",
+    "h5": "no",
+    "m1": "no",
+    "m2": "no",
+    "applies": "no"
+   },
+   "expect": {
+    "total": 0,
+    "state": "na"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "outside rule",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

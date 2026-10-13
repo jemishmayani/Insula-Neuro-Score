@@ -84,6 +84,62 @@
   "issues": []
  },
  {
+  "id": "andersondalonzo",
+  "abbreviation": "Anderson-D'Alonzo",
+  "version": "Anderson and D'Alonzo (1974), types I–III",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 3
+  },
+  "reachMin": 1,
+  "reachMax": 3,
+  "space": 3,
+  "evaluated": 3,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 3
+  },
+  "components": [
+   {
+    "id": "t",
+    "label": "Fracture level",
+    "type": "single",
+    "points": "I=1, II=2, III=3",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Type I: odontoid tip",
+    "tone": "informational",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Type II: base of the dens",
+    "tone": "informational",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Type III: body of c2",
+    "tone": "informational",
+    "declared": "III",
+    "reached": "3"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "aspects",
   "abbreviation": "ASPECTS",
   "version": "ASPECTS (Barber et al. 2000), non-contrast CT",
@@ -127,6 +183,68 @@
   ],
   "boundaries": [
    "9→10: scored → ten"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "bat",
+  "abbreviation": "BAT score",
+  "version": "BAT score (Morotti et al. 2018)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 5
+  },
+  "reachMin": 0,
+  "reachMax": 5,
+  "space": 8,
+  "evaluated": 8,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 8
+  },
+  "components": [
+   {
+    "id": "blend",
+    "label": "Blend sign",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "hypo",
+    "label": "Any intrahaematoma hypodensity",
+    "type": "single",
+    "points": "no=0, yes=2",
+    "nt": ""
+   },
+   {
+    "id": "time",
+    "label": "Time from onset to CT under 2.5 hours",
+    "type": "single",
+    "points": "no=0, yes=2",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "low",
+    "label": "BAT {total}",
+    "tone": "informational",
+    "declared": "0–2",
+    "reached": "0–2"
+   },
+   {
+    "id": "high",
+    "label": "Higher expansion risk (≥3)",
+    "tone": "high",
+    "declared": "3–5",
+    "reached": "3–5"
+   }
+  ],
+  "boundaries": [
+   "2→3: low → high"
   ],
   "nt": [],
   "issues": []
@@ -190,6 +308,432 @@
   "boundaries": [
    "1→2: t1 → t2",
    "2→3: t2 → t3"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "cchr",
+  "abbreviation": "Canadian CT Head",
+  "version": "Canadian CT Head Rule (Stiell et al. 2001)",
+  "method": "expression: applies == 0 ? 0 : (high > 0 ? 3 : (medium > 0 ? 2 : 1))",
+  "declared": {
+   "min": 0,
+   "max": 3
+  },
+  "reachMin": 0,
+  "reachMax": 3,
+  "space": 256,
+  "evaluated": 256,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 256
+  },
+  "components": [
+   {
+    "id": "applies",
+    "label": "Does the rule apply?",
+    "type": "single",
+    "points": "yes=1, no=0",
+    "nt": ""
+   },
+   {
+    "id": "h1",
+    "label": "GCS below 15 at 2 hours after injury",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "h2",
+    "label": "Suspected open or depressed skull fracture",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "h3",
+    "label": "Any sign of basal skull fracture",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "h4",
+    "label": "Vomiting two or more episodes",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "h5",
+    "label": "Age 65 or older",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "m1",
+    "label": "Amnesia before impact of 30 minutes or more",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "m2",
+    "label": "Dangerous mechanism",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "na",
+    "label": "Rule not applicable",
+    "tone": "informational",
+    "declared": "",
+    "reached": "0"
+   },
+   {
+    "id": "high",
+    "label": "High-risk factor present",
+    "tone": "high",
+    "declared": "",
+    "reached": "3"
+   },
+   {
+    "id": "med",
+    "label": "Medium-risk factor present",
+    "tone": "moderate",
+    "declared": "",
+    "reached": "2"
+   },
+   {
+    "id": "none",
+    "label": "No rule risk factor",
+    "tone": "low",
+    "declared": "",
+    "reached": "1"
+   }
+  ],
+  "boundaries": [
+   "0→1: na → none",
+   "1→2: none → med",
+   "2→3: med → high"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "ccsr",
+  "abbreviation": "Canadian C-spine",
+  "version": "Canadian C-spine Rule (Stiell et al. 2001)",
+  "method": "expression: applies == 0 ? 0 : (highrisk > 0 ? 2 : (lowrisk == 0 ? 3 : (isnull(rot) ? 4 : (rot == 0 ? 5 : 1))))",
+  "declared": {
+   "min": 0,
+   "max": 5
+  },
+  "reachMin": 0,
+  "reachMax": 5,
+  "space": 1536,
+  "evaluated": 1536,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 1536
+  },
+  "components": [
+   {
+    "id": "applies",
+    "label": "Does the rule apply?",
+    "type": "single",
+    "points": "yes=1, no=0",
+    "nt": ""
+   },
+   {
+    "id": "age65",
+    "label": "Age 65 or older",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "mech",
+    "label": "Dangerous mechanism",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "par",
+    "label": "Paraesthesias in the extremities",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "rear",
+    "label": "Simple rear-end motor vehicle collision",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "sit",
+    "label": "Sitting position in the emergency department",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "amb",
+    "label": "Ambulatory at any time since injury",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "delay",
+    "label": "Delayed onset of neck pain",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "nomid",
+    "label": "Absence of midline cervical spine tenderness",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "rot",
+    "label": "Able to actively rotate the neck 45° to the left and right?",
+    "type": "single",
+    "points": "unable=0, able=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "na",
+    "label": "Rule not applicable",
+    "tone": "informational",
+    "declared": "",
+    "reached": "0"
+   },
+   {
+    "id": "high",
+    "label": "High-risk factor present",
+    "tone": "high",
+    "declared": "",
+    "reached": "2"
+   },
+   {
+    "id": "nolow",
+    "label": "No low-risk factor",
+    "tone": "moderate",
+    "declared": "",
+    "reached": "3"
+   },
+   {
+    "id": "rot",
+    "label": "Assess active rotation",
+    "tone": "incomplete",
+    "declared": "",
+    "reached": "4"
+   },
+   {
+    "id": "unable",
+    "label": "Unable to rotate 45°",
+    "tone": "moderate",
+    "declared": "",
+    "reached": "5"
+   },
+   {
+    "id": "clear",
+    "label": "Rule criteria not met",
+    "tone": "low",
+    "declared": "",
+    "reached": "1"
+   }
+  ],
+  "boundaries": [
+   "0→1: na → clear",
+   "1→2: clear → high",
+   "2→3: high → nolow",
+   "3→4: nolow → rot",
+   "4→5: rot → unable"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "chadsvasc",
+  "abbreviation": "CHA₂DS₂-VASc",
+  "version": "CHA₂DS₂-VASc (Lip et al. 2010)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 9
+  },
+  "reachMin": 0,
+  "reachMax": 9,
+  "space": 192,
+  "evaluated": 192,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 192
+  },
+  "components": [
+   {
+    "id": "chf",
+    "label": "Congestive heart failure or LV dysfunction",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "htn",
+    "label": "Hypertension",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "age",
+    "label": "Age",
+    "type": "single",
+    "points": "lt65=0, 65to74=1, ge75=2",
+    "nt": ""
+   },
+   {
+    "id": "dm",
+    "label": "Diabetes mellitus",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "stroke",
+    "label": "Previous stroke, TIA or thromboembolism",
+    "type": "single",
+    "points": "no=0, yes=2",
+    "nt": ""
+   },
+   {
+    "id": "vasc",
+    "label": "Vascular disease (previous MI, peripheral arterial disease or aortic plaque)",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "sex",
+    "label": "Sex category",
+    "type": "single",
+    "points": "m=0, f=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "low",
+    "label": "Low risk",
+    "tone": "low",
+    "declared": "0",
+    "reached": "0"
+   },
+   {
+    "id": "sexonly",
+    "label": "Female sex only",
+    "tone": "low",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "one",
+    "label": "CHA₂DS₂-VASc 1",
+    "tone": "informational",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "two",
+    "label": "CHA₂DS₂-VASc {total}",
+    "tone": "informational",
+    "declared": "2–9",
+    "reached": "2–9"
+   }
+  ],
+  "boundaries": [
+   "0→1: low → sexonly",
+   "1→1: sexonly → one",
+   "1→2: one → two"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "chiari",
+  "abbreviation": "Chiari",
+  "version": "Classical Chiari types I–IV (Chiari 1891, 1896)",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 4
+  },
+  "reachMin": 1,
+  "reachMax": 4,
+  "space": 4,
+  "evaluated": 4,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 4
+  },
+  "components": [
+   {
+    "id": "t",
+    "label": "Malformation type",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Type I",
+    "tone": "informational",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Type II",
+    "tone": "informational",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Type III",
+    "tone": "informational",
+    "declared": "III",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Type IV",
+    "tone": "informational",
+    "declared": "IV",
+    "reached": "4"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4"
   ],
   "nt": [],
   "issues": []
@@ -360,6 +904,124 @@
   "issues": []
  },
  {
+  "id": "collaterals",
+  "abbreviation": "ASITN/SIR collaterals",
+  "version": "ASITN/SIR collateral flow grading (Higashida et al. 2003)",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 5,
+  "evaluated": 5,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 5
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Collateral flow",
+    "type": "single",
+    "points": "0=1, 1=2, 2=3, 3=4, 4=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "No collaterals",
+    "tone": "high",
+    "declared": "Grade 0",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Slow, peripheral",
+    "tone": "moderate",
+    "declared": "Grade 1",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Rapid, peripheral",
+    "tone": "moderate",
+    "declared": "Grade 2",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Slow but complete",
+    "tone": "low",
+    "declared": "Grade 3",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Complete and rapid",
+    "tone": "favorable",
+    "declared": "Grade 4",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "cpp",
+  "abbreviation": "CPP",
+  "version": "CPP = MAP − ICP",
+  "method": "expression: map - icp",
+  "declared": {
+   "min": -80,
+   "max": 210
+  },
+  "reachMin": -80,
+  "reachMax": 210,
+  "space": 4,
+  "evaluated": 4,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 4
+  },
+  "components": [
+   {
+    "id": "map",
+    "label": "Mean arterial pressure",
+    "type": "integer",
+    "points": "20–200",
+    "nt": ""
+   },
+   {
+    "id": "icp",
+    "label": "Intracranial pressure",
+    "type": "integer",
+    "points": "-10–100",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "val",
+    "label": "CPP {total} mmHg",
+    "tone": "informational",
+    "declared": "",
+    "reached": "-80–210"
+   }
+  ],
+  "boundaries": [],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "dtr",
   "abbreviation": "Reflex grade",
   "version": "NINDS Myotatic Reflex Scale, 0–4 (Hallett 1993)",
@@ -518,6 +1180,76 @@
   "issues": []
  },
  {
+  "id": "egos",
+  "abbreviation": "EGOS",
+  "version": "EGOS (van Koningsveld et al. 2007)",
+  "method": "sum",
+  "declared": {
+   "min": 1,
+   "max": 7
+  },
+  "reachMin": 1,
+  "reachMax": 7,
+  "space": 30,
+  "evaluated": 30,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 30
+  },
+  "components": [
+   {
+    "id": "age",
+    "label": "Age at onset",
+    "type": "single",
+    "points": "le40=0, 0.5=0.5, gt60=1",
+    "nt": ""
+   },
+   {
+    "id": "diar",
+    "label": "Diarrhoea in the 4 weeks before onset",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "gbs",
+    "label": "GBS disability grade at 2 weeks after admission",
+    "type": "single",
+    "points": "1=1, 2=2, 3=3, 4=4, 5=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "low",
+    "label": "EGOS {total}",
+    "tone": "low",
+    "declared": "1–3",
+    "reached": "1–3"
+   },
+   {
+    "id": "mid",
+    "label": "EGOS {total}",
+    "tone": "moderate",
+    "declared": "3.5–5",
+    "reached": "3.5–5"
+   },
+   {
+    "id": "high",
+    "label": "EGOS {total}",
+    "tone": "high",
+    "declared": "5.5–7",
+    "reached": "5.5–7"
+   }
+  ],
+  "boundaries": [
+   "3→3.5: low → mid",
+   "5→5.5: mid → high"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "engel",
   "abbreviation": "Engel",
   "version": "Engel classification (Engel et al. 1993), classes I–IV with subclasses",
@@ -660,6 +1392,77 @@
   ],
   "boundaries": [
    "0→1: zero → scored"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "fazekas",
+  "abbreviation": "Fazekas",
+  "version": "Fazekas scale (Fazekas et al. 1987)",
+  "method": "expression: dw",
+  "declared": {
+   "min": 0,
+   "max": 3
+  },
+  "reachMin": 0,
+  "reachMax": 3,
+  "space": 16,
+  "evaluated": 16,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 16
+  },
+  "components": [
+   {
+    "id": "pv",
+    "label": "Periventricular white matter",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3",
+    "nt": ""
+   },
+   {
+    "id": "dw",
+    "label": "Deep white matter",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "none",
+    "label": "No white matter hyperintensities",
+    "tone": "favorable",
+    "declared": "",
+    "reached": "0"
+   },
+   {
+    "id": "mild",
+    "label": "Deep grade 0–1",
+    "tone": "low",
+    "declared": "",
+    "reached": "0–1"
+   },
+   {
+    "id": "mod",
+    "label": "Deep grade 2",
+    "tone": "moderate",
+    "declared": "",
+    "reached": "2"
+   },
+   {
+    "id": "sev",
+    "label": "Deep grade 3",
+    "tone": "high",
+    "declared": "",
+    "reached": "3"
+   }
+  ],
+  "boundaries": [
+   "0→0: none → mild",
+   "1→2: mild → mod",
+   "2→3: mod → sev"
   ],
   "nt": [],
   "issues": []
@@ -880,6 +1683,78 @@
   "boundaries": [
    "4→5: low4 → mid",
    "10→11: mid → top"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "gbsds",
+  "abbreviation": "GBS disability",
+  "version": "GBS disability scale (Hughes 1978) as used in EGOS (van Koningsveld 2007)",
+  "method": "select",
+  "declared": {
+   "min": 0,
+   "max": 6
+  },
+  "reachMin": 0,
+  "reachMax": 6,
+  "space": 7,
+  "evaluated": 7,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 7
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Functional level",
+    "type": "single",
+    "points": "0=0, 1=1, 2=2, 3=3, 4=4, 5=5, 6=6",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "g0",
+    "label": "Healthy state",
+    "tone": "favorable",
+    "declared": "0",
+    "reached": "0"
+   },
+   {
+    "id": "walk",
+    "label": "Grade {total}: walks independently",
+    "tone": "informational",
+    "declared": "1–2",
+    "reached": "1–2"
+   },
+   {
+    "id": "nowalk",
+    "label": "Grade {total}: unable to walk independently",
+    "tone": "informational",
+    "declared": "3–4",
+    "reached": "3–4"
+   },
+   {
+    "id": "vent",
+    "label": "Grade 5: ventilated",
+    "tone": "informational",
+    "declared": "5",
+    "reached": "5"
+   },
+   {
+    "id": "dead",
+    "label": "Grade 6: dead",
+    "tone": "informational",
+    "declared": "6",
+    "reached": "6"
+   }
+  ],
+  "boundaries": [
+   "0→1: g0 → walk",
+   "2→3: walk → nowalk",
+   "4→5: nowalk → vent",
+   "5→6: vent → dead"
   ],
   "nt": [],
   "issues": []
@@ -1500,6 +2375,165 @@
   "issues": []
  },
  {
+  "id": "hardy",
+  "abbreviation": "Hardy",
+  "version": "Hardy sellar grades 0–IV with Wilson's extrasellar stages A–E",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 30,
+  "evaluated": 30,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 30
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Sellar grade",
+    "type": "single",
+    "points": "0=1, I=2, II=3, III=4, IV=5",
+    "nt": ""
+   },
+   {
+    "id": "x",
+    "label": "Extrasellar extension",
+    "type": "single",
+    "points": "0=0, A=1, B=2, C=3, D=4, E=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "micro",
+    "label": "Grade {g_code}{x_code == '0' ? '' : ', stage ' + x_code}",
+    "tone": "informational",
+    "declared": "0–I",
+    "reached": "1–2"
+   },
+   {
+    "id": "macro",
+    "label": "Grade {g_code}{x_code == '0' ? '' : ', stage ' + x_code}",
+    "tone": "informational",
+    "declared": "II–IV",
+    "reached": "3–5"
+   }
+  ],
+  "boundaries": [
+   "2→3: micro → macro"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "hasbled",
+  "abbreviation": "HAS-BLED",
+  "version": "HAS-BLED (Pisters et al. 2010)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 9
+  },
+  "reachMin": 0,
+  "reachMax": 9,
+  "space": 512,
+  "evaluated": 512,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 512
+  },
+  "components": [
+   {
+    "id": "h",
+    "label": "Hypertension (uncontrolled, systolic >160 mmHg)",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "ren",
+    "label": "Abnormal renal function (dialysis, transplant or creatinine ≥200 µmol/L)",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "liv",
+    "label": "Abnormal liver function (cirrhosis, or bilirubin >2× and AST/ALT/ALP >3× normal)",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "s",
+    "label": "Previous stroke",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "b",
+    "label": "Bleeding history or predisposition",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "l",
+    "label": "Labile INR (time in range <60%)",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "e",
+    "label": "Elderly (age >65)",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "drug",
+    "label": "Drugs predisposing to bleeding (antiplatelet agents, NSAIDs)",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "alc",
+    "label": "Alcohol (≥8 drinks per week)",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "lower",
+    "label": "HAS-BLED {total}",
+    "tone": "informational",
+    "declared": "0–2",
+    "reached": "0–2"
+   },
+   {
+    "id": "high",
+    "label": "High bleeding risk (≥3)",
+    "tone": "high",
+    "declared": "3–9",
+    "reached": "3–9"
+   }
+  ],
+  "boundaries": [
+   "2→3: lower → high"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "hb",
   "abbreviation": "House-Brackmann",
   "version": "House-Brackmann grading system, grades I–VI (House & Brackmann 1985)",
@@ -1582,6 +2616,78 @@
    "3→4: g3 → g4",
    "4→5: g4 → g5",
    "5→6: g5 → g6"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "hoehnyahr",
+  "abbreviation": "Hoehn & Yahr",
+  "version": "Original Hoehn and Yahr (1967), stages 1–5",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 5,
+  "evaluated": 5,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 5
+  },
+  "components": [
+   {
+    "id": "stg",
+    "label": "Stage",
+    "type": "single",
+    "points": "1=1, 2=2, 3=3, 4=4, 5=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Stage 1",
+    "tone": "informational",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Stage 2",
+    "tone": "informational",
+    "declared": "2",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Stage 3",
+    "tone": "informational",
+    "declared": "3",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Stage 4",
+    "tone": "informational",
+    "declared": "4",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Stage 5",
+    "tone": "informational",
+    "declared": "5",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5"
   ],
   "nt": [],
   "issues": []
@@ -1777,6 +2883,68 @@
    "3→4: s3 → s4",
    "4→5: s4 → s5",
    "5→6: s5 → s6"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "ichvolume",
+  "abbreviation": "ICH volume (ABC/2)",
+  "version": "ABC/2 ellipsoid estimate (Kothari et al. 1996)",
+  "method": "expression: a * b * c / 2",
+  "declared": {
+   "min": 0,
+   "max": 4000
+  },
+  "reachMin": 0.0005,
+  "reachMax": 4000,
+  "space": 729,
+  "evaluated": 729,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 729
+  },
+  "components": [
+   {
+    "id": "a",
+    "label": "A: largest diameter",
+    "type": "decimal",
+    "points": "0.1–20",
+    "nt": ""
+   },
+   {
+    "id": "b",
+    "label": "B: largest diameter perpendicular to A",
+    "type": "decimal",
+    "points": "0.1–20",
+    "nt": ""
+   },
+   {
+    "id": "c",
+    "label": "C: vertical extent",
+    "type": "decimal",
+    "points": "0.1–20",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "lt30",
+    "label": "{fixed(total, 1)} mL",
+    "tone": "informational",
+    "declared": "<30 mL",
+    "reached": "0.0005–25.688"
+   },
+   {
+    "id": "ge30",
+    "label": "{fixed(total, 1)} mL",
+    "tone": "informational",
+    "declared": "≥30 mL",
+    "reached": "33.8–4000"
+   }
+  ],
+  "boundaries": [
+   "25.688→33.8: lt30 → ge30"
   ],
   "nt": [],
   "issues": []
@@ -1983,6 +3151,150 @@
   "issues": []
  },
  {
+  "id": "knosp",
+  "abbreviation": "Knosp",
+  "version": "Knosp classification as modified by Micko et al. (2015): 0, 1, 2, 3A, 3B, 4",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 6
+  },
+  "reachMin": 1,
+  "reachMax": 6,
+  "space": 6,
+  "evaluated": 6,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 6
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Lateral extension on coronal MRI",
+    "type": "single",
+    "points": "0=1, 1=2, 2=3, 3A=4, 3B=5, 4=6",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Grade 0",
+    "tone": "informational",
+    "declared": "Grade 0",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Grade 1",
+    "tone": "informational",
+    "declared": "Grade 1",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Grade 2",
+    "tone": "informational",
+    "declared": "Grade 2",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Grade 3A",
+    "tone": "informational",
+    "declared": "Grade 3A",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Grade 3B",
+    "tone": "informational",
+    "declared": "Grade 3B",
+    "reached": "5"
+   },
+   {
+    "id": "s6",
+    "label": "Grade 4",
+    "tone": "informational",
+    "declared": "Grade 4",
+    "reached": "6"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5",
+   "5→6: s5 → s6"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "koos",
+  "abbreviation": "Koos",
+  "version": "Koos et al. (1998), grades 1–4",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 4
+  },
+  "reachMin": 1,
+  "reachMax": 4,
+  "space": 4,
+  "evaluated": 4,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 4
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Tumour extension",
+    "type": "single",
+    "points": "1=1, 2=2, 3=3, 4=4",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Grade 1",
+    "tone": "informational",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Grade 2",
+    "tone": "informational",
+    "declared": "2",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Grade 3",
+    "tone": "informational",
+    "declared": "3",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Grade 4",
+    "tone": "informational",
+    "declared": "4",
+    "reached": "4"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "kps",
   "abbreviation": "KPS",
   "version": "Karnofsky Performance Status (Karnofsky 1949)",
@@ -2117,6 +3429,62 @@
   "issues": []
  },
  {
+  "id": "lansky",
+  "abbreviation": "Lansky",
+  "version": "Lansky et al. (1987), 0–100 in steps of 10",
+  "method": "select",
+  "declared": {
+   "min": 0,
+   "max": 100
+  },
+  "reachMin": 0,
+  "reachMax": 100,
+  "space": 11,
+  "evaluated": 11,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 11
+  },
+  "components": [
+   {
+    "id": "lv",
+    "label": "Play-performance level",
+    "type": "single",
+    "points": "100=100, 90=90, 80=80, 70=70, 60=60, 50=50, 40=40, 30=30, 20=20, 10=10, 0=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "full",
+    "label": "Fully active",
+    "tone": "favorable",
+    "declared": "100",
+    "reached": "100"
+   },
+   {
+    "id": "mid",
+    "label": "Lansky {total}",
+    "tone": "informational",
+    "declared": "50–90",
+    "reached": "50–90"
+   },
+   {
+    "id": "low",
+    "label": "Lansky {total}",
+    "tone": "informational",
+    "declared": "0–40",
+    "reached": "0–40"
+   }
+  ],
+  "boundaries": [
+   "40→50: low → mid",
+   "90→100: mid → full"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "lawtonyoung",
   "abbreviation": "Lawton-Young",
   "version": "Lawton-Young supplementary grading scale (Lawton et al. 2010)",
@@ -2189,6 +3557,70 @@
    "4→4: comb → supp",
    "4→5: supp → comb",
    "5→5: comb → supp"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "levineedwards",
+  "abbreviation": "Levine-Edwards",
+  "version": "Levine and Edwards (1985), types I, II, IIa, III",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 4
+  },
+  "reachMin": 1,
+  "reachMax": 4,
+  "space": 4,
+  "evaluated": 4,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 4
+  },
+  "components": [
+   {
+    "id": "t",
+    "label": "Fracture pattern",
+    "type": "single",
+    "points": "I=1, II=2, IIa=3, III=4",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Type I: minimal displacement",
+    "tone": "informational",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Type II: displaced and angulated",
+    "tone": "informational",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Type IIa: angulated without translation",
+    "tone": "informational",
+    "declared": "IIa",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Type III: with facet dislocation",
+    "tone": "informational",
+    "declared": "III",
+    "reached": "4"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4"
   ],
   "nt": [],
   "issues": []
@@ -2460,6 +3892,78 @@
   "issues": []
  },
  {
+  "id": "meyerding",
+  "abbreviation": "Meyerding",
+  "version": "Meyerding (1932), grades I–V",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 5,
+  "evaluated": 5,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 5
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Percentage slip",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4, V=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Grade I",
+    "tone": "informational",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Grade II",
+    "tone": "informational",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Grade III",
+    "tone": "informational",
+    "declared": "III",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Grade IV",
+    "tone": "informational",
+    "declared": "IV",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Grade V",
+    "tone": "informational",
+    "declared": "V",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "mfisher",
   "abbreviation": "mFisher",
   "version": "Modified Fisher (Frontera et al. 2006)",
@@ -2547,6 +4051,102 @@
   "issues": []
  },
  {
+  "id": "mgfa",
+  "abbreviation": "MGFA class",
+  "version": "MGFA clinical classification (Jaretzki et al. 2000)",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 8
+  },
+  "reachMin": 1,
+  "reachMax": 8,
+  "space": 8,
+  "evaluated": 8,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 8
+  },
+  "components": [
+   {
+    "id": "cls",
+    "label": "Clinical class",
+    "type": "single",
+    "points": "I=1, IIa=2, IIb=3, IIIa=4, IIIb=5, IVa=6, IVb=7, V=8",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Class I",
+    "tone": "informational",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Class IIa",
+    "tone": "informational",
+    "declared": "IIa",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Class IIb",
+    "tone": "informational",
+    "declared": "IIb",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Class IIIa",
+    "tone": "informational",
+    "declared": "IIIa",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Class IIIb",
+    "tone": "informational",
+    "declared": "IIIb",
+    "reached": "5"
+   },
+   {
+    "id": "s6",
+    "label": "Class IVa",
+    "tone": "informational",
+    "declared": "IVa",
+    "reached": "6"
+   },
+   {
+    "id": "s7",
+    "label": "Class IVb",
+    "tone": "informational",
+    "declared": "IVb",
+    "reached": "7"
+   },
+   {
+    "id": "s8",
+    "label": "Class V",
+    "tone": "informational",
+    "declared": "V",
+    "reached": "8"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5",
+   "5→6: s5 → s6",
+   "6→7: s6 → s7",
+   "7→8: s7 → s8"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "mjoa",
   "abbreviation": "mJOA",
   "version": "mJOA, clinician-rated (Benzel et al. 1991), 0–18",
@@ -2627,6 +4227,62 @@
    "11→12: severe → moderate",
    "14→15: moderate → mild",
    "17→18: mild → none"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "modic",
+  "abbreviation": "Modic",
+  "version": "Modic et al. (1988), types 1–3",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 3
+  },
+  "reachMin": 1,
+  "reachMax": 3,
+  "space": 3,
+  "evaluated": 3,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 3
+  },
+  "components": [
+   {
+    "id": "t",
+    "label": "Signal pattern",
+    "type": "single",
+    "points": "1=1, 2=2, 3=3",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Type 1: oedema / inflammation",
+    "tone": "informational",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Type 2: fatty replacement",
+    "tone": "informational",
+    "declared": "2",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Type 3: sclerosis",
+    "tone": "informational",
+    "declared": "3",
+    "reached": "3"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3"
   ],
   "nt": [],
   "issues": []
@@ -3025,6 +4681,78 @@
   "issues": []
  },
  {
+  "id": "mtici",
+  "abbreviation": "mTICI",
+  "version": "mTICI (consensus recommendations, Zaidat et al. 2013)",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 5,
+  "evaluated": 5,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 5
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Final angiographic reperfusion",
+    "type": "single",
+    "points": "0=1, 1=2, 2a=3, 2b=4, 3=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "No perfusion",
+    "tone": "high",
+    "declared": "mTICI 0",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Minimal perfusion",
+    "tone": "high",
+    "declared": "mTICI 1",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Partial reperfusion (<50%)",
+    "tone": "moderate",
+    "declared": "mTICI 2a",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Substantial reperfusion (≥50%)",
+    "tone": "low",
+    "declared": "mTICI 2b",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Complete reperfusion",
+    "tone": "favorable",
+    "declared": "mTICI 3",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "mts",
   "abbreviation": "MTS",
   "version": "Modified Tardieu Scale (Boyd & Graham 1999)",
@@ -3097,6 +4825,82 @@
   "boundaries": [
    "0→0: catch → nocatch",
    "0→180: nocatch → catch"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "nexus",
+  "abbreviation": "NEXUS",
+  "version": "NEXUS low-risk criteria (Hoffman et al. 2000)",
+  "method": "expression: crit > 0 ? 1 : 0",
+  "declared": {
+   "min": 0,
+   "max": 1
+  },
+  "reachMin": 0,
+  "reachMax": 1,
+  "space": 32,
+  "evaluated": 32,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 32
+  },
+  "components": [
+   {
+    "id": "t",
+    "label": "Posterior midline cervical spine tenderness",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "f",
+    "label": "Focal neurological deficit",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "a",
+    "label": "Altered level of alertness",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "i",
+    "label": "Evidence of intoxication",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   },
+   {
+    "id": "d",
+    "label": "Painful distracting injury",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "low",
+    "label": "All five low-risk criteria met",
+    "tone": "low",
+    "declared": "",
+    "reached": "0"
+   },
+   {
+    "id": "not",
+    "label": "Not all criteria met",
+    "tone": "moderate",
+    "declared": "",
+    "reached": "1"
+   }
+  ],
+  "boundaries": [
+   "0→1: low → not"
   ],
   "nt": [],
   "issues": []
@@ -3371,6 +5175,158 @@
   "issues": []
  },
  {
+  "id": "ocsp",
+  "abbreviation": "Oxfordshire (OCSP)",
+  "version": "OCSP / Bamford classification (Bamford et al. 1991)",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 4
+  },
+  "reachMin": 1,
+  "reachMax": 4,
+  "space": 4,
+  "evaluated": 4,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 4
+  },
+  "components": [
+   {
+    "id": "syn",
+    "label": "Clinical syndrome",
+    "type": "single",
+    "points": "TACI=1, PACI=2, LACI=3, POCI=4",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Total anterior circulation infarct",
+    "tone": "informational",
+    "declared": "TACI",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Partial anterior circulation infarct",
+    "tone": "informational",
+    "declared": "PACI",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Lacunar infarct",
+    "tone": "informational",
+    "declared": "LACI",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Posterior circulation infarct",
+    "tone": "informational",
+    "declared": "POCI",
+    "reached": "4"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "osmolality",
+  "abbreviation": "Osmolality",
+  "version": "Calculated osmolality = 2 × Na + glucose + urea (mmol/L)",
+  "method": "expression: calc",
+  "declared": {
+   "min": 200,
+   "max": 650
+  },
+  "reachMin": 200,
+  "reachMax": 650,
+  "space": 54,
+  "evaluated": 54,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 54
+  },
+  "components": [
+   {
+    "id": "na",
+    "label": "Sodium",
+    "type": "integer",
+    "points": "100–200",
+    "nt": ""
+   },
+   {
+    "id": "glu",
+    "label": "Glucose",
+    "type": "measurement",
+    "points": "0–150",
+    "nt": ""
+   },
+   {
+    "id": "urea",
+    "label": "Urea (or BUN)",
+    "type": "measurement",
+    "points": "0–100",
+    "nt": ""
+   },
+   {
+    "id": "meas",
+    "label": "Measured osmolality (optional)",
+    "type": "integer",
+    "points": "200–500",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "val",
+    "label": "{round(total)} mOsm/kg",
+    "tone": "informational",
+    "declared": "",
+    "reached": "200–650"
+   },
+   {
+    "id": "gap",
+    "label": "Osmolar gap {round(gap)}",
+    "tone": "moderate",
+    "declared": "",
+    "reached": "200–475"
+   }
+  ],
+  "boundaries": [
+   "200→200: val → gap",
+   "200→250: gap → val",
+   "250→250: val → gap",
+   "250→275: gap → val",
+   "275→275: val → gap",
+   "275→300: gap → val",
+   "300→300: val → gap",
+   "300→325: gap → val",
+   "325→325: val → gap",
+   "325→350: gap → val",
+   "350→350: val → gap",
+   "350→375: gap → val",
+   "375→375: val → gap",
+   "375→400: gap → val",
+   "400→400: val → gap",
+   "400→450: gap → val",
+   "450→450: val → gap",
+   "450→475: gap → val",
+   "475→475: val → gap",
+   "475→500: gap → val"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "pcaspects",
   "abbreviation": "pc-ASPECTS",
   "version": "pc-ASPECTS (Puetz et al. 2008)",
@@ -3414,6 +5370,78 @@
   ],
   "boundaries": [
    "9→10: scored → ten"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "pfirrmann",
+  "abbreviation": "Pfirrmann",
+  "version": "Pfirrmann et al. (2001), grades I–V",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 5,
+  "evaluated": 5,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 5
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Disc appearance on T2 MRI",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4, V=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Grade I",
+    "tone": "informational",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Grade II",
+    "tone": "informational",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Grade III",
+    "tone": "informational",
+    "declared": "III",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Grade IV",
+    "tone": "informational",
+    "declared": "IV",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Grade V",
+    "tone": "informational",
+    "declared": "V",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5"
   ],
   "nt": [],
   "issues": []
@@ -3561,6 +5589,62 @@
   ],
   "boundaries": [
    "4→5: below → above"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "raymondroy",
+  "abbreviation": "Raymond-Roy",
+  "version": "Raymond-Roy occlusion classification (Raymond et al. 2003)",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 3
+  },
+  "reachMin": 1,
+  "reachMax": 3,
+  "space": 3,
+  "evaluated": 3,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 3
+  },
+  "components": [
+   {
+    "id": "cls",
+    "label": "Angiographic occlusion",
+    "type": "single",
+    "points": "I=1, II=2, III=3",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Complete obliteration",
+    "tone": "favorable",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Residual neck",
+    "tone": "low",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Residual aneurysm",
+    "tone": "moderate",
+    "declared": "III",
+    "reached": "3"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3"
   ],
   "nt": [],
   "issues": []
@@ -3828,6 +5912,222 @@
   "issues": []
  },
  {
+  "id": "schizas",
+  "abbreviation": "Schizas",
+  "version": "Schizas et al. (2010), grades A1–A4, B, C, D",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 7
+  },
+  "reachMin": 1,
+  "reachMax": 7,
+  "space": 7,
+  "evaluated": 7,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 7
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Dural sac appearance (axial T2)",
+    "type": "single",
+    "points": "A1=1, A2=2, A3=3, A4=4, B=5, C=6, D=7",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Grade A1: no or minor stenosis",
+    "tone": "low",
+    "declared": "A1",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Grade A2: no or minor stenosis",
+    "tone": "low",
+    "declared": "A2",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Grade A3: no or minor stenosis",
+    "tone": "low",
+    "declared": "A3",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Grade A4: no or minor stenosis",
+    "tone": "low",
+    "declared": "A4",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Grade B: moderate stenosis",
+    "tone": "moderate",
+    "declared": "B",
+    "reached": "5"
+   },
+   {
+    "id": "s6",
+    "label": "Grade C: severe stenosis",
+    "tone": "high",
+    "declared": "C",
+    "reached": "6"
+   },
+   {
+    "id": "s7",
+    "label": "Grade D: extreme stenosis",
+    "tone": "high",
+    "declared": "D",
+    "reached": "7"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5",
+   "5→6: s5 → s6",
+   "6→7: s6 → s7"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "seddon",
+  "abbreviation": "Seddon",
+  "version": "Seddon (1943): neurapraxia, axonotmesis, neurotmesis",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 3
+  },
+  "reachMin": 1,
+  "reachMax": 3,
+  "space": 3,
+  "evaluated": 3,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 3
+  },
+  "components": [
+   {
+    "id": "c",
+    "label": "Injury class",
+    "type": "single",
+    "points": "Neurapraxia=1, Axonotmesis=2, Neurotmesis=3",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Neurapraxia",
+    "tone": "informational",
+    "declared": "Neurapraxia",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Axonotmesis",
+    "tone": "informational",
+    "declared": "Axonotmesis",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Neurotmesis",
+    "tone": "informational",
+    "declared": "Neurotmesis",
+    "reached": "3"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "simpson",
+  "abbreviation": "Simpson grade",
+  "version": "Simpson (1957), grades I–V",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 5,
+  "evaluated": 5,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 5
+  },
+  "components": [
+   {
+    "id": "g",
+    "label": "Extent of resection",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4, V=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Grade I",
+    "tone": "informational",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Grade II",
+    "tone": "informational",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Grade III",
+    "tone": "informational",
+    "declared": "III",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Grade IV",
+    "tone": "informational",
+    "declared": "IV",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Grade V",
+    "tone": "informational",
+    "declared": "V",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
   "id": "sins",
   "abbreviation": "SINS",
   "version": "SOSG SINS (Fisher et al. 2010)",
@@ -3914,6 +6214,83 @@
   "boundaries": [
    "6→7: stable → potential",
    "12→13: potential → unstable"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "slic",
+  "abbreviation": "SLIC",
+  "version": "SLIC (Vaccaro et al. 2007)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 10
+  },
+  "reachMin": 0,
+  "reachMax": 10,
+  "space": 120,
+  "evaluated": 120,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 120
+  },
+  "components": [
+   {
+    "id": "morph",
+    "label": "Morphology",
+    "type": "single",
+    "points": "none=0, comp=1, burst=2, dist=3, rot=4",
+    "nt": ""
+   },
+   {
+    "id": "dlc",
+    "label": "Discoligamentous complex",
+    "type": "single",
+    "points": "intact=0, indet=1, disr=2",
+    "nt": ""
+   },
+   {
+    "id": "neuro",
+    "label": "Neurological status",
+    "type": "single",
+    "points": "intact=0, root=1, complete=2, incomplete=3",
+    "nt": ""
+   },
+   {
+    "id": "ccc",
+    "label": "Continuous cord compression with a neurological deficit",
+    "type": "single",
+    "points": "no=0, yes=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "low",
+    "label": "SLIC {total}",
+    "tone": "low",
+    "declared": "0–3",
+    "reached": "0–3"
+   },
+   {
+    "id": "mid",
+    "label": "SLIC 4",
+    "tone": "moderate",
+    "declared": "4",
+    "reached": "4"
+   },
+   {
+    "id": "high",
+    "label": "SLIC {total}",
+    "tone": "high",
+    "declared": "5–10",
+    "reached": "5–10"
+   }
+  ],
+  "boundaries": [
+   "3→4: low → mid",
+   "4→5: mid → high"
   ],
   "nt": [],
   "issues": []
@@ -4067,6 +6444,376 @@
   "boundaries": [
    "2→3: low → mid",
    "3→4: mid → high"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "stess",
+  "abbreviation": "STESS",
+  "version": "STESS (Rossetti et al. 2008)",
+  "method": "sum",
+  "declared": {
+   "min": 0,
+   "max": 6
+  },
+  "reachMin": 0,
+  "reachMax": 6,
+  "space": 24,
+  "evaluated": 24,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 24
+  },
+  "components": [
+   {
+    "id": "loc",
+    "label": "Consciousness before treatment",
+    "type": "single",
+    "points": "alert=0, stupor=1",
+    "nt": ""
+   },
+   {
+    "id": "type",
+    "label": "Worst seizure type",
+    "type": "single",
+    "points": "focal=0, gc=1, ncse=2",
+    "nt": ""
+   },
+   {
+    "id": "age",
+    "label": "Age",
+    "type": "single",
+    "points": "lt65=0, ge65=2",
+    "nt": ""
+   },
+   {
+    "id": "hx",
+    "label": "Previous seizures",
+    "type": "single",
+    "points": "yes=0, no=1",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "fav",
+    "label": "Favourable range (0–2)",
+    "tone": "low",
+    "declared": "0–2",
+    "reached": "0–2"
+   },
+   {
+    "id": "unfav",
+    "label": "Unfavourable range (≥3)",
+    "tone": "high",
+    "declared": "3–6",
+    "reached": "3–6"
+   }
+  ],
+  "boundaries": [
+   "2→3: fav → unfav"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "sunderland",
+  "abbreviation": "Sunderland",
+  "version": "Sunderland (1951), first to fifth degree",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 5,
+  "evaluated": 5,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 5
+  },
+  "components": [
+   {
+    "id": "d",
+    "label": "Injury degree",
+    "type": "single",
+    "points": "1=1, 2=2, 3=3, 4=4, 5=5",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "First degree",
+    "tone": "informational",
+    "declared": "1",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Second degree",
+    "tone": "informational",
+    "declared": "2",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Third degree",
+    "tone": "informational",
+    "declared": "3",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Fourth degree",
+    "tone": "informational",
+    "declared": "4",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Fifth degree",
+    "tone": "informational",
+    "declared": "5",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "suzuki",
+  "abbreviation": "Suzuki stage",
+  "version": "Suzuki and Takaku (1969), stages I–VI",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 6
+  },
+  "reachMin": 1,
+  "reachMax": 6,
+  "space": 6,
+  "evaluated": 6,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 6
+  },
+  "components": [
+   {
+    "id": "stg",
+    "label": "Angiographic stage",
+    "type": "single",
+    "points": "I=1, II=2, III=3, IV=4, V=5, VI=6",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Stage I: narrowing of the carotid fork",
+    "tone": "informational",
+    "declared": "I",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Stage II: initiation of the moyamoya",
+    "tone": "informational",
+    "declared": "II",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Stage III: intensification of the moyamoya",
+    "tone": "informational",
+    "declared": "III",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Stage IV: minimisation of the moyamoya",
+    "tone": "informational",
+    "declared": "IV",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Stage V: reduction of the moyamoya",
+    "tone": "informational",
+    "declared": "V",
+    "reached": "5"
+   },
+   {
+    "id": "s6",
+    "label": "Stage VI: disappearance of the moyamoya",
+    "tone": "informational",
+    "declared": "VI",
+    "reached": "6"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5",
+   "5→6: s5 → s6"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "tlics",
+  "abbreviation": "TLICS",
+  "version": "TLICS (Vaccaro et al. 2005)",
+  "method": "sum",
+  "declared": {
+   "min": 1,
+   "max": 10
+  },
+  "reachMin": 1,
+  "reachMax": 10,
+  "space": 60,
+  "evaluated": 60,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 60
+  },
+  "components": [
+   {
+    "id": "morph",
+    "label": "Morphology",
+    "type": "single",
+    "points": "comp=1, burst=2, trans=3, dist=4",
+    "nt": ""
+   },
+   {
+    "id": "plc",
+    "label": "Posterior ligamentous complex",
+    "type": "single",
+    "points": "intact=0, indet=2, inj=3",
+    "nt": ""
+   },
+   {
+    "id": "neuro",
+    "label": "Neurological status",
+    "type": "single",
+    "points": "intact=0, root=2, 2 (complete)=2, 3 (incomplete)=3, 3 (CE)=3",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "low",
+    "label": "TLICS {total}",
+    "tone": "low",
+    "declared": "1–3",
+    "reached": "1–3"
+   },
+   {
+    "id": "mid",
+    "label": "TLICS 4",
+    "tone": "moderate",
+    "declared": "4",
+    "reached": "4"
+   },
+   {
+    "id": "high",
+    "label": "TLICS {total}",
+    "tone": "high",
+    "declared": "5–10",
+    "reached": "5–10"
+   }
+  ],
+  "boundaries": [
+   "3→4: low → mid",
+   "4→5: mid → high"
+  ],
+  "nt": [],
+  "issues": []
+ },
+ {
+  "id": "toast",
+  "abbreviation": "TOAST",
+  "version": "TOAST (Adams et al. 1993), five subtypes",
+  "method": "select",
+  "declared": {
+   "min": 1,
+   "max": 5
+  },
+  "reachMin": 1,
+  "reachMax": 5,
+  "space": 15,
+  "evaluated": 15,
+  "exhaustive": true,
+  "statusCount": {
+   "complete": 15
+  },
+  "components": [
+   {
+    "id": "sub",
+    "label": "Presumed mechanism",
+    "type": "single",
+    "points": "LAA=1, CE=2, SVO=3, OC=4, UND=5",
+    "nt": ""
+   },
+   {
+    "id": "cert",
+    "label": "Certainty (subtypes LAA, CE, SVO, OC)",
+    "type": "single",
+    "points": "probable=0, possible=0",
+    "nt": ""
+   }
+  ],
+  "states": [
+   {
+    "id": "s1",
+    "label": "Large-artery atherosclerosis",
+    "tone": "informational",
+    "declared": "LAA",
+    "reached": "1"
+   },
+   {
+    "id": "s2",
+    "label": "Cardioembolism",
+    "tone": "informational",
+    "declared": "CE",
+    "reached": "2"
+   },
+   {
+    "id": "s3",
+    "label": "Small-vessel occlusion (lacune)",
+    "tone": "informational",
+    "declared": "SVO",
+    "reached": "3"
+   },
+   {
+    "id": "s4",
+    "label": "Stroke of other determined aetiology",
+    "tone": "informational",
+    "declared": "OC",
+    "reached": "4"
+   },
+   {
+    "id": "s5",
+    "label": "Stroke of undetermined aetiology",
+    "tone": "informational",
+    "declared": "UND",
+    "reached": "5"
+   }
+  ],
+  "boundaries": [
+   "1→2: s1 → s2",
+   "2→3: s2 → s3",
+   "3→4: s3 → s4",
+   "4→5: s4 → s5"
   ],
   "nt": [],
   "issues": []

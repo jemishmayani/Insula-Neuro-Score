@@ -1,0 +1,58 @@
+{
+ "scoreId": "ichvolume",
+ "cases": [
+  {
+   "name": "30 mL",
+   "answers": {
+    "a": "4",
+    "b": "3",
+    "c": "5"
+   },
+   "expect": {
+    "total": 30,
+    "display": "30.0 mL",
+    "state": "ge30",
+    "insightsContains": "ICH Score"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4×3×5/2 = 30",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "7.5 mL",
+   "answers": {
+    "a": "2.5",
+    "b": "2",
+    "c": "3"
+   },
+   "expect": {
+    "total": 7.5,
+    "display": "7.5 mL",
+    "state": "lt30"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2.5×2×3/2 = 7.5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "too many decimals",
+   "answers": {
+    "a": "2.55",
+    "b": "2",
+    "c": "3"
+   },
+   "expect": {
+    "status": "invalid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "invalid entry",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

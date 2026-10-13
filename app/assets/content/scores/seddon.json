@@ -1,0 +1,181 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "seddon",
+  "nerve injury",
+  "neurapraxia",
+  "axonotmesis",
+  "neurotmesis",
+  "peripheral nerve"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Classifying before neurophysiology can distinguish conduction block from axonal loss."
+ ],
+ "relatedScores": [
+  {
+   "id": "sunderland",
+   "relation": "Five-degree refinement"
+  },
+  {
+   "id": "mrc",
+   "relation": "Muscle power"
+  }
+ ],
+ "id": "seddon",
+ "name": "Seddon Classification of Nerve Injury",
+ "abbreviation": "Seddon",
+ "category": "exam",
+ "subcategory": "Peripheral nerve",
+ "specialties": [
+  "Neurosurgery",
+  "Neurology",
+  "Plastic Surgery",
+  "Orthopaedics"
+ ],
+ "version": {
+  "label": "Seddon (1943): neurapraxia, axonotmesis, neurotmesis",
+  "detail": "Three classes by the structures injured. Sunderland's five degrees subdivide these."
+ },
+ "purpose": "Classifies peripheral nerve injury by the structures disrupted.",
+ "intendedPopulation": "Patients with peripheral nerve injury.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Injury class",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "c",
+   "type": "single",
+   "label": "Injury class",
+   "short": "Class",
+   "options": [
+    {
+     "value": "1",
+     "label": "Neurapraxia: Focal conduction block with intact axons (myelin injury)",
+     "points": 1,
+     "code": "Neurapraxia"
+    },
+    {
+     "value": "2",
+     "label": "Axonotmesis: Axonal disruption with preserved connective tissue sheaths; Wallerian degeneration",
+     "points": 2,
+     "code": "Axonotmesis"
+    },
+    {
+     "value": "3",
+     "label": "Neurotmesis: Complete disruption of the nerve including its connective tissue",
+     "points": 3,
+     "code": "Neurotmesis"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "c",
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "display": "{c_code}",
+  "share": "Seddon: {c_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Neurapraxia",
+   "summary": "Focal conduction block with intact axons (myelin injury).",
+   "range": "Neurapraxia",
+   "detail": "Recovery usually complete within weeks to months."
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Axonotmesis",
+   "summary": "Axonal disruption with preserved connective tissue sheaths; Wallerian degeneration.",
+   "range": "Axonotmesis",
+   "detail": "Recovery by regeneration (about 1 mm/day), often good."
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Neurotmesis",
+   "summary": "Complete disruption of the nerve including its connective tissue.",
+   "range": "Neurotmesis",
+   "detail": "No useful spontaneous recovery expected."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Determines expected recovery and whether surgical repair may be needed.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "The class is often clear only with time and serial neurophysiology; early injuries can be mixed."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Often cannot be determined at presentation; mixed injuries are common.",
+   "importance": "major"
+  },
+  "Does not separate the degrees within axonotmesis that differ in recovery (see Sunderland)."
+ ],
+ "confounders": [
+  {
+   "factor": "Timing of neurophysiology",
+   "effect": "Wallerian degeneration takes days to show."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The level of injury.",
+  "Timing of repair."
+ ],
+ "guideSections": {
+  "what": "Three classes of nerve injury.",
+  "whenToUse": "Peripheral nerve trauma.",
+  "howToPerform": "Combine mechanism, examination, serial neurophysiology and operative findings.",
+  "clinicalContext": "Guides expectations and timing of surgery."
+ },
+ "sources": [
+  {
+   "citation": "Seddon HJ. Three types of nerve injury. Brain. 1943;66(4):237-288."
+  }
+ ],
+ "licensing": {
+  "status": "Classical classification",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_c",
+   "label": "Injury class",
+   "inputs": [
+    "c"
+   ]
+  }
+ ],
+ "itemType": "classification"
+}

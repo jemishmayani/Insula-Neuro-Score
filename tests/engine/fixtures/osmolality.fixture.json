@@ -1,0 +1,76 @@
+{
+ "scoreId": "osmolality",
+ "cases": [
+  {
+   "name": "SI units",
+   "answers": {
+    "na": "140",
+    "glu": {
+     "value": "5",
+     "unit": "mmol"
+    },
+    "urea": {
+     "value": "5",
+     "unit": "mmol"
+    }
+   },
+   "expect": {
+    "total": 290,
+    "display": "290 mOsm/kg",
+    "state": "val"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "280+5+5 = 290",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "US units with gap",
+   "answers": {
+    "na": "140",
+    "glu": {
+     "value": "180",
+     "unit": "mgdl"
+    },
+    "urea": {
+     "value": "28",
+     "unit": "bun"
+    },
+    "meas": "320"
+   },
+   "expect": {
+    "display": "300 mOsm/kg · gap 20",
+    "state": "gap"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "280+10+10 = 300; gap 20",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "gap 10 not raised",
+   "answers": {
+    "na": "140",
+    "glu": {
+     "value": "5",
+     "unit": "mmol"
+    },
+    "urea": {
+     "value": "5",
+     "unit": "mmol"
+    },
+    "meas": "300"
+   },
+   "expect": {
+    "state": "val"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "gap 10",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -154,6 +154,10 @@ function* combos(defs) {
   if (d.type === "single" || d.type === "dropdown") vals = d.options.map((o) => o.value);
   else if (d.type === "multi") { const nonEx = d.options.filter((o) => !o.exclusive).map((o) => o.value); vals = [["none"], [nonEx[0]], nonEx.slice(0, 3), nonEx]; }
   else if (d.type === "integer") vals = [...new Set([d.min, Math.round((d.min + d.max) / 2), d.max, ...(d.pointBands || []).flatMap((b) => [b.min, b.max]).filter((x) => x != null)])];
+  else if (d.type === "decimal" || d.type === "number") vals = [d.min, Math.round((d.min + d.max) / 2 * 10) / 10, d.max];
+  else if (d.type === "measurement") vals = [{ value: d.min, unit: d.units[0].id }, { value: d.max, unit: d.units[0].id }];
+  else if (d.type === "yesno") vals = ["no", "yes"];
+  if (d.required === false) vals = vals.concat([undefined]);
   for (const v of vals) for (const r of combos(rest)) yield { [d.id]: v, ...r };
 }
 test("every implemented score: all (or banded) input combinations yield well-formed results", () => {

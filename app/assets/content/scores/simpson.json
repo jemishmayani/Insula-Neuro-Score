@@ -1,0 +1,208 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "simpson",
+  "meningioma resection",
+  "extent of resection"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Grading from imaging alone without the operative description."
+ ],
+ "relatedScores": [
+  {
+   "id": "kps",
+   "relation": "Performance status"
+  }
+ ],
+ "id": "simpson",
+ "name": "Simpson Grade of Meningioma Resection",
+ "abbreviation": "Simpson grade",
+ "category": "oncology",
+ "subcategory": "Tumour grading: meningioma",
+ "specialties": [
+  "Neurosurgery",
+  "Neuro-oncology"
+ ],
+ "version": {
+  "label": "Simpson (1957), grades I–V",
+  "detail": "Extent of meningioma resection as judged by the surgeon. Grade 0 (resection with a dural margin) is a later proposal and is not combined."
+ },
+ "purpose": "Describes the extent of meningioma resection.",
+ "intendedPopulation": "Patients after meningioma surgery.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Extent of resection",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Extent of resection",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "Grade I: Macroscopically complete removal, including the dural attachment and any abnormal bone",
+     "points": 1,
+     "code": "I"
+    },
+    {
+     "value": "2",
+     "label": "Grade II: Macroscopically complete removal with coagulation of the dural attachment",
+     "points": 2,
+     "code": "II"
+    },
+    {
+     "value": "3",
+     "label": "Grade III: Macroscopically complete removal without resection or coagulation of the dural attachment or extradural extensions",
+     "points": 3,
+     "code": "III"
+    },
+    {
+     "value": "4",
+     "label": "Grade IV: Subtotal removal",
+     "points": 4,
+     "code": "IV"
+    },
+    {
+     "value": "5",
+     "label": "Grade V: Simple decompression, with or without biopsy",
+     "points": 5,
+     "code": "V"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Simpson {g_code}",
+  "share": "Simpson grade {g_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Grade I",
+   "summary": "Macroscopically complete removal, including the dural attachment and any abnormal bone.",
+   "range": "I",
+   "detail": "Recurrence: 9% symptomatic recurrence at 10 years in Simpson's series."
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Grade II",
+   "summary": "Macroscopically complete removal with coagulation of the dural attachment.",
+   "range": "II",
+   "detail": "Recurrence: 19% in the original series."
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Grade III",
+   "summary": "Macroscopically complete removal without resection or coagulation of the dural attachment or extradural extensions.",
+   "range": "III",
+   "detail": "Recurrence: 29% in the original series."
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Grade IV",
+   "summary": "Subtotal removal.",
+   "range": "IV",
+   "detail": "Recurrence: 39–44% in the original series."
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Grade V",
+   "summary": "Simple decompression, with or without biopsy.",
+   "range": "V",
+   "detail": "Recurrence: High recurrence (small group in the original series)."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Extent of resection is a key predictor of meningioma recurrence; the 1957 series showed rising recurrence with grade.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Modern series find smaller differences between grades I–III; WHO grade and location also matter."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Surgeon-reported; postoperative MRI may disagree.",
+   "importance": "major"
+  },
+  "Recurrence figures come from a 1957 single-surgeon series."
+ ],
+ "confounders": [
+  {
+   "factor": "Tumour location",
+   "effect": "Limits achievable grade (e.g. skull base)."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "WHO tumour grade.",
+  "Need for adjuvant treatment on its own."
+ ],
+ "guideSections": {
+  "what": "Five grades of meningioma resection.",
+  "whenToUse": "Operative notes and follow-up planning after meningioma surgery.",
+  "howToPerform": "From the operative findings, record removal of tumour, dura and bone; choose the grade.",
+  "clinicalContext": "Used with WHO grade, MRI and location."
+ },
+ "sources": [
+  {
+   "citation": "Simpson D. The recurrence of intracranial meningiomas after surgical treatment. J Neurol Neurosurg Psychiatry. 1957;20(1):22-39."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Extent of resection",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

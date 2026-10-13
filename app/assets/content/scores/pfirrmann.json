@@ -1,0 +1,213 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "pfirrmann",
+  "disc degeneration",
+  "disc desiccation"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Grading on T1-weighted images."
+ ],
+ "relatedScores": [
+  {
+   "id": "modic",
+   "relation": "Endplate changes"
+  },
+  {
+   "id": "schizas",
+   "relation": "Stenosis grade"
+  }
+ ],
+ "id": "pfirrmann",
+ "name": "Pfirrmann Grading of Disc Degeneration",
+ "abbreviation": "Pfirrmann",
+ "category": "spine",
+ "subcategory": "Degenerative spine imaging",
+ "specialties": [
+  "Spine Surgery",
+  "Neurosurgery",
+  "Radiology"
+ ],
+ "version": {
+  "label": "Pfirrmann et al. (2001), grades I–V",
+  "detail": "Lumbar discs on T2-weighted MRI. The 8-level modified grading (Griffith et al. 2007) is a different system."
+ },
+ "purpose": "Grades lumbar intervertebral disc degeneration on T2-weighted MRI.",
+ "intendedPopulation": "Patients with lumbar spine MRI.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Disc grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Disc appearance on T2 MRI",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "Grade I",
+     "points": 1,
+     "code": "I",
+     "detail": "Homogeneous, bright white; clear nucleus–annulus distinction; normal height."
+    },
+    {
+     "value": "2",
+     "label": "Grade II",
+     "points": 2,
+     "code": "II",
+     "detail": "Inhomogeneous, with or without horizontal bands; clear distinction; normal height."
+    },
+    {
+     "value": "3",
+     "label": "Grade III",
+     "points": 3,
+     "code": "III",
+     "detail": "Inhomogeneous, grey; distinction unclear; height normal or slightly decreased."
+    },
+    {
+     "value": "4",
+     "label": "Grade IV",
+     "points": 4,
+     "code": "IV",
+     "detail": "Inhomogeneous, grey to black; distinction lost; height normal to moderately decreased."
+    },
+    {
+     "value": "5",
+     "label": "Grade V",
+     "points": 5,
+     "code": "V",
+     "detail": "Inhomogeneous, black; distinction lost; disc space collapsed."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Grade {g_code}",
+  "share": "Pfirrmann grade {g_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Grade I",
+   "summary": "Homogeneous, bright white; clear nucleus–annulus distinction; normal height.",
+   "range": "I"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Grade II",
+   "summary": "Inhomogeneous, with or without horizontal bands; clear distinction; normal height.",
+   "range": "II"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Grade III",
+   "summary": "Inhomogeneous, grey; distinction unclear; height normal or slightly decreased.",
+   "range": "III"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Grade IV",
+   "summary": "Inhomogeneous, grey to black; distinction lost; height normal to moderately decreased.",
+   "range": "IV"
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Grade V",
+   "summary": "Inhomogeneous, black; distinction lost; disc space collapsed.",
+   "range": "V"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Describes disc degeneration; degeneration is common without symptoms.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Grade each level separately."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Imaging findings correlate poorly with pain.",
+   "importance": "major"
+  },
+  "Reliability lower between grades III and IV."
+ ],
+ "confounders": [
+  {
+   "factor": "Field strength and sequence",
+   "effect": "Change signal appearance."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The source of pain.",
+  "Need for intervention."
+ ],
+ "guideSections": {
+  "what": "Five grades of disc degeneration from signal, structure, nucleus–annulus distinction and height.",
+  "whenToUse": "Lumbar MRI reporting and research.",
+  "howToPerform": "On mid-sagittal T2 images assess each disc and choose the grade.",
+  "clinicalContext": "Correlate with symptoms and examination."
+ },
+ "sources": [
+  {
+   "citation": "Pfirrmann CWA, Metzdorf A, Zanetti M, Hodler J, Boos N. Magnetic resonance classification of lumbar intervertebral disc degeneration. Spine. 2001;26(17):1873-1878."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Disc appearance on T2 MRI",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

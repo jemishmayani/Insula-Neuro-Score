@@ -1,0 +1,238 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "fazekas",
+  "white matter hyperintensities",
+  "leukoaraiosis",
+  "small vessel disease",
+  "wmh"
+ ],
+ "scoringRules": [
+  {
+   "id": "tot",
+   "expr": "pv + dw"
+  }
+ ],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Reporting one number without saying which region.",
+  "Applying it to non-vascular white matter disease without comment."
+ ],
+ "relatedScores": [
+  {
+   "id": "toast",
+   "relation": "Small-vessel occlusion subtype"
+  }
+ ],
+ "id": "fazekas",
+ "name": "Fazekas Scale for White Matter Hyperintensities",
+ "abbreviation": "Fazekas",
+ "category": "stroke",
+ "subcategory": "Small vessel disease imaging",
+ "specialties": [
+  "Neurology",
+  "Neuroradiology",
+  "Stroke"
+ ],
+ "version": {
+  "label": "Fazekas scale (Fazekas et al. 1987)",
+  "detail": "Periventricular (0–3) and deep white matter (0–3) graded separately on T2/FLAIR MRI. The deep white matter grade is the one most often reported alone."
+ },
+ "purpose": "Grades the extent of white matter T2 hyperintensities.",
+ "intendedPopulation": "Adults with brain MRI (T2/FLAIR), e.g. in cerebrovascular disease or cognitive assessment.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "White matter grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "pv",
+   "type": "single",
+   "label": "Periventricular white matter",
+   "short": "PV",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "Caps or pencil-thin lining",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Smooth halo",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Irregular periventricular signal extending into deep white matter",
+     "points": 3,
+     "code": "3"
+    }
+   ]
+  },
+  {
+   "id": "dw",
+   "type": "single",
+   "label": "Deep white matter",
+   "short": "Deep",
+   "options": [
+    {
+     "value": "0",
+     "label": "Absent",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "Punctate foci",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Beginning confluence",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Large confluent areas",
+     "points": 3,
+     "code": "3"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "dw",
+  "range": {
+   "min": 0,
+   "max": 3
+  },
+  "display": "Deep {dw} · PV {pv}",
+  "formulaEquals": false,
+  "share": "Fazekas: deep {dw}, periventricular {pv}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0 && pv == 0",
+   "state": "none"
+  },
+  {
+   "when": "total <= 1",
+   "state": "mild"
+  },
+  {
+   "when": "total == 2",
+   "state": "mod"
+  },
+  {
+   "state": "sev"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "none",
+   "tone": "favorable",
+   "label": "No white matter hyperintensities",
+   "summary": "No periventricular or deep white matter hyperintensities graded at this assessment.",
+   "detail": "Grades the T2/FLAIR appearance only; it does not exclude other pathology."
+  },
+  {
+   "id": "mild",
+   "tone": "low",
+   "label": "Deep grade 0–1",
+   "summary": "Absent or punctate deep white matter hyperintensities (periventricular graded separately)."
+  },
+  {
+   "id": "mod",
+   "tone": "moderate",
+   "label": "Deep grade 2",
+   "summary": "Beginning confluence of deep white matter hyperintensities."
+  },
+  {
+   "id": "sev",
+   "tone": "high",
+   "label": "Deep grade 3",
+   "summary": "Large confluent deep white matter hyperintensities.",
+   "detail": "Interpret with age, vascular risk factors and the clinical question; assess for other causes of white matter change."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A widely used visual rating of white matter hyperintensities, often presumed of vascular origin in older adults.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Report both grades; the deep grade is often quoted alone (e.g. 'Fazekas 2')."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Visual, ordinal rating with ceiling effects; insensitive to small change.",
+   "importance": "major"
+  },
+  "Not specific for vascular aetiology.",
+  "Depends on sequence and field strength."
+ ],
+ "confounders": [
+  {
+   "factor": "Demyelinating or inflammatory disease",
+   "effect": "Produces hyperintensities of a different cause."
+  },
+  {
+   "factor": "Age",
+   "effect": "Some hyperintensity is common with ageing."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause of the white matter change.",
+  "Cognitive status.",
+  "Stroke risk on its own."
+ ],
+ "guideSections": {
+  "what": "Separate 0–3 grades for periventricular and deep white matter hyperintensities.",
+  "whenToUse": "MRI reporting in cerebrovascular disease and cognitive impairment.",
+  "howToPerform": "On FLAIR/T2, grade the periventricular pattern (caps, halo, extension) and the deep white matter pattern (punctate, beginning confluence, confluent).",
+  "clinicalContext": "An imaging descriptor, interpreted with age and clinical context."
+ },
+ "sources": [
+  {
+   "citation": "Fazekas F, Chawluk JB, Alavi A, Hurtig HI, Zimmerman RA. MR signal abnormalities at 1.5 T in Alzheimer's dementia and normal aging. AJR Am J Roentgenol. 1987;149(2):351-356."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_pv",
+   "label": "Periventricular white matter",
+   "inputs": [
+    "pv"
+   ]
+  },
+  {
+   "id": "c_dw",
+   "label": "Deep white matter",
+   "inputs": [
+    "dw"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

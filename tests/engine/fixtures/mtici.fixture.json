@@ -1,0 +1,66 @@
+{
+ "scoreId": "mtici",
+ "cases": [
+  {
+   "name": "0",
+   "answers": {
+    "g": "1"
+   },
+   "expect": {
+    "display": "mTICI 0",
+    "state": "s1",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "2a",
+   "answers": {
+    "g": "3"
+   },
+   "expect": {
+    "display": "mTICI 2a",
+    "state": "s3"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2a",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "2b",
+   "answers": {
+    "g": "4"
+   },
+   "expect": {
+    "display": "mTICI 2b",
+    "insightsContains": "2c"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2b",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "3",
+   "answers": {
+    "g": "5"
+   },
+   "expect": {
+    "display": "mTICI 3",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

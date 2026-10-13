@@ -1,0 +1,89 @@
+{
+ "scoreId": "tlics",
+ "cases": [
+  {
+   "name": "burst indeterminate incomplete",
+   "answers": {
+    "morph": "burst",
+    "plc": "indet",
+    "neuro": "incomplete"
+   },
+   "expect": {
+    "total": 7,
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+2+3 = 7",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "compression intact",
+   "answers": {
+    "morph": "comp",
+    "plc": "intact",
+    "neuro": "intact"
+   },
+   "expect": {
+    "total": 1,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "complete cord scores 2",
+   "answers": {
+    "morph": "comp",
+    "plc": "intact",
+    "neuro": "complete"
+   },
+   "expect": {
+    "total": 3,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+0+2 = 3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "burst intact root",
+   "answers": {
+    "morph": "burst",
+    "plc": "intact",
+    "neuro": "root"
+   },
+   "expect": {
+    "total": 4,
+    "state": "mid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+0+2 = 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "max",
+   "answers": {
+    "morph": "dist",
+    "plc": "inj",
+    "neuro": "ce"
+   },
+   "expect": {
+    "total": 10
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4+3+3 = 10",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

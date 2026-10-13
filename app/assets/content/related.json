@@ -269,6 +269,138 @@
     "ilae"
    ],
    "description": "Seizure outcome classifications after epilepsy surgery."
+  },
+  {
+   "id": "stroke-mechanism",
+   "title": "Stroke mechanism and prevention",
+   "keywords": [
+    "stroke subtype",
+    "secondary prevention",
+    "atrial fibrillation"
+   ],
+   "members": [
+    "toast",
+    "ocsp",
+    "chadsvasc",
+    "hasbled"
+   ],
+   "description": "Mechanism, syndrome and atrial fibrillation risk scores used after ischaemic stroke."
+  },
+  {
+   "id": "thrombectomy",
+   "title": "Thrombectomy",
+   "keywords": [
+    "thrombectomy",
+    "reperfusion",
+    "lvo"
+   ],
+   "members": [
+    "aspects",
+    "collaterals",
+    "mtici"
+   ],
+   "description": "Imaging selection and angiographic grades around endovascular treatment."
+  },
+  {
+   "id": "ich-expansion",
+   "title": "ICH volume and expansion",
+   "keywords": [
+    "haematoma",
+    "hematoma",
+    "expansion"
+   ],
+   "members": [
+    "ichvolume",
+    "bat",
+    "ich"
+   ],
+   "description": "Haematoma volume, expansion risk and severity."
+  },
+  {
+   "id": "imaging-rules",
+   "title": "Imaging decision rules",
+   "keywords": [
+    "head injury",
+    "c-spine",
+    "imaging"
+   ],
+   "members": [
+    "cchr",
+    "nexus",
+    "ccsr"
+   ],
+   "description": "Validated rules for CT head and cervical spine imaging after trauma."
+  },
+  {
+   "id": "spine-trauma",
+   "title": "Spine trauma",
+   "keywords": [
+    "spine fracture",
+    "spinal injury"
+   ],
+   "members": [
+    "slic",
+    "tlics",
+    "andersondalonzo",
+    "levineedwards",
+    "frankel"
+   ],
+   "description": "Injury classifications for the cervical and thoracolumbar spine."
+  },
+  {
+   "id": "degenerative-spine",
+   "title": "Degenerative spine imaging",
+   "keywords": [
+    "degenerative",
+    "mri spine"
+   ],
+   "members": [
+    "pfirrmann",
+    "modic",
+    "meyerding",
+    "schizas"
+   ],
+   "description": "MRI and radiograph grades of degenerative spine disease."
+  },
+  {
+   "id": "pituitary",
+   "title": "Pituitary adenoma",
+   "keywords": [
+    "pituitary",
+    "sella"
+   ],
+   "members": [
+    "knosp",
+    "hardy"
+   ],
+   "description": "Cavernous sinus invasion and sellar/extrasellar extension."
+  },
+  {
+   "id": "gbs",
+   "title": "Guillain-Barré syndrome",
+   "keywords": [
+    "gbs",
+    "guillain-barre"
+   ],
+   "members": [
+    "gbsds",
+    "egos",
+    "mrcss"
+   ],
+   "description": "Disability, strength and prognosis in GBS."
+  },
+  {
+   "id": "nerve-injury",
+   "title": "Peripheral nerve injury",
+   "keywords": [
+    "nerve injury"
+   ],
+   "members": [
+    "seddon",
+    "sunderland",
+    "mrc"
+   ],
+   "description": "Classifications of nerve injury with muscle power grading."
   }
  ]
 }

@@ -1,0 +1,352 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "canadian ct head",
+  "cchr",
+  "ct head rule",
+  "minor head injury",
+  "head ct"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Applying the rule to anticoagulated patients or children.",
+  "Using the arrival GCS instead of the 2-hour GCS."
+ ],
+ "relatedScores": [
+  {
+   "id": "gcs",
+   "relation": "Consciousness"
+  },
+  {
+   "id": "ccsr",
+   "relation": "C-spine rule"
+  },
+  {
+   "id": "marshall",
+   "relation": "CT classification"
+  }
+ ],
+ "id": "cchr",
+ "name": "Canadian CT Head Rule",
+ "abbreviation": "Canadian CT Head",
+ "category": "tbi",
+ "subcategory": "Imaging decision rule",
+ "specialties": [
+  "Emergency Medicine",
+  "Neurosurgery",
+  "Trauma"
+ ],
+ "version": {
+  "label": "Canadian CT Head Rule (Stiell et al. 2001)",
+  "detail": "Five high-risk factors (for neurosurgical intervention) and two medium-risk factors (for brain injury on CT) in adults with minor head injury and GCS 13–15."
+ },
+ "purpose": "Identifies adults with minor head injury in whom the rule's criteria for CT are met.",
+ "intendedPopulation": "Adults (16+) with blunt minor head injury, GCS 13–15, and witnessed LOC, definite amnesia or witnessed disorientation.",
+ "resultPresentation": {
+  "type": "decision-rule",
+  "typeLabel": "Decision rule result",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Check that the rule applies",
+  "message": "The rule was not derived for children, GCS below 13, anticoagulated patients or obvious open skull fracture. Local protocols may differ (e.g. for anticoagulation)."
+ },
+ "inputDefinitions": [
+  {
+   "id": "applies",
+   "type": "single",
+   "label": "Does the rule apply?",
+   "short": "Applies",
+   "options": [
+    {
+     "value": "yes",
+     "label": "Yes: minor head injury in the rule's population",
+     "points": 1,
+     "code": "yes",
+     "detail": "Blunt head injury with witnessed loss of consciousness, definite amnesia or witnessed disorientation; GCS 13–15; age 16 or over."
+    },
+    {
+     "value": "no",
+     "label": "No: outside the rule",
+     "points": 0,
+     "code": "no",
+     "detail": "e.g. age under 16, GCS under 13, anticoagulation or bleeding disorder, obvious open skull fracture, no loss of consciousness/amnesia/disorientation."
+    }
+   ]
+  },
+  {
+   "id": "h1",
+   "type": "single",
+   "label": "GCS below 15 at 2 hours after injury",
+   "short": "GCS <15 at 2 h",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "h2",
+   "type": "single",
+   "label": "Suspected open or depressed skull fracture",
+   "short": "Open/depressed fracture",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "h3",
+   "type": "single",
+   "label": "Any sign of basal skull fracture",
+   "short": "Basal skull fracture",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ],
+   "help": "Haemotympanum, 'raccoon' eyes, CSF otorrhoea or rhinorrhoea, Battle's sign."
+  },
+  {
+   "id": "h4",
+   "type": "single",
+   "label": "Vomiting two or more episodes",
+   "short": "Vomiting ≥2",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "h5",
+   "type": "single",
+   "label": "Age 65 or older",
+   "short": "Age ≥65",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "m1",
+   "type": "single",
+   "label": "Amnesia before impact of 30 minutes or more",
+   "short": "Amnesia ≥30 min",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "m2",
+   "type": "single",
+   "label": "Dangerous mechanism",
+   "short": "Dangerous mechanism",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ],
+   "help": "Pedestrian struck by a motor vehicle, occupant ejected from a vehicle, or fall from over 3 feet or 5 stairs."
+  }
+ ],
+ "components": [
+  {
+   "id": "c_app",
+   "label": "Applicability",
+   "inputs": [
+    "applies"
+   ]
+  },
+  {
+   "id": "high",
+   "label": "High-risk factors",
+   "inputs": [
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5"
+   ]
+  },
+  {
+   "id": "medium",
+   "label": "Medium-risk factors",
+   "inputs": [
+    "m1",
+    "m2"
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "applies == 0 ? 0 : (high > 0 ? 3 : (medium > 0 ? 2 : 1))",
+  "range": {
+   "min": 0,
+   "max": 3
+  },
+  "display": "{total == 0 ? 'Not applicable' : total == 3 ? 'High risk' : total == 2 ? 'Medium risk' : 'No risk factor'}",
+  "formulaEquals": false,
+  "share": "Canadian CT Head Rule: {total == 0 ? 'rule not applicable' : total == 3 ? 'high-risk factor present' : total == 2 ? 'medium-risk factor present' : 'no risk factors'}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "na"
+  },
+  {
+   "when": "total == 3",
+   "state": "high"
+  },
+  {
+   "when": "total == 2",
+   "state": "med"
+  },
+  {
+   "state": "none"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "na",
+   "tone": "informational",
+   "label": "Rule not applicable",
+   "summary": "The patient is outside the population in which the rule was derived.",
+   "detail": "Use clinical judgement and local protocol."
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "High-risk factor present",
+   "summary": "At least one high-risk factor (risk of needing neurosurgical intervention). The rule's criteria for CT are met.",
+   "detail": "Assess according to the clinical situation and local protocol."
+  },
+  {
+   "id": "med",
+   "tone": "moderate",
+   "label": "Medium-risk factor present",
+   "summary": "A medium-risk factor (risk of brain injury on CT) without a high-risk factor. The rule's criteria for CT are met."
+  },
+  {
+   "id": "none",
+   "tone": "low",
+   "label": "No rule risk factor",
+   "summary": "None of the seven factors is present: the rule's criteria for CT are not met.",
+   "detail": "Clinical judgement and observation still apply; the rule does not exclude injury."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Highly sensitive for injuries needing neurosurgical intervention in its derivation and validation cohorts.",
+   "importance": "major"
+  },
+  {
+   "text": "An imaging decision aid, not a substitute for clinical assessment."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "h5 == 1",
+   "text": "Age 65 or older is a high-risk factor on its own."
+  },
+  {
+   "text": "Document the GCS at 2 hours after injury, not only on arrival."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Applies only to its derivation population; not to children, anticoagulated patients or GCS below 13.",
+   "importance": "major"
+  },
+  "Requires reliable history of LOC, amnesia and mechanism.",
+  "Local guidelines (e.g. NICE) use different criteria."
+ ],
+ "confounders": [
+  {
+   "factor": "Intoxication",
+   "effect": "Makes GCS and amnesia unreliable."
+  },
+  {
+   "factor": "Anticoagulation",
+   "effect": "Outside the rule; risk of haemorrhage is higher."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Whether CT will show injury.",
+  "Need for admission or observation.",
+  "C-spine status (see Canadian C-spine Rule)."
+ ],
+ "guideSections": {
+  "what": "A decision rule with five high-risk and two medium-risk factors for CT after minor head injury.",
+  "whenToUse": "Adults with minor head injury (GCS 13–15) and LOC, amnesia or disorientation.",
+  "howToPerform": "Confirm the rule applies. Check each high-risk and medium-risk factor. Any factor present meets the rule's criteria for CT.",
+  "clinicalContext": "Supports, but does not replace, clinical judgement and local protocol."
+ },
+ "sources": [
+  {
+   "citation": "Stiell IG, Wells GA, Vandemheen K, et al. The Canadian CT Head Rule for patients with minor head injury. Lancet. 2001;357(9266):1391-1396."
+  }
+ ],
+ "licensing": {
+  "status": "Published decision rule with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "itemType": "rule"
+}

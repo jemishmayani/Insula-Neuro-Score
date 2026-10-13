@@ -1,0 +1,62 @@
+{
+ "scoreId": "nexus",
+ "cases": [
+  {
+   "name": "all criteria met",
+   "answers": {
+    "t": "no",
+    "f": "no",
+    "a": "no",
+    "i": "no",
+    "d": "no"
+   },
+   "expect": {
+    "total": 0,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "low risk",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "tenderness",
+   "answers": {
+    "t": "yes",
+    "f": "no",
+    "a": "no",
+    "i": "no",
+    "d": "no"
+   },
+   "expect": {
+    "total": 1,
+    "state": "not",
+    "shareText": "NEXUS: 1 criterion present — Not all criteria met"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "not low risk",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "two present",
+   "answers": {
+    "t": "yes",
+    "f": "no",
+    "a": "no",
+    "i": "yes",
+    "d": "no"
+   },
+   "expect": {
+    "total": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2 present",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

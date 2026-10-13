@@ -1,0 +1,63 @@
+{
+ "scoreId": "gbsds",
+ "cases": [
+  {
+   "name": "healthy",
+   "answers": {
+    "g": "0"
+   },
+   "expect": {
+    "display": "Grade 0",
+    "state": "g0",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "walks",
+   "answers": {
+    "g": "2"
+   },
+   "expect": {
+    "state": "walk"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "unable",
+   "answers": {
+    "g": "3"
+   },
+   "expect": {
+    "state": "nowalk"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "ventilated",
+   "answers": {
+    "g": "5"
+   },
+   "expect": {
+    "state": "vent"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

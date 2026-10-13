@@ -1,0 +1,50 @@
+{
+ "scoreId": "schizas",
+ "cases": [
+  {
+   "name": "A1",
+   "answers": {
+    "g": "1"
+   },
+   "expect": {
+    "display": "Grade A1",
+    "tone": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "A1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "B",
+   "answers": {
+    "g": "5"
+   },
+   "expect": {
+    "display": "Grade B",
+    "tone": "moderate"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "B",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "D",
+   "answers": {
+    "g": "7"
+   },
+   "expect": {
+    "display": "Grade D",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "D",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

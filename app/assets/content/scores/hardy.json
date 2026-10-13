@@ -1,0 +1,227 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "hardy",
+  "hardy-wilson",
+  "pituitary adenoma",
+  "sellar"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using stage letters without the sellar grade."
+ ],
+ "relatedScores": [
+  {
+   "id": "knosp",
+   "relation": "Cavernous sinus invasion"
+  }
+ ],
+ "id": "hardy",
+ "name": "Hardy Classification of Pituitary Adenomas (modified by Wilson)",
+ "abbreviation": "Hardy",
+ "category": "oncology",
+ "subcategory": "Tumour grading: pituitary",
+ "specialties": [
+  "Neurosurgery",
+  "Endocrinology",
+  "Neuroradiology"
+ ],
+ "version": {
+  "label": "Hardy sellar grades 0–IV with Wilson's extrasellar stages A–E",
+  "detail": "Sellar floor changes (Hardy) and suprasellar/parasellar extension (Wilson's modification). Wording of the extrasellar stages varies between reproductions."
+ },
+ "purpose": "Describes sellar destruction and extrasellar extension of pituitary adenomas.",
+ "intendedPopulation": "Patients with pituitary adenoma on MRI or CT.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Sellar grade and extension",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Sellar grade",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "Grade 0: Intrapituitary microadenoma; normal sellar floor",
+     "points": 1,
+     "code": "0"
+    },
+    {
+     "value": "2",
+     "label": "Grade I: Normal-sized sella with focal asymmetry or bulging of the floor",
+     "points": 2,
+     "code": "I"
+    },
+    {
+     "value": "3",
+     "label": "Grade II: Enlarged sella with an intact floor",
+     "points": 3,
+     "code": "II"
+    },
+    {
+     "value": "4",
+     "label": "Grade III: Localised erosion or destruction of the sellar floor",
+     "points": 4,
+     "code": "III"
+    },
+    {
+     "value": "5",
+     "label": "Grade IV: Diffuse destruction of the sellar floor",
+     "points": 5,
+     "code": "IV"
+    }
+   ]
+  },
+  {
+   "id": "x",
+   "type": "single",
+   "label": "Extrasellar extension",
+   "short": "Stage",
+   "options": [
+    {
+     "value": "0",
+     "label": "None",
+     "points": 0,
+     "code": "0"
+    },
+    {
+     "value": "1",
+     "label": "A: Bulges into the suprasellar (chiasmatic) cistern",
+     "points": 1,
+     "code": "A"
+    },
+    {
+     "value": "2",
+     "label": "B: Reaches or obliterates the recesses of the floor of the third ventricle",
+     "points": 2,
+     "code": "B"
+    },
+    {
+     "value": "3",
+     "label": "C: Large extension displacing the third ventricle up to the foramen of Monro",
+     "points": 3,
+     "code": "C"
+    },
+    {
+     "value": "4",
+     "label": "D: Intracranial intradural extension into anterior, middle or posterior fossa",
+     "points": 4,
+     "code": "D"
+    },
+    {
+     "value": "5",
+     "label": "E: Extradural extension into or beneath the cavernous sinus",
+     "points": 5,
+     "code": "E"
+    }
+   ]
+  }
+ ],
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Sellar grade",
+   "inputs": [
+    "g"
+   ]
+  },
+  {
+   "id": "c_x",
+   "label": "Extrasellar extension",
+   "inputs": [
+    "x"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Grade {g_code}{x_code == '0' ? '' : '-' + x_code}",
+  "share": "Hardy grade {g_code}{x_code == '0' ? '' : ', stage ' + x_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 2",
+   "state": "micro"
+  },
+  {
+   "state": "macro"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "micro",
+   "tone": "informational",
+   "label": "Grade {g_code}{x_code == '0' ? '' : ', stage ' + x_code}",
+   "summary": "Sellar grades 0–I correspond to microadenomas.",
+   "range": "0–I"
+  },
+  {
+   "id": "macro",
+   "tone": "informational",
+   "label": "Grade {g_code}{x_code == '0' ? '' : ', stage ' + x_code}",
+   "summary": "Sellar grades II–IV correspond to macroadenomas.",
+   "range": "II–IV"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Combines sellar floor destruction with the direction of extrasellar extension.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "x >= 4",
+   "text": "Stages D–E indicate intracranial or cavernous sinus extension; see Knosp for cavernous sinus invasion."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Developed in the radiograph/CT era; MRI-based Knosp grading is preferred for cavernous sinus invasion.",
+   "importance": "major"
+  },
+  "Extrasellar stage wording differs between sources."
+ ],
+ "confounders": [
+  {
+   "factor": "Empty sella or previous surgery",
+   "effect": "Alters sellar contour."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Hormonal activity.",
+  "Visual function."
+ ],
+ "guideSections": {
+  "what": "Sellar grades 0–IV with extrasellar stages A–E.",
+  "whenToUse": "Describing pituitary adenomas.",
+  "howToPerform": "Grade the sellar floor; then assign the extrasellar extension.",
+  "clinicalContext": "Used with Knosp grade, hormones and visual fields."
+ },
+ "sources": [
+  {
+   "citation": "Hardy J. Transsphenoidal microsurgery of the normal and pathological pituitary. Clin Neurosurg. 1969;16:185-217."
+  },
+  {
+   "citation": "Wilson CB. Neurosurgical management of large and invasive pituitary tumors. In: Tindall GT, Collins WF, eds. Clinical Management of Pituitary Disorders. New York: Raven Press; 1979:335-342."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "itemType": "grade"
+}

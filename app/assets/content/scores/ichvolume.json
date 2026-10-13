@@ -1,0 +1,217 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "abc/2",
+  "abc2",
+  "ich volume",
+  "hematoma volume",
+  "haematoma volume",
+  "kothari"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Counting C as all slices without weighting.",
+  "Measuring A and B on different slices.",
+  "Mixing mm and cm (result 1000 times off)."
+ ],
+ "relatedScores": [
+  {
+   "id": "ich",
+   "relation": "Uses volume ≥30 mL"
+  },
+  {
+   "id": "bat",
+   "relation": "Expansion risk"
+  },
+  {
+   "id": "func",
+   "relation": "Uses volume"
+  }
+ ],
+ "id": "ichvolume",
+ "name": "Intracerebral Haemorrhage Volume (ABC/2)",
+ "abbreviation": "ICH volume (ABC/2)",
+ "category": "ich",
+ "subcategory": "Haematoma volume",
+ "specialties": [
+  "Neurosurgery",
+  "Stroke",
+  "Neurocritical Care"
+ ],
+ "version": {
+  "label": "ABC/2 ellipsoid estimate (Kothari et al. 1996)",
+  "detail": "Volume (mL) = A × B × C / 2, with A, B and C in cm. C = number of slices showing haematoma × slice thickness, counting a slice as 1 if its haematoma area is ≥75% of the largest slice, 0.5 if 25–75%, and 0 if <25%."
+ },
+ "purpose": "Estimates intracerebral haematoma volume on CT at the bedside.",
+ "intendedPopulation": "Patients with spontaneous intracerebral haemorrhage on non-contrast CT.",
+ "resultPresentation": {
+  "type": "measurement",
+  "typeLabel": "Haematoma volume",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Measure on the largest slice",
+  "message": "A is the largest diameter on the slice with the largest haematoma area; B is the largest diameter perpendicular to A on the same slice; C is the vertical extent."
+ },
+ "inputDefinitions": [
+  {
+   "id": "a",
+   "type": "decimal",
+   "label": "A: largest diameter",
+   "short": "A",
+   "unit": "cm",
+   "min": 0.1,
+   "max": 20,
+   "decimals": 1,
+   "help": "On the axial slice with the largest haematoma area."
+  },
+  {
+   "id": "b",
+   "type": "decimal",
+   "label": "B: largest diameter perpendicular to A",
+   "short": "B",
+   "unit": "cm",
+   "min": 0.1,
+   "max": 20,
+   "decimals": 1,
+   "help": "On the same slice as A."
+  },
+  {
+   "id": "c",
+   "type": "decimal",
+   "label": "C: vertical extent",
+   "short": "C",
+   "unit": "cm",
+   "min": 0.1,
+   "max": 20,
+   "decimals": 1,
+   "help": "Weighted number of slices × slice thickness in cm (see version note)."
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "a * b * c / 2",
+  "range": {
+   "min": 0,
+   "max": 4000
+  },
+  "formula": "{a} × {b} × {c} / 2",
+  "display": "{fixed(total, 1)} mL",
+  "share": "ICH volume (ABC/2) {fixed(total, 1)} mL"
+ },
+ "interpretationRules": [
+  {
+   "when": "total >= 30",
+   "state": "ge30"
+  },
+  {
+   "state": "lt30"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "lt30",
+   "tone": "informational",
+   "label": "{fixed(total, 1)} mL",
+   "summary": "Estimated haematoma volume below 30 mL.",
+   "range": "<30 mL",
+   "detail": "Volume is one predictor of outcome; correlate with location, GCS, IVH and age."
+  },
+  {
+   "id": "ge30",
+   "tone": "informational",
+   "label": "{fixed(total, 1)} mL",
+   "summary": "Estimated haematoma volume of 30 mL or more (the ICH Score volume threshold).",
+   "range": "≥30 mL",
+   "detail": "Volume is one predictor of outcome; correlate with location, GCS, IVH and age."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A quick bedside estimate of haematoma volume, an important predictor of outcome and expansion.",
+   "importance": "major"
+  },
+  {
+   "text": "ICH volume ≥30 mL scores a point in the ICH Score."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "total >= 30",
+   "text": "Volume ≥30 mL contributes 1 point to the ICH Score."
+  },
+  {
+   "text": "Repeat on follow-up CT to quantify expansion."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Overestimates irregular or lobulated haematomas (e.g. on anticoagulation) compared with planimetry.",
+   "importance": "major"
+  },
+  "Measurement variability between readers.",
+  "Slice weighting for C is often omitted, which overestimates volume."
+ ],
+ "confounders": [
+  {
+   "factor": "Irregular shape",
+   "effect": "ABC/2 assumes an ellipsoid."
+  },
+  {
+   "factor": "Intraventricular extension",
+   "effect": "Not included in the parenchymal estimate."
+  },
+  {
+   "factor": "Slice thickness",
+   "effect": "Must be known for C."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Haematoma location or IVH.",
+  "Whether the haematoma will expand.",
+  "Treatment choice."
+ ],
+ "guideSections": {
+  "what": "An ellipsoid approximation of haematoma volume: A × B × C / 2.",
+  "whenToUse": "Initial and follow-up CT in intracerebral haemorrhage.",
+  "howToPerform": "On the slice with the largest haematoma, measure A and the perpendicular B. Count slices with haematoma using the 1 / 0.5 / 0 weighting and multiply by slice thickness for C. Enter in cm.",
+  "clinicalContext": "One input to severity scores such as the ICH Score."
+ },
+ "sources": [
+  {
+   "citation": "Kothari RU, Brott T, Broderick JP, et al. The ABCs of measuring intracerebral hemorrhage volumes. Stroke. 1996;27(8):1304-1305."
+  }
+ ],
+ "licensing": {
+  "status": "Published method with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_a",
+   "label": "A: largest diameter",
+   "inputs": [
+    "a"
+   ]
+  },
+  {
+   "id": "c_b",
+   "label": "B: largest diameter perpendicular to A",
+   "inputs": [
+    "b"
+   ]
+  },
+  {
+   "id": "c_c",
+   "label": "C: vertical extent",
+   "inputs": [
+    "c"
+   ]
+  }
+ ],
+ "itemType": "measurement"
+}

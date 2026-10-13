@@ -1,0 +1,213 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "bat",
+  "blend sign",
+  "hematoma expansion",
+  "haematoma expansion",
+  "hypodensity"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring the spot sign (CTA) here; BAT uses non-contrast CT only."
+ ],
+ "relatedScores": [
+  {
+   "id": "ichvolume",
+   "relation": "Haematoma volume"
+  },
+  {
+   "id": "ich",
+   "relation": "Severity grade"
+  }
+ ],
+ "id": "bat",
+ "name": "BAT Score for Haematoma Expansion",
+ "abbreviation": "BAT score",
+ "category": "ich",
+ "subcategory": "Haematoma expansion",
+ "specialties": [
+  "Stroke",
+  "Neurosurgery",
+  "Neurocritical Care"
+ ],
+ "version": {
+  "label": "BAT score (Morotti et al. 2018)",
+  "detail": "Blend sign 1, any intrahaematoma hypodensity 2, time from onset to CT under 2.5 hours 2; total 0–5. A score of 3 or more identified higher risk of expansion."
+ },
+ "purpose": "Estimates the risk of haematoma expansion from non-contrast CT and timing.",
+ "intendedPopulation": "Adults with spontaneous ICH imaged early with non-contrast CT; patients with coagulopathy were excluded from derivation.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Expansion risk score",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "blend",
+   "type": "single",
+   "label": "Blend sign",
+   "short": "B",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ],
+   "help": "Hypodense and hyperdense regions with a well-defined margin, visible density difference of at least 18 HU."
+  },
+  {
+   "id": "hypo",
+   "type": "single",
+   "label": "Any intrahaematoma hypodensity",
+   "short": "A",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "time",
+   "type": "single",
+   "label": "Time from onset to CT under 2.5 hours",
+   "short": "T",
+   "options": [
+    {
+     "value": "no",
+     "label": "No or unknown",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 2
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "display": "{total}",
+  "share": "BAT score {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total >= 3",
+   "state": "high"
+  },
+  {
+   "state": "low"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low",
+   "tone": "informational",
+   "label": "BAT {total}",
+   "summary": "Below the derivation threshold of 3.",
+   "range": "0–2",
+   "detail": "Expansion can still occur; repeat imaging depends on the clinical course."
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "Higher expansion risk (≥3)",
+   "summary": "BAT 3 or more: higher risk of haematoma expansion in the derivation and validation cohorts.",
+   "range": "3–5",
+   "detail": "Assess and monitor according to the clinical situation and local protocol."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Combines two non-contrast CT signs with early presentation to identify likely haematoma expansion.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Expansion is a modifiable determinant of outcome; time from onset matters."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Moderate discrimination (AUC about 0.65–0.77 across cohorts).",
+   "importance": "major"
+  },
+  "Not derived in coagulopathic patients.",
+  "CT sign interpretation varies between readers."
+ ],
+ "confounders": [
+  {
+   "factor": "Anticoagulation",
+   "effect": "Outside the derivation population."
+  },
+  {
+   "factor": "Uncertain onset time",
+   "effect": "Use last known well."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Outcome directly.",
+  "Whether a specific treatment will reduce expansion."
+ ],
+ "guideSections": {
+  "what": "Blend sign (1) + any hypodensity (2) + CT within 2.5 h of onset (2), total 0–5.",
+  "whenToUse": "Early non-contrast CT in spontaneous ICH.",
+  "howToPerform": "Look for a blend sign and intrahaematoma hypodensities; note time from onset to CT; sum.",
+  "clinicalContext": "An expansion risk marker alongside volume and clinical status."
+ },
+ "sources": [
+  {
+   "citation": "Morotti A, Dowlatshahi D, Boulouis G, et al. Predicting intracerebral hemorrhage expansion with noncontrast computed tomography: the BAT score. Stroke. 2018;49(5):1163-1169."
+  }
+ ],
+ "licensing": {
+  "status": "Published score with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_blend",
+   "label": "Blend sign",
+   "inputs": [
+    "blend"
+   ]
+  },
+  {
+   "id": "c_hypo",
+   "label": "Any intrahaematoma hypodensity",
+   "inputs": [
+    "hypo"
+   ]
+  },
+  {
+   "id": "c_time",
+   "label": "Time from onset to CT under 2.5 hours",
+   "inputs": [
+    "time"
+   ]
+  }
+ ],
+ "itemType": "score"
+}

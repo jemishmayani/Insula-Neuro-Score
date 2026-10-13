@@ -55,7 +55,48 @@
    "id": "stroke",
    "name": "Stroke",
    "glyph": "stroke",
-   "description": "Acute stroke severity and imaging"
+   "description": "Acute stroke severity and imaging",
+   "groups": [
+    {
+     "title": "Severity and prehospital triage",
+     "members": [
+      "nihss",
+      "race",
+      "lams",
+      "fasted"
+     ]
+    },
+    {
+     "title": "Mechanism and syndrome",
+     "members": [
+      "toast",
+      "ocsp"
+     ]
+    },
+    {
+     "title": "Imaging",
+     "members": [
+      "aspects",
+      "pcaspects",
+      "fazekas"
+     ]
+    },
+    {
+     "title": "Thrombectomy",
+     "members": [
+      "mtici",
+      "collaterals"
+     ]
+    },
+    {
+     "title": "Risk",
+     "members": [
+      "abcd2",
+      "chadsvasc",
+      "hasbled"
+     ]
+    }
+   ]
   },
   {
    "id": "ich",
@@ -82,13 +123,91 @@
    "id": "spine",
    "name": "Spine and spinal cord",
    "glyph": "spine",
-   "description": "Injury, myelopathy and stability"
+   "description": "Injury, myelopathy and stability",
+   "groups": [
+    {
+     "title": "Spine trauma",
+     "members": [
+      "nexus",
+      "ccsr",
+      "slic",
+      "tlics",
+      "andersondalonzo",
+      "levineedwards"
+     ]
+    },
+    {
+     "title": "Spinal cord injury and myelopathy",
+     "members": [
+      "frankel",
+      "nurick",
+      "mjoa"
+     ]
+    },
+    {
+     "title": "Degenerative spine",
+     "members": [
+      "pfirrmann",
+      "modic",
+      "meyerding",
+      "schizas"
+     ]
+    },
+    {
+     "title": "Spinal tumour",
+     "members": [
+      "sins"
+     ]
+    },
+    {
+     "title": "Craniovertebral junction",
+     "members": [
+      "chiari"
+     ]
+    }
+   ]
   },
   {
    "id": "oncology",
    "name": "Neuro-oncology",
    "glyph": "oncology",
-   "description": "Performance status and spinal metastases"
+   "description": "Performance status and spinal metastases",
+   "groups": [
+    {
+     "title": "Tumour grades",
+     "members": [
+      "koos",
+      "simpson",
+      "knosp",
+      "hardy"
+     ]
+    },
+    {
+     "title": "Performance status",
+     "members": [
+      "kps",
+      "ecog",
+      "lansky"
+     ]
+    },
+    {
+     "title": "Spinal metastases",
+     "members": [
+      "sins",
+      "rtokuhashi",
+      "tomita"
+     ]
+    },
+    {
+     "title": "Brain metastases",
+     "members": [
+      "gpa"
+     ]
+    }
+   ],
+   "include": [
+    "sins"
+   ]
   },
   {
    "id": "functional",
@@ -101,6 +220,12 @@
    "name": "Neurocritical care",
    "glyph": "icu",
    "description": "Organ dysfunction"
+  },
+  {
+   "id": "neurology",
+   "name": "General neurology",
+   "glyph": "neurology",
+   "description": "Movement disorders and neuromuscular disease"
   },
   {
    "id": "exam",
@@ -139,7 +264,8 @@
     {
      "title": "Hearing and CPA",
      "members": [
-      "gr"
+      "gr",
+      "koos"
      ]
     },
     {
@@ -148,7 +274,9 @@
       "spetzler",
       "lawtonyoung",
       "borden",
-      "cognard"
+      "cognard",
+      "suzuki",
+      "raymondroy"
      ]
     },
     {
@@ -170,11 +298,19 @@
       "engel",
       "ilae"
      ]
+    },
+    {
+     "title": "Peripheral nerve",
+     "members": [
+      "seddon",
+      "sunderland"
+     ]
     }
    ],
    "include": [
     "kps",
-    "ecog"
+    "ecog",
+    "koos"
    ]
   }
  ],
@@ -384,6 +520,7 @@
     "ischaemic",
     "ischemic",
     "lvo",
+    "reperfusion",
     "score",
     "stroke",
     "thrombectomy",
@@ -444,9 +581,13 @@
    ],
    "keywords": [
     "bleed",
+    "expansion",
+    "haematoma",
     "haemorrhage",
+    "hematoma",
     "hemorrhage",
     "ich",
+    "ich volume and expansion",
     "intracerebral",
     "intracerebral haemorrhage",
     "intracerebral hemorrhage",
@@ -825,8 +966,11 @@
     "spinal",
     "spinal cord",
     "spinal cord injury grade",
+    "spinal injury",
     "spine",
-    "spine and spinal cord"
+    "spine and spinal cord",
+    "spine fracture",
+    "spine trauma"
    ],
    "itemType": "grade",
    "status": "implemented"
@@ -1357,10 +1501,12 @@
     "grades",
     "motor",
     "motor and reflex examination",
+    "nerve injury",
     "neurological examination",
     "neurosurgery",
     "neurosurgical",
     "neurosurgical examination & grades",
+    "peripheral nerve injury",
     "power",
     "reflexes",
     "strength",
@@ -1394,8 +1540,11 @@
    "keywords": [
     "exam",
     "examination",
+    "gbs",
     "grade",
     "grades",
+    "guillain-barre",
+    "guillain-barré syndrome",
     "icu",
     "motor",
     "motor and reflex examination",
@@ -1946,6 +2095,1292 @@
    ],
    "itemType": "classification",
    "status": "implemented"
+  },
+  {
+   "id": "toast",
+   "abbreviation": "TOAST",
+   "name": "TOAST Classification of Ischaemic Stroke Subtype",
+   "category": "stroke",
+   "summary": "Classifies ischaemic stroke by presumed mechanism, using clinical features and investigations.",
+   "aliases": [
+    "toast",
+    "stroke subtype",
+    "stroke aetiology",
+    "stroke etiology",
+    "stroke mechanism"
+   ],
+   "version": "TOAST (Adams et al. 1993), five subtypes",
+   "itemType": "classification",
+   "specialties": [
+    "Stroke",
+    "Neurology"
+   ],
+   "keywords": [
+    "atrial fibrillation",
+    "cerebrovascular",
+    "classification",
+    "ischaemic",
+    "ischaemic stroke",
+    "ischemic",
+    "ischemic stroke",
+    "lvo",
+    "secondary prevention",
+    "stroke",
+    "stroke mechanism",
+    "stroke mechanism and prevention",
+    "stroke subtype",
+    "thrombectomy",
+    "tia"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "ocsp",
+   "abbreviation": "Oxfordshire (OCSP)",
+   "name": "Oxfordshire Community Stroke Project Classification (Bamford)",
+   "category": "stroke",
+   "summary": "Classifies acute stroke by bedside clinical syndrome, which relates to lesion size, site and prognosis.",
+   "aliases": [
+    "bamford",
+    "oxfordshire",
+    "ocsp",
+    "taci",
+    "paci",
+    "laci",
+    "poci",
+    "tacs",
+    "pacs",
+    "lacs",
+    "pocs"
+   ],
+   "version": "OCSP / Bamford classification (Bamford et al. 1991)",
+   "itemType": "classification",
+   "specialties": [
+    "Stroke",
+    "Neurology"
+   ],
+   "keywords": [
+    "atrial fibrillation",
+    "cerebrovascular",
+    "classification",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "secondary prevention",
+    "stroke",
+    "stroke mechanism and prevention",
+    "stroke subtype",
+    "stroke syndrome",
+    "thrombectomy",
+    "tia"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "chadsvasc",
+   "abbreviation": "CHA₂DS₂-VASc",
+   "name": "CHA₂DS₂-VASc Score",
+   "category": "stroke",
+   "summary": "Estimates thromboembolic stroke risk in non-valvular atrial fibrillation.",
+   "aliases": [
+    "chads",
+    "cha2ds2-vasc",
+    "chadsvasc",
+    "atrial fibrillation stroke risk",
+    "af",
+    "anticoagulation"
+   ],
+   "version": "CHA₂DS₂-VASc (Lip et al. 2010)",
+   "itemType": "score",
+   "specialties": [
+    "Stroke",
+    "Neurology",
+    "Cardiology"
+   ],
+   "keywords": [
+    "af",
+    "atrial fibrillation",
+    "cerebrovascular",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "score",
+    "secondary prevention",
+    "stroke",
+    "stroke mechanism and prevention",
+    "stroke risk in atrial fibrillation",
+    "stroke subtype",
+    "thrombectomy",
+    "tia"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "hasbled",
+   "abbreviation": "HAS-BLED",
+   "name": "HAS-BLED Bleeding Risk Score",
+   "category": "stroke",
+   "summary": "Estimates 1-year major bleeding risk in patients with atrial fibrillation on anticoagulation.",
+   "aliases": [
+    "has bled",
+    "hasbled",
+    "bleeding risk",
+    "anticoagulation bleeding"
+   ],
+   "version": "HAS-BLED (Pisters et al. 2010)",
+   "itemType": "score",
+   "specialties": [
+    "Stroke",
+    "Neurology",
+    "Cardiology"
+   ],
+   "keywords": [
+    "atrial fibrillation",
+    "bleeding",
+    "bleeding risk on anticoagulation",
+    "cerebrovascular",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "score",
+    "secondary prevention",
+    "stroke",
+    "stroke mechanism and prevention",
+    "stroke subtype",
+    "thrombectomy",
+    "tia"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "mtici",
+   "abbreviation": "mTICI",
+   "name": "Modified Treatment in Cerebral Ischaemia (mTICI) Grade",
+   "category": "stroke",
+   "summary": "Grades angiographic reperfusion after thrombectomy.",
+   "aliases": [
+    "tici",
+    "mtici",
+    "reperfusion",
+    "thrombectomy result",
+    "recanalization"
+   ],
+   "version": "mTICI (consensus recommendations, Zaidat et al. 2013)",
+   "itemType": "grade",
+   "specialties": [
+    "Stroke",
+    "Interventional Neuroradiology",
+    "Neurology"
+   ],
+   "keywords": [
+    "cerebrovascular",
+    "grade",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "reperfusion",
+    "stroke",
+    "thrombectomy",
+    "tia"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "collaterals",
+   "abbreviation": "ASITN/SIR collaterals",
+   "name": "ASITN/SIR Collateral Flow Grade",
+   "category": "stroke",
+   "summary": "Grades angiographic collateral flow to the ischaemic territory.",
+   "aliases": [
+    "collaterals",
+    "collateral grade",
+    "asitn",
+    "sir",
+    "higashida"
+   ],
+   "version": "ASITN/SIR collateral flow grading (Higashida et al. 2003)",
+   "itemType": "grade",
+   "specialties": [
+    "Stroke",
+    "Interventional Neuroradiology"
+   ],
+   "keywords": [
+    "cerebrovascular",
+    "grade",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "reperfusion",
+    "stroke",
+    "thrombectomy",
+    "tia"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "fazekas",
+   "abbreviation": "Fazekas",
+   "name": "Fazekas Scale for White Matter Hyperintensities",
+   "category": "stroke",
+   "summary": "Grades the extent of white matter T2 hyperintensities.",
+   "aliases": [
+    "fazekas",
+    "white matter hyperintensities",
+    "leukoaraiosis",
+    "small vessel disease",
+    "wmh"
+   ],
+   "version": "Fazekas scale (Fazekas et al. 1987)",
+   "itemType": "grade",
+   "specialties": [
+    "Neurology",
+    "Neuroradiology",
+    "Stroke"
+   ],
+   "keywords": [
+    "cerebrovascular",
+    "grade",
+    "ischaemic",
+    "ischemic",
+    "lvo",
+    "mri",
+    "small vessel disease imaging",
+    "stroke",
+    "thrombectomy",
+    "tia",
+    "white matter"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "ichvolume",
+   "abbreviation": "ICH volume (ABC/2)",
+   "name": "Intracerebral Haemorrhage Volume (ABC/2)",
+   "category": "ich",
+   "summary": "Estimates intracerebral haematoma volume on CT at the bedside.",
+   "aliases": [
+    "abc/2",
+    "abc2",
+    "ich volume",
+    "hematoma volume",
+    "haematoma volume",
+    "kothari"
+   ],
+   "version": "ABC/2 ellipsoid estimate (Kothari et al. 1996)",
+   "itemType": "measurement",
+   "specialties": [
+    "Neurosurgery",
+    "Stroke",
+    "Neurocritical Care"
+   ],
+   "keywords": [
+    "bleed",
+    "expansion",
+    "haematoma",
+    "haematoma volume",
+    "haemorrhage",
+    "hematoma",
+    "hemorrhage",
+    "ich",
+    "ich volume and expansion",
+    "intracerebral",
+    "intracerebral haemorrhage",
+    "measurement"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "bat",
+   "abbreviation": "BAT score",
+   "name": "BAT Score for Haematoma Expansion",
+   "category": "ich",
+   "summary": "Estimates the risk of haematoma expansion from non-contrast CT and timing.",
+   "aliases": [
+    "bat",
+    "blend sign",
+    "hematoma expansion",
+    "haematoma expansion",
+    "hypodensity"
+   ],
+   "version": "BAT score (Morotti et al. 2018)",
+   "itemType": "score",
+   "specialties": [
+    "Stroke",
+    "Neurosurgery",
+    "Neurocritical Care"
+   ],
+   "keywords": [
+    "bleed",
+    "expansion",
+    "haematoma",
+    "haematoma expansion",
+    "haemorrhage",
+    "hematoma",
+    "hemorrhage",
+    "ich",
+    "ich volume and expansion",
+    "intracerebral",
+    "intracerebral haemorrhage",
+    "score"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "suzuki",
+   "abbreviation": "Suzuki stage",
+   "name": "Suzuki Angiographic Staging of Moyamoya Disease",
+   "category": "exam",
+   "summary": "Describes the angiographic stage of moyamoya disease.",
+   "aliases": [
+    "suzuki",
+    "moyamoya",
+    "moya moya"
+   ],
+   "version": "Suzuki and Takaku (1969), stages I–VI",
+   "itemType": "grade",
+   "specialties": [
+    "Neurosurgery",
+    "Neurology",
+    "Interventional Neuroradiology"
+   ],
+   "keywords": [
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "moyamoya",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "vascular neurosurgery"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "raymondroy",
+   "abbreviation": "Raymond-Roy",
+   "name": "Raymond-Roy Occlusion Classification",
+   "category": "exam",
+   "summary": "Classifies the angiographic occlusion of an aneurysm after coil embolisation.",
+   "aliases": [
+    "raymond",
+    "raymond roy",
+    "aneurysm occlusion",
+    "coiling result"
+   ],
+   "version": "Raymond-Roy occlusion classification (Raymond et al. 2003)",
+   "itemType": "classification",
+   "specialties": [
+    "Interventional Neuroradiology",
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "aneurysm",
+    "classification",
+    "coiling",
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "vascular neurosurgery"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "cchr",
+   "abbreviation": "Canadian CT Head",
+   "name": "Canadian CT Head Rule",
+   "category": "tbi",
+   "summary": "Identifies adults with minor head injury in whom the rule's criteria for CT are met.",
+   "aliases": [
+    "canadian ct head",
+    "cchr",
+    "ct head rule",
+    "minor head injury",
+    "head ct"
+   ],
+   "version": "Canadian CT Head Rule (Stiell et al. 2001)",
+   "itemType": "rule",
+   "specialties": [
+    "Emergency Medicine",
+    "Neurosurgery",
+    "Trauma"
+   ],
+   "keywords": [
+    "c-spine",
+    "ct head",
+    "decision rule",
+    "head injury",
+    "imaging",
+    "imaging decision rule",
+    "imaging decision rules",
+    "polytrauma",
+    "tbi",
+    "trauma",
+    "traumatic brain injury"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "nexus",
+   "abbreviation": "NEXUS",
+   "name": "NEXUS Low-Risk Criteria (cervical spine)",
+   "category": "spine",
+   "summary": "Identifies blunt trauma patients at low risk of cervical spine injury.",
+   "aliases": [
+    "nexus",
+    "c-spine",
+    "cervical spine imaging",
+    "neck injury"
+   ],
+   "version": "NEXUS low-risk criteria (Hoffman et al. 2000)",
+   "itemType": "rule",
+   "specialties": [
+    "Emergency Medicine",
+    "Trauma",
+    "Spine Surgery",
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "c-spine",
+    "cervical",
+    "decision rule",
+    "head injury",
+    "imaging",
+    "imaging decision rules",
+    "myelopathy",
+    "neck",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord",
+    "spine trauma imaging rule"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "ccsr",
+   "abbreviation": "Canadian C-spine",
+   "name": "Canadian C-spine Rule",
+   "category": "spine",
+   "summary": "Identifies alert, stable trauma patients in whom the rule's criteria for cervical spine imaging are met.",
+   "aliases": [
+    "canadian c-spine",
+    "ccsr",
+    "c-spine rule",
+    "cervical spine imaging",
+    "neck injury"
+   ],
+   "version": "Canadian C-spine Rule (Stiell et al. 2001)",
+   "itemType": "rule",
+   "specialties": [
+    "Emergency Medicine",
+    "Trauma",
+    "Spine Surgery",
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "c-spine",
+    "cervical",
+    "decision rule",
+    "head injury",
+    "imaging",
+    "imaging decision rules",
+    "myelopathy",
+    "neck",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord",
+    "spine trauma imaging rule"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "slic",
+   "abbreviation": "SLIC",
+   "name": "Subaxial Cervical Spine Injury Classification (SLIC)",
+   "category": "spine",
+   "summary": "Classifies subaxial (C3–C7) cervical spine injuries and summarises features relevant to management.",
+   "aliases": [
+    "slic",
+    "subaxial",
+    "cervical spine injury",
+    "c3-c7 injury"
+   ],
+   "version": "SLIC (Vaccaro et al. 2007)",
+   "itemType": "score",
+   "specialties": [
+    "Spine Surgery",
+    "Neurosurgery",
+    "Trauma"
+   ],
+   "keywords": [
+    "cervical",
+    "cervical spine",
+    "myelopathy",
+    "sci",
+    "score",
+    "spinal",
+    "spinal cord",
+    "spinal injury",
+    "spine",
+    "spine and spinal cord",
+    "spine fracture",
+    "spine trauma"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "tlics",
+   "abbreviation": "TLICS",
+   "name": "Thoracolumbar Injury Classification and Severity Score (TLICS)",
+   "category": "spine",
+   "summary": "Classifies thoracolumbar injuries and summarises features relevant to management.",
+   "aliases": [
+    "tlics",
+    "thoracolumbar injury",
+    "burst fracture",
+    "spine fracture"
+   ],
+   "version": "TLICS (Vaccaro et al. 2005)",
+   "itemType": "score",
+   "specialties": [
+    "Spine Surgery",
+    "Neurosurgery",
+    "Trauma"
+   ],
+   "keywords": [
+    "cervical",
+    "myelopathy",
+    "sci",
+    "score",
+    "spinal",
+    "spinal cord",
+    "spinal injury",
+    "spine",
+    "spine and spinal cord",
+    "spine fracture",
+    "spine trauma",
+    "thoracolumbar"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "andersondalonzo",
+   "abbreviation": "Anderson-D'Alonzo",
+   "name": "Anderson and D'Alonzo Classification of Odontoid Fractures",
+   "category": "spine",
+   "summary": "Classifies odontoid (dens) fractures by level.",
+   "aliases": [
+    "odontoid fracture",
+    "dens fracture",
+    "anderson dalonzo",
+    "c2 fracture"
+   ],
+   "version": "Anderson and D'Alonzo (1974), types I–III",
+   "itemType": "classification",
+   "specialties": [
+    "Spine Surgery",
+    "Neurosurgery",
+    "Trauma"
+   ],
+   "keywords": [
+    "cervical",
+    "classification",
+    "dens",
+    "myelopathy",
+    "odontoid",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spinal injury",
+    "spine",
+    "spine and spinal cord",
+    "spine fracture",
+    "spine trauma"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "levineedwards",
+   "abbreviation": "Levine-Edwards",
+   "name": "Levine and Edwards Classification of Hangman's Fractures",
+   "category": "spine",
+   "summary": "Classifies traumatic spondylolisthesis of C2 (hangman's fracture).",
+   "aliases": [
+    "hangman fracture",
+    "traumatic spondylolisthesis of the axis",
+    "levine edwards",
+    "c2 pars fracture"
+   ],
+   "version": "Levine and Edwards (1985), types I, II, IIa, III",
+   "itemType": "classification",
+   "specialties": [
+    "Spine Surgery",
+    "Neurosurgery",
+    "Trauma"
+   ],
+   "keywords": [
+    "cervical",
+    "classification",
+    "hangman",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spinal injury",
+    "spine",
+    "spine and spinal cord",
+    "spine fracture",
+    "spine trauma"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "pfirrmann",
+   "abbreviation": "Pfirrmann",
+   "name": "Pfirrmann Grading of Disc Degeneration",
+   "category": "spine",
+   "summary": "Grades lumbar intervertebral disc degeneration on T2-weighted MRI.",
+   "aliases": [
+    "pfirrmann",
+    "disc degeneration",
+    "disc desiccation"
+   ],
+   "version": "Pfirrmann et al. (2001), grades I–V",
+   "itemType": "grade",
+   "specialties": [
+    "Spine Surgery",
+    "Neurosurgery",
+    "Radiology"
+   ],
+   "keywords": [
+    "cervical",
+    "degenerative",
+    "degenerative spine imaging",
+    "disc",
+    "grade",
+    "mri spine",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "modic",
+   "abbreviation": "Modic",
+   "name": "Modic Endplate Changes",
+   "category": "spine",
+   "summary": "Classifies degenerative vertebral endplate and marrow signal changes on MRI.",
+   "aliases": [
+    "modic",
+    "endplate changes",
+    "vertebral endplate"
+   ],
+   "version": "Modic et al. (1988), types 1–3",
+   "itemType": "classification",
+   "specialties": [
+    "Spine Surgery",
+    "Neurosurgery",
+    "Radiology"
+   ],
+   "keywords": [
+    "cervical",
+    "classification",
+    "degenerative",
+    "degenerative spine imaging",
+    "endplate",
+    "mri spine",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "meyerding",
+   "abbreviation": "Meyerding",
+   "name": "Meyerding Grading of Spondylolisthesis",
+   "category": "spine",
+   "summary": "Grades the degree of vertebral slip in spondylolisthesis.",
+   "aliases": [
+    "meyerding",
+    "spondylolisthesis",
+    "listhesis",
+    "spondyloptosis"
+   ],
+   "version": "Meyerding (1932), grades I–V",
+   "itemType": "grade",
+   "specialties": [
+    "Spine Surgery",
+    "Neurosurgery",
+    "Radiology"
+   ],
+   "keywords": [
+    "cervical",
+    "degenerative",
+    "degenerative spine imaging",
+    "grade",
+    "mri spine",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord",
+    "spondylolisthesis"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "schizas",
+   "abbreviation": "Schizas",
+   "name": "Schizas Grading of Lumbar Spinal Stenosis",
+   "category": "spine",
+   "summary": "Grades the morphological severity of central lumbar spinal stenosis.",
+   "aliases": [
+    "schizas",
+    "spinal stenosis",
+    "lumbar stenosis",
+    "canal stenosis"
+   ],
+   "version": "Schizas et al. (2010), grades A1–A4, B, C, D",
+   "itemType": "grade",
+   "specialties": [
+    "Spine Surgery",
+    "Neurosurgery",
+    "Radiology"
+   ],
+   "keywords": [
+    "cervical",
+    "degenerative",
+    "degenerative spine imaging",
+    "grade",
+    "mri spine",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord",
+    "stenosis"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "koos",
+   "abbreviation": "Koos",
+   "name": "Koos Grading of Vestibular Schwannoma",
+   "category": "oncology",
+   "summary": "Grades vestibular schwannoma extension.",
+   "aliases": [
+    "koos",
+    "vestibular schwannoma",
+    "acoustic neuroma",
+    "cpa tumour",
+    "cpa tumor"
+   ],
+   "version": "Koos et al. (1998), grades 1–4",
+   "itemType": "grade",
+   "specialties": [
+    "Neurosurgery",
+    "Otolaryngology",
+    "Radiation Oncology"
+   ],
+   "keywords": [
+    "cancer",
+    "grade",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "spinal metastases",
+    "tumor",
+    "tumour",
+    "tumour grading: skull base",
+    "vestibular schwannoma"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "simpson",
+   "abbreviation": "Simpson grade",
+   "name": "Simpson Grade of Meningioma Resection",
+   "category": "oncology",
+   "summary": "Describes the extent of meningioma resection.",
+   "aliases": [
+    "simpson",
+    "meningioma resection",
+    "extent of resection"
+   ],
+   "version": "Simpson (1957), grades I–V",
+   "itemType": "grade",
+   "specialties": [
+    "Neurosurgery",
+    "Neuro-oncology"
+   ],
+   "keywords": [
+    "cancer",
+    "grade",
+    "meningioma",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "spinal metastases",
+    "tumor",
+    "tumour",
+    "tumour grading: meningioma"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "knosp",
+   "abbreviation": "Knosp",
+   "name": "Knosp Classification (modified) of Cavernous Sinus Invasion",
+   "category": "oncology",
+   "summary": "Grades the likelihood of cavernous sinus invasion by pituitary adenoma.",
+   "aliases": [
+    "knosp",
+    "cavernous sinus invasion",
+    "pituitary adenoma",
+    "pitnet"
+   ],
+   "version": "Knosp classification as modified by Micko et al. (2015): 0, 1, 2, 3A, 3B, 4",
+   "itemType": "grade",
+   "specialties": [
+    "Neurosurgery",
+    "Endocrinology",
+    "Neuroradiology"
+   ],
+   "keywords": [
+    "cancer",
+    "grade",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "pituitary",
+    "pituitary adenoma",
+    "sella",
+    "spinal metastases",
+    "tumor",
+    "tumour",
+    "tumour grading: pituitary"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "hardy",
+   "abbreviation": "Hardy",
+   "name": "Hardy Classification of Pituitary Adenomas (modified by Wilson)",
+   "category": "oncology",
+   "summary": "Describes sellar destruction and extrasellar extension of pituitary adenomas.",
+   "aliases": [
+    "hardy",
+    "hardy-wilson",
+    "pituitary adenoma",
+    "sellar"
+   ],
+   "version": "Hardy sellar grades 0–IV with Wilson's extrasellar stages A–E",
+   "itemType": "grade",
+   "specialties": [
+    "Neurosurgery",
+    "Endocrinology",
+    "Neuroradiology"
+   ],
+   "keywords": [
+    "cancer",
+    "grade",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "pituitary",
+    "pituitary adenoma",
+    "sella",
+    "spinal metastases",
+    "tumor",
+    "tumour",
+    "tumour grading: pituitary"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "lansky",
+   "abbreviation": "Lansky",
+   "name": "Lansky Play-Performance Scale",
+   "category": "oncology",
+   "summary": "Describes functional performance in children with cancer.",
+   "aliases": [
+    "lansky",
+    "play performance",
+    "paediatric performance status",
+    "pediatric performance status"
+   ],
+   "version": "Lansky et al. (1987), 0–100 in steps of 10",
+   "itemType": "score",
+   "specialties": [
+    "Neuro-oncology",
+    "Paediatric Oncology",
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "cancer",
+    "metastases",
+    "metastasis",
+    "neuro-oncology",
+    "oncology",
+    "paediatric",
+    "pediatric",
+    "performance status",
+    "score",
+    "spinal metastases",
+    "tumor",
+    "tumour"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "stess",
+   "abbreviation": "STESS",
+   "name": "Status Epilepticus Severity Score",
+   "category": "neurocritical",
+   "summary": "Estimates the risk of death in adults with status epilepticus, assessed before treatment.",
+   "aliases": [
+    "stess",
+    "status epilepticus",
+    "se prognosis"
+   ],
+   "version": "STESS (Rossetti et al. 2008)",
+   "itemType": "score",
+   "specialties": [
+    "Neurology",
+    "Neurocritical Care",
+    "Emergency Medicine"
+   ],
+   "keywords": [
+    "critical care",
+    "icu",
+    "intensive care",
+    "neurocritical",
+    "neurocritical care",
+    "score",
+    "status epilepticus"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "cpp",
+   "abbreviation": "CPP",
+   "name": "Cerebral Perfusion Pressure",
+   "category": "neurocritical",
+   "summary": "Calculates cerebral perfusion pressure from MAP and ICP.",
+   "aliases": [
+    "cpp",
+    "cerebral perfusion pressure",
+    "icp",
+    "intracranial pressure",
+    "map"
+   ],
+   "version": "CPP = MAP − ICP",
+   "itemType": "measurement",
+   "specialties": [
+    "Neurocritical Care",
+    "Neurosurgery"
+   ],
+   "keywords": [
+    "critical care",
+    "icp",
+    "icu",
+    "intensive care",
+    "intracranial pressure",
+    "measurement",
+    "neurocritical",
+    "neurocritical care"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "osmolality",
+   "abbreviation": "Osmolality",
+   "name": "Calculated Serum Osmolality and Osmolar Gap",
+   "category": "neurocritical",
+   "summary": "Calculates serum osmolality and the osmolar gap, e.g. when monitoring mannitol therapy.",
+   "aliases": [
+    "osmolality",
+    "osmolarity",
+    "osmolar gap",
+    "osmolal gap",
+    "mannitol",
+    "hypertonic saline"
+   ],
+   "version": "Calculated osmolality = 2 × Na + glucose + urea (mmol/L)",
+   "itemType": "measurement",
+   "specialties": [
+    "Neurocritical Care",
+    "Neurosurgery",
+    "Critical Care"
+   ],
+   "keywords": [
+    "critical care",
+    "icu",
+    "intensive care",
+    "mannitol",
+    "measurement",
+    "neurocritical",
+    "neurocritical care",
+    "osmotherapy monitoring"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "hoehnyahr",
+   "abbreviation": "Hoehn & Yahr",
+   "name": "Hoehn and Yahr Staging of Parkinson's Disease",
+   "category": "neurology",
+   "summary": "Describes the stage of motor disability in Parkinson's disease.",
+   "aliases": [
+    "hoehn",
+    "yahr",
+    "hoehn and yahr",
+    "parkinson",
+    "parkinsons",
+    "pd stage"
+   ],
+   "version": "Original Hoehn and Yahr (1967), stages 1–5",
+   "itemType": "grade",
+   "specialties": [
+    "Neurology",
+    "Movement Disorders",
+    "Functional Neurosurgery"
+   ],
+   "keywords": [
+    "gbs",
+    "general neurology",
+    "grade",
+    "guillain-barre",
+    "movement disorders",
+    "myasthenia",
+    "neurology",
+    "neuromuscular",
+    "parkinson"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "gbsds",
+   "abbreviation": "GBS disability",
+   "name": "GBS Disability Scale (Hughes)",
+   "category": "neurology",
+   "summary": "Grades functional disability in Guillain-Barré syndrome.",
+   "aliases": [
+    "hughes",
+    "gbs disability",
+    "guillain-barre",
+    "guillain barre",
+    "gbs"
+   ],
+   "version": "GBS disability scale (Hughes 1978) as used in EGOS (van Koningsveld 2007)",
+   "itemType": "grade",
+   "specialties": [
+    "Neurology",
+    "Neurocritical Care"
+   ],
+   "keywords": [
+    "gbs",
+    "general neurology",
+    "grade",
+    "guillain-barre",
+    "guillain-barré syndrome",
+    "myasthenia",
+    "neurology",
+    "neuromuscular",
+    "parkinson"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "egos",
+   "abbreviation": "EGOS",
+   "name": "Erasmus GBS Outcome Score",
+   "category": "neurology",
+   "summary": "Estimates the probability of being unable to walk independently at 6 months in Guillain-Barré syndrome.",
+   "aliases": [
+    "egos",
+    "erasmus",
+    "gbs outcome",
+    "guillain-barre prognosis"
+   ],
+   "version": "EGOS (van Koningsveld et al. 2007)",
+   "itemType": "score",
+   "specialties": [
+    "Neurology",
+    "Neurocritical Care"
+   ],
+   "keywords": [
+    "gbs",
+    "general neurology",
+    "guillain-barre",
+    "guillain-barré syndrome",
+    "myasthenia",
+    "neurology",
+    "neuromuscular",
+    "parkinson",
+    "score"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "mgfa",
+   "abbreviation": "MGFA class",
+   "name": "MGFA Clinical Classification of Myasthenia Gravis",
+   "category": "neurology",
+   "summary": "Classifies the maximum severity and distribution of myasthenic weakness.",
+   "aliases": [
+    "mgfa",
+    "myasthenia",
+    "myasthenia gravis",
+    "osserman"
+   ],
+   "version": "MGFA clinical classification (Jaretzki et al. 2000)",
+   "itemType": "classification",
+   "specialties": [
+    "Neurology",
+    "Neurocritical Care"
+   ],
+   "keywords": [
+    "classification",
+    "gbs",
+    "general neurology",
+    "guillain-barre",
+    "myasthenia",
+    "neurology",
+    "neuromuscular",
+    "parkinson"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "chiari",
+   "abbreviation": "Chiari",
+   "name": "Chiari Malformation Classification",
+   "category": "spine",
+   "summary": "Classifies hindbrain herniation malformations.",
+   "aliases": [
+    "chiari",
+    "arnold-chiari",
+    "tonsillar ectopia",
+    "hindbrain herniation"
+   ],
+   "version": "Classical Chiari types I–IV (Chiari 1891, 1896)",
+   "itemType": "classification",
+   "specialties": [
+    "Neurosurgery",
+    "Paediatric Neurosurgery",
+    "Neuroradiology"
+   ],
+   "keywords": [
+    "cervical",
+    "classification",
+    "craniovertebral junction",
+    "myelopathy",
+    "sci",
+    "spinal",
+    "spinal cord",
+    "spine",
+    "spine and spinal cord",
+    "tonsillar"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "seddon",
+   "abbreviation": "Seddon",
+   "name": "Seddon Classification of Nerve Injury",
+   "category": "exam",
+   "summary": "Classifies peripheral nerve injury by the structures disrupted.",
+   "aliases": [
+    "seddon",
+    "nerve injury",
+    "neurapraxia",
+    "axonotmesis",
+    "neurotmesis",
+    "peripheral nerve"
+   ],
+   "version": "Seddon (1943): neurapraxia, axonotmesis, neurotmesis",
+   "itemType": "classification",
+   "specialties": [
+    "Neurosurgery",
+    "Neurology",
+    "Plastic Surgery",
+    "Orthopaedics"
+   ],
+   "keywords": [
+    "classification",
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "nerve injury",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "peripheral nerve",
+    "peripheral nerve injury"
+   ],
+   "status": "implemented"
+  },
+  {
+   "id": "sunderland",
+   "abbreviation": "Sunderland",
+   "name": "Sunderland Classification of Nerve Injury",
+   "category": "exam",
+   "summary": "Grades peripheral nerve injury by the connective tissue layers disrupted.",
+   "aliases": [
+    "sunderland",
+    "nerve injury degree",
+    "peripheral nerve",
+    "neuroma in continuity"
+   ],
+   "version": "Sunderland (1951), first to fifth degree",
+   "itemType": "grade",
+   "specialties": [
+    "Neurosurgery",
+    "Neurology",
+    "Plastic Surgery",
+    "Orthopaedics"
+   ],
+   "keywords": [
+    "exam",
+    "examination",
+    "grade",
+    "grades",
+    "nerve injury",
+    "neurological examination",
+    "neurosurgery",
+    "neurosurgical",
+    "neurosurgical examination & grades",
+    "peripheral nerve",
+    "peripheral nerve injury"
+   ],
+   "status": "implemented"
   }
  ],
  "withheld": [
@@ -2028,6 +3463,86 @@
    "category": "exam",
    "withheldCategory": "Verification / licensing",
    "withheldReason": "Item point values could not be confirmed from an accessible primary source in this review, the stated 0–100 composite range does not match the arithmetic of the published weights, and translation groups obtained the authors' permission before adapting the form. Not implemented until the original form and its terms are checked."
+  },
+  {
+   "id": "pgcs",
+   "abbreviation": "Paediatric GCS",
+   "name": "Paediatric Glasgow Coma Scale",
+   "category": "consciousness",
+   "withheldCategory": "Version",
+   "withheldReason": "Several different paediatric modifications are in use (verbal scales for preverbal children differ), and the official Glasgow paediatric aid has its own reproduction terms. Not implemented until one version and its terms are confirmed."
+  },
+  {
+   "id": "emse",
+   "abbreviation": "EMSE",
+   "name": "Epidemiology-based Mortality Score in Status Epilepticus",
+   "category": "neurocritical",
+   "withheldCategory": "Verification",
+   "withheldReason": "Aetiology, comorbidity, age and EEG item weights could not be confirmed from an accessible primary source in this review."
+  },
+  {
+   "id": "rano",
+   "abbreviation": "RANO",
+   "name": "Response Assessment in Neuro-Oncology criteria",
+   "category": "oncology",
+   "withheldCategory": "Version",
+   "withheldReason": "RANO 2010 and RANO 2.0 (2023) differ; response categories need serial measurements and steroid/clinical data, which a single-entry calculator cannot capture reliably."
+  },
+  {
+   "id": "mcdonald",
+   "abbreviation": "McDonald 2017",
+   "name": "McDonald criteria for multiple sclerosis (2017)",
+   "category": "neurology",
+   "withheldCategory": "Scope",
+   "withheldReason": "Diagnostic criteria. The app does not diagnose; to be reconsidered as a reference checklist."
+  },
+  {
+   "id": "whocns5",
+   "abbreviation": "WHO CNS5",
+   "name": "WHO Classification of CNS Tumours (5th ed., 2021)",
+   "category": "oncology",
+   "withheldCategory": "Scope",
+   "withheldReason": "A reference classification of tumour types and grades rather than a calculator; integrated molecular diagnosis is outside the app's scope."
+  },
+  {
+   "id": "aospine",
+   "abbreviation": "AO Spine",
+   "name": "AO Spine injury classifications",
+   "category": "spine",
+   "withheldCategory": "Licensing",
+   "withheldReason": "AO Spine classifications are published by AO Foundation with reproduction terms; not implemented until permission is confirmed. TLICS and SLIC are implemented instead."
+  },
+  {
+   "id": "edss",
+   "abbreviation": "EDSS",
+   "name": "Expanded Disability Status Scale (Kurtzke)",
+   "category": "neurology",
+   "withheldCategory": "Licensing",
+   "withheldReason": "The scoring definitions and Neurostatus training materials have reproduction and use terms; not implemented until permission is confirmed."
+  },
+  {
+   "id": "alsfrsr",
+   "abbreviation": "ALSFRS-R",
+   "name": "Revised ALS Functional Rating Scale",
+   "category": "neurology",
+   "withheldCategory": "Licensing",
+   "withheldReason": "A copyrighted questionnaire; use terms not confirmed."
+  },
+  {
+   "id": "camicu",
+   "abbreviation": "CAM-ICU",
+   "name": "Confusion Assessment Method for the ICU",
+   "category": "neurocritical",
+   "withheldCategory": "Licensing",
+   "withheldReason": "Copyrighted instrument with its own terms of use; not reproduced until confirmed."
+  },
+  {
+   "id": "braindeath",
+   "abbreviation": "BD/DNC checklist",
+   "name": "Brain death / death by neurological criteria checklist",
+   "category": "neurocritical",
+   "withheldCategory": "Scope",
+   "withheldReason": "Criteria and procedures are defined by national and institutional protocols; a single checklist would not be correct everywhere."
   }
  ],
  "planned": [
@@ -2116,6 +3631,10 @@
   {
    "id": "measurement",
    "label": "Measurement"
+  },
+  {
+   "id": "rule",
+   "label": "Decision rule"
   }
  ]
 }

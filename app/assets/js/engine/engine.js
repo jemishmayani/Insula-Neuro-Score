@@ -18,7 +18,7 @@
 
   var TONES = ["favorable", "low", "mild", "moderate", "high", "critical", "informational", "incomplete", "not-interpretable"];
   var METHODS = ["sum", "expression", "select"];
-  var ITEM_TYPES = ["score", "grade", "classification", "measurement"];   // what kind of item this is (shown on cards)
+  var ITEM_TYPES = ["score", "grade", "classification", "measurement", "rule"];   // what kind of item this is (shown on cards)
   var PRESENTATIONS = Object.keys(Insights.PRESENTATIONS);
   var NT_POLICIES = ["block", "exclude"];
   var REQUIRED = ["id", "name", "abbreviation", "category", "subcategory", "specialties", "version", "purpose", "intendedPopulation",

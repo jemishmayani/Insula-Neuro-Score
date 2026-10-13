@@ -77,7 +77,7 @@ async def main():
 
             # ---- navigation & back stack ----
             await pg.click(".bottomnav >> text=Calculate"); await pg.wait_for_selector(".category-grid")
-            check("Calculate shows category cards", await pg.locator(".category-card").count() == 13)   # v0.11: 3 quick groups + 10 groups
+            check("Calculate shows category cards", await pg.locator(".category-card").count() == 14)   # v0.12: 3 quick groups + 11 groups
             await pg.screenshot(path=f"{SHOTS}/02_calculate.png")
             await pg.click(".category-card:has-text('Subarachnoid')"); await pg.wait_for_selector(".score-card")
             check("category → score list", await hashof(pg) == "#/calculate/c/sah" and await pg.locator(".score-card").count() == 4)

@@ -1,0 +1,194 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "koos",
+  "vestibular schwannoma",
+  "acoustic neuroma",
+  "cpa tumour",
+  "cpa tumor"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Grading on CT alone."
+ ],
+ "relatedScores": [
+  {
+   "id": "gr",
+   "relation": "Hearing class"
+  },
+  {
+   "id": "hb",
+   "relation": "Facial nerve grade"
+  }
+ ],
+ "id": "koos",
+ "name": "Koos Grading of Vestibular Schwannoma",
+ "abbreviation": "Koos",
+ "category": "oncology",
+ "subcategory": "Tumour grading: skull base",
+ "specialties": [
+  "Neurosurgery",
+  "Otolaryngology",
+  "Radiation Oncology"
+ ],
+ "version": {
+  "label": "Koos et al. (1998), grades 1–4",
+  "detail": "Extrameatal extension and relation to the brainstem on MRI."
+ },
+ "purpose": "Grades vestibular schwannoma extension.",
+ "intendedPopulation": "Patients with vestibular schwannoma on MRI.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Tumour grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Tumour extension",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "Grade 1: Small intracanalicular tumour",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Grade 2: Small tumour protruding into the cerebellopontine angle; no contact with the brainstem",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Grade 3: Tumour occupying the cerebellopontine cistern without brainstem displacement",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "Grade 4: Large tumour with brainstem and cranial nerve displacement",
+     "points": 4,
+     "code": "4"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "display": "Koos {g_code}",
+  "share": "Koos grade {g_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Grade 1",
+   "summary": "Small intracanalicular tumour.",
+   "range": "1"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Grade 2",
+   "summary": "Small tumour protruding into the cerebellopontine angle; no contact with the brainstem.",
+   "range": "2"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Grade 3",
+   "summary": "Tumour occupying the cerebellopontine cistern without brainstem displacement.",
+   "range": "3"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Grade 4",
+   "summary": "Large tumour with brainstem and cranial nerve displacement.",
+   "range": "4"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Widely used in choosing between observation, radiosurgery and microsurgery for vestibular schwannoma.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "g == 4",
+   "text": "Brainstem compression: correlate with hydrocephalus and cranial nerve function."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Describes extension, not volume or growth rate.",
+   "importance": "major"
+  },
+  "Boundaries between grades 2 and 3 vary between readers."
+ ],
+ "confounders": [
+  {
+   "factor": "Cystic tumours",
+   "effect": "May behave differently from solid tumours of similar grade."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Growth rate.",
+  "Hearing status (see Gardner-Robertson)."
+ ],
+ "guideSections": {
+  "what": "Four grades of vestibular schwannoma extension.",
+  "whenToUse": "MRI of vestibular schwannoma.",
+  "howToPerform": "Assess intracanalicular versus cisternal extension and brainstem contact or displacement.",
+  "clinicalContext": "Used with growth, hearing and patient factors."
+ },
+ "sources": [
+  {
+   "citation": "Koos WT, Day JD, Matula C, Levy DI. Neurotopographic considerations in the microsurgical treatment of small acoustic neurinomas. J Neurosurg. 1998;88(3):506-512."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Tumour extension",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

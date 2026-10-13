@@ -59,6 +59,7 @@
     oncology: '<circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/>',
     functional: '<circle cx="12" cy="5" r="2"/><path d="M12 7v6l-3 8M12 13l3 8M7 10h10"/>',
     icu: '<path d="M3 12h4l2-5 4 10 2-5h6"/>',
+    neurology: '<circle cx="12" cy="8" r="3"/><path d="M12 11v4M12 15l-4.5 5M12 15l4.5 5M9.5 6.5L6 4M14.5 6.5L18 4M9 9.5L5 11M15 9.5l4 1.5"/>',
     exam: '<path d="M14.5 3.5l6 6-2.5 2.5-6-6z"/><path d="M13.25 7.25L4 16.5 7.5 20l9.25-9.25"/>'
   };
   var STATE_ICON = {

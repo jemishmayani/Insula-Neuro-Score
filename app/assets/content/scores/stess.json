@@ -1,0 +1,240 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "stess",
+  "status epilepticus",
+  "se prognosis"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring after treatment instead of before.",
+  "Scoring age 65+ as 1 (it scores 2)."
+ ],
+ "relatedScores": [
+  {
+   "id": "gcs",
+   "relation": "Consciousness"
+  }
+ ],
+ "id": "stess",
+ "name": "Status Epilepticus Severity Score",
+ "abbreviation": "STESS",
+ "category": "neurocritical",
+ "subcategory": "Status epilepticus",
+ "specialties": [
+  "Neurology",
+  "Neurocritical Care",
+  "Emergency Medicine"
+ ],
+ "version": {
+  "label": "STESS (Rossetti et al. 2008)",
+  "detail": "Consciousness 0–1, worst seizure type 0–2, age 0 or 2, history of seizures 0–1; total 0–6. Scores 0–2 were 'favourable'."
+ },
+ "purpose": "Estimates the risk of death in adults with status epilepticus, assessed before treatment.",
+ "intendedPopulation": "Adults with status epilepticus (excluding post-anoxic status).",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Prognostic score",
+  "meter": true
+ },
+ "inputDefinitions": [
+  {
+   "id": "loc",
+   "type": "single",
+   "label": "Consciousness before treatment",
+   "short": "Consciousness",
+   "options": [
+    {
+     "value": "alert",
+     "label": "Alert, somnolent or confused",
+     "points": 0
+    },
+    {
+     "value": "stupor",
+     "label": "Stuporous or comatose",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "type",
+   "type": "single",
+   "label": "Worst seizure type",
+   "short": "Seizure type",
+   "options": [
+    {
+     "value": "focal",
+     "label": "Simple or complex partial, absence, or myoclonic (myoclonic only in idiopathic generalised epilepsy)",
+     "points": 0
+    },
+    {
+     "value": "gc",
+     "label": "Generalised convulsive",
+     "points": 1
+    },
+    {
+     "value": "ncse",
+     "label": "Non-convulsive status epilepticus in coma",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age",
+   "short": "Age",
+   "options": [
+    {
+     "value": "lt65",
+     "label": "Under 65 years",
+     "points": 0
+    },
+    {
+     "value": "ge65",
+     "label": "65 years or older",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "hx",
+   "type": "single",
+   "label": "Previous seizures",
+   "short": "History",
+   "options": [
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 0
+    },
+    {
+     "value": "no",
+     "label": "No or unknown",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 6
+  },
+  "display": "{total}",
+  "share": "STESS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 2",
+   "state": "fav"
+  },
+  {
+   "state": "unfav"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "fav",
+   "tone": "low",
+   "label": "Favourable range (0–2)",
+   "summary": "STESS 0–2: the derivation study's favourable group, with a high negative predictive value for death.",
+   "range": "0–2",
+   "detail": "Prognosis also depends on aetiology and response to treatment.",
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "unfav",
+   "tone": "high",
+   "label": "Unfavourable range (≥3)",
+   "summary": "STESS 3 or more: higher mortality in the derivation and validation cohorts.",
+   "range": "3–6",
+   "detail": "Aetiology and treatment response strongly influence outcome; assess according to the clinical situation and local protocol.",
+   "min": 3,
+   "max": 6
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Its main strength is identifying patients likely to survive (high negative predictive value).",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Aetiology is not in STESS; scores such as EMSE include it."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Low positive predictive value for death; not for individual treatment limitation.",
+   "importance": "major"
+  },
+  "Seizure type and consciousness can be hard to judge before EEG."
+ ],
+ "confounders": [
+  {
+   "factor": "Sedative drugs before assessment",
+   "effect": "Lower consciousness."
+  },
+  {
+   "factor": "Unknown seizure history",
+   "effect": "Scores 1."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause of status epilepticus.",
+  "Which treatment to use."
+ ],
+ "guideSections": {
+  "what": "A 0–6 score from consciousness, seizure type, age and seizure history.",
+  "whenToUse": "Early in adult status epilepticus.",
+  "howToPerform": "Assess the four items before treatment; sum.",
+  "clinicalContext": "A prognostic aid used with aetiology and EEG."
+ },
+ "sources": [
+  {
+   "citation": "Rossetti AO, Logroscino G, Milligan TA, Michaelides C, Ruffieux C, Bromfield EB. Status Epilepticus Severity Score (STESS): a tool to orient early treatment strategy. J Neurol. 2008;255(10):1561-1566."
+  }
+ ],
+ "licensing": {
+  "status": "Published score with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_loc",
+   "label": "Consciousness before treatment",
+   "inputs": [
+    "loc"
+   ]
+  },
+  {
+   "id": "c_type",
+   "label": "Worst seizure type",
+   "inputs": [
+    "type"
+   ]
+  },
+  {
+   "id": "c_age",
+   "label": "Age",
+   "inputs": [
+    "age"
+   ]
+  },
+  {
+   "id": "c_hx",
+   "label": "Previous seizures",
+   "inputs": [
+    "hx"
+   ]
+  }
+ ],
+ "itemType": "score"
+}

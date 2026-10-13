@@ -1,0 +1,304 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "slic",
+  "subaxial",
+  "cervical spine injury",
+  "c3-c7 injury"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [
+  {
+   "when": "ccc == 1 && neuro == 0",
+   "severity": "warning",
+   "inputs": [
+    "ccc"
+   ],
+   "message": "The +1 modifier applies to continuous cord compression in the setting of a neurological deficit."
+  }
+ ],
+ "commonErrors": [
+  "Scoring several morphologies instead of the most severe.",
+  "Applying the +1 modifier without a deficit."
+ ],
+ "relatedScores": [
+  {
+   "id": "tlics",
+   "relation": "Thoracolumbar equivalent"
+  },
+  {
+   "id": "frankel",
+   "relation": "Cord injury grade"
+  },
+  {
+   "id": "andersondalonzo",
+   "relation": "Odontoid fractures"
+  }
+ ],
+ "id": "slic",
+ "name": "Subaxial Cervical Spine Injury Classification (SLIC)",
+ "abbreviation": "SLIC",
+ "category": "spine",
+ "subcategory": "Spine trauma",
+ "specialties": [
+  "Spine Surgery",
+  "Neurosurgery",
+  "Trauma"
+ ],
+ "version": {
+  "label": "SLIC (Vaccaro et al. 2007)",
+  "detail": "Morphology 0–4 + discoligamentous complex 0–2 + neurological status 0–3, plus 1 for continuous cord compression with a neurological deficit. Total 0–10."
+ },
+ "purpose": "Classifies subaxial (C3–C7) cervical spine injuries and summarises features relevant to management.",
+ "intendedPopulation": "Adults with subaxial cervical spine trauma, using CT, MRI and neurological examination.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Injury severity",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Classification, not a surgical decision",
+  "message": "The authors proposed treatment thresholds; management also depends on the patient, associated injuries and surgeon judgement."
+ },
+ "inputDefinitions": [
+  {
+   "id": "morph",
+   "type": "single",
+   "label": "Morphology",
+   "short": "Morphology",
+   "options": [
+    {
+     "value": "none",
+     "label": "No abnormality",
+     "points": 0
+    },
+    {
+     "value": "comp",
+     "label": "Compression (including endplate or vertical body fracture)",
+     "points": 1
+    },
+    {
+     "value": "burst",
+     "label": "Burst",
+     "points": 2
+    },
+    {
+     "value": "dist",
+     "label": "Distraction (e.g. facet perch, hyperextension)",
+     "points": 3
+    },
+    {
+     "value": "rot",
+     "label": "Rotation or translation (e.g. facet dislocation, unstable teardrop)",
+     "points": 4
+    }
+   ],
+   "help": "Score the most severe morphology at the level."
+  },
+  {
+   "id": "dlc",
+   "type": "single",
+   "label": "Discoligamentous complex",
+   "short": "DLC",
+   "options": [
+    {
+     "value": "intact",
+     "label": "Intact",
+     "points": 0
+    },
+    {
+     "value": "indet",
+     "label": "Indeterminate (e.g. isolated interspinous widening, MRI signal change only)",
+     "points": 1
+    },
+    {
+     "value": "disr",
+     "label": "Disrupted (e.g. widened disc space, facet perch or dislocation)",
+     "points": 2
+    }
+   ]
+  },
+  {
+   "id": "neuro",
+   "type": "single",
+   "label": "Neurological status",
+   "short": "Neuro",
+   "options": [
+    {
+     "value": "intact",
+     "label": "Intact",
+     "points": 0
+    },
+    {
+     "value": "root",
+     "label": "Root injury",
+     "points": 1
+    },
+    {
+     "value": "complete",
+     "label": "Complete cord injury",
+     "points": 2
+    },
+    {
+     "value": "incomplete",
+     "label": "Incomplete cord injury",
+     "points": 3
+    }
+   ]
+  },
+  {
+   "id": "ccc",
+   "type": "single",
+   "label": "Continuous cord compression with a neurological deficit",
+   "short": "Compression +1",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 10
+  },
+  "display": "{total}",
+  "share": "SLIC {total} (morphology {morph}, DLC {dlc}, neuro {neuro}{ccc == 1 ? ' +1' : ''})"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 3",
+   "state": "low"
+  },
+  {
+   "when": "total == 4",
+   "state": "mid"
+  },
+  {
+   "state": "high"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low",
+   "tone": "low",
+   "label": "SLIC {total}",
+   "summary": "Score 0–3: the authors' non-operative range.",
+   "range": "0–3",
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "mid",
+   "tone": "moderate",
+   "label": "SLIC 4",
+   "summary": "Score 4: indeterminate in the authors' scheme.",
+   "range": "4",
+   "detail": "Management depends on patient and injury factors.",
+   "min": 4,
+   "max": 4
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "SLIC {total}",
+   "summary": "Score 5 or more: the authors' operative range.",
+   "range": "5–10",
+   "detail": "Management depends on neurological status, associated injuries, patient factors and surgical judgement.",
+   "min": 5,
+   "max": 10
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Combines injury morphology, ligamentous integrity and neurology, the three features that drive management.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "neuro == 3",
+   "text": "Incomplete cord injury scores higher than complete because decompression may improve it."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Proposed thresholds are not a substitute for surgical judgement.",
+   "importance": "major"
+  },
+  "DLC assessment on MRI is variably interpreted.",
+  "Not for C1–C2 injuries."
+ ],
+ "confounders": [
+  {
+   "factor": "Pre-existing spondylosis or ankylosing spondylitis",
+   "effect": "Changes injury behaviour."
+  },
+  {
+   "factor": "Incomplete imaging",
+   "effect": "Affects DLC assessment."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The surgical approach.",
+  "Prognosis for neurological recovery."
+ ],
+ "guideSections": {
+  "what": "A 0–10 score from morphology, discoligamentous complex and neurology for C3–C7 injuries.",
+  "whenToUse": "Subaxial cervical spine trauma.",
+  "howToPerform": "Score the most severe morphology, the DLC and the neurological status; add 1 for continuous cord compression with a deficit.",
+  "clinicalContext": "A classification that supports management decisions made with the full clinical picture."
+ },
+ "sources": [
+  {
+   "citation": "Vaccaro AR, Hulbert RJ, Patel AA, et al. The subaxial cervical spine injury classification system: a novel approach to recognize the importance of morphology, neurology, and integrity of the disco-ligamentous complex. Spine. 2007;32(21):2365-2374."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_morph",
+   "label": "Morphology",
+   "inputs": [
+    "morph"
+   ]
+  },
+  {
+   "id": "c_dlc",
+   "label": "Discoligamentous complex",
+   "inputs": [
+    "dlc"
+   ]
+  },
+  {
+   "id": "c_neuro",
+   "label": "Neurological status",
+   "inputs": [
+    "neuro"
+   ]
+  },
+  {
+   "id": "c_ccc",
+   "label": "Continuous cord compression with a neurological deficit",
+   "inputs": [
+    "ccc"
+   ]
+  }
+ ],
+ "itemType": "score"
+}

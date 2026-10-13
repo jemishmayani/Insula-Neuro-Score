@@ -1,0 +1,52 @@
+{
+ "scoreId": "toast",
+ "cases": [
+  {
+   "name": "cardioembolism probable",
+   "answers": {
+    "sub": "2",
+    "cert": "probable"
+   },
+   "expect": {
+    "display": "CE (probable)",
+    "state": "s2"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "CE, probable",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "small vessel no certainty",
+   "answers": {
+    "sub": "3"
+   },
+   "expect": {
+    "display": "SVO",
+    "state": "s3"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "SVO",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "undetermined with certainty flagged",
+   "answers": {
+    "sub": "5",
+    "cert": "possible"
+   },
+   "expect": {
+    "state": "s5",
+    "warnings": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "UND + certainty → warning",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

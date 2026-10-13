@@ -1,0 +1,33 @@
+{
+ "scoreId": "hoehnyahr",
+ "cases": [
+  {
+   "name": "stage 1",
+   "answers": {
+    "stg": "1"
+   },
+   "expect": {
+    "display": "H&Y 1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "stage 3",
+   "answers": {
+    "stg": "3"
+   },
+   "expect": {
+    "display": "H&Y 3"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

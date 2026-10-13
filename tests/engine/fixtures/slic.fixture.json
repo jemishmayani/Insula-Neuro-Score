@@ -1,0 +1,77 @@
+{
+ "scoreId": "slic",
+ "cases": [
+  {
+   "name": "max",
+   "answers": {
+    "morph": "rot",
+    "dlc": "disr",
+    "neuro": "incomplete",
+    "ccc": "yes"
+   },
+   "expect": {
+    "total": 10,
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4+2+3+1 = 10",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "compression intact",
+   "answers": {
+    "morph": "comp",
+    "dlc": "intact",
+    "neuro": "intact",
+    "ccc": "no"
+   },
+   "expect": {
+    "total": 1,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "burst indeterminate root",
+   "answers": {
+    "morph": "burst",
+    "dlc": "indet",
+    "neuro": "root",
+    "ccc": "no"
+   },
+   "expect": {
+    "total": 4,
+    "state": "mid"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2+1+1 = 4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "modifier without deficit",
+   "answers": {
+    "morph": "comp",
+    "dlc": "intact",
+    "neuro": "intact",
+    "ccc": "yes"
+   },
+   "expect": {
+    "total": 2,
+    "warnings": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1 with warning",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

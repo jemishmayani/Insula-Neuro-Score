@@ -1,0 +1,34 @@
+{
+ "scoreId": "andersondalonzo",
+ "cases": [
+  {
+   "name": "type II",
+   "answers": {
+    "t": "2"
+   },
+   "expect": {
+    "display": "Type II",
+    "insightsContains": "Displacement"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "II",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type III",
+   "answers": {
+    "t": "3"
+   },
+   "expect": {
+    "display": "Type III"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -1,0 +1,230 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "tici",
+  "mtici",
+  "reperfusion",
+  "thrombectomy result",
+  "recanalization"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing mTICI with eTICI or 2c grades.",
+  "Grading on a single projection."
+ ],
+ "relatedScores": [
+  {
+   "id": "collaterals",
+   "relation": "Collateral grade"
+  },
+  {
+   "id": "aspects",
+   "relation": "Early ischaemic change"
+  },
+  {
+   "id": "nihss",
+   "relation": "Deficit severity"
+  }
+ ],
+ "id": "mtici",
+ "name": "Modified Treatment in Cerebral Ischaemia (mTICI) Grade",
+ "abbreviation": "mTICI",
+ "category": "stroke",
+ "subcategory": "Thrombectomy",
+ "specialties": [
+  "Stroke",
+  "Interventional Neuroradiology",
+  "Neurology"
+ ],
+ "version": {
+  "label": "mTICI (consensus recommendations, Zaidat et al. 2013)",
+  "detail": "Grades 0, 1, 2a, 2b, 3. Grade 2c and the eTICI scale are later versions and are not combined."
+ },
+ "purpose": "Grades angiographic reperfusion after thrombectomy.",
+ "intendedPopulation": "Patients after endovascular treatment for large vessel occlusion, graded on final angiography.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Reperfusion grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Final angiographic reperfusion",
+   "short": "mTICI",
+   "options": [
+    {
+     "value": "1",
+     "label": "No perfusion",
+     "points": 1,
+     "code": "0",
+     "detail": "No antegrade flow beyond the occlusion."
+    },
+    {
+     "value": "2",
+     "label": "Minimal perfusion",
+     "points": 2,
+     "code": "1",
+     "detail": "Contrast passes the occlusion with limited, slow distal branch filling and little perfusion."
+    },
+    {
+     "value": "3",
+     "label": "Partial reperfusion (<50%)",
+     "points": 3,
+     "code": "2a",
+     "detail": "Antegrade reperfusion of less than half of the previously ischaemic territory."
+    },
+    {
+     "value": "4",
+     "label": "Substantial reperfusion (≥50%)",
+     "points": 4,
+     "code": "2b",
+     "detail": "Antegrade reperfusion of more than half of the previously ischaemic territory."
+    },
+    {
+     "value": "5",
+     "label": "Complete reperfusion",
+     "points": 5,
+     "code": "3",
+     "detail": "Complete antegrade reperfusion with no visible occlusion in distal branches, at this assessment."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "mTICI {g_code}",
+  "share": "mTICI {g_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "high",
+   "label": "No perfusion",
+   "summary": "No antegrade flow beyond the occlusion.",
+   "range": "mTICI 0",
+   "detail": "Assess further management according to the clinical situation and local protocol."
+  },
+  {
+   "id": "s2",
+   "tone": "high",
+   "label": "Minimal perfusion",
+   "summary": "Contrast passes the occlusion with limited, slow distal branch filling and little perfusion.",
+   "range": "mTICI 1",
+   "detail": "Assess further management according to the clinical situation and local protocol."
+  },
+  {
+   "id": "s3",
+   "tone": "moderate",
+   "label": "Partial reperfusion (<50%)",
+   "summary": "Antegrade reperfusion of less than half of the previously ischaemic territory.",
+   "range": "mTICI 2a"
+  },
+  {
+   "id": "s4",
+   "tone": "low",
+   "label": "Substantial reperfusion (≥50%)",
+   "summary": "Antegrade reperfusion of more than half of the previously ischaemic territory.",
+   "range": "mTICI 2b",
+   "detail": "mTICI 2b–3 is the usual definition of successful reperfusion in trials."
+  },
+  {
+   "id": "s5",
+   "tone": "favorable",
+   "label": "Complete reperfusion",
+   "summary": "Complete antegrade reperfusion with no visible occlusion in distal branches, at this assessment.",
+   "range": "mTICI 3",
+   "detail": "Final angiographic result; clinical outcome also depends on infarct core, time and collaterals."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Standard endpoint for reperfusion after thrombectomy; mTICI 2b–3 defines successful reperfusion.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "g == 4",
+   "text": "2b spans 50–99%: later versions add 2c (near-complete) to separate these."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Visual estimate on angiography with moderate inter-rater agreement, especially between 2a and 2b.",
+   "importance": "major"
+  },
+  "Graded in the territory of the target occlusion only."
+ ],
+ "confounders": [
+  {
+   "factor": "Projection and run timing",
+   "effect": "Can hide or exaggerate perfusion defects."
+  },
+  {
+   "factor": "Distal emboli to new territories",
+   "effect": "Not captured by the grade."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Clinical outcome.",
+  "Infarct size.",
+  "Reperfusion in other territories."
+ ],
+ "guideSections": {
+  "what": "A five-level grade of reperfusion after thrombectomy.",
+  "whenToUse": "Reporting final angiographic results after endovascular stroke treatment.",
+  "howToPerform": "Assess antegrade reperfusion of the previously ischaemic territory on final angiography in two projections; choose the grade.",
+  "clinicalContext": "A technical endpoint; correlate with imaging and clinical course."
+ },
+ "sources": [
+  {
+   "citation": "Zaidat OO, Yoo AJ, Khatri P, et al. Recommendations on angiographic revascularization grading standards for acute ischemic stroke: a consensus statement. Stroke. 2013;44(9):2650-2663."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Final angiographic reperfusion",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

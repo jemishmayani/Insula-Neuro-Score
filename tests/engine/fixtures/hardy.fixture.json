@@ -1,0 +1,53 @@
+{
+ "scoreId": "hardy",
+ "cases": [
+  {
+   "name": "grade III stage B",
+   "answers": {
+    "g": "4",
+    "x": "2"
+   },
+   "expect": {
+    "display": "Grade III-B",
+    "state": "macro"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III-B",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade I none",
+   "answers": {
+    "g": "2",
+    "x": "0"
+   },
+   "expect": {
+    "display": "Grade I",
+    "state": "micro"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade IV stage E",
+   "answers": {
+    "g": "5",
+    "x": "5"
+   },
+   "expect": {
+    "display": "Grade IV-E",
+    "insightsContains": "Knosp"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IV-E",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

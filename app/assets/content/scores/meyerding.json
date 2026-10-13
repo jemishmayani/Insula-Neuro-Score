@@ -1,0 +1,209 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "meyerding",
+  "spondylolisthesis",
+  "listhesis",
+  "spondyloptosis"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Measuring against the slipped vertebra instead of the one below."
+ ],
+ "relatedScores": [
+  {
+   "id": "schizas",
+   "relation": "Stenosis grade"
+  },
+  {
+   "id": "pfirrmann",
+   "relation": "Disc degeneration"
+  }
+ ],
+ "id": "meyerding",
+ "name": "Meyerding Grading of Spondylolisthesis",
+ "abbreviation": "Meyerding",
+ "category": "spine",
+ "subcategory": "Degenerative spine imaging",
+ "specialties": [
+  "Spine Surgery",
+  "Neurosurgery",
+  "Radiology"
+ ],
+ "version": {
+  "label": "Meyerding (1932), grades I–V",
+  "detail": "Slip of the superior vertebra relative to the inferior, as a percentage of the inferior vertebral body's anteroposterior width. Grade V (spondyloptosis) was added later and is widely used."
+ },
+ "purpose": "Grades the degree of vertebral slip in spondylolisthesis.",
+ "intendedPopulation": "Patients with spondylolisthesis on lateral radiograph, CT or MRI.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Slip grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Percentage slip",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "Up to 25% slip",
+     "points": 1,
+     "code": "I"
+    },
+    {
+     "value": "2",
+     "label": "26–50% slip",
+     "points": 2,
+     "code": "II"
+    },
+    {
+     "value": "3",
+     "label": "51–75% slip",
+     "points": 3,
+     "code": "III"
+    },
+    {
+     "value": "4",
+     "label": "76–100% slip",
+     "points": 4,
+     "code": "IV"
+    },
+    {
+     "value": "5",
+     "label": "Over 100% (spondyloptosis)",
+     "points": 5,
+     "code": "V"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Grade {g_code}",
+  "share": "Meyerding grade {g_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Grade I",
+   "summary": "Up to 25% slip of the vertebral body width.",
+   "range": "I"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Grade II",
+   "summary": "26–50% slip of the vertebral body width.",
+   "range": "II"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Grade III",
+   "summary": "51–75% slip of the vertebral body width.",
+   "range": "III"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Grade IV",
+   "summary": "76–100% slip of the vertebral body width.",
+   "range": "IV"
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Grade V",
+   "summary": "Over 100% (spondyloptosis) of the vertebral body width.",
+   "range": "V"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Grades I–II are 'low grade' and III–V 'high grade' in common usage.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Flexion-extension films show dynamic instability, which the grade does not."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Static measure; does not show instability or slip angle.",
+   "importance": "major"
+  },
+  "Measurement varies with positioning (supine MRI may under-show slip)."
+ ],
+ "confounders": [
+  {
+   "factor": "Supine imaging",
+   "effect": "Can reduce the apparent slip."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Symptoms or nerve compression.",
+  "Stability."
+ ],
+ "guideSections": {
+  "what": "Five grades of slip by percentage of the inferior vertebral body width.",
+  "whenToUse": "Spondylolisthesis on imaging.",
+  "howToPerform": "Divide the inferior endplate into quarters; note where the posterior corner of the superior vertebra lies.",
+  "clinicalContext": "Used with symptoms, dynamic films and slip angle."
+ },
+ "sources": [
+  {
+   "citation": "Meyerding HW. Spondylolisthesis. Surg Gynecol Obstet. 1932;54:371-377."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Percentage slip",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

@@ -1,0 +1,35 @@
+{
+ "scoreId": "raymondroy",
+ "cases": [
+  {
+   "name": "class I",
+   "answers": {
+    "cls": "1"
+   },
+   "expect": {
+    "display": "Class I",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "class III",
+   "answers": {
+    "cls": "3"
+   },
+   "expect": {
+    "display": "Class III",
+    "insightsContains": "IIIa"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "III",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

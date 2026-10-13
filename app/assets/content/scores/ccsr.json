@@ -1,0 +1,431 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "canadian c-spine",
+  "ccsr",
+  "c-spine rule",
+  "cervical spine imaging",
+  "neck injury"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [
+  {
+   "when": "highrisk > 0 && !isnull(rot)",
+   "severity": "warning",
+   "inputs": [
+    "rot"
+   ],
+   "message": "Rotation is not assessed when a high-risk factor is present."
+  },
+  {
+   "when": "applies == 1 && highrisk == 0 && lowrisk == 0 && !isnull(rot)",
+   "severity": "warning",
+   "inputs": [
+    "rot"
+   ],
+   "message": "Rotation is only assessed when at least one low-risk factor allows safe assessment."
+  }
+ ],
+ "commonErrors": [
+  "Testing rotation before excluding high-risk factors.",
+  "Applying to patients with GCS below 15."
+ ],
+ "relatedScores": [
+  {
+   "id": "nexus",
+   "relation": "Alternative C-spine rule"
+  },
+  {
+   "id": "cchr",
+   "relation": "Head CT rule"
+  },
+  {
+   "id": "slic",
+   "relation": "Subaxial injury classification"
+  }
+ ],
+ "id": "ccsr",
+ "name": "Canadian C-spine Rule",
+ "abbreviation": "Canadian C-spine",
+ "category": "spine",
+ "subcategory": "Spine trauma imaging rule",
+ "specialties": [
+  "Emergency Medicine",
+  "Trauma",
+  "Spine Surgery",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "Canadian C-spine Rule (Stiell et al. 2001)",
+  "detail": "Three steps: any high-risk factor → radiography; no low-risk factor → radiography; low-risk factor present → assess active rotation 45° left and right; unable → radiography."
+ },
+ "purpose": "Identifies alert, stable trauma patients in whom the rule's criteria for cervical spine imaging are met.",
+ "intendedPopulation": "Alert (GCS 15), stable adults (16+) after blunt trauma to the head or neck.",
+ "resultPresentation": {
+  "type": "decision-rule",
+  "typeLabel": "Decision rule result",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "warning",
+  "title": "Check that the rule applies",
+  "message": "Not for children, GCS below 15, unstable vital signs, penetrating trauma, acute paralysis, known vertebral disease or previous cervical spine surgery."
+ },
+ "inputDefinitions": [
+  {
+   "id": "applies",
+   "type": "single",
+   "label": "Does the rule apply?",
+   "short": "Applies",
+   "options": [
+    {
+     "value": "yes",
+     "label": "Yes: alert, stable adult with blunt head or neck trauma",
+     "points": 1,
+     "code": "yes"
+    },
+    {
+     "value": "no",
+     "label": "No: outside the rule",
+     "points": 0,
+     "code": "no"
+    }
+   ]
+  },
+  {
+   "id": "age65",
+   "type": "single",
+   "label": "Age 65 or older",
+   "short": "Age ≥65",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "mech",
+   "type": "single",
+   "label": "Dangerous mechanism",
+   "short": "Dangerous mechanism",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ],
+   "help": "Fall from 3 feet / 1 m or 5 stairs; axial load to the head; motor vehicle collision at high speed (>100 km/h), rollover or ejection; motorised recreational vehicle; bicycle collision."
+  },
+  {
+   "id": "par",
+   "type": "single",
+   "label": "Paraesthesias in the extremities",
+   "short": "Paraesthesias",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "rear",
+   "type": "single",
+   "label": "Simple rear-end motor vehicle collision",
+   "short": "Simple rear-end MVC",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ],
+   "help": "Excludes being pushed into oncoming traffic, hit by a bus or large truck, rollover, or hit by a high-speed vehicle."
+  },
+  {
+   "id": "sit",
+   "type": "single",
+   "label": "Sitting position in the emergency department",
+   "short": "Sitting in ED",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "amb",
+   "type": "single",
+   "label": "Ambulatory at any time since injury",
+   "short": "Ambulatory",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "delay",
+   "type": "single",
+   "label": "Delayed onset of neck pain",
+   "short": "Delayed neck pain",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "nomid",
+   "type": "single",
+   "label": "Absence of midline cervical spine tenderness",
+   "short": "No midline tenderness",
+   "options": [
+    {
+     "value": "no",
+     "label": "No",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Yes",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "rot",
+   "type": "single",
+   "label": "Able to actively rotate the neck 45° to the left and right?",
+   "short": "Rotation",
+   "options": [
+    {
+     "value": "no",
+     "label": "Unable",
+     "points": 0,
+     "code": "unable"
+    },
+    {
+     "value": "yes",
+     "label": "Able",
+     "points": 1,
+     "code": "able"
+    }
+   ],
+   "required": false,
+   "help": "Only assessed when no high-risk factor and at least one low-risk factor is present."
+  }
+ ],
+ "components": [
+  {
+   "id": "c_app",
+   "label": "Applicability",
+   "inputs": [
+    "applies"
+   ]
+  },
+  {
+   "id": "highrisk",
+   "label": "High-risk factors",
+   "inputs": [
+    "age65",
+    "mech",
+    "par"
+   ]
+  },
+  {
+   "id": "lowrisk",
+   "label": "Low-risk factors",
+   "inputs": [
+    "rear",
+    "sit",
+    "amb",
+    "delay",
+    "nomid"
+   ]
+  },
+  {
+   "id": "c_rot",
+   "label": "Active rotation",
+   "inputs": [
+    "rot"
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "applies == 0 ? 0 : (highrisk > 0 ? 2 : (lowrisk == 0 ? 3 : (isnull(rot) ? 4 : (rot == 0 ? 5 : 1))))",
+  "range": {
+   "min": 0,
+   "max": 5
+  },
+  "formulaEquals": false,
+  "display": "{total == 0 ? 'Not applicable' : total == 1 ? 'Rule criteria not met' : total == 4 ? 'Assess rotation' : 'Rule criteria met'}",
+  "share": "Canadian C-spine Rule: {total == 0 ? 'not applicable' : total == 1 ? 'low risk, able to rotate 45°' : total == 2 ? 'high-risk factor' : total == 3 ? 'no low-risk factor' : total == 4 ? 'rotation not yet assessed' : 'unable to rotate 45°'}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "na"
+  },
+  {
+   "when": "total == 2",
+   "state": "high"
+  },
+  {
+   "when": "total == 3",
+   "state": "nolow"
+  },
+  {
+   "when": "total == 4",
+   "state": "rot"
+  },
+  {
+   "when": "total == 5",
+   "state": "unable"
+  },
+  {
+   "state": "clear"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "na",
+   "tone": "informational",
+   "label": "Rule not applicable",
+   "summary": "The patient is outside the population in which the rule was derived.",
+   "detail": "Use clinical judgement and local protocol."
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "High-risk factor present",
+   "summary": "A high-risk factor is present: the rule's criteria for radiography are met.",
+   "detail": "Assess according to the clinical situation and local protocol."
+  },
+  {
+   "id": "nolow",
+   "tone": "moderate",
+   "label": "No low-risk factor",
+   "summary": "No low-risk factor allows safe assessment of range of motion: the rule's criteria for radiography are met."
+  },
+  {
+   "id": "rot",
+   "tone": "incomplete",
+   "label": "Assess active rotation",
+   "summary": "A low-risk factor is present. Assess whether the patient can actively rotate the neck 45° left and right."
+  },
+  {
+   "id": "unable",
+   "tone": "moderate",
+   "label": "Unable to rotate 45°",
+   "summary": "Unable to actively rotate the neck 45° left and right: the rule's criteria for radiography are met."
+  },
+  {
+   "id": "clear",
+   "tone": "low",
+   "label": "Rule criteria not met",
+   "summary": "No high-risk factor, a low-risk factor present and able to rotate 45° left and right: the rule's criteria for radiography are not met.",
+   "detail": "Clinical judgement still applies."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "High sensitivity and better specificity than NEXUS in the head-to-head validation study.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Active rotation is assessed only after a low-risk factor makes it safe."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Only for alert, stable adults; excluded groups need clinical judgement.",
+   "importance": "major"
+  },
+  "Requires an accurate mechanism history."
+ ],
+ "confounders": [
+  {
+   "factor": "Intoxication or reduced alertness",
+   "effect": "Outside the rule."
+  },
+  {
+   "factor": "Distracting injuries",
+   "effect": "Can make examination unreliable."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Which imaging modality to use.",
+  "Ligamentous injury without bony injury.",
+  "Head injury risk (see Canadian CT Head Rule)."
+ ],
+ "guideSections": {
+  "what": "A three-step rule for cervical spine radiography in alert, stable trauma patients.",
+  "whenToUse": "Alert (GCS 15), stable adults after blunt head or neck trauma.",
+  "howToPerform": "1) Any high-risk factor → criteria met. 2) If no low-risk factor → criteria met. 3) Otherwise ask the patient to rotate 45° each way; unable → criteria met.",
+  "clinicalContext": "Supports, but does not replace, clinical judgement."
+ },
+ "sources": [
+  {
+   "citation": "Stiell IG, Wells GA, Vandemheen KL, et al. The Canadian C-spine rule for radiography in alert and stable trauma patients. JAMA. 2001;286(15):1841-1848."
+  },
+  {
+   "citation": "Stiell IG, Clement CM, McKnight RD, et al. The Canadian C-spine rule versus the NEXUS low-risk criteria in patients with trauma. N Engl J Med. 2003;349(26):2510-2518."
+  }
+ ],
+ "licensing": {
+  "status": "Published decision rule with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "itemType": "rule"
+}

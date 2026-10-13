@@ -1,0 +1,216 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "sunderland",
+  "nerve injury degree",
+  "peripheral nerve",
+  "neuroma in continuity"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Assigning a degree on day one without follow-up."
+ ],
+ "relatedScores": [
+  {
+   "id": "seddon",
+   "relation": "Three-class version"
+  },
+  {
+   "id": "mrc",
+   "relation": "Muscle power"
+  }
+ ],
+ "id": "sunderland",
+ "name": "Sunderland Classification of Nerve Injury",
+ "abbreviation": "Sunderland",
+ "category": "exam",
+ "subcategory": "Peripheral nerve",
+ "specialties": [
+  "Neurosurgery",
+  "Neurology",
+  "Plastic Surgery",
+  "Orthopaedics"
+ ],
+ "version": {
+  "label": "Sunderland (1951), first to fifth degree",
+  "detail": "Mackinnon's sixth degree (mixed injury) is a later addition and is not included."
+ },
+ "purpose": "Grades peripheral nerve injury by the connective tissue layers disrupted.",
+ "intendedPopulation": "Patients with peripheral nerve injury.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Injury degree",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "d",
+   "type": "single",
+   "label": "Injury degree",
+   "short": "Degree",
+   "options": [
+    {
+     "value": "1",
+     "label": "First degree: Conduction block; axon intact (= neurapraxia)",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Second degree: Axon disrupted; endoneurium intact (axonotmesis)",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Third degree: Axon and endoneurium disrupted; perineurium intact",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "Fourth degree: Only epineurium intact (neuroma in continuity)",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "5",
+     "label": "Fifth degree: Complete transection (= neurotmesis)",
+     "points": 5,
+     "code": "5"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "d",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Degree {d_code}",
+  "share": "Sunderland degree {d_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "First degree",
+   "summary": "Conduction block; axon intact (= neurapraxia).",
+   "range": "1",
+   "detail": "Full recovery expected."
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Second degree",
+   "summary": "Axon disrupted; endoneurium intact (axonotmesis).",
+   "range": "2",
+   "detail": "Full recovery by regeneration expected."
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Third degree",
+   "summary": "Axon and endoneurium disrupted; perineurium intact.",
+   "range": "3",
+   "detail": "Variable recovery; misdirected regeneration possible."
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Fourth degree",
+   "summary": "Only epineurium intact (neuroma in continuity).",
+   "range": "4",
+   "detail": "Little useful spontaneous recovery; surgical repair usually considered."
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Fifth degree",
+   "summary": "Complete transection (= neurotmesis).",
+   "range": "5",
+   "detail": "No spontaneous recovery."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Refines Seddon's axonotmesis into degrees with different recovery potential.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "d >= 4",
+   "text": "Fourth and fifth degree injuries do not recover usefully without repair."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "The degree is usually inferred over time; not directly visible clinically.",
+   "importance": "major"
+  },
+  "Third and fourth degree injuries are hard to separate without surgical exploration."
+ ],
+ "confounders": [
+  {
+   "factor": "Mixed injuries",
+   "effect": "Different fascicles can have different degrees."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Injury level.",
+  "Timing of surgery."
+ ],
+ "guideSections": {
+  "what": "Five degrees of nerve injury.",
+  "whenToUse": "Peripheral nerve trauma.",
+  "howToPerform": "Combine clinical recovery, serial neurophysiology and operative findings.",
+  "clinicalContext": "Guides decisions about exploration and repair."
+ },
+ "sources": [
+  {
+   "citation": "Sunderland S. A classification of peripheral nerve injuries producing loss of function. Brain. 1951;74(4):491-516."
+  }
+ ],
+ "licensing": {
+  "status": "Classical classification",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_d",
+   "label": "Injury degree",
+   "inputs": [
+    "d"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

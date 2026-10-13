@@ -1,0 +1,225 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "osmolality",
+  "osmolarity",
+  "osmolar gap",
+  "osmolal gap",
+  "mannitol",
+  "hypertonic saline"
+ ],
+ "scoringRules": [
+  {
+   "id": "calc",
+   "expr": "2 * na + glu + urea"
+  },
+  {
+   "id": "gap",
+   "expr": "isnull(meas) ? 0 : meas - (2 * na + glu + urea)"
+  }
+ ],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing mg/dL and mmol/L units.",
+  "Comparing values from different samples."
+ ],
+ "relatedScores": [
+  {
+   "id": "cpp",
+   "relation": "Perfusion pressure"
+  }
+ ],
+ "id": "osmolality",
+ "name": "Calculated Serum Osmolality and Osmolar Gap",
+ "abbreviation": "Osmolality",
+ "category": "neurocritical",
+ "subcategory": "Osmotherapy monitoring",
+ "specialties": [
+  "Neurocritical Care",
+  "Neurosurgery",
+  "Critical Care"
+ ],
+ "version": {
+  "label": "Calculated osmolality = 2 × Na + glucose + urea (mmol/L)",
+  "detail": "Equivalent to 2 × Na + glucose (mg/dL)/18 + BUN (mg/dL)/2.8. Osmolar gap = measured − calculated osmolality. Other formulas (e.g. 1.86 × Na) give different values and are not combined."
+ },
+ "purpose": "Calculates serum osmolality and the osmolar gap, e.g. when monitoring mannitol therapy.",
+ "intendedPopulation": "Adults with serum sodium, glucose and urea results.",
+ "resultPresentation": {
+  "type": "measurement",
+  "typeLabel": "Calculated osmolality",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "na",
+   "type": "integer",
+   "label": "Sodium",
+   "short": "Na",
+   "unit": "mmol/L",
+   "min": 100,
+   "max": 200
+  },
+  {
+   "id": "glu",
+   "type": "measurement",
+   "label": "Glucose",
+   "short": "Glucose",
+   "min": 0,
+   "max": 150,
+   "units": [
+    {
+     "id": "mmol",
+     "label": "mmol/L",
+     "factor": 1
+    },
+    {
+     "id": "mgdl",
+     "label": "mg/dL",
+     "factor": 0.0555556
+    }
+   ]
+  },
+  {
+   "id": "urea",
+   "type": "measurement",
+   "label": "Urea (or BUN)",
+   "short": "Urea",
+   "min": 0,
+   "max": 100,
+   "units": [
+    {
+     "id": "mmol",
+     "label": "mmol/L urea",
+     "factor": 1
+    },
+    {
+     "id": "bun",
+     "label": "mg/dL BUN",
+     "factor": 0.357143
+    }
+   ]
+  },
+  {
+   "id": "meas",
+   "type": "integer",
+   "label": "Measured osmolality (optional)",
+   "short": "Measured",
+   "unit": "mOsm/kg",
+   "min": 200,
+   "max": 500,
+   "required": false,
+   "help": "Adds the osmolar gap."
+  }
+ ],
+ "components": [
+  {
+   "id": "c_calc",
+   "label": "Calculated osmolality",
+   "inputs": [
+    "na",
+    "glu",
+    "urea"
+   ],
+   "showSubtotal": false
+  },
+  {
+   "id": "c_meas",
+   "label": "Measured",
+   "inputs": [
+    "meas"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "calc",
+  "range": {
+   "min": 200,
+   "max": 650
+  },
+  "formula": "2 × {na} + {fixed(glu, 1)} + {fixed(urea, 1)}",
+  "display": "{round(total)} mOsm/kg{isnull(meas) ? '' : ' · gap ' + round(gap)}",
+  "share": "Calculated osmolality {round(total)} mOsm/kg{isnull(meas) ? '' : '; measured ' + meas + ', gap ' + round(gap)}"
+ },
+ "interpretationRules": [
+  {
+   "when": "!isnull(meas) && gap > 10",
+   "state": "gap"
+  },
+  {
+   "state": "val"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "val",
+   "tone": "informational",
+   "label": "{round(total)} mOsm/kg",
+   "summary": "Calculated serum osmolality.",
+   "detail": "Typical reference range about 275–295 mOsm/kg; laboratories differ."
+  },
+  {
+   "id": "gap",
+   "tone": "moderate",
+   "label": "Osmolar gap {round(gap)}",
+   "summary": "Measured osmolality exceeds the calculated value by more than 10 mOsm/kg.",
+   "detail": "Unmeasured osmoles (e.g. mannitol, alcohols) raise the gap; interpret with the clinical context and laboratory method."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Used to monitor osmotherapy: a raised osmolar gap suggests mannitol accumulation.",
+   "importance": "major"
+  },
+  {
+   "text": "Measured osmolality is needed for the gap; calculated osmolality alone does not detect mannitol."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "!isnull(meas)",
+   "text": "Measured and calculated values should be from the same sample."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Formula-dependent; reference ranges and gap thresholds vary between laboratories.",
+   "importance": "major"
+  },
+  "Lipaemia and hyperproteinaemia affect sodium measurement."
+ ],
+ "confounders": [
+  {
+   "factor": "Pseudohyponatraemia",
+   "effect": "Alters the calculated value."
+  },
+  {
+   "factor": "Alcohol",
+   "effect": "Raises measured osmolality and the gap."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause of a raised gap.",
+  "Tonicity (urea crosses cell membranes)."
+ ],
+ "guideSections": {
+  "what": "Calculated osmolality from sodium, glucose and urea, with the gap against measured osmolality.",
+  "whenToUse": "Osmotherapy monitoring and suspected toxic alcohol ingestion.",
+  "howToPerform": "Enter sodium, glucose and urea with their units; add measured osmolality for the gap.",
+  "clinicalContext": "Interpret with the laboratory's reference ranges."
+ },
+ "sources": [
+  {
+   "citation": "Purssell RA, Lynd LD, Koga Y. The use of the osmole gap as a screening test for the presence of exogenous substances. Toxicol Rev. 2004;23(3):189-202."
+  }
+ ],
+ "licensing": {
+  "status": "Formula",
+  "note": "No reproduction restrictions identified."
+ },
+ "itemType": "measurement"
+}

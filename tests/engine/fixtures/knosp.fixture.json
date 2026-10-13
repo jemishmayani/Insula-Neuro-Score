@@ -1,0 +1,48 @@
+{
+ "scoreId": "knosp",
+ "cases": [
+  {
+   "name": "grade 0",
+   "answers": {
+    "g": "1"
+   },
+   "expect": {
+    "display": "Knosp 0"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 3B",
+   "answers": {
+    "g": "5"
+   },
+   "expect": {
+    "display": "Knosp 3B",
+    "insightsContains": "invasion"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3B",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 4",
+   "answers": {
+    "g": "6"
+   },
+   "expect": {
+    "display": "Knosp 4"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

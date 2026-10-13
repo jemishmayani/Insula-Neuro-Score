@@ -1,0 +1,50 @@
+{
+ "scoreId": "collaterals",
+ "cases": [
+  {
+   "name": "grade 0",
+   "answers": {
+    "g": "1"
+   },
+   "expect": {
+    "display": "Grade 0",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 3",
+   "answers": {
+    "g": "4"
+   },
+   "expect": {
+    "display": "Grade 3",
+    "tone": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 4",
+   "answers": {
+    "g": "5"
+   },
+   "expect": {
+    "display": "Grade 4",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -413,6 +413,8 @@ if __name__ == "__main__":
     scores += library2.build()
     import library3
     scores += library3.build()
+    import library4, library5, library6   # v0.12 viva-yield expansion
+    scores += library4.build() + library5.build() + library6.build()
     library.UNDER_REVIEW.update(library2.UNDER_REVIEW_NEW)
     scores = [x for x in scores if x["id"] not in library.UNDER_REVIEW]   # verified but held back (e.g. licensing review)
     impl = {s["id"]: s for s in scores}
@@ -434,14 +436,21 @@ if __name__ == "__main__":
     cat_path = os.path.join(OUT, "catalog.json"); cat = json.load(open(cat_path))
     coll_ids = [c["id"] for c in itemtypes.COLLECTIONS]
     cat["categories"] = [dict(c) for c in itemtypes.COLLECTIONS] + \
-        [c for c in cat["categories"] if c["id"] != library3.EXAM_CATEGORY["id"] and c["id"] not in coll_ids] + [dict(library3.EXAM_CATEGORY)]
+        [c for c in cat["categories"] if c["id"] != library3.EXAM_CATEGORY["id"] and c["id"] not in coll_ids and c["id"] not in [n["id"] for n in itemtypes.NEW_CATEGORIES]] + \
+        [dict(n) for n in itemtypes.NEW_CATEGORIES] + [dict(library3.EXAM_CATEGORY)]
     for c in cat["categories"]:
         if c["id"] == "neurocritical": c["description"] = "Organ dysfunction"
     for c in cat["categories"]:
         if c.get("collection"): continue
         c.pop("include", None)
         if c["id"] in library3.CROSS_LIST: c["include"] = list(library3.CROSS_LIST[c["id"]])
-    cat["categories"][-1]["include"] = list(library3.EXAM_CATEGORY["include"])
+    exam = cat["categories"][-1]; exam["include"] = list(library3.EXAM_CATEGORY["include"]) + list(itemtypes.EXAM_EXTRA_INCLUDES)
+    exam["groups"] = [dict(g, members=list(g["members"]) + itemtypes.EXAM_GROUP_ADDITIONS.get(g["title"], [])) for g in library3.EXAM_CATEGORY["groups"]] + [dict(g) for g in itemtypes.EXAM_NEW_GROUPS]
+    for c in cat["categories"]:
+        if c.get("collection") or c["id"] == "exam": continue
+        c.pop("groups", None)
+        if c["id"] in itemtypes.CATEGORY_GROUPS: c["groups"] = [dict(g) for g in itemtypes.CATEGORY_GROUPS[c["id"]]]
+        if c["id"] in itemtypes.EXTRA_INCLUDES: c["include"] = c.get("include", []) + list(itemtypes.EXTRA_INCLUDES[c["id"]])
     cat["defaultPriorityGroups"] = list(itemtypes.DEFAULT_PRIORITY_GROUPS)
     cat["itemTypes"] = [{"id": k, "label": v} for k, v in itemtypes.TYPE_LABEL.items()]
     entries = cat["scores"] + cat.get("withheld", [])
@@ -449,12 +458,12 @@ if __name__ == "__main__":
     for k, (ab, nm, ct) in {"sofa2": ("SOFA-2", "Sequential Organ Failure Assessment-2 (2025)", "neurocritical"),
                             "dsgpa": ("DS-GPA", "Disease-specific Graded Prognostic Assessments", "oncology")}.items():
         if k not in by_id: e = {"id": k, "abbreviation": ab, "name": nm, "category": ct}; entries.append(e); by_id[k] = e
-    for k, (nm, ab, ct, rc, rr) in library3.WITHHELD_NEW.items():
+    for k, (nm, ab, ct, rc, rr) in list(library3.WITHHELD_NEW.items()) + list(library6.WITHHELD_V12.items()):
         if k not in by_id: e = {"id": k, "abbreviation": ab, "name": nm, "category": ct}; entries.append(e); by_id[k] = e
     for s in scores:
         if s["id"] not in by_id: e = {"id": s["id"], "abbreviation": s["abbreviation"], "name": s["name"], "category": s["category"], "summary": ""}; entries.append(e); by_id[s["id"]] = e
     by_id["tokuhashi"].update({"abbreviation": "Tokuhashi (1990)", "name": "Tokuhashi Score (original 1990)"})
-    reasons = dict(library.UNDER_REVIEW); reasons.update({k: (v[3], v[4]) for k, v in library3.WITHHELD_NEW.items()})
+    reasons = dict(library.UNDER_REVIEW); reasons.update({k: (v[3], v[4]) for k, v in library3.WITHHELD_NEW.items()}); reasons.update({k: (v[3], v[4]) for k, v in library6.WITHHELD_V12.items()})
     active, withheld = [], []
     for c in entries:
         for k in ("reviewReason", "reviewCategory", "status", "withheldCategory", "withheldReason"): c.pop(k, None)

@@ -1,0 +1,34 @@
+{
+ "scoreId": "sunderland",
+ "cases": [
+  {
+   "name": "first",
+   "answers": {
+    "d": "1"
+   },
+   "expect": {
+    "display": "Degree 1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "fourth",
+   "answers": {
+    "d": "4"
+   },
+   "expect": {
+    "display": "Degree 4",
+    "insightsContains": "repair"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -1,0 +1,359 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "has bled",
+  "hasbled",
+  "bleeding risk",
+  "anticoagulation bleeding"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Counting renal and liver as one point.",
+  "Using the score to withhold anticoagulation without weighing stroke risk."
+ ],
+ "relatedScores": [
+  {
+   "id": "chadsvasc",
+   "relation": "Stroke risk"
+  }
+ ],
+ "id": "hasbled",
+ "name": "HAS-BLED Bleeding Risk Score",
+ "abbreviation": "HAS-BLED",
+ "category": "stroke",
+ "subcategory": "Bleeding risk on anticoagulation",
+ "specialties": [
+  "Stroke",
+  "Neurology",
+  "Cardiology"
+ ],
+ "version": {
+  "label": "HAS-BLED (Pisters et al. 2010)",
+  "detail": "Nine items, one point each, total 0–9. Abnormal renal and liver function, and drugs and alcohol, are scored separately."
+ },
+ "purpose": "Estimates 1-year major bleeding risk in patients with atrial fibrillation on anticoagulation.",
+ "intendedPopulation": "Adults with atrial fibrillation considered for or taking anticoagulation.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Bleeding risk score",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "h",
+   "type": "single",
+   "label": "Hypertension (uncontrolled, systolic >160 mmHg)",
+   "short": "H",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "ren",
+   "type": "single",
+   "label": "Abnormal renal function (dialysis, transplant or creatinine ≥200 µmol/L)",
+   "short": "A renal",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "liv",
+   "type": "single",
+   "label": "Abnormal liver function (cirrhosis, or bilirubin >2× and AST/ALT/ALP >3× normal)",
+   "short": "A liver",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "s",
+   "type": "single",
+   "label": "Previous stroke",
+   "short": "S",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "b",
+   "type": "single",
+   "label": "Bleeding history or predisposition",
+   "short": "B",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "l",
+   "type": "single",
+   "label": "Labile INR (time in range <60%)",
+   "short": "L",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "e",
+   "type": "single",
+   "label": "Elderly (age >65)",
+   "short": "E",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "drug",
+   "type": "single",
+   "label": "Drugs predisposing to bleeding (antiplatelet agents, NSAIDs)",
+   "short": "D drugs",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "alc",
+   "type": "single",
+   "label": "Alcohol (≥8 drinks per week)",
+   "short": "D alcohol",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 0,
+   "max": 9
+  },
+  "display": "{total}",
+  "share": "HAS-BLED {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total >= 3",
+   "state": "high"
+  },
+  {
+   "state": "lower"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "lower",
+   "tone": "informational",
+   "label": "HAS-BLED {total}",
+   "summary": "Score below 3.",
+   "range": "0–2",
+   "detail": "Bleeding risk still depends on factors not in the score."
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "High bleeding risk (≥3)",
+   "summary": "HAS-BLED 3 or more: high-risk group in the derivation study.",
+   "range": "3–9",
+   "detail": "In guidelines this flags the need to correct modifiable factors and review more often; on its own it is not a reason to withhold anticoagulation. Integrate with stroke risk."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Identifies patients with higher bleeding risk on anticoagulation, and modifiable factors.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "h == 1 || l == 1 || drug == 1 || alc == 1",
+   "text": "Some contributing factors are modifiable (blood pressure, INR control, concomitant drugs, alcohol)."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Moderate predictive accuracy; not a decision rule for withholding anticoagulation.",
+   "importance": "major"
+  },
+  "Labile INR applies only to vitamin K antagonists."
+ ],
+ "confounders": [
+  {
+   "factor": "Incomplete history",
+   "effect": "Under-scores bleeding history or alcohol."
+  },
+  {
+   "factor": "Changing medication",
+   "effect": "Antiplatelet use changes the score."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Stroke risk.",
+  "Intracranial versus extracranial bleeding risk.",
+  "The choice of anticoagulant."
+ ],
+ "guideSections": {
+  "what": "Nine bleeding risk factors, one point each.",
+  "whenToUse": "Atrial fibrillation patients on or considered for anticoagulation.",
+  "howToPerform": "Score each item present; sum.",
+  "clinicalContext": "Used with CHA₂DS₂-VASc and to target modifiable risk."
+ },
+ "sources": [
+  {
+   "citation": "Pisters R, Lane DA, Nieuwlaat R, de Vos CB, Crijns HJGM, Lip GYH. A novel user-friendly score (HAS-BLED) to assess 1-year risk of major bleeding in patients with atrial fibrillation: the Euro Heart Survey. Chest. 2010;138(5):1093-1100."
+  }
+ ],
+ "licensing": {
+  "status": "Published score with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_h",
+   "label": "Hypertension (uncontrolled, systolic >160 mmHg)",
+   "inputs": [
+    "h"
+   ]
+  },
+  {
+   "id": "c_ren",
+   "label": "Abnormal renal function (dialysis, transplant or creatinine ≥200 µmol/L)",
+   "inputs": [
+    "ren"
+   ]
+  },
+  {
+   "id": "c_liv",
+   "label": "Abnormal liver function (cirrhosis, or bilirubin >2× and AST/ALT/ALP >3× normal)",
+   "inputs": [
+    "liv"
+   ]
+  },
+  {
+   "id": "c_s",
+   "label": "Previous stroke",
+   "inputs": [
+    "s"
+   ]
+  },
+  {
+   "id": "c_b",
+   "label": "Bleeding history or predisposition",
+   "inputs": [
+    "b"
+   ]
+  },
+  {
+   "id": "c_l",
+   "label": "Labile INR (time in range <60%)",
+   "inputs": [
+    "l"
+   ]
+  },
+  {
+   "id": "c_e",
+   "label": "Elderly (age >65)",
+   "inputs": [
+    "e"
+   ]
+  },
+  {
+   "id": "c_drug",
+   "label": "Drugs predisposing to bleeding (antiplatelet agents, NSAIDs)",
+   "inputs": [
+    "drug"
+   ]
+  },
+  {
+   "id": "c_alc",
+   "label": "Alcohol (≥8 drinks per week)",
+   "inputs": [
+    "alc"
+   ]
+  }
+ ],
+ "itemType": "score"
+}

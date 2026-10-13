@@ -1,0 +1,269 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "tlics",
+  "thoracolumbar injury",
+  "burst fracture",
+  "spine fracture"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring complete cord injury as 3 (it is 2).",
+  "Adding several morphologies."
+ ],
+ "relatedScores": [
+  {
+   "id": "slic",
+   "relation": "Cervical equivalent"
+  },
+  {
+   "id": "frankel",
+   "relation": "Cord injury grade"
+  }
+ ],
+ "id": "tlics",
+ "name": "Thoracolumbar Injury Classification and Severity Score (TLICS)",
+ "abbreviation": "TLICS",
+ "category": "spine",
+ "subcategory": "Spine trauma",
+ "specialties": [
+  "Spine Surgery",
+  "Neurosurgery",
+  "Trauma"
+ ],
+ "version": {
+  "label": "TLICS (Vaccaro et al. 2005)",
+  "detail": "Morphology 1–4 + posterior ligamentous complex 0–3 + neurological status 0–3. Total 1–10. The AO Spine thoracolumbar classification is a separate (licensed) system."
+ },
+ "purpose": "Classifies thoracolumbar injuries and summarises features relevant to management.",
+ "intendedPopulation": "Adults with thoracolumbar spine trauma, using CT, MRI and neurological examination.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Injury severity",
+  "meter": true
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Classification, not a surgical decision",
+  "message": "The authors proposed treatment thresholds; management also depends on the patient, associated injuries and surgeon judgement."
+ },
+ "inputDefinitions": [
+  {
+   "id": "morph",
+   "type": "single",
+   "label": "Morphology",
+   "short": "Morphology",
+   "options": [
+    {
+     "value": "comp",
+     "label": "Compression",
+     "points": 1
+    },
+    {
+     "value": "burst",
+     "label": "Burst",
+     "points": 2
+    },
+    {
+     "value": "trans",
+     "label": "Translation or rotation",
+     "points": 3
+    },
+    {
+     "value": "dist",
+     "label": "Distraction",
+     "points": 4
+    }
+   ],
+   "help": "Score the most severe morphology."
+  },
+  {
+   "id": "plc",
+   "type": "single",
+   "label": "Posterior ligamentous complex",
+   "short": "PLC",
+   "options": [
+    {
+     "value": "intact",
+     "label": "Intact",
+     "points": 0
+    },
+    {
+     "value": "indet",
+     "label": "Suspected or indeterminate",
+     "points": 2
+    },
+    {
+     "value": "inj",
+     "label": "Injured",
+     "points": 3
+    }
+   ]
+  },
+  {
+   "id": "neuro",
+   "type": "single",
+   "label": "Neurological status",
+   "short": "Neuro",
+   "options": [
+    {
+     "value": "intact",
+     "label": "Intact",
+     "points": 0
+    },
+    {
+     "value": "root",
+     "label": "Nerve root",
+     "points": 2
+    },
+    {
+     "value": "complete",
+     "label": "Cord or conus medullaris: complete",
+     "points": 2,
+     "code": "2 (complete)"
+    },
+    {
+     "value": "incomplete",
+     "label": "Cord or conus medullaris: incomplete",
+     "points": 3,
+     "code": "3 (incomplete)"
+    },
+    {
+     "value": "ce",
+     "label": "Cauda equina",
+     "points": 3,
+     "code": "3 (CE)"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 1,
+   "max": 10
+  },
+  "display": "{total}",
+  "share": "TLICS {total} (morphology {morph}, PLC {plc}, neuro {neuro})"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 3",
+   "state": "low"
+  },
+  {
+   "when": "total == 4",
+   "state": "mid"
+  },
+  {
+   "state": "high"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low",
+   "tone": "low",
+   "label": "TLICS {total}",
+   "summary": "Score 0–3: the authors' non-operative range.",
+   "range": "1–3",
+   "min": 1,
+   "max": 3
+  },
+  {
+   "id": "mid",
+   "tone": "moderate",
+   "label": "TLICS 4",
+   "summary": "Score 4: either approach in the authors' scheme.",
+   "range": "4",
+   "detail": "Management depends on patient and injury factors.",
+   "min": 4,
+   "max": 4
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "TLICS {total}",
+   "summary": "Score 5 or more: the authors' operative range.",
+   "range": "5–10",
+   "detail": "Management depends on neurological status, associated injuries, patient factors and surgical judgement.",
+   "min": 5,
+   "max": 10
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Combines morphology, PLC integrity and neurology to classify thoracolumbar injuries.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "neuro_value == 'incomplete'",
+   "text": "Incomplete cord/conus injury scores higher (3) than complete (2), reflecting potential benefit from decompression."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Proposed thresholds are not a substitute for surgical judgement.",
+   "importance": "major"
+  },
+  "PLC assessment varies between readers.",
+  "Does not include patient factors such as bone quality."
+ ],
+ "confounders": [
+  {
+   "factor": "Osteoporosis",
+   "effect": "Changes injury pattern and treatment."
+  },
+  {
+   "factor": "Incomplete MRI",
+   "effect": "Leaves PLC indeterminate."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The surgical approach.",
+  "Prognosis for recovery."
+ ],
+ "guideSections": {
+  "what": "A score from morphology, PLC integrity and neurology for thoracolumbar injuries.",
+  "whenToUse": "Thoracolumbar spine trauma.",
+  "howToPerform": "Score the most severe morphology, the PLC and neurology; sum.",
+  "clinicalContext": "Supports management decisions made with the full clinical picture."
+ },
+ "sources": [
+  {
+   "citation": "Vaccaro AR, Lehman RA Jr, Hurlbert RJ, et al. A new classification of thoracolumbar injuries: the importance of injury morphology, the integrity of the posterior ligamentous complex, and neurologic status. Spine. 2005;30(20):2325-2333."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_morph",
+   "label": "Morphology",
+   "inputs": [
+    "morph"
+   ]
+  },
+  {
+   "id": "c_plc",
+   "label": "Posterior ligamentous complex",
+   "inputs": [
+    "plc"
+   ]
+  },
+  {
+   "id": "c_neuro",
+   "label": "Neurological status",
+   "inputs": [
+    "neuro"
+   ]
+  }
+ ],
+ "itemType": "score"
+}

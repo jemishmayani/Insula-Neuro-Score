@@ -1,0 +1,33 @@
+{
+ "scoreId": "seddon",
+ "cases": [
+  {
+   "name": "neurapraxia",
+   "answers": {
+    "c": "1"
+   },
+   "expect": {
+    "display": "Neurapraxia"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "neurapraxia",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "neurotmesis",
+   "answers": {
+    "c": "3"
+   },
+   "expect": {
+    "display": "Neurotmesis"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "neurotmesis",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

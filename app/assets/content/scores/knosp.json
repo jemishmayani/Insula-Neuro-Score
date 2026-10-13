@@ -1,0 +1,232 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "knosp",
+  "cavernous sinus invasion",
+  "pituitary adenoma",
+  "pitnet"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing the original grade 3 with 3A/3B."
+ ],
+ "relatedScores": [
+  {
+   "id": "hardy",
+   "relation": "Sellar grade and extension"
+  }
+ ],
+ "id": "knosp",
+ "name": "Knosp Classification (modified) of Cavernous Sinus Invasion",
+ "abbreviation": "Knosp",
+ "category": "oncology",
+ "subcategory": "Tumour grading: pituitary",
+ "specialties": [
+  "Neurosurgery",
+  "Endocrinology",
+  "Neuroradiology"
+ ],
+ "version": {
+  "label": "Knosp classification as modified by Micko et al. (2015): 0, 1, 2, 3A, 3B, 4",
+  "detail": "Based on coronal MRI lines (medial tangent, intercarotid line, lateral tangent) of the intracavernous and supraclinoid ICA. The original 1993 grade 3 is subdivided into 3A and 3B."
+ },
+ "purpose": "Grades the likelihood of cavernous sinus invasion by pituitary adenoma.",
+ "intendedPopulation": "Patients with pituitary macroadenoma on coronal MRI.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Invasion grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Lateral extension on coronal MRI",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "Grade 0: Tumour medial to the medial tangent of the intracavernous and supraclinoid ICA",
+     "points": 1,
+     "code": "0"
+    },
+    {
+     "value": "2",
+     "label": "Grade 1: Tumour extends to, but not beyond, the intercarotid line",
+     "points": 2,
+     "code": "1"
+    },
+    {
+     "value": "3",
+     "label": "Grade 2: Tumour extends beyond the intercarotid line but not beyond the lateral tangent",
+     "points": 3,
+     "code": "2"
+    },
+    {
+     "value": "4",
+     "label": "Grade 3A: Extension beyond the lateral tangent into the superior cavernous sinus compartment",
+     "points": 4,
+     "code": "3A"
+    },
+    {
+     "value": "5",
+     "label": "Grade 3B: Extension beyond the lateral tangent into the inferior cavernous sinus compartment",
+     "points": 5,
+     "code": "3B"
+    },
+    {
+     "value": "6",
+     "label": "Grade 4: Complete encasement of the intracavernous ICA",
+     "points": 6,
+     "code": "4"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 6
+  },
+  "display": "Knosp {g_code}",
+  "share": "Knosp grade {g_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  },
+  {
+   "when": "total == 6",
+   "state": "s6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Grade 0",
+   "summary": "Tumour medial to the medial tangent of the intracavernous and supraclinoid ICA.",
+   "range": "Grade 0",
+   "detail": "Surgically confirmed cavernous sinus invasion (Micko 2015): 0% surgically confirmed invasion."
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Grade 1",
+   "summary": "Tumour extends to, but not beyond, the intercarotid line.",
+   "range": "Grade 1",
+   "detail": "Surgically confirmed cavernous sinus invasion (Micko 2015): 1.5%."
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Grade 2",
+   "summary": "Tumour extends beyond the intercarotid line but not beyond the lateral tangent.",
+   "range": "Grade 2",
+   "detail": "Surgically confirmed cavernous sinus invasion (Micko 2015): 9.9%."
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Grade 3A",
+   "summary": "Extension beyond the lateral tangent into the superior cavernous sinus compartment.",
+   "range": "Grade 3A",
+   "detail": "Surgically confirmed cavernous sinus invasion (Micko 2015): 26.5%."
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Grade 3B",
+   "summary": "Extension beyond the lateral tangent into the inferior cavernous sinus compartment.",
+   "range": "Grade 3B",
+   "detail": "Surgically confirmed cavernous sinus invasion (Micko 2015): 70.6%."
+  },
+  {
+   "id": "s6",
+   "tone": "informational",
+   "label": "Grade 4",
+   "summary": "Complete encasement of the intracavernous ICA.",
+   "range": "Grade 4",
+   "detail": "Surgically confirmed cavernous sinus invasion (Micko 2015): 100%."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Predicts true cavernous sinus invasion and the chance of complete resection.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "g >= 5",
+   "text": "Grades 3B and 4 have high rates of true invasion; gross total resection is less likely."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "MRI-based; true invasion is confirmed only surgically or histologically.",
+   "importance": "major"
+  },
+  "Grades 2 and 3A show the most inter-rater variability."
+ ],
+ "confounders": [
+  {
+   "factor": "ICA position and tortuosity",
+   "effect": "Alter the reference lines."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Hormonal status.",
+  "Suprasellar extension (see Hardy)."
+ ],
+ "guideSections": {
+  "what": "Grades 0–4 (with 3A/3B) of lateral extension relative to ICA reference lines.",
+  "whenToUse": "Pituitary adenoma MRI before surgery.",
+  "howToPerform": "On coronal T1 post-contrast, draw the medial tangent, intercarotid line and lateral tangent; grade the tumour's lateral extent.",
+  "clinicalContext": "Used in surgical planning."
+ },
+ "sources": [
+  {
+   "citation": "Knosp E, Steiner E, Kitz K, Matula C. Pituitary adenomas with invasion of the cavernous sinus space: a magnetic resonance imaging classification compared with surgical findings. Neurosurgery. 1993;33(4):610-617."
+  },
+  {
+   "citation": "Micko ASG, Wöhrer A, Wolfsberger S, Knosp E. Invasion of the cavernous sinus space in pituitary adenomas: endoscopic verification and its correlation with an MRI-based classification. J Neurosurg. 2015;122(4):803-811."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Lateral extension on coronal MRI",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

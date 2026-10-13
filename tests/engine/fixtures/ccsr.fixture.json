@@ -1,0 +1,169 @@
+{
+ "scoreId": "ccsr",
+ "cases": [
+  {
+   "name": "cleared",
+   "answers": {
+    "age65": "no",
+    "mech": "no",
+    "par": "no",
+    "rear": "no",
+    "sit": "no",
+    "amb": "yes",
+    "delay": "no",
+    "nomid": "no",
+    "applies": "yes",
+    "rot": "yes"
+   },
+   "expect": {
+    "total": 1,
+    "state": "clear"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no HR, LR present, rotates",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "rotation pending",
+   "answers": {
+    "age65": "no",
+    "mech": "no",
+    "par": "no",
+    "rear": "no",
+    "sit": "no",
+    "amb": "yes",
+    "delay": "no",
+    "nomid": "no",
+    "applies": "yes"
+   },
+   "expect": {
+    "total": 4,
+    "state": "rot"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "needs rotation",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "unable to rotate",
+   "answers": {
+    "age65": "no",
+    "mech": "no",
+    "par": "no",
+    "rear": "no",
+    "sit": "yes",
+    "amb": "no",
+    "delay": "no",
+    "nomid": "no",
+    "applies": "yes",
+    "rot": "no"
+   },
+   "expect": {
+    "total": 5,
+    "state": "unable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "unable",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "no low-risk factor",
+   "answers": {
+    "age65": "no",
+    "mech": "no",
+    "par": "no",
+    "rear": "no",
+    "sit": "no",
+    "amb": "no",
+    "delay": "no",
+    "nomid": "no",
+    "applies": "yes"
+   },
+   "expect": {
+    "total": 3,
+    "state": "nolow"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "no LR",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "high risk dangerous mechanism",
+   "answers": {
+    "age65": "no",
+    "mech": "yes",
+    "par": "no",
+    "rear": "no",
+    "sit": "no",
+    "amb": "no",
+    "delay": "no",
+    "nomid": "no",
+    "applies": "yes"
+   },
+   "expect": {
+    "total": 2,
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "HR",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "rotation recorded despite high risk",
+   "answers": {
+    "age65": "yes",
+    "mech": "no",
+    "par": "no",
+    "rear": "no",
+    "sit": "no",
+    "amb": "no",
+    "delay": "no",
+    "nomid": "no",
+    "applies": "yes",
+    "rot": "yes"
+   },
+   "expect": {
+    "total": 2,
+    "warnings": 1
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "warning",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "not applicable",
+   "answers": {
+    "age65": "no",
+    "mech": "no",
+    "par": "no",
+    "rear": "no",
+    "sit": "no",
+    "amb": "no",
+    "delay": "no",
+    "nomid": "no",
+    "applies": "no"
+   },
+   "expect": {
+    "total": 0,
+    "state": "na"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "outside",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

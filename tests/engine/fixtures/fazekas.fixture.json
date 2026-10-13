@@ -1,0 +1,69 @@
+{
+ "scoreId": "fazekas",
+ "cases": [
+  {
+   "name": "none",
+   "answers": {
+    "pv": "0",
+    "dw": "0"
+   },
+   "expect": {
+    "display": "Deep 0 · PV 0",
+    "state": "none",
+    "tone": "favorable"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0/0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "pv only",
+   "answers": {
+    "pv": "2",
+    "dw": "0"
+   },
+   "expect": {
+    "state": "mild",
+    "display": "Deep 0 · PV 2"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "deep 0, pv 2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "deep 2",
+   "answers": {
+    "pv": "1",
+    "dw": "2"
+   },
+   "expect": {
+    "state": "mod"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "deep 2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "deep 3",
+   "answers": {
+    "pv": "3",
+    "dw": "3"
+   },
+   "expect": {
+    "state": "sev",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "deep 3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

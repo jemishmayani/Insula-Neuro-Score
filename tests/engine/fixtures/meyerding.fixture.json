@@ -1,0 +1,33 @@
+{
+ "scoreId": "meyerding",
+ "cases": [
+  {
+   "name": "grade II",
+   "answers": {
+    "g": "2"
+   },
+   "expect": {
+    "display": "Grade II"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "26–50%",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade V",
+   "answers": {
+    "g": "5"
+   },
+   "expect": {
+    "display": "Grade V"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "spondyloptosis",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

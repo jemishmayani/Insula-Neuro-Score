@@ -15,6 +15,9 @@ function valuesFor(d) {
     return out.filter((x) => x.length);
   }
   if (d.type === "integer") { const v = []; for (let x = d.min; x <= d.max; x++) v.push(x); return v.length <= 31 ? v : null; }
+  if (d.type === "yesno") return ["no", "yes"];
+  if (d.type === "decimal" || d.type === "number") { const v = new Set([d.min, d.max]); for (let k = 1; k < 8; k++) v.add(Math.round((d.min + (d.max - d.min) * k / 8) * 10) / 10); (d.pointBands || []).forEach((b) => [b.min, b.max].forEach((e) => { if (e != null) v.add(e); })); return [...v].sort((a, b) => a - b); }
+  if (d.type === "measurement") return [d.min, (d.min + d.max) / 2, d.max].map((x) => ({ value: Math.round(x * 10) / 10, unit: d.units[0].id }));
   return null;
 }
 function* combos(defs, cap) {

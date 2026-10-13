@@ -18,6 +18,8 @@ async def fill_all(pg, sid):
             await pg.locator(f"{f} input[type=checkbox]").first.locator("xpath=..").click()
         elif d["type"] in ("integer", "number", "decimal"):
             await pg.fill(f"#in-{d['id']}", str(d["max"] if sid == "rts" else (d["min"] + d["max"]) // 2))
+        elif d["type"] == "measurement":
+            await pg.fill(f"#in-{d['id']}", str((d["min"] + d["max"]) // 2))
         elif d["type"] == "dropdown":
             await pg.select_option(f"#in-{d['id']}", index=1)
     return score

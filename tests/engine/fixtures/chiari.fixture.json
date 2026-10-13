@@ -1,0 +1,34 @@
+{
+ "scoreId": "chiari",
+ "cases": [
+  {
+   "name": "type I",
+   "answers": {
+    "t": "1"
+   },
+   "expect": {
+    "display": "Chiari I",
+    "insightsContains": "incidental"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type II",
+   "answers": {
+    "t": "2"
+   },
+   "expect": {
+    "display": "Chiari II"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "II",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

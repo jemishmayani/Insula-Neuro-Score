@@ -1,0 +1,228 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "suzuki",
+  "moyamoya",
+  "moya moya"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Staging both hemispheres as one."
+ ],
+ "relatedScores": [
+  {
+   "id": "spetzler",
+   "relation": "AVM grade"
+  }
+ ],
+ "id": "suzuki",
+ "name": "Suzuki Angiographic Staging of Moyamoya Disease",
+ "abbreviation": "Suzuki stage",
+ "category": "exam",
+ "subcategory": "Vascular neurosurgery",
+ "specialties": [
+  "Neurosurgery",
+  "Neurology",
+  "Interventional Neuroradiology"
+ ],
+ "version": {
+  "label": "Suzuki and Takaku (1969), stages I–VI",
+  "detail": "Angiographic stages of progressive steno-occlusion of the terminal internal carotid arteries and the development and regression of moyamoya collaterals."
+ },
+ "purpose": "Describes the angiographic stage of moyamoya disease.",
+ "intendedPopulation": "Patients with moyamoya disease or syndrome studied with catheter angiography.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Angiographic stage",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "stg",
+   "type": "single",
+   "label": "Angiographic stage",
+   "short": "Stage",
+   "options": [
+    {
+     "value": "1",
+     "label": "Narrowing of the carotid fork",
+     "points": 1,
+     "code": "I",
+     "detail": "Stenosis of the terminal internal carotid arteries."
+    },
+    {
+     "value": "2",
+     "label": "Initiation of the moyamoya",
+     "points": 2,
+     "code": "II",
+     "detail": "Dilated main cerebral arteries; moyamoya vessels begin to appear at the base."
+    },
+    {
+     "value": "3",
+     "label": "Intensification of the moyamoya",
+     "points": 3,
+     "code": "III",
+     "detail": "Prominent basal moyamoya vessels; anterior and middle cerebral arteries narrowed or poorly filled."
+    },
+    {
+     "value": "4",
+     "label": "Minimisation of the moyamoya",
+     "points": 4,
+     "code": "IV",
+     "detail": "Moyamoya vessels decrease; posterior cerebral involvement; extracranial collaterals increase."
+    },
+    {
+     "value": "5",
+     "label": "Reduction of the moyamoya",
+     "points": 5,
+     "code": "V",
+     "detail": "Further reduction of moyamoya vessels; main intracranial arteries absent; collateral supply mainly external carotid."
+    },
+    {
+     "value": "6",
+     "label": "Disappearance of the moyamoya",
+     "points": 6,
+     "code": "VI",
+     "detail": "Moyamoya vessels disappear; supply only from the external carotid (and vertebral) systems."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "stg",
+  "range": {
+   "min": 1,
+   "max": 6
+  },
+  "display": "Stage {stg_code}",
+  "share": "Suzuki stage {stg_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  },
+  {
+   "when": "total == 6",
+   "state": "s6"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Stage I: narrowing of the carotid fork",
+   "summary": "Stenosis of the terminal internal carotid arteries.",
+   "range": "I"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Stage II: initiation of the moyamoya",
+   "summary": "Dilated main cerebral arteries; moyamoya vessels begin to appear at the base.",
+   "range": "II"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Stage III: intensification of the moyamoya",
+   "summary": "Prominent basal moyamoya vessels; anterior and middle cerebral arteries narrowed or poorly filled.",
+   "range": "III"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Stage IV: minimisation of the moyamoya",
+   "summary": "Moyamoya vessels decrease; posterior cerebral involvement; extracranial collaterals increase.",
+   "range": "IV"
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Stage V: reduction of the moyamoya",
+   "summary": "Further reduction of moyamoya vessels; main intracranial arteries absent; collateral supply mainly external carotid.",
+   "range": "V"
+  },
+  {
+   "id": "s6",
+   "tone": "informational",
+   "label": "Stage VI: disappearance of the moyamoya",
+   "summary": "Moyamoya vessels disappear; supply only from the external carotid (and vertebral) systems.",
+   "range": "VI"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Describes the natural angiographic progression of moyamoya disease.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Stage each hemisphere separately; disease is often asymmetric."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Angiographic description; correlates imperfectly with symptoms or haemodynamic impairment.",
+   "importance": "major"
+  },
+  "Progression does not always follow the stages in order."
+ ],
+ "confounders": [
+  {
+   "factor": "Unilateral or asymmetric disease",
+   "effect": "A single stage may not describe both sides."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Cerebral perfusion reserve.",
+  "Stroke risk.",
+  "Whether revascularisation is indicated."
+ ],
+ "guideSections": {
+  "what": "Six angiographic stages of moyamoya disease.",
+  "whenToUse": "Describing moyamoya on catheter angiography.",
+  "howToPerform": "Review internal and external carotid and vertebral injections; assign the stage that fits each side.",
+  "clinicalContext": "Used with perfusion studies and symptoms."
+ },
+ "sources": [
+  {
+   "citation": "Suzuki J, Takaku A. Cerebrovascular 'moyamoya' disease. Disease showing abnormal net-like vessels in base of brain. Arch Neurol. 1969;20(3):288-299."
+  }
+ ],
+ "licensing": {
+  "status": "Published staging with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_stg",
+   "label": "Angiographic stage",
+   "inputs": [
+    "stg"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

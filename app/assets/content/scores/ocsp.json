@@ -1,0 +1,218 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "bamford",
+  "oxfordshire",
+  "ocsp",
+  "taci",
+  "paci",
+  "laci",
+  "poci",
+  "tacs",
+  "pacs",
+  "lacs",
+  "pocs"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Calling a syndrome TACI without all three components.",
+  "Using '-I' terminology before imaging."
+ ],
+ "relatedScores": [
+  {
+   "id": "toast",
+   "relation": "Mechanism"
+  },
+  {
+   "id": "nihss",
+   "relation": "Deficit severity"
+  }
+ ],
+ "id": "ocsp",
+ "name": "Oxfordshire Community Stroke Project Classification (Bamford)",
+ "abbreviation": "Oxfordshire (OCSP)",
+ "category": "stroke",
+ "subcategory": "Stroke syndrome",
+ "specialties": [
+  "Stroke",
+  "Neurology"
+ ],
+ "version": {
+  "label": "OCSP / Bamford classification (Bamford et al. 1991)",
+  "detail": "Four clinical syndromes. '-I' (infarct) is used when imaging confirms infarction; '-S' (syndrome) before imaging."
+ },
+ "purpose": "Classifies acute stroke by bedside clinical syndrome, which relates to lesion size, site and prognosis.",
+ "intendedPopulation": "Patients with acute stroke, classified from the clinical examination.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Clinical stroke syndrome",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "syn",
+   "type": "single",
+   "label": "Clinical syndrome",
+   "short": "Syndrome",
+   "options": [
+    {
+     "value": "1",
+     "label": "Total anterior circulation infarct",
+     "points": 1,
+     "code": "TACI",
+     "detail": "All three: new higher cerebral dysfunction (e.g. dysphasia, neglect); homonymous visual field defect; ipsilateral motor and/or sensory deficit of at least two of face, arm and leg."
+    },
+    {
+     "value": "2",
+     "label": "Partial anterior circulation infarct",
+     "points": 2,
+     "code": "PACI",
+     "detail": "Two of the three TACI components, or isolated higher cerebral dysfunction, or a motor/sensory deficit more restricted than a lacunar syndrome (e.g. one limb, or face and hand)."
+    },
+    {
+     "value": "3",
+     "label": "Lacunar infarct",
+     "points": 3,
+     "code": "LACI",
+     "detail": "Pure motor stroke, pure sensory stroke, sensorimotor stroke or ataxic hemiparesis, without higher cerebral dysfunction or visual field defect."
+    },
+    {
+     "value": "4",
+     "label": "Posterior circulation infarct",
+     "points": 4,
+     "code": "POCI",
+     "detail": "Ipsilateral cranial nerve palsy with contralateral motor/sensory deficit, bilateral motor/sensory deficit, conjugate eye movement disorder, cerebellar dysfunction without ipsilateral long-tract signs, or isolated homonymous visual field defect."
+    }
+   ],
+   "help": "If the patient is drowsy or cannot be tested, higher cerebral dysfunction and field defect are often presumed present for TACI."
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "syn",
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "display": "{syn_code}",
+  "share": "OCSP {syn_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Total anterior circulation infarct",
+   "summary": "Total anterior circulation infarct (clinical syndrome).",
+   "range": "TACI"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Partial anterior circulation infarct",
+   "summary": "Partial anterior circulation infarct (clinical syndrome).",
+   "range": "PACI"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Lacunar infarct",
+   "summary": "Lacunar infarct (clinical syndrome).",
+   "range": "LACI"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Posterior circulation infarct",
+   "summary": "Posterior circulation infarct (clinical syndrome).",
+   "range": "POCI"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A purely clinical classification that predicts lesion site, size and outcome.",
+   "importance": "major"
+  },
+  {
+   "text": "Quick to apply at the bedside; frequently asked in examinations."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "syn == 1",
+   "text": "TACI carries the poorest prognosis of the four syndromes in the original cohort."
+  },
+  {
+   "when": "syn == 3",
+   "text": "Lacunar syndromes do not always correspond to lacunar infarcts on imaging."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Clinical syndrome only; imaging may show a different lesion.",
+   "importance": "major"
+  },
+  "Assessment is harder in drowsy or aphasic patients.",
+  "Does not give stroke mechanism (see TOAST)."
+ ],
+ "confounders": [
+  {
+   "factor": "Reduced consciousness",
+   "effect": "Limits testing of cortical function and fields."
+  },
+  {
+   "factor": "Pre-existing deficits",
+   "effect": "Can be mistaken for new features."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "The cause of the stroke.",
+  "Haemorrhage versus infarction without imaging.",
+  "Treatment eligibility."
+ ],
+ "guideSections": {
+  "what": "Four clinical stroke syndromes: TACI, PACI, LACI and POCI.",
+  "whenToUse": "Bedside description of acute stroke; communication and prognosis.",
+  "howToPerform": "Examine for higher cerebral dysfunction, homonymous field defect, the distribution of motor and sensory deficit, and brainstem or cerebellar signs. Choose the syndrome that fits.",
+  "clinicalContext": "A clinical classification, used alongside imaging and TOAST."
+ },
+ "sources": [
+  {
+   "citation": "Bamford J, Sandercock P, Dennis M, Burn J, Warlow C. Classification and natural history of clinically identifiable subtypes of cerebral infarction. Lancet. 1991;337(8756):1521-1526."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_syn",
+   "label": "Clinical syndrome",
+   "inputs": [
+    "syn"
+   ]
+  }
+ ],
+ "itemType": "classification"
+}

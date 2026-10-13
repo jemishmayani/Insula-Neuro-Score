@@ -1,0 +1,219 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "lansky",
+  "play performance",
+  "paediatric performance status",
+  "pediatric performance status"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using it in adults (use KPS)."
+ ],
+ "relatedScores": [
+  {
+   "id": "kps",
+   "relation": "Adult equivalent"
+  }
+ ],
+ "id": "lansky",
+ "name": "Lansky Play-Performance Scale",
+ "abbreviation": "Lansky",
+ "category": "oncology",
+ "subcategory": "Performance status",
+ "specialties": [
+  "Neuro-oncology",
+  "Paediatric Oncology",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "Lansky et al. (1987), 0–100 in steps of 10",
+  "detail": "Parent-rated play-performance for children; KPS is used from about age 16."
+ },
+ "purpose": "Describes functional performance in children with cancer.",
+ "intendedPopulation": "Children (about 1–16 years), commonly in paediatric neuro-oncology.",
+ "resultPresentation": {
+  "type": "functional-status",
+  "typeLabel": "Performance status",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "lv",
+   "type": "single",
+   "label": "Play-performance level",
+   "short": "Lansky",
+   "options": [
+    {
+     "value": "100",
+     "label": "100: Fully active, normal",
+     "points": 100,
+     "code": "100"
+    },
+    {
+     "value": "90",
+     "label": "90: Minor restrictions in strenuous physical activity",
+     "points": 90,
+     "code": "90"
+    },
+    {
+     "value": "80",
+     "label": "80: Active, but tires more quickly",
+     "points": 80,
+     "code": "80"
+    },
+    {
+     "value": "70",
+     "label": "70: Greater restriction of play and less time spent in play",
+     "points": 70,
+     "code": "70"
+    },
+    {
+     "value": "60",
+     "label": "60: Up and around, but active play minimal; keeps busy with quieter activities",
+     "points": 60,
+     "code": "60"
+    },
+    {
+     "value": "50",
+     "label": "50: Lies around much of the day; no active play; takes part in quiet play",
+     "points": 50,
+     "code": "50"
+    },
+    {
+     "value": "40",
+     "label": "40: Mainly in bed; participates in quiet activities",
+     "points": 40,
+     "code": "40"
+    },
+    {
+     "value": "30",
+     "label": "30: Bedbound; needs assistance even for quiet play",
+     "points": 30,
+     "code": "30"
+    },
+    {
+     "value": "20",
+     "label": "20: Sleeps often; play limited to very passive activities",
+     "points": 20,
+     "code": "20"
+    },
+    {
+     "value": "10",
+     "label": "10: Does not play; does not get out of bed",
+     "points": 10,
+     "code": "10"
+    },
+    {
+     "value": "0",
+     "label": "0: Unresponsive",
+     "points": 0,
+     "code": "0"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "lv",
+  "range": {
+   "min": 0,
+   "max": 100
+  },
+  "display": "Lansky {total}",
+  "share": "Lansky {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 100",
+   "state": "full"
+  },
+  {
+   "when": "total >= 50",
+   "state": "mid"
+  },
+  {
+   "state": "low"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "full",
+   "tone": "favorable",
+   "label": "Fully active",
+   "summary": "Fully active, normal play at this assessment.",
+   "range": "100",
+   "detail": "Describes play and activity, not the underlying disease."
+  },
+  {
+   "id": "mid",
+   "tone": "informational",
+   "label": "Lansky {total}",
+   "summary": "Up and about with reduced play.",
+   "range": "50–90"
+  },
+  {
+   "id": "low",
+   "tone": "informational",
+   "label": "Lansky {total}",
+   "summary": "Mainly in bed or unresponsive.",
+   "range": "0–40"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "The paediatric counterpart of the Karnofsky score, used for trial eligibility and monitoring.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Usually rated by a parent; record who rated it."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Parent-reported; varies with the child's mood and setting.",
+   "importance": "major"
+  },
+  "Validated in childhood cancer; less established in other conditions."
+ ],
+ "confounders": [
+  {
+   "factor": "Developmental stage",
+   "effect": "Affects play independent of illness."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Tumour status.",
+  "Cognitive function."
+ ],
+ "guideSections": {
+  "what": "An 11-level play-performance scale from 100 (normal) to 0 (unresponsive).",
+  "whenToUse": "Children with cancer, including brain tumours.",
+  "howToPerform": "Ask the parent about play and activity over the past week; choose the level.",
+  "clinicalContext": "Used alongside clinical and imaging assessment."
+ },
+ "sources": [
+  {
+   "citation": "Lansky SB, List MA, Lansky LL, Ritter-Sterr C, Miller DR. The measurement of performance in childhood cancer patients. Cancer. 1987;60(7):1651-1656."
+  }
+ ],
+ "licensing": {
+  "status": "Published scale with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_lv",
+   "label": "Play-performance level",
+   "inputs": [
+    "lv"
+   ]
+  }
+ ],
+ "itemType": "score"
+}

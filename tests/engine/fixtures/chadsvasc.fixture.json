@@ -1,0 +1,109 @@
+{
+ "scoreId": "chadsvasc",
+ "cases": [
+  {
+   "name": "no factors male",
+   "answers": {
+    "chf": "no",
+    "htn": "no",
+    "age": "lt65",
+    "dm": "no",
+    "stroke": "no",
+    "vasc": "no",
+    "sex": "m"
+   },
+   "expect": {
+    "total": 0,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "female only",
+   "answers": {
+    "chf": "no",
+    "htn": "no",
+    "age": "lt65",
+    "dm": "no",
+    "stroke": "no",
+    "vasc": "no",
+    "sex": "f"
+   },
+   "expect": {
+    "total": 1,
+    "state": "sexonly"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1 (sex)",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "one non-sex factor",
+   "answers": {
+    "chf": "no",
+    "htn": "yes",
+    "age": "lt65",
+    "dm": "no",
+    "stroke": "no",
+    "vasc": "no",
+    "sex": "m"
+   },
+   "expect": {
+    "total": 1,
+    "state": "one"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "75+ female with stroke and HTN",
+   "answers": {
+    "chf": "no",
+    "htn": "yes",
+    "age": "ge75",
+    "dm": "no",
+    "stroke": "yes",
+    "vasc": "no",
+    "sex": "f"
+   },
+   "expect": {
+    "total": 6,
+    "state": "two"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+2+2+1 = 6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "maximum",
+   "answers": {
+    "chf": "yes",
+    "htn": "yes",
+    "age": "ge75",
+    "dm": "yes",
+    "stroke": "yes",
+    "vasc": "yes",
+    "sex": "f"
+   },
+   "expect": {
+    "total": 9
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+1+2+1+2+1+1 = 9",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

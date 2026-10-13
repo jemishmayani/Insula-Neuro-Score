@@ -1,0 +1,178 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "odontoid fracture",
+  "dens fracture",
+  "anderson dalonzo",
+  "c2 fracture"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mistaking os odontoideum for an acute fracture."
+ ],
+ "relatedScores": [
+  {
+   "id": "levineedwards",
+   "relation": "C2 pars fractures"
+  },
+  {
+   "id": "slic",
+   "relation": "Subaxial injuries"
+  }
+ ],
+ "id": "andersondalonzo",
+ "name": "Anderson and D'Alonzo Classification of Odontoid Fractures",
+ "abbreviation": "Anderson-D'Alonzo",
+ "category": "spine",
+ "subcategory": "Spine trauma",
+ "specialties": [
+  "Spine Surgery",
+  "Neurosurgery",
+  "Trauma"
+ ],
+ "version": {
+  "label": "Anderson and D'Alonzo (1974), types I–III",
+  "detail": "Grauer's subdivision of type II (IIA–IIC) is a later modification and is not combined."
+ },
+ "purpose": "Classifies odontoid (dens) fractures by level.",
+ "intendedPopulation": "Patients with odontoid fractures on CT.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Fracture type",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "t",
+   "type": "single",
+   "label": "Fracture level",
+   "short": "Type",
+   "options": [
+    {
+     "value": "1",
+     "label": "Odontoid tip",
+     "points": 1,
+     "code": "I",
+     "detail": "Oblique avulsion fracture through the tip of the dens."
+    },
+    {
+     "value": "2",
+     "label": "Base of the dens",
+     "points": 2,
+     "code": "II",
+     "detail": "Fracture at the junction of the dens and the body of C2."
+    },
+    {
+     "value": "3",
+     "label": "Body of C2",
+     "points": 3,
+     "code": "III",
+     "detail": "Fracture extending into the body of C2."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "t",
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "display": "Type {t_code}",
+  "share": "Odontoid fracture type {t_code} (Anderson-D'Alonzo)"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Type I: odontoid tip",
+   "summary": "Oblique avulsion fracture through the tip of the dens.",
+   "range": "I"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Type II: base of the dens",
+   "summary": "Fracture at the junction of the dens and the body of C2.",
+   "range": "II"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Type III: body of c2",
+   "summary": "Fracture extending into the body of C2.",
+   "range": "III"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Type II fractures have the highest non-union risk, especially with displacement, comminution or older age.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "t == 2",
+   "text": "Displacement, angulation, comminution and age influence healing; describe them with the type."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Describes level only; displacement and stability are described separately.",
+   "importance": "major"
+  },
+  "Distinguishing low type II from shallow type III fractures varies between readers."
+ ],
+ "confounders": [
+  {
+   "factor": "Os odontoideum",
+   "effect": "Can mimic a type II fracture."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Stability or the need for fixation on its own."
+ ],
+ "guideSections": {
+  "what": "Three types of odontoid fracture by level.",
+  "whenToUse": "C2 dens fractures on CT.",
+  "howToPerform": "Identify the fracture level on sagittal and coronal CT.",
+  "clinicalContext": "Used with displacement, age and comorbidity in management planning."
+ },
+ "sources": [
+  {
+   "citation": "Anderson LD, D'Alonzo RT. Fractures of the odontoid process of the axis. J Bone Joint Surg Am. 1974;56(8):1663-1674."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_t",
+   "label": "Fracture level",
+   "inputs": [
+    "t"
+   ]
+  }
+ ],
+ "itemType": "classification"
+}

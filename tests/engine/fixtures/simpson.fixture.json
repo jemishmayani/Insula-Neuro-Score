@@ -1,0 +1,33 @@
+{
+ "scoreId": "simpson",
+ "cases": [
+  {
+   "name": "grade I",
+   "answers": {
+    "g": "1"
+   },
+   "expect": {
+    "display": "Simpson I"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade IV",
+   "answers": {
+    "g": "4"
+   },
+   "expect": {
+    "display": "Simpson IV"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IV",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

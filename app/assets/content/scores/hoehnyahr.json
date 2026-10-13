@@ -1,0 +1,210 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "hoehn",
+  "yahr",
+  "hoehn and yahr",
+  "parkinson",
+  "parkinsons",
+  "pd stage"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using half-stages from the modified version."
+ ],
+ "relatedScores": [
+  {
+   "id": "mrs",
+   "relation": "Global disability"
+  }
+ ],
+ "id": "hoehnyahr",
+ "name": "Hoehn and Yahr Staging of Parkinson's Disease",
+ "abbreviation": "Hoehn & Yahr",
+ "category": "neurology",
+ "subcategory": "Movement disorders",
+ "specialties": [
+  "Neurology",
+  "Movement Disorders",
+  "Functional Neurosurgery"
+ ],
+ "version": {
+  "label": "Original Hoehn and Yahr (1967), stages 1–5",
+  "detail": "The 'modified' version with stages 1.5 and 2.5 is not combined; the MDS Task Force (2004) recommends the original scale."
+ },
+ "purpose": "Describes the stage of motor disability in Parkinson's disease.",
+ "intendedPopulation": "Patients with Parkinson's disease.",
+ "resultPresentation": {
+  "type": "disability",
+  "typeLabel": "Disease stage",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "stg",
+   "type": "single",
+   "label": "Stage",
+   "short": "Stage",
+   "options": [
+    {
+     "value": "1",
+     "label": "Stage 1: Unilateral involvement only, usually with minimal or no functional disability",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Stage 2: Bilateral or midline involvement without impairment of balance",
+     "points": 2,
+     "code": "2"
+    },
+    {
+     "value": "3",
+     "label": "Stage 3: Bilateral disease: mild to moderate disability with impaired postural reflexes; physically independent",
+     "points": 3,
+     "code": "3"
+    },
+    {
+     "value": "4",
+     "label": "Stage 4: Severely disabling disease; still able to walk or stand unassisted",
+     "points": 4,
+     "code": "4"
+    },
+    {
+     "value": "5",
+     "label": "Stage 5: Confinement to bed or wheelchair unless aided",
+     "points": 5,
+     "code": "5"
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "stg",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "H&Y {stg_code}",
+  "share": "Hoehn & Yahr stage {stg_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Stage 1",
+   "summary": "Unilateral involvement only, usually with minimal or no functional disability.",
+   "range": "1"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Stage 2",
+   "summary": "Bilateral or midline involvement without impairment of balance.",
+   "range": "2"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Stage 3",
+   "summary": "Bilateral disease: mild to moderate disability with impaired postural reflexes; physically independent.",
+   "range": "3"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Stage 4",
+   "summary": "Severely disabling disease; still able to walk or stand unassisted.",
+   "range": "4"
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Stage 5",
+   "summary": "Confinement to bed or wheelchair unless aided.",
+   "range": "5"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A simple global staging used in clinical description and trial eligibility (e.g. for deep brain stimulation selection).",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Record whether the patient was assessed 'on' or 'off' medication."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Weighted to motor and postural impairment; non-motor symptoms are not captured.",
+   "importance": "major"
+  },
+  "Coarse; insensitive to change."
+ ],
+ "confounders": [
+  {
+   "factor": "Medication state",
+   "effect": "On/off state changes the stage."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Non-motor symptoms.",
+  "Response to levodopa."
+ ],
+ "guideSections": {
+  "what": "Five stages from unilateral disease to wheelchair or bed bound.",
+  "whenToUse": "Describing Parkinson's disease severity.",
+  "howToPerform": "Assess laterality, balance (pull test) and independence; choose the stage.",
+  "clinicalContext": "Used with MDS-UPDRS and functional assessment."
+ },
+ "sources": [
+  {
+   "citation": "Hoehn MM, Yahr MD. Parkinsonism: onset, progression and mortality. Neurology. 1967;17(5):427-442."
+  },
+  {
+   "citation": "Goetz CG, Poewe W, Rascol O, et al. Movement Disorder Society Task Force report on the Hoehn and Yahr staging scale: status and recommendations. Mov Disord. 2004;19(9):1020-1028."
+  }
+ ],
+ "licensing": {
+  "status": "Published staging with attribution",
+  "note": "No reproduction restrictions identified. MDS-UPDRS (licensed) is not included."
+ },
+ "components": [
+  {
+   "id": "c_stg",
+   "label": "Stage",
+   "inputs": [
+    "stg"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

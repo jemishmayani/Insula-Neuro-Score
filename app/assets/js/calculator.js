@@ -67,7 +67,7 @@
       help + html + '<p class="field-error" id="' + fieldId(d) + '-err" role="alert"></p></fieldset>';
   }
   function rangeText(d, unitLabel) { return d.min != null && d.max != null ? "(" + d.min + "–" + d.max + (unitLabel ? " " + unitLabel : "") + ")" : ""; }
-  var TYPE_LABEL = { score: "Score", grade: "Grade", classification: "Classification", measurement: "Measurement" };
+  var TYPE_LABEL = { score: "Score", grade: "Grade", classification: "Classification", measurement: "Measurement", rule: "Decision rule" };
   /** Range as the clinician reads it: grades and classes by their codes (MAS 0–4, Cognard I–V), not internal ordinals. */
   function rangeLabel(score) {
     var cm = score.calculationMethod;
@@ -112,7 +112,7 @@
     var meter = r.bands ? UI.ScaleMeter({ min: r.range.min, max: r.range.max, value: r.status === "complete" ? r.total : null, bands: r.bands, label: score.abbreviation }) : "";
     var h = UI.ResultCard({ tone: tone, label: stateLabel(r), value: r.display, typeLabel: pres.typeLabel,
       formula: r.formula, formulaJoin: r.formula && r.status === "complete" && r.formulaEquals !== false ? "=" : null,
-      meta: UI.TONE_LABEL[tone] + " · " + score.abbreviation + " range " + rangeLabel(score), summary: r.state.summary, meter: meter });
+      meta: UI.TONE_LABEL[tone] + (score.itemType === "rule" ? "" : " · " + score.abbreviation + " range " + rangeLabel(score)), summary: r.state.summary, meter: meter });
     if (r.warnings.length) h += '<div class="result-block" data-block="warnings">' + r.warnings.map(function (w) { return UI.WarningBanner({ title: "Check", message: w.message }); }).join("") + "</div>";
     // Breakdown
     h += '<div class="result-block" data-block="breakdown"><h3 class="result-h">Breakdown</h3><table class="breakdown result-breakdown"><colgroup><col class="c-item"><col class="c-value"><col class="c-pts"></colgroup><tbody>' + r.breakdown.map(function (c) {
@@ -286,7 +286,7 @@
 
   /* ---------------- guide (renders model data only) ---------------- */
   var SELECT_TEXT = { grade: "The result is the single grade selected.", classification: "The result is the single category selected." };
-  var COMP_HEAD = { score: "Scoring components", grade: "Grade definitions", classification: "Category definitions", measurement: "Inputs" };
+  var COMP_HEAD = { score: "Scoring components", grade: "Grade definitions", classification: "Category definitions", measurement: "Inputs", rule: "Rule criteria" };
   var METHOD_TEXT = { sum: "The result is the sum of the item points.", select: "The result is the single level selected.", expression: "The result is derived from the item points using the published formula." };
   var NT_TEXT = { block: "If any item is not testable, no total is reported; the testable components are shown instead.",
     exclude: "Items marked untestable contribute no points and are flagged; the total may underestimate the true value." };
@@ -314,9 +314,9 @@
 
     /* 1 Overview: highlight box, at-a-glance table, key warnings (limitations surfaced at the top) */
     var overview = infoBox(null, "<p>" + esc(g.what) + "</p>", "primary") +
-      factTable([["Type", esc(TYPE_LABEL[score.itemType] || "Score")], ["Result type", pres ? esc(pres.typeLabel) : ""], ["Range", esc(rangeLabel(score))],
+      factTable([["Type", esc(TYPE_LABEL[score.itemType] || "Score")], ["Result type", pres ? esc(pres.typeLabel) : ""]].concat(score.itemType === "rule" ? [] : [["Range", esc(rangeLabel(score))]]).concat([
                  ["Components", (function () { var n = score.inputDefinitions.filter(function (d) { return !d.detail; }).length; return n + (score.itemType === "score" ? " scored input" : " input") + (n === 1 ? "" : "s"); })()],
-                 ["Version", esc(score.version.label)], ["Category", esc(score.subcategory)], ["Review", /pending/i.test(score.reviewStatus) ? "Pending independent clinician review" : esc(score.reviewStatus)]]) +
+                 ["Version", esc(score.version.label)], ["Category", esc(score.subcategory)], ["Review", /pending/i.test(score.reviewStatus) ? "Pending independent clinician review" : esc(score.reviewStatus)]])) +
       '<div class="guide-warnings" data-block="key-warnings"><h4 class="sub-h">' + UI.icon("warning") + " Key warnings and limitations</h4>" + (notice || "") +
       (majors.length ? '<ul class="insight-list">' + majors.map(function (i) { return UI.InsightCard({ type: "limitation", item: { text: i.text, importance: "major" } }); }).join("") + "</ul>" : "") +
       '<a class="g-jump" href="#" data-jump="g-limitations">See all ' + allLims + " limitation" + (allLims === 1 ? "" : "s") + " →</a></div>";
@@ -357,7 +357,7 @@
     }).join("") +
       (detailDefs.length ? '<p class="lede">Optional details for your note (not scored): ' + esc(detailDefs.map(function (d) { return d.label.toLowerCase(); }).join(", ")) + ".</p>" : "");
     var calculation = (steps.length ? '<ol class="g-steps">' + steps.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ol>" : "") +
-      infoBox("Method", "<p>" + esc(cm.type === "select" ? (SELECT_TEXT[score.itemType] || METHOD_TEXT.select) : METHOD_TEXT[cm.type]) + " Range: " + esc(rangeLabel(score)) + "." + (cm.formula ? " Components are reported individually alongside the result." : "") + "</p>" +
+      infoBox("Method", "<p>" + esc(score.itemType === "rule" ? "The result follows the rule's steps from the criteria entered." : cm.type === "select" ? (SELECT_TEXT[score.itemType] || METHOD_TEXT.select) : METHOD_TEXT[cm.type]) + (score.itemType === "rule" ? "" : " Range: " + esc(rangeLabel(score)) + ".") + (cm.formula ? " Components are reported individually alongside the result." : "") + "</p>" +
         (score.inputDefinitions.some(function (d) { return d.notTestable; }) ? "<p>" + esc(NT_TEXT[cm.notTestablePolicy || "block"]) + "</p>" : ""), "info") +
       '<h4 class="sub-h">' + esc(cm.type === "select" ? (COMP_HEAD[score.itemType] || "Scoring components") : "Scoring components") + "</h4>" + comps;
 

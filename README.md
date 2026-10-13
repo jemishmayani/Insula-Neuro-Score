@@ -4,17 +4,17 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: v0.11.0. **Not clinically ready**
+## Status: v0.12.0. **Not clinically ready**
 
-50 scores and grades are implemented. Each was checked against its cited sources before implementation and is pending independent clinician review. Unresolved issues are listed in the [medical content audit](docs/MEDICAL-CONTENT-AUDIT.md).
+87 scores and grades are implemented. Each was checked against its cited sources before implementation and is pending independent clinician review. Unresolved issues are listed in the [medical content audit](docs/MEDICAL-CONTENT-AUDIT.md).
 
 - **What changed:** [CHANGELOG.md](CHANGELOG.md)
-- **Latest release notes:** [docs/releases/v0.11.0.md](docs/releases/v0.11.0.md)
-- **Download:** the APK is attached to each GitHub release. v0.11.0 installs over v0.10.0; uninstall versions before 0.10.0 first (new signing key from 0.10.0).
+- **Latest release notes:** [docs/releases/v0.12.0.md](docs/releases/v0.12.0.md)
+- **Download:** the APK is attached to each GitHub release. Releases from v0.10.0 onwards install as updates; uninstall versions before 0.10.0 first (new signing key from 0.10.0).
 
 ## Scores & Grades
 
-Every item has a type: **Score** (points or a model give a total), **Grade** (one ordinal level, e.g. MRC 0–5, House-Brackmann), **Classification** (a category, e.g. Fisher, Cognard, Engel) or **Measurement** (e.g. Modified Tardieu angles). Grades and classifications are findings or categories, not prognostic scores.
+Every item has a type: **Score** (points or a model give a total), **Grade** (one ordinal level, e.g. MRC 0–5, House-Brackmann), **Classification** (a category, e.g. Fisher, Cognard, Engel), **Measurement** (e.g. ICH volume, CPP, Modified Tardieu angles) or **Decision rule** (Canadian CT Head, NEXUS, Canadian C-spine). Grades and classifications are findings or categories, not prognostic scores.
 
 **Quick groups** (on Home by default): **Quick Clinical Examination** (GCS, MRC power, House-Brackmann, reflex grade, Modified Ashworth) · **Neurotrauma** (GCS, GCS-P, Marshall, Rotterdam, ISS) · **Vascular** (Hunt & Hess, WFNS, Modified Fisher, Spetzler-Martin, Borden, Cognard).
 
@@ -22,19 +22,20 @@ Every item has a type: **Score** (points or a model give a total), **Grade** (on
 | Group | Implemented |
 |---|---|
 | Consciousness | GCS, GCS-P, GOS, GOSE |
-| Stroke | NIHSS, ASPECTS, pc-ASPECTS, ABCD², RACE, LAMS, FAST-ED |
-| Intracerebral haemorrhage | ICH Score, FUNC, Graeb |
+| Stroke | NIHSS, RACE, LAMS, FAST-ED · TOAST, Oxfordshire · ASPECTS, pc-ASPECTS, Fazekas · mTICI, ASITN/SIR collaterals · ABCD², CHA₂DS₂-VASc, HAS-BLED |
+| Intracerebral haemorrhage | ICH Score, FUNC, Graeb, ICH volume (ABC/2), BAT score |
 | Subarachnoid haemorrhage | Hunt & Hess, WFNS, Fisher, Modified Fisher |
-| Traumatic brain injury | Marshall, Rotterdam, RTS, ISS, TRISS, Markwalder |
-| Spine and spinal cord | Frankel, SINS, Nurick, mJOA |
-| Neuro-oncology | KPS, ECOG, Tomita, Revised Tokuhashi, GPA |
+| Traumatic brain injury | Marshall, Rotterdam, RTS, ISS, TRISS, Canadian CT Head Rule, Markwalder |
+| Spine and spinal cord | NEXUS, Canadian C-spine Rule, SLIC, TLICS, Anderson-D'Alonzo, Levine-Edwards · Frankel, Nurick, mJOA · Pfirrmann, Modic, Meyerding, Schizas · SINS · Chiari |
+| Neuro-oncology | Koos, Simpson, Knosp, Hardy · KPS, ECOG, Lansky · Revised Tokuhashi, Tomita · GPA |
 | Functional and disability | mRS |
-| Neurocritical care | SOFA (original) |
-| **Neurosurgical Examination & Grades** | **Motor:** MRC power, MRC sum score · **Reflexes:** reflex grade (NINDS), clonus, plantar response · **Tone:** Modified Ashworth, Modified Tardieu · **Facial nerve:** House-Brackmann · **Hearing/CPA:** Gardner-Robertson · **Vascular:** Spetzler-Martin, Lawton-Young, Borden, Cognard · **Neurotrauma:** Markwalder · **Functional/neuro-oncology:** KPS, ECOG · **Epilepsy surgery:** Engel, ILAE outcome |
+| Neurocritical care | SOFA (original), STESS, CPP, calculated osmolality |
+| General neurology | Hoehn & Yahr, GBS disability scale, EGOS, MGFA |
+| **Neurosurgical Examination & Grades** | **Motor:** MRC power, MRC sum score · **Reflexes:** reflex grade, clonus, plantar · **Tone:** Modified Ashworth, Modified Tardieu · **Facial nerve:** House-Brackmann · **Hearing/CPA:** Gardner-Robertson, Koos · **Vascular:** Spetzler-Martin, Lawton-Young, Borden, Cognard, Suzuki, Raymond-Roy · **Neurotrauma:** Markwalder · **Functional:** KPS, ECOG · **Epilepsy surgery:** Engel, ILAE · **Peripheral nerve:** Seddon, Sunderland |
 
 Only implemented scores appear in the app.
 
-**Withheld** (recorded in `catalog.json` with the reason; no JSON ships, no links, not shown. RASS's verified content is kept only in `content_src/withheld.py`, which is never built): FOUR, RASS, ODI and ASIA/AIS (licensing); JOA and DS-GPA (version); Modified Graeb, Tokuhashi (1990) and SOFA-2 (verification); Sunnybrook (verification and licensing).
+**Withheld** (recorded in `catalog.json` with the reason; no JSON ships, no links, not shown): licensing (FOUR, RASS, ODI, ASIA/AIS, AO Spine, EDSS, ALSFRS-R, CAM-ICU), version (JOA, DS-GPA, Paediatric GCS, RANO), verification (Modified Graeb, Tokuhashi 1990, SOFA-2, Sunnybrook, EMSE), scope (McDonald 2017, WHO CNS5, brain death checklist). RASS's verified content is kept only in `content_src/withheld.py`, which is never built.
 
 **Planned** (IDs reserved, not implemented): Helsinki CT, Stockholm CT, IMPACT, CRASH, SCIM III, WISCI II, RPA, Evans Index, FOHR.
 
@@ -72,7 +73,7 @@ tests/engine/             engine unit tests + per-score fixtures (node --test)
 tests/calculator.test.py  calculator UI tests (Playwright)
 tests/home.test.py        personalization + performance tests (Playwright)
 tests/shell.test.py       shell regression tests (Playwright)
-content_src/              score content source (library.py, library2.py, library3.py; itemtypes.py types + quick groups; related.py; withheld.py never built)
+content_src/              score content source (library.py … library6.py; itemtypes.py types + quick groups; related.py; withheld.py never built)
 tools/                    calculation, content and medical audits; evidence ledger
 brand/                    app icon sources (SVG). Current logo: Insula_Neuro_Score_Full_Better.svg
 docs/                     architecture and phase reports

@@ -1,0 +1,244 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "egos",
+  "erasmus",
+  "gbs outcome",
+  "guillain-barre prognosis"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using the admission disability grade instead of the 2-week grade.",
+  "Confusing EGOS with mEGOS."
+ ],
+ "relatedScores": [
+  {
+   "id": "gbsds",
+   "relation": "Disability grade used"
+  },
+  {
+   "id": "mrcss",
+   "relation": "Global strength"
+  }
+ ],
+ "id": "egos",
+ "name": "Erasmus GBS Outcome Score",
+ "abbreviation": "EGOS",
+ "category": "neurology",
+ "subcategory": "Neuromuscular",
+ "specialties": [
+  "Neurology",
+  "Neurocritical Care"
+ ],
+ "version": {
+  "label": "EGOS (van Koningsveld et al. 2007)",
+  "detail": "Age (>60 = 1, 41–60 = 0.5, ≤40 = 0) + preceding diarrhoea within 4 weeks (1) + GBS disability grade at 2 weeks after admission (0–1 = 1, 2 = 2, 3 = 3, 4 = 4, 5 = 5). Total 1–7. The modified EGOS (mEGOS) uses MRC sum score and is a different score."
+ },
+ "purpose": "Estimates the probability of being unable to walk independently at 6 months in Guillain-Barré syndrome.",
+ "intendedPopulation": "Patients with GBS, scored 2 weeks after hospital admission.",
+ "resultPresentation": {
+  "type": "prognostic-category",
+  "typeLabel": "Prognostic score",
+  "meter": true
+ },
+ "inputDefinitions": [
+  {
+   "id": "age",
+   "type": "single",
+   "label": "Age at onset",
+   "short": "Age",
+   "options": [
+    {
+     "value": "le40",
+     "label": "40 years or younger",
+     "points": 0
+    },
+    {
+     "value": "41to60",
+     "label": "41–60 years",
+     "points": 0.5,
+     "code": "0.5"
+    },
+    {
+     "value": "gt60",
+     "label": "Over 60 years",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "diar",
+   "type": "single",
+   "label": "Diarrhoea in the 4 weeks before onset",
+   "short": "Diarrhoea",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "gbs",
+   "type": "single",
+   "label": "GBS disability grade at 2 weeks after admission",
+   "short": "GBS grade",
+   "options": [
+    {
+     "value": "0",
+     "label": "Grade 0–1",
+     "points": 1,
+     "code": "1"
+    },
+    {
+     "value": "2",
+     "label": "Grade 2",
+     "points": 2
+    },
+    {
+     "value": "3",
+     "label": "Grade 3",
+     "points": 3
+    },
+    {
+     "value": "4",
+     "label": "Grade 4",
+     "points": 4
+    },
+    {
+     "value": "5",
+     "label": "Grade 5",
+     "points": 5
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "sum",
+  "range": {
+   "min": 1,
+   "max": 7
+  },
+  "display": "{total}",
+  "share": "EGOS {total}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total <= 3",
+   "state": "low"
+  },
+  {
+   "when": "total <= 5",
+   "state": "mid"
+  },
+  {
+   "state": "high"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low",
+   "tone": "low",
+   "label": "EGOS {total}",
+   "summary": "Lower scores: lower probability of being unable to walk at 6 months.",
+   "range": "1–3",
+   "min": 1,
+   "max": 3
+  },
+  {
+   "id": "mid",
+   "tone": "moderate",
+   "label": "EGOS {total}",
+   "summary": "Intermediate probability of being unable to walk independently at 6 months.",
+   "range": "3.5–5",
+   "min": 3.5,
+   "max": 5
+  },
+  {
+   "id": "high",
+   "tone": "high",
+   "label": "EGOS {total}",
+   "summary": "Higher scores: higher probability of being unable to walk independently at 6 months.",
+   "range": "5.5–7",
+   "detail": "A group-level estimate; recovery continues beyond 6 months in many patients. Integrate with the clinical course.",
+   "min": 5.5,
+   "max": 7
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Helps counsel patients and families and stratify patients for trials.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Score at 2 weeks after admission, when the disability grade is known."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Derived in Dutch cohorts; calibration varies between populations.",
+   "importance": "major"
+  },
+  "Group-level prediction; not for individual treatment decisions."
+ ],
+ "confounders": [
+  {
+   "factor": "Timing",
+   "effect": "Scoring before 2 weeks uses the wrong disability grade."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Need for ventilation (see EGRIS).",
+  "Outcome beyond 6 months."
+ ],
+ "guideSections": {
+  "what": "A 1–7 score from age, preceding diarrhoea and disability at 2 weeks.",
+  "whenToUse": "GBS at 2 weeks after admission.",
+  "howToPerform": "Score age band, diarrhoea history and the GBS disability grade; sum.",
+  "clinicalContext": "A prognostic aid for counselling."
+ },
+ "sources": [
+  {
+   "citation": "van Koningsveld R, Steyerberg EW, Hughes RAC, Swan AV, van Doorn PA, Jacobs BC. A clinical prognostic scoring system for Guillain-Barré syndrome. Lancet Neurol. 2007;6(7):589-594."
+  }
+ ],
+ "licensing": {
+  "status": "Published score with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_age",
+   "label": "Age at onset",
+   "inputs": [
+    "age"
+   ]
+  },
+  {
+   "id": "c_diar",
+   "label": "Diarrhoea in the 4 weeks before onset",
+   "inputs": [
+    "diar"
+   ]
+  },
+  {
+   "id": "c_gbs",
+   "label": "GBS disability grade at 2 weeks after admission",
+   "inputs": [
+    "gbs"
+   ]
+  }
+ ],
+ "itemType": "score"
+}

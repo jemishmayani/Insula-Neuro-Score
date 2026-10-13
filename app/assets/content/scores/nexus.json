@@ -1,0 +1,235 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "nexus",
+  "c-spine",
+  "cervical spine imaging",
+  "neck injury"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Scoring paraspinal tenderness as midline tenderness."
+ ],
+ "relatedScores": [
+  {
+   "id": "ccsr",
+   "relation": "Alternative C-spine rule"
+  },
+  {
+   "id": "slic",
+   "relation": "Subaxial injury classification"
+  }
+ ],
+ "id": "nexus",
+ "name": "NEXUS Low-Risk Criteria (cervical spine)",
+ "abbreviation": "NEXUS",
+ "category": "spine",
+ "subcategory": "Spine trauma imaging rule",
+ "specialties": [
+  "Emergency Medicine",
+  "Trauma",
+  "Spine Surgery",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "NEXUS low-risk criteria (Hoffman et al. 2000)",
+  "detail": "Five criteria; imaging was considered unnecessary only when all five were met. The criteria terms were deliberately left without strict definitions."
+ },
+ "purpose": "Identifies blunt trauma patients at low risk of cervical spine injury.",
+ "intendedPopulation": "Patients with blunt trauma being considered for cervical spine imaging.",
+ "resultPresentation": {
+  "type": "decision-rule",
+  "typeLabel": "Decision rule result",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "t",
+   "type": "single",
+   "label": "Posterior midline cervical spine tenderness",
+   "short": "Midline tenderness",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "f",
+   "type": "single",
+   "label": "Focal neurological deficit",
+   "short": "Focal deficit",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "a",
+   "type": "single",
+   "label": "Altered level of alertness",
+   "short": "Altered alertness",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "i",
+   "type": "single",
+   "label": "Evidence of intoxication",
+   "short": "Intoxication",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  },
+  {
+   "id": "d",
+   "type": "single",
+   "label": "Painful distracting injury",
+   "short": "Distracting injury",
+   "options": [
+    {
+     "value": "no",
+     "label": "Absent",
+     "points": 0
+    },
+    {
+     "value": "yes",
+     "label": "Present",
+     "points": 1
+    }
+   ]
+  }
+ ],
+ "components": [
+  {
+   "id": "crit",
+   "label": "NEXUS criteria (each must be absent)",
+   "inputs": [
+    "t",
+    "f",
+    "a",
+    "i",
+    "d"
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "expression",
+  "expression": "crit > 0 ? 1 : 0",
+  "range": {
+   "min": 0,
+   "max": 1
+  },
+  "display": "{total == 0 ? 'Low risk' : 'Not low risk'}",
+  "share": "NEXUS: {total == 0 ? 'all five low-risk criteria met' : (crit == 1 ? '1 criterion present' : crit + ' criteria present')}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 0",
+   "state": "low"
+  },
+  {
+   "state": "not"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "low",
+   "tone": "low",
+   "label": "All five low-risk criteria met",
+   "summary": "No tenderness, deficit, altered alertness, intoxication or distracting injury.",
+   "detail": "In the derivation study imaging was considered unnecessary; clinical judgement still applies."
+  },
+  {
+   "id": "not",
+   "tone": "moderate",
+   "label": "Not all criteria met",
+   "summary": "One or more NEXUS criteria present: the rule's criteria for imaging are met."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "High sensitivity for clinically significant cervical spine injury in the derivation cohort.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "The Canadian C-spine Rule had higher specificity in a head-to-head comparison; local protocols choose one."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Criteria terms are subjective (e.g. distracting injury), which reduces reliability.",
+   "importance": "major"
+  },
+  "Lower sensitivity reported in older adults in some studies."
+ ],
+ "confounders": [
+  {
+   "factor": "Intoxication",
+   "effect": "Makes examination unreliable."
+  },
+  {
+   "factor": "Communication barriers",
+   "effect": "Limit tenderness and neurological assessment."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Which imaging modality to use.",
+  "Ligamentous injury without bony injury."
+ ],
+ "guideSections": {
+  "what": "Five clinical criteria; when all are absent the patient is low risk for cervical spine injury.",
+  "whenToUse": "Blunt trauma patients considered for cervical spine imaging.",
+  "howToPerform": "Assess each criterion; if any is present the rule's imaging criteria are met.",
+  "clinicalContext": "Supports, but does not replace, clinical judgement."
+ },
+ "sources": [
+  {
+   "citation": "Hoffman JR, Mower WR, Wolfson AB, Todd KH, Zucker MI. Validity of a set of clinical criteria to rule out injury to the cervical spine in patients with blunt trauma. N Engl J Med. 2000;343(2):94-99."
+  }
+ ],
+ "licensing": {
+  "status": "Published decision rule with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "itemType": "rule"
+}

@@ -1,0 +1,34 @@
+{
+ "scoreId": "modic",
+ "cases": [
+  {
+   "name": "type 1",
+   "answers": {
+    "t": "1"
+   },
+   "expect": {
+    "display": "Modic type 1",
+    "insightsContains": "infection"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "type 3",
+   "answers": {
+    "t": "3"
+   },
+   "expect": {
+    "display": "Modic type 3"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

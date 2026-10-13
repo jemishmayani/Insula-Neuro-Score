@@ -1,0 +1,77 @@
+{
+ "scoreId": "stess",
+ "cases": [
+  {
+   "name": "max",
+   "answers": {
+    "loc": "stupor",
+    "type": "ncse",
+    "age": "ge65",
+    "hx": "no"
+   },
+   "expect": {
+    "total": 6,
+    "state": "unfav"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+2+2+1 = 6",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "min",
+   "answers": {
+    "loc": "alert",
+    "type": "focal",
+    "age": "lt65",
+    "hx": "yes"
+   },
+   "expect": {
+    "total": 0,
+    "state": "fav"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "age 65 only",
+   "answers": {
+    "loc": "alert",
+    "type": "focal",
+    "age": "ge65",
+    "hx": "yes"
+   },
+   "expect": {
+    "total": 2,
+    "state": "fav"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "threshold",
+   "answers": {
+    "loc": "stupor",
+    "type": "focal",
+    "age": "ge65",
+    "hx": "yes"
+   },
+   "expect": {
+    "total": 3,
+    "state": "unfav"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

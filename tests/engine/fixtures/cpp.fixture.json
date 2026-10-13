@@ -1,0 +1,54 @@
+{
+ "scoreId": "cpp",
+ "cases": [
+  {
+   "name": "normal",
+   "answers": {
+    "map": "90",
+    "icp": "10"
+   },
+   "expect": {
+    "total": 80,
+    "display": "80 mmHg",
+    "insightsContains": "above 70"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "90−10 = 80",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "high ICP",
+   "answers": {
+    "map": "85",
+    "icp": "25"
+   },
+   "expect": {
+    "total": 60,
+    "insightsContains": "22 mmHg"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "85−25 = 60",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "low CPP",
+   "answers": {
+    "map": "70",
+    "icp": "15"
+   },
+   "expect": {
+    "total": 55,
+    "insightsContains": "below"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "55",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

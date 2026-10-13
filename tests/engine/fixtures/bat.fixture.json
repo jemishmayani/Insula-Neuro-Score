@@ -1,0 +1,72 @@
+{
+ "scoreId": "bat",
+ "cases": [
+  {
+   "name": "none",
+   "answers": {
+    "blend": "no",
+    "hypo": "no",
+    "time": "no"
+   },
+   "expect": {
+    "total": 0,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "hypodensity only",
+   "answers": {
+    "blend": "no",
+    "hypo": "yes",
+    "time": "no"
+   },
+   "expect": {
+    "total": 2,
+    "state": "low"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "blend + hypo",
+   "answers": {
+    "blend": "yes",
+    "hypo": "yes",
+    "time": "no"
+   },
+   "expect": {
+    "total": 3,
+    "state": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1+2 = 3",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "all",
+   "answers": {
+    "blend": "yes",
+    "hypo": "yes",
+    "time": "yes"
+   },
+   "expect": {
+    "total": 5
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "5",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

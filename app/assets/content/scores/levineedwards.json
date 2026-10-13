@@ -1,0 +1,200 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "hangman fracture",
+  "traumatic spondylolisthesis of the axis",
+  "levine edwards",
+  "c2 pars fracture"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Missing type IIa, which behaves differently under traction."
+ ],
+ "relatedScores": [
+  {
+   "id": "andersondalonzo",
+   "relation": "Odontoid fractures"
+  },
+  {
+   "id": "slic",
+   "relation": "Subaxial injuries"
+  }
+ ],
+ "id": "levineedwards",
+ "name": "Levine and Edwards Classification of Hangman's Fractures",
+ "abbreviation": "Levine-Edwards",
+ "category": "spine",
+ "subcategory": "Spine trauma",
+ "specialties": [
+  "Spine Surgery",
+  "Neurosurgery",
+  "Trauma"
+ ],
+ "version": {
+  "label": "Levine and Edwards (1985), types I, II, IIa, III",
+  "detail": "Modification of the Effendi classification of traumatic spondylolisthesis of the axis."
+ },
+ "purpose": "Classifies traumatic spondylolisthesis of C2 (hangman's fracture).",
+ "intendedPopulation": "Patients with C2 pars fractures on CT.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Fracture type",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "t",
+   "type": "single",
+   "label": "Fracture pattern",
+   "short": "Type",
+   "options": [
+    {
+     "value": "1",
+     "label": "Minimal displacement",
+     "points": 1,
+     "code": "I",
+     "detail": "Fracture through the pars of C2 with displacement under 3 mm and no angulation; C2–3 disc intact."
+    },
+    {
+     "value": "2",
+     "label": "Displaced and angulated",
+     "points": 2,
+     "code": "II",
+     "detail": "Displacement over 3 mm with significant angulation; C2–3 disc disrupted."
+    },
+    {
+     "value": "3",
+     "label": "Angulated without translation",
+     "points": 3,
+     "code": "IIa",
+     "detail": "Significant angulation with minimal translation; more horizontal fracture line (flexion-distraction)."
+    },
+    {
+     "value": "4",
+     "label": "With facet dislocation",
+     "points": 4,
+     "code": "III",
+     "detail": "Type II with bilateral C2–3 facet dislocation."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "t",
+  "range": {
+   "min": 1,
+   "max": 4
+  },
+  "display": "Type {t_code}",
+  "share": "Hangman's fracture type {t_code} (Levine-Edwards)"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Type I: minimal displacement",
+   "summary": "Fracture through the pars of C2 with displacement under 3 mm and no angulation; C2–3 disc intact.",
+   "range": "I"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Type II: displaced and angulated",
+   "summary": "Displacement over 3 mm with significant angulation; C2–3 disc disrupted.",
+   "range": "II"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Type IIa: angulated without translation",
+   "summary": "Significant angulation with minimal translation; more horizontal fracture line (flexion-distraction).",
+   "range": "IIa"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Type III: with facet dislocation",
+   "summary": "Type II with bilateral C2–3 facet dislocation.",
+   "range": "III"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Distinguishes stable (type I) from unstable patterns; type IIa should not be treated with traction.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "t == 4",
+   "text": "Facet dislocation (type III) usually needs open reduction."
+  },
+  {
+   "when": "t == 3",
+   "text": "Type IIa has a flexion-distraction pattern; traction can widen it."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Displacement and angulation are judged on lateral imaging; thresholds vary between reports.",
+   "importance": "major"
+  },
+  "Atypical patterns (e.g. fractures through the posterior body) do not fit the types well."
+ ],
+ "confounders": [
+  {
+   "factor": "Patient positioning",
+   "effect": "Changes apparent displacement."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Neurological status."
+ ],
+ "guideSections": {
+  "what": "Four types of hangman's fracture by displacement, angulation and facet dislocation.",
+  "whenToUse": "C2 pars fractures.",
+  "howToPerform": "Assess translation, angulation, fracture orientation and the C2–3 facets.",
+  "clinicalContext": "Guides stability assessment with the full clinical picture."
+ },
+ "sources": [
+  {
+   "citation": "Levine AM, Edwards CC. The management of traumatic spondylolisthesis of the axis. J Bone Joint Surg Am. 1985;67(2):217-226."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_t",
+   "label": "Fracture pattern",
+   "inputs": [
+    "t"
+   ]
+  }
+ ],
+ "itemType": "classification"
+}

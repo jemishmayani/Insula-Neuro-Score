@@ -1,0 +1,186 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "raymond",
+  "raymond roy",
+  "aneurysm occlusion",
+  "coiling result"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing classes from the modified version."
+ ],
+ "relatedScores": [
+  {
+   "id": "hunthess",
+   "relation": "SAH grade"
+  },
+  {
+   "id": "wfns",
+   "relation": "SAH grade"
+  }
+ ],
+ "id": "raymondroy",
+ "name": "Raymond-Roy Occlusion Classification",
+ "abbreviation": "Raymond-Roy",
+ "category": "exam",
+ "subcategory": "Vascular neurosurgery",
+ "specialties": [
+  "Interventional Neuroradiology",
+  "Neurosurgery"
+ ],
+ "version": {
+  "label": "Raymond-Roy occlusion classification (Raymond et al. 2003)",
+  "detail": "Classes I–III. The modified classification (Mascitelli et al. 2015) splits class III into IIIa and IIIb and is a different version."
+ },
+ "purpose": "Classifies the angiographic occlusion of an aneurysm after coil embolisation.",
+ "intendedPopulation": "Patients with intracranial aneurysms treated with coils, at treatment and follow-up.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Occlusion class",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "cls",
+   "type": "single",
+   "label": "Angiographic occlusion",
+   "short": "Class",
+   "options": [
+    {
+     "value": "1",
+     "label": "Complete obliteration",
+     "points": 1,
+     "code": "I",
+     "detail": "No contrast filling of the aneurysm sac or neck at this assessment."
+    },
+    {
+     "value": "2",
+     "label": "Residual neck",
+     "points": 2,
+     "code": "II",
+     "detail": "Contrast filling of the neck only."
+    },
+    {
+     "value": "3",
+     "label": "Residual aneurysm",
+     "points": 3,
+     "code": "III",
+     "detail": "Contrast filling of the aneurysm sac."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "cls",
+  "range": {
+   "min": 1,
+   "max": 3
+  },
+  "display": "Class {cls_code}",
+  "share": "Raymond-Roy class {cls_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "favorable",
+   "label": "Complete obliteration",
+   "summary": "No contrast filling of the aneurysm sac or neck at this assessment.",
+   "range": "I",
+   "detail": "Follow-up imaging still determines durability."
+  },
+  {
+   "id": "s2",
+   "tone": "low",
+   "label": "Residual neck",
+   "summary": "Contrast filling of the neck only.",
+   "range": "II"
+  },
+  {
+   "id": "s3",
+   "tone": "moderate",
+   "label": "Residual aneurysm",
+   "summary": "Contrast filling of the aneurysm sac.",
+   "range": "III"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Standard description of coil occlusion, used to judge recurrence risk and follow-up.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "cls == 3",
+   "text": "Residual aneurysm is associated with higher recurrence; the modified classification distinguishes contrast within the coil mass (IIIa) from along the wall (IIIb)."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Two-dimensional angiographic assessment; small remnants may be missed.",
+   "importance": "major"
+  },
+  "Not designed for flow diverters or intrasaccular devices."
+ ],
+ "confounders": [
+  {
+   "factor": "Coil compaction over time",
+   "effect": "Changes the class at follow-up."
+  },
+  {
+   "factor": "Projection",
+   "effect": "Can hide a neck remnant."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Rupture risk directly.",
+  "Whether retreatment is needed."
+ ],
+ "guideSections": {
+  "what": "Three classes of aneurysm occlusion after coiling.",
+  "whenToUse": "Immediately after coiling and at angiographic follow-up.",
+  "howToPerform": "On working projections, assess contrast in the neck and sac; choose the class.",
+  "clinicalContext": "Guides surveillance in combination with aneurysm features."
+ },
+ "sources": [
+  {
+   "citation": "Raymond J, Guilbert F, Weill A, et al. Long-term angiographic recurrences after selective endovascular treatment of aneurysms with detachable coils. Stroke. 2003;34(6):1398-1403."
+  },
+  {
+   "citation": "Roy D, Milot G, Raymond J. Endovascular treatment of unruptured aneurysms. Stroke. 2001;32(9):1998-2004."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_cls",
+   "label": "Angiographic occlusion",
+   "inputs": [
+    "cls"
+   ]
+  }
+ ],
+ "itemType": "classification"
+}

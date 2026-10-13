@@ -1,0 +1,50 @@
+{
+ "scoreId": "ocsp",
+ "cases": [
+  {
+   "name": "TACI",
+   "answers": {
+    "syn": "1"
+   },
+   "expect": {
+    "display": "TACI",
+    "state": "s1",
+    "insightsContains": "poorest"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "TACI",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "LACI",
+   "answers": {
+    "syn": "3"
+   },
+   "expect": {
+    "display": "LACI",
+    "state": "s3"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "LACI",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "POCI",
+   "answers": {
+    "syn": "4"
+   },
+   "expect": {
+    "display": "POCI"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "POCI",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -1,0 +1,48 @@
+{
+ "scoreId": "mgfa",
+ "cases": [
+  {
+   "name": "ocular",
+   "answers": {
+    "cls": "1"
+   },
+   "expect": {
+    "display": "MGFA I"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "I",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "IVb",
+   "answers": {
+    "cls": "7"
+   },
+   "expect": {
+    "display": "MGFA IVb",
+    "insightsContains": "respiratory"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "IVb",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "V",
+   "answers": {
+    "cls": "8"
+   },
+   "expect": {
+    "display": "MGFA V"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "V",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

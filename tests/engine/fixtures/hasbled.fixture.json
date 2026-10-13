@@ -1,0 +1,97 @@
+{
+ "scoreId": "hasbled",
+ "cases": [
+  {
+   "name": "none",
+   "answers": {
+    "h": "no",
+    "ren": "no",
+    "liv": "no",
+    "s": "no",
+    "b": "no",
+    "l": "no",
+    "e": "no",
+    "drug": "no",
+    "alc": "no"
+   },
+   "expect": {
+    "total": 0,
+    "state": "lower"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "0",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "two",
+   "answers": {
+    "h": "yes",
+    "ren": "no",
+    "liv": "no",
+    "s": "no",
+    "b": "no",
+    "l": "no",
+    "e": "yes",
+    "drug": "no",
+    "alc": "no"
+   },
+   "expect": {
+    "total": 2,
+    "state": "lower"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "2",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "three",
+   "answers": {
+    "h": "yes",
+    "ren": "no",
+    "liv": "no",
+    "s": "no",
+    "b": "no",
+    "l": "no",
+    "e": "yes",
+    "drug": "yes",
+    "alc": "no"
+   },
+   "expect": {
+    "total": 3,
+    "state": "high",
+    "tone": "high"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "3 → high",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "all",
+   "answers": {
+    "h": "yes",
+    "ren": "yes",
+    "liv": "yes",
+    "s": "yes",
+    "b": "yes",
+    "l": "yes",
+    "e": "yes",
+    "drug": "yes",
+    "alc": "yes"
+   },
+   "expect": {
+    "total": 9
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "9",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

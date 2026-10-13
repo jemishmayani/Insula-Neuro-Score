@@ -1,0 +1,34 @@
+{
+ "scoreId": "koos",
+ "cases": [
+  {
+   "name": "grade 1",
+   "answers": {
+    "g": "1"
+   },
+   "expect": {
+    "display": "Koos 1"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "1",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  },
+  {
+   "name": "grade 4",
+   "answers": {
+    "g": "4"
+   },
+   "expect": {
+    "display": "Koos 4",
+    "insightsContains": "hydrocephalus"
+   },
+   "verification": {
+    "method": "manual",
+    "calculation": "4",
+    "source": "Manual calculation from the published scoring rules"
+   }
+  }
+ ]
+}

@@ -3,6 +3,31 @@
 All notable changes to Insula Neuro Score. Versions follow the Android `versionName`.
 The app is **not clinically ready** in any version listed here; see [docs/MEDICAL-CONTENT-AUDIT.md](docs/MEDICAL-CONTENT-AUDIT.md).
 
+## [0.12.0] - 2026-10-13
+Viva-yield expansion: 37 new licence-free scores and grades (87 in total).
+
+### Added
+- **Stroke:** TOAST, Oxfordshire (Bamford), CHA₂DS₂-VASc, HAS-BLED, mTICI, ASITN/SIR collateral grade, Fazekas.
+- **ICH:** ICH volume (ABC/2), BAT score.
+- **Vascular neurosurgery:** Suzuki moyamoya stages, Raymond-Roy occlusion classes.
+- **Neurotrauma and spine trauma:** Canadian CT Head Rule, NEXUS, Canadian C-spine Rule, SLIC, TLICS, Anderson-D'Alonzo, Levine-Edwards.
+- **Degenerative spine:** Pfirrmann, Modic, Meyerding, Schizas.
+- **Neuro-oncology:** Koos, Simpson grade, Knosp (modified, 3A/3B), Hardy (with Wilson's extrasellar stages), Lansky.
+- **Neurocritical care:** STESS, cerebral perfusion pressure (CPP), calculated osmolality and osmolar gap (SI or US units).
+- **General neurology (new group):** Hoehn & Yahr (original 1967), GBS disability scale, EGOS, MGFA clinical classification.
+- **Other:** Chiari types I–IV, Seddon and Sunderland nerve injury classifications.
+- New item type **Decision rule** (Canadian CT Head, NEXUS, Canadian C-spine) and a **Measurement** result type (ICH volume, CPP, osmolality).
+- Sub-sections in the Stroke, Spine and Neuro-oncology groups; new Peripheral nerve section in Neurosurgical Examination & Grades.
+- 116 new hand-calculated test cases; the calculation audit and engine tests now cover decimal and unit-based inputs.
+
+### Not built (recorded as withheld with the reason)
+- Licensing: AO Spine classifications, EDSS, ALSFRS-R, CAM-ICU.
+- Version or verification: Paediatric GCS, EMSE.
+- Scope: RANO, McDonald 2017, WHO CNS5 grading table, brain death checklist.
+
+### Notes
+- Checked against sources before implementation; flagged items are listed in the medical content audit. Still not clinically ready.
+
 ## [0.11.0] - 2026-10-08
 Scores & Grades: item types, quick groups and a consistency clean-up.
 

@@ -1,0 +1,252 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "schizas",
+  "spinal stenosis",
+  "lumbar stenosis",
+  "canal stenosis"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Using sagittal images only."
+ ],
+ "relatedScores": [
+  {
+   "id": "meyerding",
+   "relation": "Spondylolisthesis"
+  },
+  {
+   "id": "pfirrmann",
+   "relation": "Disc degeneration"
+  }
+ ],
+ "id": "schizas",
+ "name": "Schizas Grading of Lumbar Spinal Stenosis",
+ "abbreviation": "Schizas",
+ "category": "spine",
+ "subcategory": "Degenerative spine imaging",
+ "specialties": [
+  "Spine Surgery",
+  "Neurosurgery",
+  "Radiology"
+ ],
+ "version": {
+  "label": "Schizas et al. (2010), grades A1–A4, B, C, D",
+  "detail": "Morphological grading of the dural sac on axial T2-weighted MRI, based on the rootlet/CSF ratio."
+ },
+ "purpose": "Grades the morphological severity of central lumbar spinal stenosis.",
+ "intendedPopulation": "Patients with lumbar MRI.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Stenosis grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Dural sac appearance (axial T2)",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "A1: Rootlets dorsal, occupying less than half of the dural sac",
+     "points": 1,
+     "code": "A1",
+     "detail": "No or minor stenosis."
+    },
+    {
+     "value": "2",
+     "label": "A2: Rootlets dorsal, contacting the dura in a horseshoe configuration",
+     "points": 2,
+     "code": "A2",
+     "detail": "No or minor stenosis."
+    },
+    {
+     "value": "3",
+     "label": "A3: Rootlets dorsal, occupying more than half of the dural sac",
+     "points": 3,
+     "code": "A3",
+     "detail": "No or minor stenosis."
+    },
+    {
+     "value": "4",
+     "label": "A4: Rootlets central, occupying most of the dural sac",
+     "points": 4,
+     "code": "A4",
+     "detail": "No or minor stenosis."
+    },
+    {
+     "value": "5",
+     "label": "B: Rootlets occupy the whole sac but CSF is still visible between them",
+     "points": 5,
+     "code": "B",
+     "detail": "Moderate stenosis."
+    },
+    {
+     "value": "6",
+     "label": "C: No rootlets distinguishable; homogeneous grey sac without CSF; epidural fat present posteriorly",
+     "points": 6,
+     "code": "C",
+     "detail": "Severe stenosis."
+    },
+    {
+     "value": "7",
+     "label": "D: As C, with no posterior epidural fat visible",
+     "points": 7,
+     "code": "D",
+     "detail": "Extreme stenosis."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 7
+  },
+  "display": "Grade {g_code}",
+  "share": "Schizas grade {g_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  },
+  {
+   "when": "total == 6",
+   "state": "s6"
+  },
+  {
+   "when": "total == 7",
+   "state": "s7"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "low",
+   "label": "Grade A1: no or minor stenosis",
+   "summary": "Rootlets dorsal, occupying less than half of the dural sac.",
+   "range": "A1"
+  },
+  {
+   "id": "s2",
+   "tone": "low",
+   "label": "Grade A2: no or minor stenosis",
+   "summary": "Rootlets dorsal, contacting the dura in a horseshoe configuration.",
+   "range": "A2"
+  },
+  {
+   "id": "s3",
+   "tone": "low",
+   "label": "Grade A3: no or minor stenosis",
+   "summary": "Rootlets dorsal, occupying more than half of the dural sac.",
+   "range": "A3"
+  },
+  {
+   "id": "s4",
+   "tone": "low",
+   "label": "Grade A4: no or minor stenosis",
+   "summary": "Rootlets central, occupying most of the dural sac.",
+   "range": "A4"
+  },
+  {
+   "id": "s5",
+   "tone": "moderate",
+   "label": "Grade B: moderate stenosis",
+   "summary": "Rootlets occupy the whole sac but CSF is still visible between them.",
+   "range": "B"
+  },
+  {
+   "id": "s6",
+   "tone": "high",
+   "label": "Grade C: severe stenosis",
+   "summary": "No rootlets distinguishable; homogeneous grey sac without CSF; epidural fat present posteriorly.",
+   "range": "C",
+   "detail": "Correlate with symptoms and examination; imaging severity does not determine management on its own."
+  },
+  {
+   "id": "s7",
+   "tone": "high",
+   "label": "Grade D: extreme stenosis",
+   "summary": "As C, with no posterior epidural fat visible.",
+   "range": "D",
+   "detail": "Correlate with symptoms and examination; imaging severity does not determine management on its own."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "A morphological grading that does not require measuring the canal area.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Grade the most stenotic level; report each level if several are affected."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Morphology correlates imperfectly with symptoms and walking capacity.",
+   "importance": "major"
+  },
+  "Lateral recess and foraminal stenosis are not graded."
+ ],
+ "confounders": [
+  {
+   "factor": "Patient position",
+   "effect": "Supine MRI may under-show dynamic stenosis."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Symptom severity.",
+  "Foraminal stenosis."
+ ],
+ "guideSections": {
+  "what": "Seven grades of central stenosis from the appearance of rootlets and CSF in the dural sac.",
+  "whenToUse": "Lumbar MRI reporting.",
+  "howToPerform": "On axial T2 at the narrowest level, assess rootlet distribution and CSF; choose the grade.",
+  "clinicalContext": "Correlate with neurogenic claudication and examination."
+ },
+ "sources": [
+  {
+   "citation": "Schizas C, Theumann N, Burn A, et al. Qualitative grading of severity of lumbar spinal stenosis based on the morphology of the dural sac on magnetic resonance images. Spine. 2010;35(21):1919-1924."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Dural sac appearance (axial T2)",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

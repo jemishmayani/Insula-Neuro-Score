@@ -1,0 +1,216 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "collaterals",
+  "collateral grade",
+  "asitn",
+  "sir",
+  "higashida"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [],
+ "commonErrors": [
+  "Mixing with CT-angiography collateral scores."
+ ],
+ "relatedScores": [
+  {
+   "id": "mtici",
+   "relation": "Reperfusion grade"
+  },
+  {
+   "id": "aspects",
+   "relation": "Early ischaemic change"
+  }
+ ],
+ "id": "collaterals",
+ "name": "ASITN/SIR Collateral Flow Grade",
+ "abbreviation": "ASITN/SIR collaterals",
+ "category": "stroke",
+ "subcategory": "Thrombectomy",
+ "specialties": [
+  "Stroke",
+  "Interventional Neuroradiology"
+ ],
+ "version": {
+  "label": "ASITN/SIR collateral flow grading (Higashida et al. 2003)",
+  "detail": "Grades 0–4 on catheter angiography. CT-angiography collateral scores (e.g. Tan, Maas, Menon) are different systems."
+ },
+ "purpose": "Grades angiographic collateral flow to the ischaemic territory.",
+ "intendedPopulation": "Patients with acute arterial occlusion undergoing catheter angiography.",
+ "resultPresentation": {
+  "type": "imaging-classification",
+  "typeLabel": "Collateral grade",
+  "meter": false
+ },
+ "inputDefinitions": [
+  {
+   "id": "g",
+   "type": "single",
+   "label": "Collateral flow",
+   "short": "Grade",
+   "options": [
+    {
+     "value": "1",
+     "label": "No collaterals",
+     "points": 1,
+     "code": "0",
+     "detail": "No collaterals visible to the ischaemic site."
+    },
+    {
+     "value": "2",
+     "label": "Slow, peripheral",
+     "points": 2,
+     "code": "1",
+     "detail": "Slow collaterals to the periphery of the ischaemic site, with part of the defect persisting."
+    },
+    {
+     "value": "3",
+     "label": "Rapid, peripheral",
+     "points": 3,
+     "code": "2",
+     "detail": "Rapid collaterals to the periphery of the ischaemic site, with part of the defect persisting."
+    },
+    {
+     "value": "4",
+     "label": "Slow but complete",
+     "points": 4,
+     "code": "3",
+     "detail": "Collaterals give slow but complete filling of the ischaemic bed by the late venous phase."
+    },
+    {
+     "value": "5",
+     "label": "Complete and rapid",
+     "points": 5,
+     "code": "4",
+     "detail": "Complete and rapid retrograde collateral flow to the entire ischaemic territory, at this assessment."
+    }
+   ]
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "g",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "Grade {g_code}",
+  "share": "ASITN/SIR collateral grade {g_code}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "high",
+   "label": "No collaterals",
+   "summary": "No collaterals visible to the ischaemic site.",
+   "range": "Grade 0",
+   "detail": "Assess with the full imaging picture; poor collaterals are associated with larger infarcts."
+  },
+  {
+   "id": "s2",
+   "tone": "moderate",
+   "label": "Slow, peripheral",
+   "summary": "Slow collaterals to the periphery of the ischaemic site, with part of the defect persisting.",
+   "range": "Grade 1"
+  },
+  {
+   "id": "s3",
+   "tone": "moderate",
+   "label": "Rapid, peripheral",
+   "summary": "Rapid collaterals to the periphery of the ischaemic site, with part of the defect persisting.",
+   "range": "Grade 2"
+  },
+  {
+   "id": "s4",
+   "tone": "low",
+   "label": "Slow but complete",
+   "summary": "Collaterals give slow but complete filling of the ischaemic bed by the late venous phase.",
+   "range": "Grade 3"
+  },
+  {
+   "id": "s5",
+   "tone": "favorable",
+   "label": "Complete and rapid",
+   "summary": "Complete and rapid retrograde collateral flow to the entire ischaemic territory, at this assessment.",
+   "range": "Grade 4",
+   "detail": "Good collaterals are associated with smaller infarcts but do not guarantee outcome."
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Collateral status modifies how quickly the ischaemic core grows.",
+   "importance": "major"
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "text": "Grade on late arterial and venous phases; collaterals fill late."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Requires catheter angiography of the collateral supply; often incompletely assessed during thrombectomy.",
+   "importance": "major"
+  },
+  "Inter-rater variability."
+ ],
+ "confounders": [
+  {
+   "factor": "Incomplete injections",
+   "effect": "Collateral sources may not be opacified."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Infarct core size.",
+  "Clinical outcome on its own."
+ ],
+ "guideSections": {
+  "what": "A five-level angiographic grade of collateral flow (0–4).",
+  "whenToUse": "Angiographic assessment in acute ischaemic stroke.",
+  "howToPerform": "Assess the rate and extent of collateral filling of the ischaemic territory through the venous phase; choose the grade.",
+  "clinicalContext": "One imaging marker among core, perfusion and timing."
+ },
+ "sources": [
+  {
+   "citation": "Higashida RT, Furlan AJ, Roberts H, et al. Trial design and reporting standards for intra-arterial cerebral thrombolysis for acute ischemic stroke. Stroke. 2003;34(8):e109-e137."
+  }
+ ],
+ "licensing": {
+  "status": "Published grading with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "components": [
+  {
+   "id": "c_g",
+   "label": "Collateral flow",
+   "inputs": [
+    "g"
+   ]
+  }
+ ],
+ "itemType": "grade"
+}

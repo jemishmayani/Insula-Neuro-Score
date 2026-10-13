@@ -1,0 +1,278 @@
+{
+ "contentVersion": "6.0.0",
+ "lastReviewed": "2026-10-13",
+ "reviewStatus": "Drafted from verified sources; pending independent clinician review before clinical release.",
+ "aliases": [
+  "toast",
+  "stroke subtype",
+  "stroke aetiology",
+  "stroke etiology",
+  "stroke mechanism"
+ ],
+ "scoringRules": [],
+ "consistencyRules": [
+  {
+   "when": "sub == 5 && !isnull(cert_value)",
+   "severity": "warning",
+   "inputs": [
+    "cert"
+   ],
+   "message": "'Undetermined' already covers incomplete or conflicting evaluation; probable/possible applies to the other subtypes."
+  }
+ ],
+ "commonErrors": [
+  "Assigning small-vessel occlusion to a subcortical infarct over 1.5 cm.",
+  "Assigning a subtype before vascular and cardiac evaluation is complete without marking it 'possible'."
+ ],
+ "relatedScores": [
+  {
+   "id": "ocsp",
+   "relation": "Clinical syndrome"
+  },
+  {
+   "id": "nihss",
+   "relation": "Deficit severity"
+  },
+  {
+   "id": "chadsvasc",
+   "relation": "AF stroke risk"
+  }
+ ],
+ "id": "toast",
+ "name": "TOAST Classification of Ischaemic Stroke Subtype",
+ "abbreviation": "TOAST",
+ "category": "stroke",
+ "subcategory": "Stroke mechanism",
+ "specialties": [
+  "Stroke",
+  "Neurology"
+ ],
+ "version": {
+  "label": "TOAST (Adams et al. 1993), five subtypes",
+  "detail": "Each subtype may be graded 'probable' or 'possible' depending on how complete and consistent the investigations are. Later systems (e.g. SSS-TOAST, ASCOD) are different versions and are not combined."
+ },
+ "purpose": "Classifies ischaemic stroke by presumed mechanism, using clinical features and investigations.",
+ "intendedPopulation": "Adults with ischaemic stroke after vascular, cardiac and laboratory investigation.",
+ "resultPresentation": {
+  "type": "classification",
+  "typeLabel": "Stroke subtype",
+  "meter": false
+ },
+ "calculatorNotice": {
+  "tone": "info",
+  "title": "Assign after investigation",
+  "message": "TOAST depends on vascular imaging, cardiac evaluation and other tests. Assigned early, it is often provisional."
+ },
+ "inputDefinitions": [
+  {
+   "id": "sub",
+   "type": "single",
+   "label": "Presumed mechanism",
+   "short": "Subtype",
+   "options": [
+    {
+     "value": "1",
+     "label": "Large-artery atherosclerosis",
+     "points": 1,
+     "code": "LAA",
+     "detail": "Significant (>50%) stenosis or occlusion of a major brain artery or branch cortical artery, presumed atherosclerotic; cortical, cerebellar, brainstem or large (>1.5 cm) subcortical infarct; cardioembolic source excluded."
+    },
+    {
+     "value": "2",
+     "label": "Cardioembolism",
+     "points": 2,
+     "code": "CE",
+     "detail": "Arterial occlusion presumed due to an embolus from the heart; at least one cardiac source of embolism identified."
+    },
+    {
+     "value": "3",
+     "label": "Small-vessel occlusion (lacune)",
+     "points": 3,
+     "code": "SVO",
+     "detail": "Classical lacunar syndrome; normal imaging or a relevant brainstem or subcortical lesion under 1.5 cm; no cardiac source or ipsilateral large-artery stenosis over 50%."
+    },
+    {
+     "value": "4",
+     "label": "Stroke of other determined aetiology",
+     "points": 4,
+     "code": "OC",
+     "detail": "Rare causes, e.g. non-atherosclerotic vasculopathy, hypercoagulable state or haematological disorder, with investigations supporting it."
+    },
+    {
+     "value": "5",
+     "label": "Stroke of undetermined aetiology",
+     "points": 5,
+     "code": "UND",
+     "detail": "Two or more possible causes, a negative evaluation, or an incomplete evaluation."
+    }
+   ]
+  },
+  {
+   "id": "cert",
+   "type": "single",
+   "label": "Certainty (subtypes LAA, CE, SVO, OC)",
+   "short": "Certainty",
+   "options": [
+    {
+     "value": "probable",
+     "label": "Probable",
+     "points": 0,
+     "code": "probable",
+     "detail": "Clinical findings, imaging and investigations consistent; other causes excluded."
+    },
+    {
+     "value": "possible",
+     "label": "Possible",
+     "points": 0,
+     "code": "possible",
+     "detail": "Clinical and imaging findings suggest the subtype but investigations are incomplete."
+    }
+   ],
+   "required": false,
+   "help": "Optional. Not used for 'undetermined'."
+  }
+ ],
+ "components": [
+  {
+   "id": "c_sub",
+   "label": "Subtype",
+   "inputs": [
+    "sub"
+   ]
+  },
+  {
+   "id": "c_cert",
+   "label": "Certainty",
+   "inputs": [
+    "cert"
+   ],
+   "showSubtotal": false
+  }
+ ],
+ "calculationMethod": {
+  "type": "select",
+  "input": "sub",
+  "range": {
+   "min": 1,
+   "max": 5
+  },
+  "display": "{isnull(cert_code) ? sub_code : sub_code + ' (' + cert_code + ')'}",
+  "share": "TOAST {sub_code}{isnull(cert_code) ? '' : ' (' + cert_code + ')'}"
+ },
+ "interpretationRules": [
+  {
+   "when": "total == 1",
+   "state": "s1"
+  },
+  {
+   "when": "total == 2",
+   "state": "s2"
+  },
+  {
+   "when": "total == 3",
+   "state": "s3"
+  },
+  {
+   "when": "total == 4",
+   "state": "s4"
+  },
+  {
+   "when": "total == 5",
+   "state": "s5"
+  }
+ ],
+ "resultStates": [
+  {
+   "id": "s1",
+   "tone": "informational",
+   "label": "Large-artery atherosclerosis",
+   "summary": "Large-artery atherosclerosis.",
+   "range": "LAA"
+  },
+  {
+   "id": "s2",
+   "tone": "informational",
+   "label": "Cardioembolism",
+   "summary": "Cardioembolism.",
+   "range": "CE"
+  },
+  {
+   "id": "s3",
+   "tone": "informational",
+   "label": "Small-vessel occlusion (lacune)",
+   "summary": "Small-vessel occlusion (lacune).",
+   "range": "SVO"
+  },
+  {
+   "id": "s4",
+   "tone": "informational",
+   "label": "Stroke of other determined aetiology",
+   "summary": "Stroke of other determined aetiology.",
+   "range": "OC"
+  },
+  {
+   "id": "s5",
+   "tone": "informational",
+   "label": "Stroke of undetermined aetiology",
+   "summary": "Stroke of undetermined aetiology.",
+   "range": "UND"
+  }
+ ],
+ "clinicalContext": [
+  {
+   "text": "Classifies ischaemic stroke by presumed mechanism, which guides secondary prevention and research grouping.",
+   "importance": "major"
+  },
+  {
+   "text": "The most widely used stroke subtype classification in trials."
+  }
+ ],
+ "clinicalInsights": [
+  {
+   "when": "sub == 5",
+   "text": "Undetermined includes cryptogenic stroke after full evaluation and strokes with two competing causes; say which."
+  },
+  {
+   "text": "Record which investigations were complete; the subtype can change as results arrive."
+  }
+ ],
+ "limitations": [
+  {
+   "text": "Assignment depends on how complete the investigations are; 'undetermined' rises when evaluation is limited.",
+   "importance": "major"
+  },
+  "Inter-rater agreement is moderate.",
+  "Does not separate embolic stroke of undetermined source as its own group."
+ ],
+ "confounders": [
+  {
+   "factor": "Incomplete investigation",
+   "effect": "Pushes cases into 'undetermined'."
+  },
+  {
+   "factor": "Coexisting causes",
+   "effect": "e.g. atrial fibrillation with carotid stenosis."
+  }
+ ],
+ "whatItDoesNotTellYou": [
+  "Stroke severity.",
+  "Prognosis on its own.",
+  "Which treatment to choose."
+ ],
+ "guideSections": {
+  "what": "Five ischaemic stroke subtypes by presumed mechanism: large-artery atherosclerosis, cardioembolism, small-vessel occlusion, other determined and undetermined.",
+  "whenToUse": "After investigation of ischaemic stroke; communication, secondary prevention planning and research.",
+  "howToPerform": "Combine the clinical syndrome, brain imaging, vascular imaging, cardiac evaluation and laboratory tests. Choose the subtype, then mark probable or possible.",
+  "clinicalContext": "A mechanism classification, used with the full investigation results."
+ },
+ "sources": [
+  {
+   "citation": "Adams HP Jr, Bendixen BH, Kappelle LJ, et al. Classification of subtype of acute ischemic stroke. Definitions for use in a multicenter clinical trial. TOAST. Trial of Org 10172 in Acute Stroke Treatment. Stroke. 1993;24(1):35-41."
+  }
+ ],
+ "licensing": {
+  "status": "Published classification with attribution",
+  "note": "No reproduction restrictions identified."
+ },
+ "itemType": "classification"
+}
