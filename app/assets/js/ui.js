@@ -42,6 +42,7 @@
     error: '<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>',
     inbox: '<path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 2h6l1-2h5"/>',
     reset: '<path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/>',
+    list: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
     compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
     bulb: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3z"/>',
     filter: '<path d="M3 5h18l-7 8v5l-4 2v-7z"/>',
@@ -145,21 +146,21 @@
       '</span><span class="count">' + o.count + " item" + (o.count === 1 ? "" : "s") + (c.description ? " · " + esc(c.description) : "") + "</span></span>" + icon("chevron", "chev") + "</a>";
   }
 
-  /** ScaleMeter({min, max, value, bands:[{min,max,tone,label}], label}) — position on a score's own scale */
+  /** ScaleMeter({min, max, value, bands:[{min,max,tone,label}], label}) — position on a score's own scale.
+      Bars and range labels share one grid, so each label sits centred under its own segment;
+      the marker sits inside the active segment, so it stays aligned at any width or text size. */
   function ScaleMeter(o) {
-    var span = o.max - o.min + 1, active = null;
+    var active = null;
     var rng = function (b) { return b.min === b.max ? String(b.min) : b.min + "–" + b.max; };
+    var floor = (100 / (o.bands.length * 2)).toFixed(3) + "%";   // every band keeps at least half an equal share, so narrow bands stay readable
+    var cols = o.bands.map(function (b) { return "minmax(" + floor + "," + (b.max - b.min + 1) + "fr)"; }).join(" ");
     var segs = o.bands.map(function (b) {
       var on = o.value != null && o.value >= b.min && o.value <= b.max; if (on) active = b;
-      return '<span class="meter-seg tone-' + esc(b.tone) + (on ? " is-on" : "") + '" style="width:' + ((b.max - b.min + 1) / span * 100).toFixed(3) + '%"><i></i></span>';
+      var mk = on ? '<span class="meter-marker" style="left:' + ((o.value - b.min + 0.5) / (b.max - b.min + 1) * 100).toFixed(3) + '%"></span>' : "";
+      return '<span class="meter-seg tone-' + esc(b.tone) + (on ? " is-on" : "") + '">' + mk + '<i></i><span class="meter-lbl">' + esc(rng(b)) + "</span></span>";
     }).join("");
-    var legend = '<ul class="meter-legend" aria-hidden="true">' + o.bands.map(function (b) {
-      var on = o.value != null && o.value >= b.min && o.value <= b.max;
-      return '<li class="tone-' + esc(b.tone) + (on ? " is-on" : "") + '">' + esc(rng(b)) + "</li>"; }).join("") + "</ul>";
-    var pos = o.value == null ? null : ((o.value - o.min + 0.5) / span * 100);
     var desc = o.value == null ? o.label + ": not yet calculated" : o.label + " " + o.value + " on a scale of " + o.min + " to " + o.max + (active ? ", band " + active.label + " (" + rng(active) + ")" : "");
-    return '<div class="meter" role="img" aria-label="' + esc(desc) + '"><div class="meter-track">' + segs + "</div>" +
-      (pos == null ? "" : '<span class="meter-marker" style="left:' + pos.toFixed(3) + '%" aria-hidden="true"></span>') + legend + "</div>";
+    return '<div class="meter" role="img" aria-label="' + esc(desc) + '"><div class="meter-track" aria-hidden="true" style="grid-template-columns:' + cols + '">' + segs + "</div></div>";
   }
 
   /* ---------------- Insight cards ---------------- */
@@ -184,17 +185,46 @@
       '<span class="ins-icon" aria-hidden="true">' + icon(t.icon) + '</span><div class="ins-body"><span class="ins-type">' + esc(t.label) + "</span>" +
       (it.title ? '<b class="ins-title">' + esc(it.title) + "</b>" : "") + body + (tags ? '<div class="ins-tags">' + tags + "</div>" : "") + "</div></li>";
   }
-  /** InsightSection({section:{type,title,question,items}, collapseAfter}) — prioritised items first, the rest behind a disclosure. */
+  /* ---------------- Collapsible sections ----------------
+     Heading = a full-width button with a chevron; body animates open/closed (grid-rows), reduced motion snaps.
+     Open/closed choices are remembered per key for the session, so re-rendering a result keeps them. */
+  var collapseState = {};
+  function Collapsible(o) {
+    var open = o.key && collapseState.hasOwnProperty(o.key) ? collapseState[o.key] : o.open !== false;
+    var id = "cl-" + (o.key || Math.random().toString(36).slice(2)).replace(/[^a-z0-9-]/gi, "-");
+    return '<section class="collapsible' + (open ? " is-open" : "") + (o.cls ? " " + o.cls : "") + '"' + (o.attrs || "") + ">" +
+      '<h3 class="result-h cl-h"><button type="button" class="cl-btn" data-collapse="' + esc(o.key || "") + '" aria-expanded="' + open + '" aria-controls="' + id + '">' +
+      (o.icon ? '<span class="cl-icon" aria-hidden="true">' + icon(o.icon) + "</span>" : "") +
+      '<span class="cl-title">' + esc(o.title) + (o.sub ? ' <span class="ins-q">' + esc(o.sub) + "</span>" : "") + "</span>" +
+      (o.count != null ? '<span class="cl-count" aria-label="' + o.count + " item" + (o.count === 1 ? "" : "s") + '">' + o.count + "</span>" : "") +
+      (o.flag ? '<span class="cl-flag">' + icon("warning") + esc(o.flag) + "</span>" : "") +
+      icon("chevron", "cl-chev") + "</button></h3>" +
+      '<div class="cl-body" id="' + id + '"><div class="cl-inner">' + o.body + "</div></div></section>";
+  }
+  function toggleCollapsible(btn) {
+    var sec = btn.closest(".collapsible"), open = !sec.classList.contains("is-open");
+    sec.classList.toggle("is-open", open); btn.setAttribute("aria-expanded", String(open));
+    if (btn.dataset.collapse) collapseState[btn.dataset.collapse] = open;
+  }
+  if (typeof document !== "undefined") document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-collapse]"); if (b) { e.preventDefault(); toggleCollapsible(b); }
+  });
+
+  /** InsightSection({section:{type,title,question,items}, collapsible, hideTitle, showQuestion}).
+      Collapsible sections open by default when they hold an important or result-specific item. */
   function InsightSection(o) {
     var sec = o.section; if (!sec.items.length) return "";
     var pri = sec.items.filter(function (i) { return i.contextual || i.importance === "major"; });
-    var shown = o.collapseAfter == null ? sec.items : (pri.length ? pri : sec.items.slice(0, o.collapseAfter));
-    var rest = sec.items.filter(function (i) { return shown.indexOf(i) < 0; });
     var card = function (i) { return InsightCard({ type: sec.type, item: i }); };
+    var list = '<ul class="insight-list">' + pri.concat(sec.items.filter(function (i) { return pri.indexOf(i) < 0; })).map(card).join("") + "</ul>";
+    if (o.collapsible) {
+      var open = o.open != null ? o.open : (pri.length > 0 || sec.type === "interpretation" || sec.type === "context");
+      return Collapsible({ key: "ins-" + sec.type, title: sec.title, count: sec.items.length, open: open, icon: (INSIGHT_TYPES[sec.type] || {}).icon,
+        flag: pri.some(function (i) { return i.importance === "major"; }) && sec.type !== "interpretation" ? "Important" : "",
+        cls: "insight-section tone-" + ((INSIGHT_TYPES[sec.type] || {}).tone || "neutral"), attrs: ' data-section="' + esc(sec.type) + '" aria-label="' + esc(sec.title) + '"', body: list });
+    }
     return '<section class="insight-section" data-section="' + esc(sec.type) + '" aria-label="' + esc(sec.title) + '">' + (o.hideTitle ? "" : '<h3 class="result-h">' + esc(sec.title) +
-      (o.showQuestion ? ' <span class="ins-q">' + esc(sec.question) + "</span>" : "") + "</h3>") +
-      '<ul class="insight-list">' + shown.map(card).join("") + "</ul>" +
-      (rest.length ? '<details class="ins-more"><summary><span class="when-closed">Show ' + rest.length + ' more</span><span class="when-open">Show fewer</span></summary><ul class="insight-list">' + rest.map(card).join("") + "</ul></details>" : "") + "</section>";
+      (o.showQuestion ? ' <span class="ins-q">' + esc(sec.question) + "</span>" : "") + "</h3>") + list + "</section>";
   }
   /** StateCard — one result state as used in guides (icon + label + range + explanation). */
   function StateCard(st) {
@@ -282,7 +312,7 @@
 
   global.UI = { esc: esc, icon: icon, stateIcon: stateIcon, TONE_LABEL: TONE_LABEL,
     AppBar: AppBar, IconButton: IconButton, BottomNavigation: BottomNavigation, SearchBar: SearchBar, StatusBadge: StatusBadge,
-    ScoreCard: ScoreCard, CardList: CardList, ScaleMeter: ScaleMeter, InsightCard: InsightCard, InsightSection: InsightSection, StateCard: StateCard, INSIGHT_TYPES: INSIGHT_TYPES, CategoryCard: CategoryCard, ResultCard: ResultCard, SectionCard: SectionCard,
+    ScoreCard: ScoreCard, CardList: CardList, ScaleMeter: ScaleMeter, Collapsible: Collapsible, InsightCard: InsightCard, InsightSection: InsightSection, StateCard: StateCard, INSIGHT_TYPES: INSIGHT_TYPES, CategoryCard: CategoryCard, ResultCard: ResultCard, SectionCard: SectionCard,
     PrimaryButton: PrimaryButton, SecondaryButton: SecondaryButton, Toggle: Toggle, Segmented: Segmented,
     EmptyState: EmptyState, InfoBanner: InfoBanner, WarningBanner: WarningBanner, ErrorState: ErrorState, LoadingState: LoadingState, Section: Section };
 })(window);

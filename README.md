@@ -4,7 +4,7 @@ Offline-first clinical calculation and reference app for Neurology, Neurosurgery
 
 > Not a diagnostic or treatment tool. The app calculates validated scores, explains them, and shows their limitations.
 
-## Status: v0.12.0. **Not clinically ready**
+## Status: v0.12.1. **Not clinically ready**
 
 87 scores and grades are implemented. Each was checked against its cited sources before implementation and is pending independent clinician review. Unresolved issues are listed in the [medical content audit](docs/MEDICAL-CONTENT-AUDIT.md).
 

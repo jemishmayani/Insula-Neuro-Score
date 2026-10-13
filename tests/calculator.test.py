@@ -7,7 +7,7 @@ def check(n, c, info=""): results.append((n, bool(c))); print(("PASS " if c else
 
 async def pick(pg, inp, val): await pg.click(f'.field[data-field="{inp}"] input[value="{val}"] >> xpath=..')
 async def state(pg): return await pg.evaluate("(() => { const c = document.querySelector('#result .result-card'); return { tone: [...c.classList].find(x => x.startsWith('tone-')), value: c.querySelector('.value').textContent, label: c.querySelector('.state span').textContent }; })()")
-async def card(pg): return await pg.evaluate("(() => { const c = document.querySelector('#result .result-card'); const f = c.querySelector('.formula'); const m = c.querySelector('.meter-legend li.is-on'); return { type: (c.querySelector('.result-type')||{}).textContent, formula: f ? f.textContent : null, meter: m ? m.textContent : null, formulaBeforeValue: !!f && !!(f.compareDocumentPosition(c.querySelector('.value')) & 4) }; })()")
+async def card(pg): return await pg.evaluate("(() => { const c = document.querySelector('#result .result-card'); const f = c.querySelector('.formula'); const m = c.querySelector('.meter-seg.is-on .meter-lbl'); return { type: (c.querySelector('.result-type')||{}).textContent, formula: f ? f.textContent : null, meter: m ? m.textContent : null, formulaBeforeValue: !!f && !!(f.compareDocumentPosition(c.querySelector('.value')) & 4) }; })()")
 
 async def main():
     srv = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", ROOT], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep(1)
@@ -103,6 +103,8 @@ async def main():
             await pg.goto(U + "#/calculate/s/sins"); await pg.wait_for_selector(".field")
             for i, v in [("location", "3"), ("pain", "3"), ("lesion", "0"), ("alignment", "0"), ("collapse", "1"), ("posterolateral", "0")]: await pick(pg, i, v)
             s = await state(pg); check("SINS 7 → potentially unstable (boundary)", s == {"tone": "tone-moderate", "value": "7", "label": "Potentially unstable"}, str(s))
+            align = await pg.evaluate("[...document.querySelectorAll('#result .meter-seg')].every(sg => { const a = sg.querySelector('i').getBoundingClientRect(), l = sg.querySelector('.meter-lbl').getBoundingClientRect(); return Math.abs((a.left + a.right) / 2 - (l.left + l.right) / 2) < 1.5; })")
+            check("meter labels centred under their segments", align)
             c = await card(pg); check("SINS result type = stability category, meter 7–12", c["type"] == "Stability category" and c["meter"] == "7–12", str(c))
             check("SINS notice: not a surgical decision", await pg.locator(".calc-notice >> text=not a surgical decision").count() == 1)
             check("SINS 7: referral threshold, not decision to operate (Interpretation)", "not a decision to operate" in await pg.locator("#result [data-block=interpretation]").inner_text())
@@ -192,11 +194,14 @@ async def main():
                 check(f"{sid}: every insight card has icon + type label + text ({len(cards)} cards)", len(cards) >= 8 and all(c["icon"] and c["label"] and c["text"] for c in cards))
                 tone_lbl = await pg.locator("#result .result-card .meta").inner_text()
                 check(f"{sid}: result tone stated in words, not only colour", any(w in tone_lbl for w in ["Favorable", "Low concern", "Mild", "Moderate", "High concern", "Very high concern", "Informational"]), tone_lbl)
-                if await pg.locator("#result .ins-more summary").count():
+                closed = pg.locator('#result .cl-btn[aria-expanded="false"]')
+                if await closed.count():
                     before = await pg.locator("#result .insight-card:visible").count()
-                    await pg.locator("#result .ins-more summary").first.click()
-                    check(f"{sid}: 'Show more' reveals further cards", await pg.locator("#result .insight-card:visible").count() > before)
-                await pg.click("#result >> text=Breakdown"); await pg.screenshot(path=f"{SHOTS}/p4_{sid}_insights.png", full_page=False)
+                    await closed.first.click(); await pg.wait_for_timeout(350)
+                    check(f"{sid}: section heading chevron expands a collapsed section", await pg.locator("#result .insight-card:visible").count() > before)
+                pri_hidden = await pg.evaluate("[...document.querySelectorAll('#result .collapsible:not(.is-open) .insight-card')].filter(c => c.classList.contains('is-major') || c.classList.contains('is-contextual')).length")
+                check(f"{sid}: no important or result-specific card starts hidden", pri_hidden == 0)
+                await pg.screenshot(path=f"{SHOTS}/p4_{sid}_insights.png", full_page=False)
             # specific language
             await pg.goto(U + "#/calculate/s/gcs"); await pg.wait_for_selector(".field")
             for i, v in scenarios["gcs"]: await pick(pg, i, v)

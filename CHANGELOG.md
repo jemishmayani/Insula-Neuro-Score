@@ -3,6 +3,18 @@
 All notable changes to Insula Neuro Score. Versions follow the Android `versionName`.
 The app is **not clinically ready** in any version listed here; see [docs/MEDICAL-CONTENT-AUDIT.md](docs/MEDICAL-CONTENT-AUDIT.md).
 
+## [0.12.1] - 2026-10-13
+Result screen polish: aligned scale meters and collapsible sections.
+
+### Changed
+- **Scale meters aligned.** The bar segments and their range labels now share one grid, so each label sits centred under its own segment (GOSE, GCS, mRS, SINS and every other meter). The ▲ marker sits inside the active segment, and narrow bands keep a minimum width so their labels stay readable.
+- **Collapsible result sections.** Breakdown, Interpretation, Clinical context, Important considerations, Limitations, Confounders and "What it does not tell you" are now cards. Each heading is a full-width button with an icon, an item count, an "Important" flag where it applies, and a chevron. Tapping the heading opens or closes the section with a smooth animation (instant under reduced motion). These replace the separate "Show N more / Show fewer" links.
+- Sections that hold an important or result-specific item always start open; the others start closed, so the result screen is shorter and easier to scan. Your open or closed choice is kept while you change inputs.
+- Headings expose `aria-expanded` and `aria-controls`; collapsed content is hidden from screen readers and keyboard focus.
+
+### Tests
+- New checks: meter labels centred on their segments; the heading chevron expands and collapses sections; no important card starts hidden. Engine 445/445; UI suites and the accessibility audit pass (0 findings).
+
 ## [0.12.0] - 2026-10-13
 Viva-yield expansion: 37 new licence-free scores and grades (87 in total).
 

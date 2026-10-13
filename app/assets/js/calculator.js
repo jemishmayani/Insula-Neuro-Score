@@ -115,7 +115,7 @@
       meta: UI.TONE_LABEL[tone] + (score.itemType === "rule" ? "" : " · " + score.abbreviation + " range " + rangeLabel(score)), summary: r.state.summary, meter: meter });
     if (r.warnings.length) h += '<div class="result-block" data-block="warnings">' + r.warnings.map(function (w) { return UI.WarningBanner({ title: "Check", message: w.message }); }).join("") + "</div>";
     // Breakdown
-    h += '<div class="result-block" data-block="breakdown"><h3 class="result-h">Breakdown</h3><table class="breakdown result-breakdown"><colgroup><col class="c-item"><col class="c-value"><col class="c-pts"></colgroup><tbody>' + r.breakdown.map(function (c) {
+    var bdHTML = '<div class="table-scroll"><table class="breakdown result-breakdown"><colgroup><col class="c-item"><col class="c-value"><col class="c-pts"></colgroup><tbody>' + r.breakdown.map(function (c) {
       var shown = c.items.filter(function (it) { var d = score.inputDefinitions.filter(function (x) { return x.id === it.inputId; })[0]; return !(d && d.detail && it.status === "empty"); });
       if (!shown.length) return "";
       var rows = shown.map(function (it) {
@@ -127,14 +127,15 @@
       var head = shown.length > 1 && c.showSubtotal !== false ? '<tr class="bd-group"><th scope="rowgroup" colspan="2">' + esc(c.label) + '</th><td class="pts">' + (c.subtotal == null ? "–" : c.subtotal) + "</td></tr>" : "";
       return head + rows;
     }).join("") + '<tr class="bd-total"><th scope="row">Result</th><td>' + esc(r.state.label) + '</td><td class="pts">' + esc(ptsCell(r)) + "</td></tr></tbody></table></div>";
+    h += '<div class="result-block" data-block="breakdown">' + UI.Collapsible({ key: "breakdown", title: "Breakdown", icon: "list", body: bdHTML }) + "</div>";
     // Interpretation
     var interpItems = [];
     if (r.state.detail) interpItems.push({ text: r.state.detail, importance: tone === "high" || tone === "critical" ? "major" : "standard" });
     if (pres.describes) interpItems.push({ title: "Result type: " + pres.typeLabel, text: pres.describes });
-    if (interpItems.length) h += '<div class="result-block" data-block="interpretation">' + UI.InsightSection({ section: { type: "interpretation", title: "Interpretation", question: "What does the result represent?", items: interpItems } }) + "</div>";
+    if (interpItems.length) h += '<div class="result-block" data-block="interpretation">' + UI.InsightSection({ section: { type: "interpretation", title: "Interpretation", question: "What does the result represent?", items: interpItems }, collapsible: true }) + "</div>";
     // Insight sections (same structured content as the guide)
     (r.insightSet ? r.insightSet.sections : []).forEach(function (sec) {
-      h += '<div class="result-block" data-block="' + sec.type + '">' + UI.InsightSection({ section: sec, collapseAfter: 2 }) + "</div>";
+      h += '<div class="result-block" data-block="' + sec.type + '">' + UI.InsightSection({ section: sec, collapsible: true }) + "</div>";
     });
     if (r.related.length) h += '<div class="result-block" data-block="related"><h3 class="result-h">Related scores</h3><div class="chip-row">' + r.related.map(function (x) {
       var l = links(x.id); return l ? '<a class="chip" href="' + l.href + '" data-nav>' + esc(l.label) + ' <span class="n">' + esc(x.relation) + "</span></a>" : ""; }).join("") + "</div></div>";
